@@ -1,0 +1,26 @@
+# LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+dispensa/main.pdf
+# Python
+__pycache__/
+*.pyc
+# MkDocs
+site/
+# varie
+.DS_Store
+
+# materiale interno, non pubblicato
+STILE_E_FORMATO.md
+dispensa/
+
+# i PDF pubblicati sul sito vanno invece versionati
+!docs/pdf/*.pdf

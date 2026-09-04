@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "Se usi questo materiale, per favore citalo come segue."
+title: "Modellazione MIP: modelli di programmazione lineare intera per l'Ingegneria Gestionale"
+abstract: >-
+  Corso di modellazione con variabili intere e binarie: tecniche generali
+  (logica e variabili binarie, legami fra variabili, big-M, bound duali del
+  rilassamento lineare, euristiche costruttive) e sei famiglie di problemi
+  — assegnamento e scheduling, localizzazione e copertura, produzione e lotti,
+  selezione e zaino, partizione e bilanciamento, logistica — con esercizi
+  risolti, domande di modellazione aggiuntive, codice Python/Gurobi e notebook.
+authors:
+  - family-names: Furini
+    given-names: Fabio
+    email: fabio.furini@uniroma1.it
+    affiliation: "DIAG, Sapienza Università di Roma"
+url: "https://fabiofurini.github.io/modellazione-mip/"
+repository-code: "https://github.com/fabiofurini/modellazione-mip"
+license:
+  - CC-BY-4.0
+  - MIT
+date-released: 2026-09-04
+keywords:
+  - ricerca operativa
+  - programmazione lineare intera
+  - modellazione
+  - variabili binarie
+  - Gurobi
+  - Python
+  - materiale didattico

@@ -1,0 +1,107 @@
+site_name: Modellazione MIP · Fabio Furini
+site_description: >-
+  Modelli di programmazione lineare intera per l'Ingegneria Gestionale:
+  costruirli, dimostrarli, stringerli con bound e risolverli con Gurobi.
+site_author: Fabio Furini
+repo_url: https://github.com/fabiofurini/modellazione-mip
+copyright: >-
+  &copy; 2026 Fabio Furini — testi, figure e dati con licenza
+  <a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a>,
+  codice Python con licenza
+  <a href="https://github.com/fabiofurini/modellazione-mip/blob/main/LICENSE-CODE">MIT</a>
+
+theme:
+  name: material
+  language: it
+  icon:
+    logo: material/vector-polygon
+  font:
+    text: Source Sans 3
+    code: JetBrains Mono
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      toggle:
+        icon: material/weather-night
+        name: Tema scuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Tema chiaro
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - content.code.copy
+    - search.suggest
+
+plugins:
+  - search
+
+extra:
+  social:
+    - icon: material/web
+      link: https://sites.google.com/view/fabiofurini/home-page
+      name: Fabio Furini — sito personale
+    - icon: material/school
+      link: https://www.diag.uniroma1.it/
+      name: DIAG — Sapienza Università di Roma
+    - icon: fontawesome/brands/github
+      link: https://github.com/fabiofurini
+      name: GitHub
+    - icon: material/chart-timeline-variant
+      link: https://fabiofurini.github.io/laboratorio-ricerca-operativa/
+      name: Laboratorio di Ricerca Operativa — il primo corso della serie
+  alternate:
+    - name: Italiano
+      link: https://fabiofurini.github.io/modellazione-mip/
+      lang: it
+    - name: English
+      link: https://fabiofurini.github.io/mip-modelling/
+      lang: en
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+  - tables
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Home: index.md
+  - Modellazione:
+      - modellazione.md
+  - I problemi:
+      - problemi.md
+      - Assegnamento e scheduling:
+          - scheduling.md
+          - 7.1 Assegnamento a costo minimo: scheduling-1.md
+          - 7.2 Macchine con costo fisso: scheduling-2.md
+          - 7.3 Selezione di lavori: scheduling-3.md
+          - 7.4 Lavori in parallelo: scheduling-4.md
+          - 7.5 Classi con setup: scheduling-5.md
+          - 7.6 Classi con premio: scheduling-6.md
+          - 7.7 Ritardo totale: scheduling-7.md
+  - Il corso:
+      - organizzazione.md
+      - Notebook in Colab: notebook.md
