@@ -27,7 +27,10 @@ quattro quesiti:
 
 Il `lb ≤ z(MILP) ≤ ub` che ne risulta è il filo conduttore del corso: un
 modello non si limita a scriverlo, lo si stringe da entrambi i lati prima di
-affidarlo al solver.
+affidarlo al solver — ed è esattamente ciò a cui si ricorre quando un MILP
+reale non si riesce a risolvere all'ottimo provato in tempo utile: l'euristica
+e il bound duale sono il certificato di qualità che una run del solver
+interrotta a metà non può fornire da sola.
 
 ## Criteri di valutazione
 

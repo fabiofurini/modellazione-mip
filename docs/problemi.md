@@ -21,7 +21,10 @@ aggiuntive.
 
     ---
 
-    *In costruzione.*
+    Dove aprire sedi e hub: attivazione aggregata e disaggregata, un «se e
+    solo se» con due vincoli di link, variabile di massimo. Quattro problemi.
+
+    [:octicons-arrow-right-24: I quattro problemi](localizzazione.md)
 
 -   :material-factory: **Pianificazione della produzione e lotti**
 

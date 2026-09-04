@@ -102,6 +102,12 @@ nav:
           - 7.5 Classi con setup: scheduling-5.md
           - 7.6 Classi con premio: scheduling-6.md
           - 7.7 Ritardo totale: scheduling-7.md
+      - Localizzazione e copertura:
+          - localizzazione.md
+          - 8.1 Localizzazione capacitata: localizzazione-1.md
+          - 8.2 p-mediana: localizzazione-2.md
+          - 8.3 Copertura con interferenza: localizzazione-3.md
+          - 8.4 Hub con costo massimo: localizzazione-4.md
   - Il corso:
       - organizzazione.md
       - Notebook in Colab: notebook.md

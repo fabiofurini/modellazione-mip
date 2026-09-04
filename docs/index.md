@@ -12,9 +12,11 @@ Un modello con variabili binarie e intere non si *scrive* soltanto: si
 *dimostra*. Ogni vincolo che lega due famiglie di variabili impone
 un'implicazione logica, e lo studente deve saper provare che la impone davvero
 — in entrambi i versi, oppure spiegando perché un verso segue dall'ottimalità.
-Poi il modello si *stringe*: un'euristica costruttiva dà un upper bound, una
-soluzione duale del rilassamento lineare dà un lower bound, e il valore ottimo
-sta nel mezzo. Infine il modello si *risolve*, con Gurobi da Python.
+Poi il modello si *stringe*: un'euristica costruttiva fornisce un upper bound
+e una soluzione duale del rilassamento lineare fornisce un lower bound, che
+intrappolano il valore ottimo fra i due — la stessa tecnica usata in pratica
+quando un'istanza reale è troppo grande per essere risolta all'ottimo provato.
+Infine il modello si *risolve*, con Gurobi da Python.
 
 Tutti i modelli si possono eseguire **subito nel browser**: ogni capitolo ha il
 suo [notebook che si apre in Colab](notebook.md), senza installare niente.

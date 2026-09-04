@@ -22,6 +22,11 @@ SCRIPT = [
     "fam07_6_classipremio.py",
     "fam07_7_ritardo.py",
     "fam07_8_riepilogo.py",
+    "fam08_1_capacitata.py",
+    "fam08_2_pmediana.py",
+    "fam08_3_copertura.py",
+    "fam08_4_hub.py",
+    "fam08_5_riepilogo.py",
 ]
 
 base = Path(__file__).resolve().parent
