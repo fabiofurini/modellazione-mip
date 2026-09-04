@@ -103,7 +103,7 @@ docstring, sezioni e commenti — e chi preferisce la riga di comando continua a
 lanciare, dalla cartella `python/`:
 
 ```bash
-python3 fam07_scheduling.py
+python3 fam07_1_assegnamento.py
 ```
 """
 
@@ -132,7 +132,8 @@ def titolo_e_classe(slug: str) -> tuple[str, str]:
 def pagina_indice() -> str:
     """La pagina del sito che elenca i notebook, con un badge per capitolo."""
     righe = []
-    for percorso in sorted(list(DIR_SCRIPT.glob("cap*.py")) + list(DIR_SCRIPT.glob("fam*.py"))):
+    for percorso in sorted(p for p in list(DIR_SCRIPT.glob("cap*.py")) + list(DIR_SCRIPT.glob("fam*.py"))
+              if not p.stem.endswith("_riepilogo")):
         nome = percorso.stem
         slug = pagina_del_capitolo(nome)
         if not slug:
@@ -230,7 +231,8 @@ def main() -> int:
     else:
         indice.write_text(pagina_indice())
         print(f"  [pagina]   docs/{indice.name}")
-    for percorso in sorted(list(DIR_SCRIPT.glob("cap*.py")) + list(DIR_SCRIPT.glob("fam*.py"))):
+    for percorso in sorted(p for p in list(DIR_SCRIPT.glob("cap*.py")) + list(DIR_SCRIPT.glob("fam*.py"))
+              if not p.stem.endswith("_riepilogo")):
         atteso = json.dumps(notebook(percorso), ensure_ascii=False, indent=1) + "\n"
         uscita = DIR_NOTEBOOK / f"{percorso.stem}.ipynb"
         if verifica:

@@ -1,8 +1,8 @@
 # Una macchina, classi di lavori con setup
 
-**Classe:** BIP · **Legami:** attivazione disaggregata, CNF · **Script:** `python/fam07_scheduling.py`
+**Classe:** BIP · **Legami:** attivazione disaggregata, CNF · **Script:** `python/fam07_5_classisetup.py`
 
-[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb)
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_5_classisetup.ipynb)
 
 !!! abstract "Problema 7.5"
     Un'azienda ha $n$ lavori eseguibili su una macchina con disponibilità
@@ -155,5 +155,5 @@ L'euristica resta a $9$ (gap $57\%$): l'ordine di scansione conta.
 
 ## Codice
 
-Script completo: [`python/fam07_scheduling.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_scheduling.py);
-notebook: [`notebooks/fam07_scheduling.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb).
+Script completo: [`python/fam07_5_classisetup.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_5_classisetup.py);
+notebook: [`notebooks/fam07_5_classisetup.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_5_classisetup.ipynb).

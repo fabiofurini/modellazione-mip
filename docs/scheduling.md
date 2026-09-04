@@ -1,8 +1,8 @@
 # Assegnamento e scheduling
 
-**Classe:** BIP / MILP · **Script:** `python/fam07_scheduling.py`
-
-[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb)
+**Classe:** BIP / MILP · **Script:** uno script e un notebook per problema
+(`python/fam07_1_assegnamento.py` … `fam07_7_ritardo.py`), più
+`fam07_8_riepilogo.py` che raccoglie i bound di tutti e sette.
 
 Sette problemi con lo stesso scheletro: dei **lavori** vanno assegnati a delle
 **macchine** con disponibilità limitata. Cambia, di problema in problema, che

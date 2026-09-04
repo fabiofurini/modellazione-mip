@@ -1,8 +1,8 @@
 # Ritardo totale su una macchina: sequenziamento con big-M
 
-**Classe:** MILP · **Legami:** big-M e disgiunzioni, variabile di massimo · **Script:** `python/fam07_scheduling.py`
+**Classe:** MILP · **Legami:** big-M e disgiunzioni, variabile di massimo · **Script:** `python/fam07_7_ritardo.py`
 
-[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb)
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_7_ritardo.ipynb)
 
 !!! abstract "Problema 7.7"
     Un'azienda deve eseguire $n$ lavori su una sola macchina. Per ogni lavoro
@@ -155,5 +155,5 @@ $\tilde\tau = (6, 0, 5)$.
 
 ## Codice
 
-Script completo: [`python/fam07_scheduling.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_scheduling.py);
-notebook: [`notebooks/fam07_scheduling.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb).
+Script completo: [`python/fam07_7_ritardo.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_7_ritardo.py);
+notebook: [`notebooks/fam07_7_ritardo.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_7_ritardo.ipynb).

@@ -14,7 +14,14 @@ from pathlib import Path
 SCRIPT = [
     # Parte I — modellazione
     # Parte II — i problemi
-    "fam07_scheduling.py",
+    "fam07_1_assegnamento.py",
+    "fam07_2_costofisso.py",
+    "fam07_3_selezione.py",
+    "fam07_4_parallelo.py",
+    "fam07_5_classisetup.py",
+    "fam07_6_classipremio.py",
+    "fam07_7_ritardo.py",
+    "fam07_8_riepilogo.py",
 ]
 
 base = Path(__file__).resolve().parent

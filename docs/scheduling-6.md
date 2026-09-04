@@ -1,8 +1,8 @@
 # Classi con premio di completamento e riduzione «se e solo se»
 
-**Classe:** BIP · **Legami:** se e solo se (due), CNF · **Script:** `python/fam07_scheduling.py`
+**Classe:** BIP · **Legami:** se e solo se (due), CNF · **Script:** `python/fam07_6_classipremio.py`
 
-[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb)
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_6_classipremio.ipynb)
 
 !!! abstract "Problema 7.6"
     Un'azienda ha $n$ lavori eseguibili su una macchina con disponibilità $a$.
@@ -155,5 +155,5 @@ ricavo $10 + 22 + 10$. Gap dell'euristica $24\%$.
 
 ## Codice
 
-Script completo: [`python/fam07_scheduling.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_scheduling.py);
-notebook: [`notebooks/fam07_scheduling.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb).
+Script completo: [`python/fam07_6_classipremio.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_6_classipremio.py);
+notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_6_classipremio.ipynb).

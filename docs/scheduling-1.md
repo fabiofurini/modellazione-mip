@@ -1,8 +1,8 @@
 # Assegnamento a costo minimo con disponibilità
 
-**Classe:** BIP · **Legami:** nessuno (una sola famiglia di variabili) · **Script:** `python/fam07_scheduling.py`
+**Classe:** BIP · **Legami:** nessuno (una sola famiglia di variabili) · **Script:** `python/fam07_1_assegnamento.py`
 
-[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb)
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_1_assegnamento.ipynb)
 
 !!! abstract "Problema 7.1"
     Un'azienda deve eseguire $n \in \mathbb{Z}_{\ge 1}$ lavori su $k \in \mathbb{Z}_{\ge 1}$
@@ -248,8 +248,8 @@ chiude il gap).
 
 Lo script completo della famiglia — dati, sette modelli, euristiche, duali,
 soluzioni e figure — è
-[`python/fam07_scheduling.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_scheduling.py)
-(riproducibile con `python3 python/fam07_scheduling.py` dalla cartella `python/`).
+[`python/fam07_1_assegnamento.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_1_assegnamento.py)
+(riproducibile con `python3 python/fam07_1_assegnamento.py` dalla cartella `python/`).
 Lo stesso codice è disponibile come notebook —
-[`notebooks/fam07_scheduling.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb)
+[`notebooks/fam07_1_assegnamento.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_1_assegnamento.ipynb)
 — che si apre in Colab dal badge in cima alla pagina.

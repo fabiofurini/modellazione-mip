@@ -13,7 +13,13 @@ cella, con le figure che compaiono sotto le celle invece di finire in un file.
 
 | Capitolo | Classe | Notebook |
 |---|---|---|
-| [Assegnamento a costo minimo con disponibilità](scheduling-1.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb) |
+| [Assegnamento a costo minimo con disponibilità](scheduling-1.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_1_assegnamento.ipynb) |
+| [Macchine con costo fisso di utilizzo](scheduling-2.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_2_costofisso.ipynb) |
+| [Selezione di lavori con ricavo e macchine a costo fisso](scheduling-3.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_3_selezione.ipynb) |
+| [Lavori in parallelo: il tempo di lavorazione come massimo](scheduling-4.md) | MILP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_4_parallelo.ipynb) |
+| [Una macchina, classi di lavori con setup](scheduling-5.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_5_classisetup.ipynb) |
+| [Classi con premio di completamento e riduzione «se e solo se»](scheduling-6.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_6_classipremio.ipynb) |
+| [Ritardo totale su una macchina: sequenziamento con big-M](scheduling-7.md) | MILP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_7_ritardo.ipynb) |
 
 ## Come sono fatti
 
@@ -28,5 +34,5 @@ docstring, sezioni e commenti — e chi preferisce la riga di comando continua a
 lanciare, dalla cartella `python/`:
 
 ```bash
-python3 fam07_scheduling.py
+python3 fam07_1_assegnamento.py
 ```

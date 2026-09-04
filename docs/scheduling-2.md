@@ -1,8 +1,8 @@
 # Macchine con costo fisso di utilizzo
 
-**Classe:** BIP · **Legami:** attivazione (aggregata) · **Script:** `python/fam07_scheduling.py`
+**Classe:** BIP · **Legami:** attivazione (aggregata) · **Script:** `python/fam07_2_costofisso.py`
 
-[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb)
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_2_costofisso.ipynb)
 
 !!! abstract "Problema 7.2"
     Un'azienda deve eseguire $n \in \mathbb{Z}_{\ge 1}$ lavori e dispone di
@@ -218,5 +218,5 @@ accese, $\tilde x_{12} = \tilde x_{23} = \tilde x_{33} = 1$.
 
 ## Codice
 
-Script completo: [`python/fam07_scheduling.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_scheduling.py);
-notebook: [`notebooks/fam07_scheduling.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb).
+Script completo: [`python/fam07_2_costofisso.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_2_costofisso.py);
+notebook: [`notebooks/fam07_2_costofisso.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_2_costofisso.ipynb).

@@ -121,3 +121,26 @@ def stampa_lp(m: gp.Model) -> None:
         percorso = os.path.join(d, "modello.lp")
         m.write(percorso)
         print(open(percorso).read())
+
+
+def due_rilassamenti(m, d):
+    """z(LP) puro (= ottimo del duale scritto a mano) e z(LP+) rafforzato del solver.
+
+    `m` è il modello primale, `d` il suo duale (scritto a mano, come modello
+    Gurobi a sé): la funzione controlla che i due ottimi coincidano (dualità
+    forte) e stampa entrambi i rilassamenti.
+    """
+    zlp, _, pi = rilassamento(m, rafforzato=False)
+    zlp_r, _, _ = rilassamento(m, rafforzato=True)
+    zd = risolvi(d)
+    assert abs(zlp - zd) <= 1e-6, (zlp, zd)
+    print(f"Ottimo del duale = z(LP) (dualità forte): {frazione(zd)};  rilassamento rafforzato "
+          f"con x <= 1: z(LP+) = {frazione(zlp_r)}")
+    return zlp, zlp_r, pi
+
+
+def registra_bound(nome, ub, lb, zlp, zlp_r, zmilp, senso="min"):
+    """Stampa la riga dei bound e restituisce il record da salvare in CSV."""
+    print(tabella_bound(ub, lb, zlp, zmilp, senso, zlp_r))
+    return {"problema": nome, "ub": ub, "lb": lb, "z_lp": zlp, "z_lp_rafforzato": zlp_r,
+            "z_milp": zmilp}

@@ -1,8 +1,8 @@
 # Selezione di lavori con ricavo e macchine a costo fisso
 
-**Classe:** BIP · **Legami:** attivazione (aggregata), problema di massimo · **Script:** `python/fam07_scheduling.py`
+**Classe:** BIP · **Legami:** attivazione (aggregata), problema di massimo · **Script:** `python/fam07_3_selezione.py`
 
-[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb)
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_3_selezione.ipynb)
 
 !!! abstract "Problema 7.3"
     Un'azienda può eseguire $n \in \mathbb{Z}_{\ge 1}$ lavori e dispone di
@@ -169,5 +169,5 @@ dell'euristica: $20\%$.
 
 ## Codice
 
-Script completo: [`python/fam07_scheduling.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_scheduling.py);
-notebook: [`notebooks/fam07_scheduling.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb).
+Script completo: [`python/fam07_3_selezione.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_3_selezione.py);
+notebook: [`notebooks/fam07_3_selezione.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_3_selezione.ipynb).

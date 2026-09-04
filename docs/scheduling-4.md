@@ -1,8 +1,8 @@
 # Lavori in parallelo: il tempo di lavorazione come massimo
 
-**Classe:** MILP · **Legami:** variabile di massimo · **Script:** `python/fam07_scheduling.py`
+**Classe:** MILP · **Legami:** variabile di massimo · **Script:** `python/fam07_4_parallelo.py`
 
-[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb)
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_4_parallelo.ipynb)
 
 !!! abstract "Problema 7.4"
     Un'azienda deve eseguire $n$ lavori con $k$ macchine. Per ogni lavoro $j$ e
@@ -160,5 +160,5 @@ viene in mente, non la migliore.
 
 ## Codice
 
-Script completo: [`python/fam07_scheduling.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_scheduling.py);
-notebook: [`notebooks/fam07_scheduling.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_scheduling.ipynb).
+Script completo: [`python/fam07_4_parallelo.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_4_parallelo.py);
+notebook: [`notebooks/fam07_4_parallelo.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_4_parallelo.ipynb).
