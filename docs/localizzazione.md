@@ -1,8 +1,7 @@
 # Localizzazione e copertura
 
 **Classe:** BIP / MILP · **Script:** uno script e un notebook per problema
-(`python/fam08_1_capacitata.py` … `fam08_4_hub.py`), più
-`fam08_5_riepilogo.py` che raccoglie i bound di tutti e quattro.
+(`python/fam08_1_capacitata.py` … `fam08_4_hub.py`).
 
 Quattro problemi in cui si decide **dove** aprire una struttura — una sede,
 un hub — e come questo vincola le variabili che dipendono da quella
@@ -80,20 +79,11 @@ che ne dipendono e il modo in cui il budget sulle aperture entra nel modello.
 
 </div>
 
-## Il quadro dei bound
+## Modelli numerici della famiglia
 
-| Problema | euristica | duale a mano | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ |
-|---|---:|---:|---:|---:|---:|
-| 8.1 localizzazione capacitata | 439 | $1581/5$ | $1581/5$ | 317 | 365 |
-| 8.2 p-mediana | 18 | 13 | 15 | 15 | 15 |
-| 8.3 copertura con interferenza (max) | 25 | $225/2$ | $41925/646$ | $125/2$ | 45 |
-| 8.4 hub con costo massimo | 20 | $15/2$ | $25/2$ | $1015/78$ | 19 |
+Due modelli brevi con dati espliciti sulle tecniche di copertura e attivazione.
 
-$z(\mathrm{LP})$ è il rilassamento «puro», in cui le variabili binarie
-diventano $\ge 0$: è quello di cui negli esercizi si scrive il duale, e il
-suo ottimo coincide con l'ottimo del duale (dualità forte). $z(\mathrm{LP}^+)$
-è il rilassamento rafforzato con $x \le 1$, quello che il solver risolve
-alla radice. Nel problema 8.1 la soluzione duale costruita a mano è *ottima*
-per il rilassamento puro; nel problema 8.2 il rilassamento è già intero.
-
-![Il sandwich dei bound sui quattro problemi](img/cap08_bound.png)
+| Modello | Che cosa mette in gioco | $z(\mathrm{MILP})$ |
+|---|---|---:|
+| [EX 6 — Hub-and-spoke](ex-06.md) | set covering puro; il duale a mano chiude il problema | 3 |
+| [EX 10 — Utensili CNC](ex-10.md) | attivazione disaggregata al rovescio; una ricetta duale non ammissibile, corretta | 2500 |

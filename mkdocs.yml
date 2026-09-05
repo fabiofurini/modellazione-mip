@@ -91,6 +91,27 @@ nav:
   - Home: index.md
   - Modellazione:
       - modellazione.md
+      - 1. Che cos'è un modello MIP: modellazione-1.md
+      - 2. Logica e variabili binarie: modellazione-2.md
+      - 3. Legami fra variabili:
+          - legami.md
+          - 3.1 Attivazione: legami-01.md
+          - 3.2 Costo fisso: legami-02.md
+          - 3.3 Lotto minimo: legami-03.md
+          - 3.4 Conteggi interi: legami-04.md
+          - 3.5 Variabile di massimo: legami-05.md
+          - 3.6 Min-max e max-min: legami-06.md
+          - 3.7 Valore assoluto: legami-07.md
+          - 3.8 Big-M: legami-08.md
+          - 3.9 Precedenze: legami-09.md
+          - 3.10 Se e solo se: legami-10.md
+          - 3.11 Contare i tipi: legami-11.md
+          - 3.12 Alldiff ed espansione: legami-12.md
+          - 3.13 Vincoli violabili: legami-13.md
+          - 3.14 Funzioni a tratti: legami-14.md
+      - 4. Rilassamenti, dualità e bound: modellazione-4.md
+      - 5. Euristiche costruttive: modellazione-5.md
+      - 6. Dal modello a Python/Gurobi: modellazione-6.md
   - I problemi:
       - problemi.md
       - Assegnamento e scheduling:
@@ -102,12 +123,34 @@ nav:
           - 7.5 Classi con setup: scheduling-5.md
           - 7.6 Classi con premio: scheduling-6.md
           - 7.7 Ritardo totale: scheduling-7.md
+          - EX 2 Linee di autobus: ex-02.md
+          - EX 3 Staffetta: ex-03.md
+          - EX 8 Seminari: ex-08.md
+          - EX 11 Bilanciamento: ex-11.md
       - Localizzazione e copertura:
           - localizzazione.md
           - 8.1 Localizzazione capacitata: localizzazione-1.md
           - 8.2 p-mediana: localizzazione-2.md
           - 8.3 Copertura con interferenza: localizzazione-3.md
           - 8.4 Hub con costo massimo: localizzazione-4.md
+          - EX 6 Hub-and-spoke: ex-06.md
+          - EX 10 Utensili CNC: ex-10.md
+      - Pianificazione della produzione:
+          - produzione.md
+          - 9.1 Lotti con costo fisso: produzione-1.md
+          - 9.2 Produzione e manodopera: produzione-2.md
+          - 9.3 Veicoli con lotto minimo: produzione-3.md
+      - Modelli misti:
+          - misti.md
+          - 10.1 Premi con due modalità: misti-1.md
+          - 10.2 Asta combinatoria: misti-2.md
+          - 10.3 Dieta con lotto minimo: misti-3.md
+          - 10.4 Alberi e scatole di luci: misti-4.md
+          - 10.5 Spedizioni in scatole: misti-5.md
+          - 10.6 Bambini fra campi estivi: misti-6.md
+          - 10.7 Filiali fra due società: misti-7.md
+          - 10.8 Brani fra CD: misti-8.md
+          - 10.9 Libri fra scaffali: misti-9.md
   - Il corso:
       - organizzazione.md
       - Notebook in Colab: notebook.md

@@ -10,7 +10,8 @@ import pandas as pd
 from gurobipy import GRB
 
 from euristiche import matrice, next_fit
-from mip import due_rilassamenti, frazione, nuovo_modello, registra_bound, risolvi, stampa_soluzione, valuta
+from mip import (due_rilassamenti, frazione, nuovo_modello, registra_bound,
+                 rilassamento, risolvi, stampa_soluzione, valuta)
 from stile import intestazione, plt, salva_dati, salva_figura
 
 R = range
@@ -107,10 +108,36 @@ def variante(nome, mod):
     return z
 
 
-# 4a: disaggregato x_ij <= y_j al posto del link aggregato
+# 4a: si AGGIUNGONO i link disaggregati x_ij <= y_j al vincolo aggregato
 mod, x, y, z = modello_4(c4, f4, k4)
 mod.addConstrs((x[i, j] <= y[j] for i in R(n) for j in R(m)), name="attivazione_disaggregata")
-varianti["4a"] = variante("4a. Link di attivazione disaggregato aggiunto (x_ij <= y_j)", mod)
+varianti["4a"] = variante("4a. Link disaggregati AGGIUNTI a quello aggregato (x_ij <= y_j)", mod)
+zlp_4a, _, _ = rilassamento(mod, rafforzato=True)
+zlp_base, _, _ = rilassamento(modello_4(c4, f4, k4)[0], rafforzato=True)
+print(f"      rilassamento: z(LP+) passa da {frazione(zlp_base)} a {frazione(zlp_4a)}: i link")
+print("      disaggregati sono disuguaglianze valide implicate dal vincolo aggregato sui")
+print("      punti interi, ma non dal rilassamento, e lo rafforzano.")
+
+# 4a-bis: il tranello. Se si SOSTITUISCE il vincolo aggregato con i soli link
+# disaggregati, si perde anche la capacita' k: il modello non e' piu' quello del
+# problema. Va tenuta esplicitamente, oppure si parla di aggiunta e non di sostituzione.
+mod, x, y, z = modello_4(c4, f4, k4)
+mod.update()
+mod.remove([cc for cc in mod.getConstrs() if cc.ConstrName.startswith("attivazione")])
+mod.update()
+mod.addConstrs((x[i, j] <= y[j] for i in R(n) for j in R(m)), name="solo_disaggregato")
+varianti["4a_senza_capacita"] = variante(
+    "4a'. SOSTITUENDO l'aggregato con i soli link disaggregati (capacita' persa)", mod)
+mod, x, y, z = modello_4(c4, f4, k4)
+mod.update()
+mod.remove([cc for cc in mod.getConstrs() if cc.ConstrName.startswith("attivazione")])
+mod.update()
+mod.addConstrs((x[i, j] <= y[j] for i in R(n) for j in R(m)), name="solo_disaggregato")
+mod.addConstrs((gp.quicksum(x[i, j] for i in R(n)) <= k4 for j in R(m)), name="capacita")
+varianti["4a_con_capacita"] = variante(
+    "4a''. Sostituzione corretta: link disaggregati + capacita' separata", mod)
+assert varianti["4a_senza_capacita"] < varianti["4a"], "senza capacita' l'ottimo scende"
+assert varianti["4a_con_capacita"] == varianti["4a"], "con la capacita' l'ottimo non cambia"
 # 4b: il terminale 1 non può essere connesso all'hub 2
 mod, x, y, z = modello_4(c4, f4, k4)
 mod.addConstr(x[0, 1] == 0, name="terminale1_non_hub2")

@@ -1,8 +1,7 @@
 # Assegnamento e scheduling
 
 **Classe:** BIP / MILP · **Script:** uno script e un notebook per problema
-(`python/fam07_1_assegnamento.py` … `fam07_7_ritardo.py`), più
-`fam07_8_riepilogo.py` che raccoglie i bound di tutti e sette.
+(`python/fam07_1_assegnamento.py` … `fam07_7_ritardo.py`).
 
 Sette problemi con lo stesso scheletro: dei **lavori** vanno assegnati a delle
 **macchine** con disponibilità limitata. Cambia, di problema in problema, che
@@ -110,24 +109,16 @@ ritardo rispetto alle scadenze quando i lavori si susseguono su una sola macchin
 
 </div>
 
-## Il quadro dei bound
+## Modelli numerici della famiglia
 
-| Problema | euristica | duale a mano | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ |
-|---|---:|---:|---:|---:|---:|
-| 7.1 assegnamento a costo minimo | 11 | 10 | $53/5$ | $53/5$ | 11 |
-| 7.2 macchine con costo fisso | 12 | $25/4$ | $25/4$ | $1273/200$ | 12 |
-| 7.3 selezione di lavori (max) | 20 | 34 | 34 | $680/21$ | 25 |
-| 7.4 lavori in parallelo | 19 | 5 | $520/49$ | $520/49$ | 15 |
-| 7.5 classi con setup (max) | 9 | 100 | $425/13$ | $329/13$ | 21 |
-| 7.6 classi con premio (max) | 32 | 150 | $5280/113$ | $5280/113$ | 42 |
-| 7.7 ritardo totale | 12 | 2 | 2 | 2 | 11 |
+Quattro modelli brevi con dati espliciti, che riusano le tecniche di questa
+famiglia. Il formato è ridotto — niente varianti né domande aggiuntive — ma
+conserva modello, soluzione ammissibile, duale con soluzione costruita a mano e
+tabella dei bound.
 
-$z(\mathrm{LP})$ è il rilassamento «puro», in cui $x \in \{0,1\}$ diventa
-$x \ge 0$: è quello di cui negli esercizi si scrive il duale, e il suo ottimo
-coincide con l'ottimo del duale (dualità forte). $z(\mathrm{LP}^+)$ è il
-rilassamento rafforzato con $x \le 1$, quello che il solver risolve alla radice.
-Nei problemi 7.2 e 7.3 la soluzione duale costruita a mano è *ottima* per il
-rilassamento puro; nei problemi 7.1 e 7.2 l'euristica trova l'ottimo, ma lo si
-sa solo dopo aver risolto il MILP.
-
-![Il sandwich dei bound sui sette problemi](img/cap07_bound.png)
+| Modello | Che cosa mette in gioco | $z(\mathrm{MILP})$ |
+|---|---|---:|
+| [EX 2 — Linee di autobus](ex-02.md) | assegnamento con capacità in numero di lavori | 9 |
+| [EX 3 — Staffetta](ex-03.md) | assegnamento con più risorse che compiti; matrice totalmente unimodulare | 95 |
+| [EX 8 — Seminari](ex-08.md) | cardinalità esatta, non-adiacenza, duale con variabile libera | 18 |
+| [EX 11 — Bilanciamento](ex-11.md) | min-max contro differenza: stesse soluzioni, valori diversi | 9 |

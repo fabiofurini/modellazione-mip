@@ -1,0 +1,2 @@
+problema,ub,lb,z_lp,z_lp_rafforzato,z_milp
+EX 1 furgone,160.0,110,160.0,140.0,120.0

@@ -97,7 +97,7 @@ $m = 2$ sedi, $n = 3$ clienti:
 |---|---:|---:|---:|
 | $d_c$ | 8 | 25 | 27 |
 
-## Euristica costruttiva: upper bound
+## Euristica costruttiva: il bound primale
 
 Si scandiscono le sedi in ordine; per ciascuna, i clienti, spedendo il
 minimo fra capacità residua e domanda residua.
@@ -105,9 +105,9 @@ minimo fra capacità residua e domanda residua.
 Esecuzione: la sede 1 spedisce $8$ al cliente 1, $25$ al cliente 2, $17$ al
 cliente 3 (capacità esaurita); la sede 2 spedisce i restanti $10$ al
 cliente 3. Valore: $60+90 + (4{\cdot}8+5{\cdot}25+6{\cdot}17+3{\cdot}10) =
-150+289 = 439$. Quindi $z(\mathrm{MILP}) \le \mathrm{ub} = 439$.
+150+289 = 439$. Quindi $z(\mathrm{MILP}) \le \mathit{UB} = 439$.
 
-## Rilassamento LP e duale: lower bound
+## Rilassamento LP e duale: il bound duale
 
 Con $\bar\mu_l = i_l/u_l$ (spalma il costo fisso sulla capacità) e
 $\bar\pi_c = \min_l(t_{lc}+\bar\mu_l)$:
@@ -118,8 +118,8 @@ $$
 $$
 
 di valore $8{\cdot}26/5 + 25{\cdot}29/5 + 27{\cdot}24/5 = 1581/5$. Per la
-dualità debole, $\mathrm{lb} = 1581/5 \le z(\mathrm{LP}) \le z(\mathrm{MILP})
-\le \mathrm{ub} = 439$.
+dualità debole, $\mathit{LB} = 1581/5 \le z(\mathrm{LP}) \le z(\mathrm{MILP})
+\le \mathit{UB} = 439$.
 
 **Quello che dice il solver.** $z(\mathrm{LP}) = 1581/5$ esattamente: la
 soluzione duale a mano è già ottima. Rafforzando con $x_l \le 1$,
@@ -127,7 +127,7 @@ $z(\mathrm{LP}^+) = 317$. $z(\mathrm{MILP}) = 365$, con entrambe le sedi
 aperte: la sede 1 serve il cliente 1 e parte del cliente 2, la sede 2 il
 resto del cliente 2 e tutto il cliente 3. Gap euristica $20{,}3\%$.
 
-| $\mathrm{ub}$ | $\mathrm{lb}$ (duale) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | gap |
+| $UB$ | $LB$ (duale) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | gap |
 |---:|---:|---:|---:|---:|---:|
 | 439 | $1581/5$ | $1581/5$ | 317 | 365 | $20{,}3\%$ |
 
@@ -145,18 +145,14 @@ resto del cliente 2 e tutto il cliente 3. Gap euristica $20{,}3\%$.
     Ogni sede aperta deve spedire almeno $5$ litri. Come cambia il modello?
     Qual è il nuovo ottimo?
 
-    ??? success "Soluzione"
-        $\sum_c y_{lc} \ge 5\, x_l$ per ogni $l$ ($m$ vincoli). Sull'istanza
-        non è mai stretto: l'ottimo resta $365$.
-
+    !!! tip "Soluzione"
+        La soluzione è nel documento delle soluzioni, riservato ai docenti.
 ??? question "8.1.2 — Apertura condizionata"
     La sede 2 può essere installata solo se lo è anche la sede 1. Come si
     modella? Qual è il nuovo ottimo?
 
-    ??? success "Soluzione"
-        $x_2 \le x_1$ (un vincolo). L'ottimo apre già entrambe le sedi:
-        resta $365$.
-
+    !!! tip "Soluzione"
+        La soluzione è nel documento delle soluzioni, riservato ai docenti.
 ## Codice
 
 Script completo —
@@ -165,3 +161,172 @@ Script completo —
 `python/`). Notebook —
 [`notebooks/fam08_1_capacitata.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam08_1_capacitata.ipynb)
 — che si apre in Colab dal badge in cima alla pagina.
+
+<!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
+
+??? example "Mostra lo script completo — `python/fam08_1_capacitata.py` (160 righe)"
+
+    ```python
+    """Problema 8.1 -- Localizzazione capacitata (costo minimo).
+
+    Attivazione aggregata fra la variabile binaria x_l (apri la sede l) e le
+    variabili continue di flusso y_lc: il legame si dimostra nei due versi
+    esattamente come nel problema 7.2, ma qui il vincolo di link è anche un
+    vincolo di capacità (una sola famiglia di vincoli fa entrambe le cose).
+    """
+    import gurobipy as gp
+    import pandas as pd
+    from gurobipy import GRB
+
+    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
+                     registra_bound, risolvi, stampa_soluzione, valuta)
+    from stile import CICLO, intestazione, plt, salva_dati, salva_figura
+
+    R = range
+
+    # ---------- 1. MODELLO E ISTANZA ----------
+
+    intestazione("1. Localizzazione capacitata: dove aprire, quanto spedire")
+    t1 = [[4, 5, 6], [6, 4, 3]]      # costo di trasporto sede l -> cliente c
+    u1 = [50, 50]                    # capacita' delle sedi
+    i1 = [60, 90]                    # costo di apertura
+    d1 = [8, 25, 27]                 # domanda dei clienti
+    m, n = 2, 3
+    salva_dati(pd.DataFrame([{"sede": l + 1, "cliente": c + 1, "t": t1[l][c]}
+                             for l in R(m) for c in R(n)]), "loc1_costi")
+    salva_dati(pd.DataFrame({"sede": R(1, m + 1), "u": u1, "i": i1}), "loc1_sedi")
+    salva_dati(pd.DataFrame({"cliente": R(1, n + 1), "d": d1}), "loc1_clienti")
+
+
+    def modello_1(t, u, i, d):
+        m, n = len(u), len(d)
+        mod = nuovo_modello("localizzazione_capacitata")
+        x = mod.addVars(m, vtype=GRB.BINARY, name="x")
+        y = mod.addVars(m, n, name="y")
+        mod.setObjective(gp.quicksum(i[l] * x[l] for l in R(m))
+                          + gp.quicksum(t[l][c] * y[l, c] for l in R(m) for c in R(n)), GRB.MINIMIZE)
+        mod.addConstrs((u[l] * x[l] - gp.quicksum(y[l, c] for c in R(n)) >= 0 for l in R(m)),
+                       name="capacita")
+        mod.addConstrs((gp.quicksum(y[l, c] for l in R(m)) == d[c] for c in R(n)), name="domanda")
+        return mod, x, y
+
+
+    def duale_1(t, u, i, d):
+        """min sum d_c pi_c;  u_l mu_l <= i_l;  -mu_l + pi_c <= t_lc;  mu >= 0, pi libere."""
+        m, n = len(u), len(d)
+        dl = nuovo_modello("duale_localizzazione")
+        mu = dl.addVars(m, name="mu")
+        pi = dl.addVars(n, lb=-GRB.INFINITY, name="pi")
+        dl.setObjective(gp.quicksum(d[c] * pi[c] for c in R(n)), GRB.MAXIMIZE)
+        dl.addConstrs((u[l] * mu[l] <= i[l] for l in R(m)), name="rc_x")
+        dl.addConstrs((-mu[l] + pi[c] <= t[l][c] for l in R(m) for c in R(n)), name="rc_y")
+        return dl
+
+
+    m1, x1, y1 = modello_1(t1, u1, i1, d1)
+
+    # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+
+    print("Euristica: si scandiscono le sedi in ordine, riempendo la domanda residua dei clienti")
+    print("con la capacita' residua di ciascuna sede, senza superare né l'una né l'altra.")
+
+
+    def euristica_1(t, u, i, d):
+        m, n = len(u), len(d)
+        y, x, rc, rd, passi = {}, [0] * m, list(u), list(d), []
+        for l in R(m):
+            for c in R(n):
+                if rd[c] > 0 and rc[l] > 0:
+                    q = min(rd[c], rc[l])
+                    y[(l, c)] = q
+                    rd[c] -= q
+                    rc[l] -= q
+                    passi.append(f"Sede {l + 1}, cliente {c + 1}: si spedisce min(rd={rd[c] + q}, rc={rc[l] + q}) = {q}; "
+                                 f"rd[{c + 1}] = {rd[c]}, rc[{l + 1}] = {rc[l]}.")
+            if rc[l] < u[l]:
+                x[l] = 1
+                passi.append(f"La sede {l + 1} ha spedito qualcosa (rc = {rc[l]} < u = {u[l]}): si apre, x[{l + 1}] = 1.")
+        ok = all(v == 0 for v in rd)
+        return x, y, passi, ok
+
+
+    xe, ye, passi, ok = euristica_1(t1, u1, i1, d1)
+    for i, s in enumerate(passi, 1):
+        print(f"  Passo {i}. {s}")
+    assert ok, "euristica non ammissibile: domanda non soddisfatta"
+    ub1 = sum(i1[l] * xe[l] for l in R(m)) + sum(t1[l][c] * ye.get((l, c), 0) for l in R(m) for c in R(n))
+    sol_eur = {f"x[{l}]": xe[l] for l in R(m)}
+    sol_eur.update({f"y[{l},{c}]": v for (l, c), v in ye.items()})
+    assert ammissibile(m1, sol_eur)
+    print(f"  ub = {ub1}")
+
+    # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
+
+    d1_ = duale_1(t1, u1, i1, d1)
+    mano = {f"mu[{l}]": i1[l] / u1[l] for l in R(m)}
+    mano.update({f"pi[{c}]": min(t1[l][c] + mano[f"mu[{l}]"] for l in R(m)) for c in R(n)})
+    lb1, viol = valuta(d1_, mano)
+    assert viol <= 1e-9, viol
+    print("Soluzione duale a mano: mu_l = i_l/u_l = " + ", ".join(frazione(i1[l] / u1[l]) for l in R(m))
+          + ";  pi_c = min_l (t_lc + mu_l) = " + ", ".join(frazione(mano[f"pi[{c}]"]) for c in R(n))
+          + f"  ->  lb = {frazione(lb1)}")
+    zlp1, zlp1r, _ = due_rilassamenti(m1, d1_)
+
+    # ---------- 4. SOLUZIONE OTTIMA DEL MILP ----------
+
+    z1 = risolvi(m1)
+    print("Soluzione ottima del MILP:")
+    stampa_soluzione(m1, solo_non_nulle=True)
+    riga = registra_bound("1 localizzazione capacitata", ub1, lb1, zlp1, zlp1r, z1)
+    salva_dati(pd.DataFrame([riga]), "loc1_bound")
+
+    # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+
+    varianti = {}
+
+
+    def variante(nome, mod):
+        z = risolvi(mod)
+        print(f"  {nome:70s} z = {frazione(z)}")
+        return z
+
+
+    # 1a: ogni sede aperta deve spedire almeno 5 litri (lotto minimo / semicontinua)
+    mod, x, y = modello_1(t1, u1, i1, d1)
+    mod.addConstrs((gp.quicksum(y[l, c] for c in R(n)) >= 5 * x[l] for l in R(m)), name="lotto_minimo")
+    varianti["1a"] = variante("1a. Ogni sede aperta spedisce almeno 5 litri (sum_c y_lc >= 5 x_l)", mod)
+    # 1b: la sede 2 si apre solo se si apre la sede 1
+    mod, x, y = modello_1(t1, u1, i1, d1)
+    mod.addConstr(x[1] <= x[0], name="2_solo_se_1")
+    varianti["1b"] = variante("1b. La sede 2 si apre solo se si apre la sede 1 (x_2 <= x_1)", mod)
+    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "loc1_varianti")
+
+    # ---------- 6. FIGURE ----------
+
+
+    def barre_flusso(y, m, n, titolo, nome):
+        """Per ogni sede, barra impilata dei litri spediti a ciascun cliente."""
+        fig, ax = plt.subplots(figsize=(7.2, 3.0))
+        for l in R(m):
+            inizio = 0
+            for c in R(n):
+                q = y.get((l, c), 0)
+                if q > 0:
+                    ax.barh(l, q, left=inizio, color=CICLO[c % len(CICLO)], edgecolor="white")
+                    ax.text(inizio + q / 2, l, f"c{c + 1}", ha="center", va="center", color="white",
+                            fontsize=9, fontweight="bold")
+                    inizio += q
+        ax.set_yticks(R(m))
+        ax.set_yticklabels([f"sede {l + 1}" for l in R(m)])
+        ax.set_xlabel("litri spediti")
+        ax.set_title(titolo)
+        ax.invert_yaxis()
+        salva_figura(fig, nome)
+
+
+    ott_y = {(l, c): y1[l, c].X for l in R(m) for c in R(n) if y1[l, c].X > 1e-6}
+    barre_flusso(ott_y, m, n, f"Localizzazione capacitata: soluzione ottima (z = {frazione(z1)})", "cap08_capacitata_ottimo")
+    print("Fine.")
+    ```
+
+<!-- script-incorporato: fine -->

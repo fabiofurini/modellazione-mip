@@ -45,11 +45,12 @@ suo [notebook che si apre in Colab](notebook.md), senza installare niente.
 
     ---
 
-    Sei famiglie: assegnamento e scheduling, localizzazione e copertura,
-    produzione e lotti, selezione e zaino, partizione e bilanciamento,
-    logistica. Esercizi risolti e domande aggiuntive.
+    Tre famiglie — assegnamento e scheduling, localizzazione e copertura,
+    pianificazione della produzione — più un capitolo di modelli misti, per i
+    problemi che una famiglia non ce l'hanno. Esercizi risolti e domande
+    aggiuntive.
 
-    [:octicons-arrow-right-24: Le sei famiglie](modellazione.md)
+    [:octicons-arrow-right-24: I problemi](problemi.md)
 
 -   :material-school: **Il corso**
 

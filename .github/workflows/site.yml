@@ -14,8 +14,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      # controllo numerico riproducibile: la licenza inclusa in gurobipy (2000
+      # variabili e 2000 vincoli) basta per tutte le istanze del corso
+      - run: pip install gurobipy pandas matplotlib mkdocs-material
+      - run: python3 python/esegui_tutti.py
+      - run: python3 python/verifica_numeri.py
+      # i CSV si rigenerano identici; le PNG no (dipendono dalla versione di
+      # matplotlib), quindi il confronto byte a byte si limita ai dati
+      - run: git diff --exit-code -- dati
       - run: python3 python/genera_notebook.py --verifica
-      - run: pip install mkdocs-material
+      - run: python3 python/incorpora_codice.py --verifica
       - run: mkdocs build --strict
       - uses: actions/upload-pages-artifact@v3
         with:

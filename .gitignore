@@ -21,6 +21,7 @@ site/
 # materiale interno, non pubblicato
 STILE_E_FORMATO.md
 dispensa/
+soluzioni/
 
 # i PDF pubblicati sul sito vanno invece versionati
 !docs/pdf/*.pdf

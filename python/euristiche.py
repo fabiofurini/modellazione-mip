@@ -32,6 +32,12 @@ class Esito:
     traccia: Traccia = field(default_factory=Traccia)
     ok: bool = True              # False = "nessuna soluzione ammissibile trovata"
     saltati: list = field(default_factory=list)   # lavori non eseguiti (se ammesso)
+    # campi usati dalle euristiche del capitolo 5 (lasciati a None quando non servono)
+    carichi: list = None         # carico finale di ogni macchina (LPT)
+    makespan: float = None       # massimo dei carichi (LPT)
+    valore: float = None         # valore della soluzione costruita
+    residuo: float = None        # capacita' residua (zaino)
+    lanci: dict = None           # {periodo: quantita' prodotta} (lot sizing)
 
     def assegnazione(self, j: int):
         """Macchina (0-based) a cui è assegnato il lavoro j, oppure None."""
@@ -186,3 +192,137 @@ def best_fit(t, a, criterio, nome_criterio: str, salta: bool = False,
 def matrice(vettore, k: int):
     """Tempi indipendenti dalla macchina: il vettore t_j diventa una matrice n x k."""
     return [[v] * k for v in vettore]
+
+
+# ============================================================
+# Estensioni del capitolo 5: le famiglie richieste dalle sei famiglie di problemi.
+# Tutte restituiscono un Esito (o una struttura analoga) con la traccia dei passi.
+# ============================================================
+
+def lpt(t, k: int) -> Esito:
+    """LPT (longest processing time): bilanciamento su k macchine identiche.
+
+    I lavori si ordinano per tempo decrescente e ciascuno va sulla macchina
+    con carico corrente minimo. E' l'euristica classica per il makespan; qui
+    la macchina non ha capacita', quindi non fallisce mai.
+    """
+    n = len(t)
+    e = Esito(x={}, y=[0] * k)
+    carico = [0.0] * k
+    for j in sorted(range(n), key=lambda j: -t[j]):
+        m = min(range(k), key=lambda m: (carico[m], m))
+        e.traccia.passo(
+            f"Lavoro {j + 1} (tempo {t[j]:g}, il piu' lungo fra quelli rimasti): carichi "
+            + ", ".join(f"L[{i + 1}] = {carico[i]:g}" for i in range(k))
+            + f"; il minimo e' la macchina {m + 1}, quindi x[{j + 1}][{m + 1}] = 1 e "
+              f"L[{m + 1}] = {carico[m]:g} + {t[j]:g} = {carico[m] + t[j]:g}.")
+        e.x[(j, m)] = 1
+        e.y[m] = 1
+        carico[m] += t[j]
+    e.carichi = carico
+    e.makespan = max(carico)
+    return e
+
+
+def euristica_copertura(costo, insiemi) -> Esito:
+    """Euristica costruttiva di copertura: a ogni passo l'elemento col miglior costo per zona nuova.
+
+    `costo[j]` e' il costo dell'elemento j, `insiemi[i]` la lista degli elementi
+    che coprono la zona i. Restituisce l'insieme scelto e la traccia.
+    """
+    n, m = len(costo), len(insiemi)
+    e = Esito(x={}, y=[0] * n)
+    scoperte = set(range(m))
+    passo = 0
+    while scoperte:
+        passo += 1
+        candidati = []
+        for j in range(n):
+            nuove = {i for i in scoperte if j in insiemi[i]}
+            if nuove and not e.y[j]:
+                candidati.append((costo[j] / len(nuove), j, len(nuove)))
+        if not candidati:
+            e.traccia.passo("Nessun elemento copre zone ancora scoperte: "
+                            "nessuna soluzione ammissibile trovata.")
+            e.ok = False
+            return e
+        rapporto, j, quante = min(candidati)
+        dettagli = "; ".join(f"elemento {jj + 1}: {costo[jj]:g}/{q} = {r:g}"
+                             for r, jj, q in sorted(candidati, key=lambda c: c[1]))
+        e.traccia.passo(
+            f"Zone ancora scoperte {sorted(i + 1 for i in scoperte)}; rapporti "
+            f"costo/zone nuove --- {dettagli}; il minimo e' l'elemento {j + 1}: "
+            f"si sceglie, e copre {quante} zona nuova." if quante == 1 else
+            f"Zone ancora scoperte {sorted(i + 1 for i in scoperte)}; rapporti "
+            f"costo/zone nuove --- {dettagli}; il minimo e' l'elemento {j + 1}: "
+            f"si sceglie, e copre {quante} zone nuove.")
+        e.y[j] = 1
+        e.x[(j, 0)] = 1
+        scoperte -= {i for i in scoperte if j in insiemi[i]}
+    e.valore = sum(costo[j] for j in range(n) if e.y[j])
+    return e
+
+
+def euristica_zaino(p, w, C) -> Esito:
+    """Euristica costruttiva per rapporto valore/peso: da' un LOWER bound in un problema di massimo."""
+    n = len(p)
+    e = Esito(x={}, y=[0] * n)
+    residuo = C
+    for j in sorted(range(n), key=lambda j: (-p[j] / w[j], j)):
+        if w[j] <= residuo:
+            e.traccia.passo(f"Oggetto {j + 1}: rapporto p/w = {p[j] / w[j]:g}, peso {w[j]:g} "
+                            f"<= capacita' residua {residuo:g}: si prende, residuo "
+                            f"{residuo:g} - {w[j]:g} = {residuo - w[j]:g}.")
+            e.x[(j, 0)] = 1
+            e.y[j] = 1
+            residuo -= w[j]
+        else:
+            e.traccia.passo(f"Oggetto {j + 1}: peso {w[j]:g} > capacita' residua "
+                            f"{residuo:g}: si scarta.")
+    e.valore = sum(p[j] for j in range(n) if e.y[j])
+    e.residuo = residuo
+    return e
+
+
+def euristica_lotti(domanda, setup, magazzino) -> Esito:
+    """Copertura di periodi a costo unitario minimo (least unit cost) per il lot sizing.
+
+    A ogni lancio di produzione si copre il numero di periodi consecutivi che
+    minimizza il costo medio per unita' prodotta; poi si riparte dal primo
+    periodo scoperto. NON e' l'algoritmo di Wagner-Whitin: quello e' un metodo
+    esatto di programmazione dinamica per il modello di lot sizing senza
+    capacita', e su questi dati puo' dare un valore migliore. Questa e' una
+    euristica, e il suo valore e' solo un bound.
+    """
+    T = len(domanda)
+    e = Esito(x={}, y=[0] * T)
+    lanci = {}
+    t = 0
+    while t < T:
+        while t < T and domanda[t] == 0:
+            t += 1
+        if t >= T:
+            break
+        migliore, quanti = None, 1
+        for k in range(1, T - t + 1):
+            quantita = sum(domanda[t:t + k])
+            if quantita == 0:
+                continue
+            costo = setup + sum(magazzino * (s - t) * domanda[s] for s in range(t, t + k))
+            unitario = costo / quantita
+            if migliore is None or unitario < migliore - 1e-12:
+                migliore, quanti = unitario, k
+        quantita = sum(domanda[t:t + quanti])
+        e.traccia.passo(
+            f"Periodo {t + 1}: si lancia una produzione che copre "
+            f"{'il solo periodo ' + str(t + 1) if quanti == 1 else str(quanti) + ' periodi (' + str(t + 1) + '-' + str(t + quanti) + ')'}"
+            f", quantita' {quantita:g}, costo unitario {migliore:.4g} "
+            f"(il minimo fra le coperture possibili).")
+        lanci[t] = quantita
+        e.y[t] = 1
+        t += quanti
+    e.lanci = lanci
+    e.valore = sum(setup for t in lanci) + sum(
+        magazzino * max(0, sum(lanci[s] for s in lanci if s <= t) - sum(domanda[:t + 1]))
+        for t in range(T))
+    return e

@@ -109,11 +109,19 @@ python3 fam07_1_assegnamento.py
 
 
 def pagina_del_capitolo(nome: str) -> str | None:
-    """Trova la pagina del sito che presenta questo script (il campo «Script:»)."""
+    """Trova la pagina del sito che presenta questo script.
+
+    Piu' pagine possono citare lo stesso script: la pagina di una famiglia lo
+    nomina di sfuggita, la pagina del problema lo nomina nell'intestazione e
+    nella sezione «Codice». Si sceglie quella che lo cita piu' volte, e a parita'
+    quella con lo slug piu' corto.
+    """
+    candidate = []
     for pagina in sorted(DIR_DOCS.glob("*.md")):
-        if f"python/{nome}.py" in pagina.read_text():
-            return pagina.stem
-    return None
+        quante = pagina.read_text().count(f"python/{nome}.py")
+        if quante:
+            candidate.append((-quante, len(pagina.stem), pagina.stem))
+    return min(candidate)[2] if candidate else None
 
 
 def titolo_e_classe(slug: str) -> tuple[str, str]:
@@ -133,6 +141,7 @@ def pagina_indice() -> str:
     """La pagina del sito che elenca i notebook, con un badge per capitolo."""
     righe = []
     for percorso in sorted(p for p in list(DIR_SCRIPT.glob("cap*.py")) + list(DIR_SCRIPT.glob("fam*.py"))
+              + list(DIR_SCRIPT.glob("num*.py"))
               if not p.stem.endswith("_riepilogo")):
         nome = percorso.stem
         slug = pagina_del_capitolo(nome)
@@ -232,6 +241,7 @@ def main() -> int:
         indice.write_text(pagina_indice())
         print(f"  [pagina]   docs/{indice.name}")
     for percorso in sorted(p for p in list(DIR_SCRIPT.glob("cap*.py")) + list(DIR_SCRIPT.glob("fam*.py"))
+              + list(DIR_SCRIPT.glob("num*.py"))
               if not p.stem.endswith("_riepilogo")):
         atteso = json.dumps(notebook(percorso), ensure_ascii=False, indent=1) + "\n"
         uscita = DIR_NOTEBOOK / f"{percorso.stem}.ipynb"

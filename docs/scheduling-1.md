@@ -118,7 +118,7 @@ $$
 \end{array}
 $$
 
-## Euristica costruttiva: upper bound
+## Euristica costruttiva: il bound primale
 
 Tre euristiche ispirate al bin packing. **Next-fit**: si carica una macchina
 alla volta e si passa alla successiva quando un lavoro non ci sta più.
@@ -149,10 +149,10 @@ Esecuzione sull'istanza (output dello script):
   e $ra[1] = 5 - 4 = 1$.
 
 Soluzione $\bar x_{13} = \bar x_{22} = \bar x_{31} = 1$, valore $2 + 4 + 5 = 11$:
-$\mathrm{ub} = 11$, cioè $z(\mathrm{MILP}) \le 11$. Next-fit e first-fit trovano
+$\mathit{UB} = 11$, cioè $z(\mathrm{MILP}) \le 11$. Next-fit e first-fit trovano
 entrambe $x_{11} = x_{21} = x_{32} = 1$, di valore $14$.
 
-## Rilassamento LP e duale: lower bound
+## Rilassamento LP e duale: il bound duale
 
 Il rilassamento LP sostituisce $x_{jm} \in \{0,1\}$ con $x_{jm} \ge 0$ (il
 vincolo $x_{jm} \le 1$ è implicato dai vincoli di assegnamento). Con una
@@ -194,7 +194,7 @@ il best-fit aveva trovato l'ottimo, ma solo il solver lo certifica — il bound
 duale si fermava a $10$ (e poiché i costi sono interi, $\lceil 53/5 \rceil = 11$
 chiude il gap).
 
-| $\mathrm{ub}$ (best-fit) | $\mathrm{lb}$ (duale a mano) | $z(\mathrm{LP})$ | $z(\mathrm{MILP})$ | gap euristica |
+| $UB$ (best-fit) | $LB$ (duale a mano) | $z(\mathrm{LP})$ | $z(\mathrm{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|
 | 11 | 10 | $53/5$ | 11 | $0{,}0\%$ |
 
@@ -215,41 +215,171 @@ chiude il gap).
     I lavori 1 e 3 usano lo stesso utensile e devono essere eseguiti dalla stessa
     macchina. Come cambia il modello? Qual è il nuovo ottimo per l'istanza?
 
-    ??? success "Soluzione"
-        Per ogni macchina $m$, $x_{1m} = 1$ se e solo se $x_{3m} = 1$:
-
-        $$x_{1m} = x_{3m}, \qquad \forall m \in \{1, 2, \dots, k\}$$
-
-        ($k$ vincoli lineari). Entrambi i versi sono imposti dal vincolo; i
-        vincoli di assegnamento garantiscono che la macchina comune sia una
-        sola. Nuovo ottimo $12$: la coppia sta sulla macchina 3
-        ($3 + 3 \le 7$, costo $2 + 6$) e il lavoro 2 sulla macchina 2 ($4$).
-
+    !!! tip "Soluzione"
+        La soluzione è nel documento delle soluzioni, riservato ai docenti.
 ??? question "7.1.2 — Costo fisso per macchina usata"
     Ogni macchina che esegue almeno un lavoro costa in più $g_m = 3$ euro di
     accensione. Modellare il costo fisso e trovare il nuovo ottimo. Quale legame
     entra in gioco?
 
-    ??? success "Soluzione"
-        Serve la famiglia delle **attivazioni** $y_m \in \{0,1\}$, l'obiettivo
-        diventa $\sum_j \sum_m c_{jm} x_{jm} + \sum_m g_m y_m$ e il legame «se un
-        lavoro è assegnato a $m$ allora $m$ è usata» si impone con
-
-        $$x_{jm} \le y_m, \qquad \forall j,\ \forall m$$
-
-        ($n\,k$ vincoli). Il verso opposto — una macchina senza lavori non viene
-        accesa — segue dall'obiettivo in ogni ottimo perché $g_m > 0$. È il
-        legame di attivazione, studiato per intero nel [problema 7.2](scheduling-2.md).
-        Nuovo ottimo $18$, con due sole macchine: i lavori 1 e 3 sulla macchina
-        3 e il lavoro 2 sulla macchina 2, più $2 \cdot 3$ di accensione; la
-        soluzione a tre macchine costerebbe $11 + 9 = 20$.
-
+    !!! tip "Soluzione"
+        La soluzione è nel documento delle soluzioni, riservato ai docenti.
 ## Codice
 
-Lo script completo della famiglia — dati, sette modelli, euristiche, duali,
-soluzioni e figure — è
+Lo script completo del problema — dati, modello, euristiche, duale,
+soluzione, varianti e figure — è
 [`python/fam07_1_assegnamento.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_1_assegnamento.py)
 (riproducibile con `python3 python/fam07_1_assegnamento.py` dalla cartella `python/`).
 Lo stesso codice è disponibile come notebook —
 [`notebooks/fam07_1_assegnamento.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_1_assegnamento.ipynb)
 — che si apre in Colab dal badge in cima alla pagina.
+
+<!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
+
+??? example "Mostra lo script completo — `python/fam07_1_assegnamento.py` (141 righe)"
+
+    ```python
+    """Problema 7.1 -- Assegnamento a costo minimo con disponibilita' (GAP).
+
+    Un modello BIP con una sola famiglia di variabili: nessun legame da
+    dimostrare, solo un vincolo di assegnamento e uno di capacita' per macchina.
+    Euristiche next/first/best-fit per l'upper bound, duale del rilassamento LP
+    con soluzione costruita a mano per il lower bound.
+    """
+    import gurobipy as gp
+    import numpy as np
+    import pandas as pd
+    from gurobipy import GRB
+
+    from euristiche import best_fit, first_fit, matrice, next_fit
+    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
+                     registra_bound, risolvi, stampa_soluzione, valuta)
+    from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
+
+    R = range
+
+    # ---------- 1. MODELLO E ISTANZA ----------
+    intestazione("1. Assegnamento a costo minimo: n lavori, k macchine, disponibilità a_m")
+    t1 = [[2, 1, 3], [3, 4, 2], [4, 5, 3]]
+    c1 = [[5, 10, 2], [5, 4, 6], [5, 4, 6]]
+    a1 = [5, 6, 7]
+    n, k = 3, 3
+    salva_dati(pd.DataFrame([{"lavoro": j + 1, "macchina": m + 1, "t": t1[j][m], "c": c1[j][m]}
+                             for j in R(n) for m in R(k)]), "sched1_lavori")
+    salva_dati(pd.DataFrame({"macchina": R(1, k + 1), "a": a1}), "sched1_macchine")
+
+
+    def modello_1(t, c, a):
+        n, k = len(t), len(a)
+        m = nuovo_modello("assegnamento")
+        x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
+        m.setObjective(gp.quicksum(c[j][mm] * x[j, mm] for j in R(n) for mm in R(k)), GRB.MINIMIZE)
+        m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="assegna")
+        m.addConstrs((gp.quicksum(t[j][mm] * x[j, mm] for j in R(n)) <= a[mm] for mm in R(k)),
+                     name="disponibilita")
+        return m, x
+
+
+    def duale_1(t, c, a):
+        """Duale del rilassamento LP: max sum mu_j + sum a_m pi_m, mu_j + t_jm pi_m <= c_jm, pi <= 0."""
+        n, k = len(t), len(a)
+        d = nuovo_modello("duale_assegnamento")
+        mu = d.addVars(n, lb=-GRB.INFINITY, name="mu")
+        pi = d.addVars(k, lb=-GRB.INFINITY, ub=0.0, name="pi")
+        d.setObjective(mu.sum() + gp.quicksum(a[mm] * pi[mm] for mm in R(k)), GRB.MAXIMIZE)
+        d.addConstrs((mu[j] + t[j][mm] * pi[mm] <= c[j][mm] for j in R(n) for mm in R(k)), name="rc")
+        return d
+
+
+    def valore_1(e, c):
+        return sum(c[j][mm] for (j, mm) in e.x)
+
+
+    m1, x1 = modello_1(t1, c1, a1)
+
+    # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    print("Euristiche costruttive:")
+    e_next = next_fit(t1, a1)
+    e_first = first_fit(t1, a1)
+    e_best = best_fit(t1, a1, lambda j, mm, ra: c1[j][mm], "costo")
+    for nome, e in [("next-fit", e_next), ("first-fit", e_first), ("best-fit (costo minimo)", e_best)]:
+        print(f"  {nome:26s} ub = {valore_1(e, c1)}   assegnazione "
+              + ", ".join(f"x[{j + 1}][{mm + 1}]" for (j, mm) in sorted(e.x)))
+    print("Esecuzione passo-passo del best-fit:")
+    e_best.traccia.stampa()
+    ub1 = valore_1(e_best, c1)
+    sol_eur = {f"x[{j},{mm}]": 1 for (j, mm) in e_best.x}
+    assert ammissibile(m1, sol_eur)
+
+    # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
+    d1 = duale_1(t1, c1, a1)
+    mano = {f"mu[{j}]": min(c1[j]) for j in R(n)}
+    lb1, viol = valuta(d1, mano)
+    assert viol <= 1e-9, viol
+    print(f"Soluzione duale a mano: pi = 0, mu_j = min_m c_jm = "
+          + ", ".join(frazione(mano[f"mu[{j}]"]) for j in R(n)) + f"  ->  lb = {frazione(lb1)}")
+    zlp1, zlp1r, pi_lp = due_rilassamenti(m1, d1)
+    print("Duali del rilassamento letti da Gurobi:", {kk: round(v, 4) for kk, v in pi_lp.items()})
+
+    # ---------- 4. SOLUZIONE OTTIMA DEL MILP ----------
+    z1 = risolvi(m1)
+    print("Soluzione ottima del MILP:")
+    stampa_soluzione(m1, solo_non_nulle=True)
+    riga = registra_bound("1 assegnamento", ub1, lb1, zlp1, zlp1r, z1)
+    salva_dati(pd.DataFrame([riga]), "sched1_bound")
+    ott1 = {(j, mm) for j in R(n) for mm in R(k) if x1[j, mm].X > 0.5}
+
+    # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+
+
+    varianti = {}
+
+
+    def variante(nome, m):
+        z = risolvi(m)
+        print(f"  {nome:70s} z = {frazione(z)}")
+        return z
+
+    # 1a: i lavori 1 e 3 devono stare sulla stessa macchina
+    m, x = modello_1(t1, c1, a1)
+    m.addConstrs((x[0, mm] == x[2, mm] for mm in R(3)), name="insieme")
+    varianti["1a"] = variante("1a. Lavori 1 e 3 sulla stessa macchina (x_1m = x_3m)", m)
+    # 1b: costo fisso g_m per macchina usata (attivazione)
+    g1 = [3, 3, 3]
+    m, x = modello_1(t1, c1, a1)
+    y = m.addVars(3, vtype=GRB.BINARY, name="y")
+    m.addConstrs((x[j, mm] <= y[mm] for j in R(3) for mm in R(3)), name="attiva")
+    m.update()
+    m.setObjective(m.getObjective() + gp.quicksum(g1[mm] * y[mm] for mm in R(3)), GRB.MINIMIZE)
+    varianti["1b"] = variante("1b. Costo fisso g_m = 3 per macchina usata (x_jm <= y_m)", m)
+    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "sched1_varianti")
+
+    # ---------- 6. FIGURE ----------
+
+
+    def barre_macchine(assegn, t, a, titolo, nome):
+        """Ogni macchina: barra dei tempi dei lavori assegnati e disponibilità."""
+        k = len(a)
+        fig, ax = plt.subplots(figsize=(7.2, 3.2))
+        for mm in R(k):
+            inizio = 0
+            for (j, m2) in sorted(assegn):
+                if m2 == mm:
+                    ax.barh(mm, t[j][mm], left=inizio, color=CICLO[j % len(CICLO)], edgecolor="white")
+                    ax.text(inizio + t[j][mm] / 2, mm, f"{j + 1}", ha="center", va="center", color="white",
+                            fontsize=9, fontweight="bold")
+                    inizio += t[j][mm]
+            ax.plot([a[mm], a[mm]], [mm - 0.4, mm + 0.4], color=ROSSO, lw=2)
+        ax.set_yticks(R(k))
+        ax.set_yticklabels([f"macchina {mm + 1}" for mm in R(k)])
+        ax.set_xlabel("tempo (minuti); in rosso la disponibilità $a_m$")
+        ax.set_title(titolo)
+        ax.invert_yaxis()
+        salva_figura(fig, nome)
+
+    barre_macchine(e_best.x, t1, a1, "Assegnamento: soluzione del best-fit (ub = 11)", "cap07_gap_euristica")
+    barre_macchine(ott1, t1, a1, f"Assegnamento: soluzione ottima (z = {frazione(z1)})", "cap07_gap_ottimo")
+    print("Fine.")
+    ```
+
+<!-- script-incorporato: fine -->

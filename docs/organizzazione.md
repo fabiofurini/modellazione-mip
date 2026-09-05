@@ -5,7 +5,7 @@
 | | Contenuto | Obiettivi di apprendimento |
 |---|---|---|
 | **Parte I** | Modellazione | riconoscere un legame fra variabili (attivazione, massimo, big-M, se e solo se…) e dimostrare che il modello lo impone davvero |
-| **Parte II** | I problemi | applicare i legami a sei famiglie di problemi reali, dal modello al codice Gurobi |
+| **Parte II** | I problemi | applicare i legami a tre famiglie di problemi reali e ai modelli misti, dal modello al codice Gurobi |
 | **Parte III** | Il corso | mettere alla prova quanto imparato con le domande di modellazione aggiuntive |
 
 ## Il formato di ogni esercizio (e dell'esame)
@@ -27,10 +27,13 @@ quattro quesiti:
 
 Il `lb ≤ z(MILP) ≤ ub` che ne risulta è il filo conduttore del corso: un
 modello non si limita a scriverlo, lo si stringe da entrambi i lati prima di
-affidarlo al solver — ed è esattamente ciò a cui si ricorre quando un MILP
-reale non si riesce a risolvere all'ottimo provato in tempo utile: l'euristica
-e il bound duale sono il certificato di qualità che una run del solver
-interrotta a metà non può fornire da sola.
+affidarlo al solver. Un solver interrotto a metà, del resto, un certificato lo
+fornisce eccome — l'incumbent `ObjVal` e il bound `ObjBound` racchiudono
+l'ottimo in un intervallo, e il `MIPGap` ne misura l'ampiezza. Il punto
+didattico è un altro: **saper costruire quei due numeri a mano** serve a capire
+da dove vengono, a giudicare se l'intervallo che il solver riporta è stretto
+perché il modello è buono o largo perché è formulato male, e a produrre un bound
+anche quando il solver non arriva a nulla di utile.
 
 ## Criteri di valutazione
 

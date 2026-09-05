@@ -58,6 +58,27 @@ plt.rcParams.update({
 })
 
 
+def _legenda_fuori(fig):
+    """Sposta ogni legenda fuori dall'area del grafico, sotto gli assi.
+
+    Una legenda dentro il grafico copre le linee e i punti: si perde
+    informazione proprio dove serve. Qui la si ricostruisce sotto gli assi,
+    su una o piu' colonne a seconda di quante voci ha.
+    """
+    for ax in fig.get_axes():
+        leg = ax.get_legend()
+        if leg is None:
+            continue
+        maniglie, etichette = ax.get_legend_handles_labels()
+        if not etichette:
+            continue
+        leg.remove()
+        colonne = min(len(etichette), 3)
+        ax.legend(maniglie, etichette, fontsize=8, frameon=False,
+                  loc="upper center", bbox_to_anchor=(0.5, -0.16),
+                  ncol=colonne, borderaxespad=0.0)
+
+
 def salva_figura(fig, nome: str) -> None:
     """Salva la figura come PDF (anteprima) e come PNG per il sito (docs/img/).
 
@@ -66,12 +87,13 @@ def salva_figura(fig, nome: str) -> None:
     if NOTEBOOK:
         plt.show()
         return
+    _legenda_fuori(fig)
     DIR_FIGURE.mkdir(parents=True, exist_ok=True)
     percorso = DIR_FIGURE / f"{nome}.pdf"
-    fig.savefig(percorso)
+    fig.savefig(percorso, bbox_inches="tight")
     img = BASE / "docs" / "img"
     img.mkdir(parents=True, exist_ok=True)
-    fig.savefig(img / f"{nome}.png", dpi=150)
+    fig.savefig(img / f"{nome}.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"  [figura] {percorso.relative_to(BASE)} (+ docs/img/{nome}.png)")
 

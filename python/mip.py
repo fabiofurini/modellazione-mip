@@ -79,8 +79,32 @@ def valuta(m: gp.Model, sol: dict):
     return z, viol
 
 
-def ammissibile(m: gp.Model, sol: dict) -> bool:
-    return valuta(m, sol)[1] <= TOL
+def viola_interezza(m: gp.Model, sol: dict) -> float:
+    """Massima distanza da un intero delle variabili dichiarate intere o binarie.
+
+    `valuta` controlla i bound e i vincoli lineari: da sola non distingue una
+    soluzione intera da una frazionaria ammissibile per il rilassamento. Per
+    certificare che una soluzione euristica sia un bound primale del MILP serve
+    anche questo controllo.
+    """
+    m.update()
+    peggio = 0.0
+    for v in m.getVars():
+        if v.VType in (GRB.BINARY, GRB.INTEGER):
+            x = float(sol.get(v.VarName, 0.0))
+            peggio = max(peggio, abs(x - round(x)))
+    return peggio
+
+
+def ammissibile(m: gp.Model, sol: dict, interi: bool = True) -> bool:
+    """Ammissibilità per il MILP: bound, vincoli lineari e (di default) interezza.
+
+    Con `interi=False` si controlla la sola ammissibilità continua: è quello che
+    serve per le soluzioni duali costruite a mano, che vivono in un LP.
+    """
+    if valuta(m, sol)[1] > TOL:
+        return False
+    return not interi or viola_interezza(m, sol) <= TOL
 
 
 def frazione(x: float) -> str:
@@ -134,7 +158,7 @@ def due_rilassamenti(m, d):
     zlp_r, _, _ = rilassamento(m, rafforzato=True)
     zd = risolvi(d)
     assert abs(zlp - zd) <= 1e-6, (zlp, zd)
-    print(f"Ottimo del duale = z(LP) (dualità forte): {frazione(zd)};  rilassamento rafforzato "
+    print(f"Ottimo del duale = z(LP) (dualità forte): {frazione(zd)};  rilassamento con i bound "
           f"con x <= 1: z(LP+) = {frazione(zlp_r)}")
     return zlp, zlp_r, pi
 

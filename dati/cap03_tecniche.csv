@@ -1,0 +1,15 @@
+sezione,tecnica,z_milp,formulazione_1,z_lp_1,formulazione_2,z_lp_2,formulazione_3,z_lp_3
+3.1,attivazione aggregata / disaggregata,15.0,aggregata,12.666666666666666,disaggregata,15.0,,
+3.2,costo fisso con capacita',44.0,con la capacita' come coefficiente,37.33333333333333,con un big-M = 100,21.18,,
+3.3,lotto minimo / semicontinua,49.0,con lotto minimo,37.33333333333333,,,,
+3.4,conteggio intero (arrotondamento all'intero superiore),4.0,vincolo di capienza,3.4,,,,
+3.5,ausiliaria di massimo,4.0,z >= t_j x_j,2.7540983606557377,,,,
+3.6,min-max / max-min / differenza,11.0,min-max,10.5,,,,
+3.7,valore assoluto in obiettivo,1.0,"due vincoli, d >= +/-(u-v)",0.0,,,,
+3.8,big-M in un vincolo condizionato,3.0,M minimo = 6,3.0,M = 20,3.7,M = 1000,3.9939999999999998
+3.9,precedenze e sequenziamento (big-M),9.0,M = sum t_j = 9,4.0,,,,
+3.10,se e solo se,15.0,entrambi i versi imposti,15.0,,,,
+3.11,conteggio dei tipi diversi,57.0,attivazione + soglia,57.0,,,,
+3.12,alldiff / espansione binaria,7.0,doppio partitioning,7.0,,,,
+3.13,vincoli violabili con penalita',6.0,deviazioni +/-,6.0,,,,
+3.14,funzione lineare a tratti,33.0,senza adiacenza (combinazione convessa libera),29.25,con adiacenza (SOS2 scritta a mano),29.25,,
