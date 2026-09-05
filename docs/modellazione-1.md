@@ -60,12 +60,12 @@ polinomiale, un ILP e un MILP in generale no.
     Quante unità comprare da due fornitori, $x_1$ e $x_2$, a lotti interi.
 
     $$
-    \begin{aligned}
-    \min ~~ 4x_1 + 7x_2 & & \\
-    \text{soggetto a} \quad 2x_1 + 3x_2 &\ge 12, & \\
-    x_1 + x_2 &\le 5, & \\
-    x_1,\ x_2 &\in \mathbb{Z}_{\ge 0}. &
-    \end{aligned}
+    \begin{array}{r r c r c l}
+    \min & 4x_1 & + & 7x_2 &  & \\
+    \text{soggetto a} & 2x_1 & + & 3x_2 & \ge & 12,\\
+     & x_1 & + & x_2 & \le & 5,\\
+     & x_1 & , & x_2 & \in & \mathbb{Z}_{\ge 0}.
+    \end{array}
     $$
 
     L'obiettivo minimizza la spesa; il vincolo $\ge$ copre la domanda di $12$
@@ -77,12 +77,12 @@ polinomiale, un ILP e un MILP in generale no.
     altrimenti.
 
     $$
-    \begin{aligned}
-    \max ~~ 5y_1 + 4y_2 + 6y_3 & & \\
-    \text{soggetto a} \quad y_1 + y_2 + y_3 &\le 2, & \\
-    y_1 + y_3 &\ge 1, & \\
-    y_1,\ y_2,\ y_3 &\in \{0, 1\}. &
-    \end{aligned}
+    \begin{array}{r r c r c r c l}
+    \max & 5y_1 & + & 4y_2 & + & 6y_3 &  & \\
+    \text{soggetto a} & y_1 & + & y_2 & + & y_3 & \le & 2,\\
+     & y_1 &  &  & + & y_3 & \ge & 1,\\
+     & y_1 & , & y_2 & , & y_3 & \in & \{0, 1\}.
+    \end{array}
     $$
 
     L'obiettivo massimizza il valore dei progetti scelti; il vincolo $\le$ ne
@@ -94,14 +94,14 @@ polinomiale, un ILP e un MILP in generale no.
     impianto da attivare o no, con $y = 1$ se lo si attiva e $y = 0$ altrimenti.
 
     $$
-    \begin{aligned}
-    \max ~~ 3x_1 + 8x_2 - 10y & & \\
-    \text{soggetto a} \quad x_1 + x_2 &= 6, & \\
-    x_2 - 4y &\le 0, & \\
-    x_1 &\ge 1, & \\
-    x_1,\ x_2 &\ge 0, & \\
-    y &\in \{0, 1\}. &
-    \end{aligned}
+    \begin{array}{r r c r c r c l}
+    \max & 3x_1 & + & 8x_2 & - & 10y &  & \\
+    \text{soggetto a} & x_1 & + & x_2 &  &  & = & 6,\\
+     &  &  & x_2 & - & 4y & \le & 0,\\
+     & x_1 &  &  &  &  & \ge & 1,\\
+     & x_1 & , & x_2 &  &  & \ge & 0,\\
+     &  &  &  &  & y & \in & \{0, 1\}.
+    \end{array}
     $$
 
     L'obiettivo massimizza il ricavo meno il costo dell'impianto; l'uguaglianza
