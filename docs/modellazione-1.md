@@ -30,23 +30,17 @@ corsivo è *un* problema di quella classe; lo stesso per ILP, BIP e MILP. In
 tutte le classi obiettivo e vincoli sono lineari: cambia solo il dominio delle
 variabili, cioè l'ultima riga del modello. Un modello ha $n$ variabili, con
 $j \in \{1, 2, \dots, n\}$, e $m$ vincoli, con $i \in \{1, 2, \dots, m\}$; i dati
-sono i costi $c_j$, i coefficienti $a_{ij}$ e i termini noti $b_i$. Gli insiemi
-$M_{\le}$, $M_{=}$, $M_{\ge}$ ripartiscono $\{1, 2, \dots, m\}$ secondo il verso
-del vincolo; $N_{\ge 0}$, $N_{\gtreqless 0}$, $N_{\le 0}$ ripartiscono
-$\{1, 2, \dots, n\}$ secondo il segno della variabile. L'obiettivo è qui di
-minimo; con $\max$ cambia solo il verso dell'ottimizzazione.
+sono i costi $c_j$, i coefficienti $a_{ij}$ e i termini noti $b_i$. Qui i vincoli sono di verso $\ge$, le
+variabili non negative e l'obiettivo di minimo; con $\max$ cambia solo il verso
+dell'ottimizzazione.
 
 **Un modello di LP** — tutte le variabili continue:
 
 $$
 \begin{aligned}
 \min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
-\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\le b_i, & \forall i \in M_{\le},\\
-\sum_{j=1}^{n} a_{ij}\, x_j &= b_i, & \forall i \in M_{=},\\
-\sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in M_{\ge},\\
-x_j &\ge 0, & \forall j \in N_{\ge 0},\\
-x_j &\gtreqless 0, & \forall j \in N_{\gtreqless 0},\\
-x_j &\le 0, & \forall j \in N_{\le 0}.
+\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
+x_j &\ge 0, & \forall j \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
 
@@ -55,12 +49,8 @@ $$
 $$
 \begin{aligned}
 \min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
-\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\le b_i, & \forall i \in M_{\le},\\
-\sum_{j=1}^{n} a_{ij}\, x_j &= b_i, & \forall i \in M_{=},\\
-\sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in M_{\ge},\\
-x_j &\in \mathbb{Z}_{\ge 0}, & \forall j \in N_{\ge 0},\\
-x_j &\in \mathbb{Z}, & \forall j \in N_{\gtreqless 0},\\
-x_j &\in \mathbb{Z}_{\le 0}, & \forall j \in N_{\le 0}.
+\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
+x_j &\in \mathbb{Z}_{\ge 0}, & \forall j \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
 
@@ -69,25 +59,26 @@ $$
 $$
 \begin{aligned}
 \min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
-\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\le b_i, & \forall i \in M_{\le},\\
-\sum_{j=1}^{n} a_{ij}\, x_j &= b_i, & \forall i \in M_{=},\\
-\sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in M_{\ge},\\
+\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
 x_j &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
 
-**Un modello di MILP** — con $J \subseteq \{1, 2, \dots, n\}$ l'insieme degli indici delle variabili intere e i segni del modello di LP:
+**Un modello di MILP** — con $J \subseteq \{1, 2, \dots, n\}$ l'insieme degli indici delle variabili intere:
 
 $$
 \begin{aligned}
 \min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
-\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\le b_i, & \forall i \in M_{\le},\\
-\sum_{j=1}^{n} a_{ij}\, x_j &= b_i, & \forall i \in M_{=},\\
-\sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in M_{\ge},\\
-x_j &\in \mathbb{Z}, & \forall j \in J,\\
-x_j &\in \mathbb{R}, & \forall j \in \{1, 2, \dots, n\} \setminus J.
+\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
+x_j &\in \mathbb{Z}_{\ge 0}, & \forall j \in J,\\
+x_j &\ge 0, & \forall j \in \{1, 2, \dots, n\} \setminus J.
 \end{aligned}
 $$
+
+Sono i modelli nella loro forma più semplice: un modello può contenere anche
+vincoli di verso $\le$ e vincoli di uguaglianza — e quelli dei capitoli
+successivi li usano tutti e tre — oltre a famiglie di variabili diverse fra
+loro.
 
 L'obiettivo somma i costi delle decisioni prese; ogni vincolo $i$ lega le
 variabili al termine noto $b_i$; l'ultima riga dichiara il dominio ed è l'unica
