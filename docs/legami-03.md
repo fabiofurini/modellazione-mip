@@ -27,9 +27,9 @@ segnala come inammissibilità solo se $y_j$ è forzata a 1 da altri vincoli.
 ## La forza del rilassamento
 
 Sulla stessa istanza della [tecnica 3.2](legami-02.md) con $\ell = 5$: l'ottimo
-passa da $44$ a $z(\mathrm{MILP}) = 49$, con $q = (5, 5)$ invece di $(2, 7)$ —
+passa da $44$ a $z(\mathit{MILP}) = 49$, con $q = (5, 5)$ invece di $(2, 7)$ —
 la soglia costringe a produrre 5 nel secondo impianto anche se il primo è più
-caro. Ma $z(\mathrm{LP}^+)$ resta $112/3$, **identico** al caso senza soglia.
+caro. Ma $z(\mathit{LP}^+)$ resta $112/3$, **identico** al caso senza soglia.
 
 !!! warning "Perché il lotto minimo non si vede nel rilassamento"
     Nel rilassamento $y_j$ è libera in $[0,1]$, e il vincolo

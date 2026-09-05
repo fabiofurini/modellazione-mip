@@ -91,7 +91,7 @@ filiale 2 ad $A$ ($A = 19$), la 4 a $B$ ($B = 18$), la 3 a $B$ ($B = 29$), la 1
 ad $A$ ($A = 27$). Si ottiene $A = \{1, 2\}$, $B = \{3, 4\}$, con differenze
 $4$, $0$ e $6$ sui tre prodotti:
 
-$$z(\mathrm{MILP}) \le \mathit{UB} = 6 .$$
+$$z(\mathit{MILP}) \le \mathit{UB} = 6 .$$
 
 ## Rilassamento LP e duale: il bound vale zero
 
@@ -128,7 +128,7 @@ altri. Il valore è $\mathit{LB} = 0$.
     vincoli sulle $x_i$ impongono $\sum_j v_{ij}\, \theta_j \le 0$ per ogni
     filiale; sommando su tutte le filiali si ottiene
     $\sum_j T_j\, \theta_j \le 0$. Il duale vale dunque al più $0$, e per
-    dualità forte $z(\mathrm{LP}) = 0$.
+    dualità forte $z(\mathit{LP}) = 0$.
 
     Il certificato primale è ancora più semplice: la soluzione frazionaria
     $x_i = 1/2$ per ogni filiale con $z = 0$ è ammissibile per il rilassamento e
@@ -147,7 +147,7 @@ $$g_j = \min_{S \subseteq \{1,\dots,s\}}
 È il classico problema della partizione su una sola colonna, e con $s$ piccolo
 si risolve per enumerazione ($2^s$ sottoinsiemi). Ogni partizione ammissibile
 del problema completo è in particolare una partizione per il prodotto $j$,
-quindi $z(\mathrm{MILP}) \ge \max_j g_j$.
+quindi $z(\mathit{MILP}) \ge \max_j g_j$.
 
 | Prodotto | totale $T_j$ | $g_j$ |
 |---|---:|---:|
@@ -157,7 +157,7 @@ quindi $z(\mathrm{MILP}) \ge \max_j g_j$.
 
 Sul prodotto 1 i valori sono $3, 6, 3, 2$: la somma $7$ non è raggiungibile da
 alcun sottoinsieme, e il meglio è $6$ contro $8$, cioè $g_1 = 2$. Quindi
-$z(\mathrm{MILP}) \ge \mathit{LB} = 2$, un bound che il rilassamento lineare non
+$z(\mathit{MILP}) \ge \mathit{LB} = 2$, un bound che il rilassamento LP non
 vede, perché nasce dall'interezza e non dai vincoli.
 
 ## Soluzione ottima
@@ -165,7 +165,7 @@ vede, perché nasce dall'interezza e non dai vincoli.
 La partizione ottima è $A = \{2, 3\}$ e $B = \{1, 4\}$, con differenze $4$, $2$
 e $2$ sui tre prodotti.
 
-| $LB$ (combinatorio) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | $UB$ (euristica) | gap |
+| $LB$ (combinatorio) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap |
 |---:|---:|---:|---:|---:|---:|
 | 2 | 0 | 0 | 4 | 6 | $50{,}0\%$ |
 

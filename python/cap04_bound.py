@@ -3,7 +3,7 @@
 Un problema di minimo e uno di massimo, scritti con il loro duale; una soluzione
 duale costruita a mano e la verifica della dualita' debole; il confronto fra il
 rilassamento senza i bound e quello con i bound conservati; un taglio di copertura; il
-bound del branch-and-bound letto da Gurobi; e il controesempio che mostra perche'
+bound letto da Gurobi a fine risoluzione; e il controesempio che mostra perche'
 i duali dell'LP non sono i prezzi marginali del MILP.
 """
 import gurobipy as gp
@@ -169,8 +169,8 @@ salva_dati(pd.DataFrame([{"modello": "zaino", "z_lp_senza_tagli": zlp43_prima,
                           "z_lp_con_tagli": zlp43_dopo, "z_milp": z43}]), "cap04_tagli")
 
 # ---------- 4. QUELLO CHE FA IL SOLVER: relax() E ObjBound ----------
-intestazione("4.4  Il rilassamento della radice e il bound del branch-and-bound")
-m44, x44 = primale_41()          # la copertura: qui il branch-and-bound deve ramificare
+intestazione("4.4  Il primo rilassamento e il bound finale del solver")
+m44, x44 = primale_41()          # la copertura: qui il solver deve lavorare
 m44.Params.OutputFlag = 0
 m44.optimize()
 print(f"  Status = {m44.Status} (2 = OPTIMAL), SolCount = {m44.SolCount}")
@@ -184,7 +184,7 @@ assert zrad <= m44.ObjVal + 1e-9         # minimo: il rilassamento sta sotto l'o
 print(f"  Il rilassamento vale {frazione(zrad)}, l'ottimo intero {frazione(m44.ObjVal)}: il")
 print("  gap c'e', ma NodeCount = 0. Gurobi lo chiude *nella radice*, con presolve,")
 print("  tagli propri ed euristiche, senza mai ramificare.")
-# per vedere il branch-and-bound al lavoro si spengono presolve, tagli ed euristiche
+# per vedere il solver al lavoro si spengono presolve, tagli ed euristiche
 m45, x45 = primale_41()
 m45.Params.Presolve = 0
 m45.Params.Cuts = 0

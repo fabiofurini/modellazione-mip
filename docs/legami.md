@@ -187,7 +187,7 @@ rivede all'opera.
        nell'obiettivo: strettamente diverso da zero dà «in ogni ottimo», nullo
        dà al più «esiste un ottimo».
     3. **Quanto è forte il rilassamento?** Si risponde confrontando
-       $z(\mathrm{LP}^+)$ con $z(\mathrm{MILP})$ su un'istanza piccola e, quando
+       $z(\mathit{LP}^+)$ con $z(\mathit{MILP})$ su un'istanza piccola e, quando
        ci sono due formulazioni, confrontandole fra loro — dopo averle
        dimostrate equivalenti sui punti interi.
 

@@ -83,7 +83,7 @@ che ne dipendono e il modo in cui il budget sulle aperture entra nel modello.
 
 Due modelli brevi con dati espliciti sulle tecniche di copertura e attivazione.
 
-| Modello | Che cosa mette in gioco | $z(\mathrm{MILP})$ |
+| Modello | Che cosa mette in gioco | $z(\mathit{MILP})$ |
 |---|---|---:|
 | [EX 6 — Hub-and-spoke](ex-06.md) | set covering puro; il duale a mano chiude il problema | 3 |
 | [EX 10 — Utensili CNC](ex-10.md) | attivazione disaggregata al rovescio; una ricetta duale non ammissibile, corretta | 2500 |

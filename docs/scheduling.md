@@ -116,7 +116,7 @@ famiglia. Il formato è ridotto — niente varianti né domande aggiuntive — m
 conserva modello, soluzione ammissibile, duale con soluzione costruita a mano e
 tabella dei bound.
 
-| Modello | Che cosa mette in gioco | $z(\mathrm{MILP})$ |
+| Modello | Che cosa mette in gioco | $z(\mathit{MILP})$ |
 |---|---|---:|
 | [EX 2 — Linee di autobus](ex-02.md) | assegnamento con capacità in numero di lavori | 9 |
 | [EX 3 — Staffetta](ex-03.md) | assegnamento con più risorse che compiti; matrice totalmente unimodulare | 95 |

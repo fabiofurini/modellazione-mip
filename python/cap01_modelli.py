@@ -2,7 +2,7 @@
 
 Verifica numerica degli esempi del capitolo: il controesempio
 dell'arrotondamento, i due rilassamenti (puro e con i bound conservati),
-l'ottimo intero e la traccia del branch-and-bound svolto a mano nel testo.
+l'ottimo intero e i due bound del sandwich.
 Tutti i numeri citati nella dispensa e sul sito escono da qui.
 """
 import gurobipy as gp
@@ -86,44 +86,6 @@ print(f"Divario fra rilassamento e ottimo intero: {frazione(zlpp)} - {frazione(z
 salva_dati(pd.DataFrame([{"modello": "esempio 1.1", "z_lp": zlp, "z_lp_rafforzato": zlpp,
                           "z_milp": zmilp}]), "cap01_bound")
 
-
-# ---------- 5. IL BRANCH-AND-BOUND SVOLTO A MANO ----------
-intestazione("5. Branch-and-bound: la traccia riportata nel capitolo")
-
-
-def nodo(fissa: dict):
-    """Rilassamento LP+ del sottoproblema con le variabili limitate da `fissa`.
-
-    `fissa` e' {indice: (lb, ub)}: sono i rami x_j <= floor(v) e x_j >= ceil(v).
-    """
-    m, x = modello_esempio(binarie=False, superiore=True)
-    for j, (lo, hi) in fissa.items():
-        x[j].LB, x[j].UB = lo, hi
-    m.optimize()
-    if m.Status != GRB.OPTIMAL:
-        return None, None
-    return m.ObjVal, (x[0].X, x[1].X)
-
-
-passi = []
-for etichetta, fissa in [("radice", {}),
-                         ("x1 <= 0", {0: (0.0, 0.0)}),
-                         ("x1 >= 1", {0: (1.0, 1.0)}),
-                         ("x1 >= 1, x2 <= 0", {0: (1.0, 1.0), 1: (0.0, 0.0)}),
-                         ("x1 >= 1, x2 >= 1", {0: (1.0, 1.0), 1: (1.0, 1.0)})]:
-    z, sol = nodo(fissa)
-    if z is None:
-        print(f"  {etichetta:20s} inammissibile: il ramo si scarta")
-        passi.append({"nodo": etichetta, "z_lp": None, "x1": None, "x2": None, "intera": False})
-        continue
-    intera = all(abs(v - round(v)) <= 1e-9 for v in sol)
-    print(f"  {etichetta:20s} z(LP+) = {frazione(z):>4}   x = ({frazione(sol[0])}, "
-          f"{frazione(sol[1])}){'   soluzione intera: candidato incumbent' if intera else '   frazionaria: si ramifica'}")
-    passi.append({"nodo": etichetta, "z_lp": z, "x1": sol[0], "x2": sol[1], "intera": intera})
-salva_dati(pd.DataFrame(passi), "cap01_branch")
-assert passi[0]["z_lp"] == 1.5 and passi[1]["z_lp"] == 1.0 and passi[2]["z_lp"] == 1.5
-assert passi[3]["z_lp"] == 1.0 and passi[4]["z_lp"] is None
-print("  L'incumbent finale vale 1: e' l'ottimo, e nessun sottoproblema resta aperto.")
 
 # ---------- 6. FIGURA: LA REGIONE AMMISSIBILE E I PUNTI INTERI ----------
 fig, ax = plt.subplots(figsize=(5.4, 5.0))

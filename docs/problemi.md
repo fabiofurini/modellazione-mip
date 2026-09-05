@@ -41,7 +41,7 @@ domande di modellazione aggiuntive.
     ---
 
     I problemi che non hanno una famiglia: modalità alternative, lotti minimi,
-    contenitori, divisione e bilanciamento. È qui che il rilassamento lineare
+    contenitori, divisione e bilanciamento. È qui che il rilassamento LP
     smette di servire e il bound duale va cercato con argomenti combinatori.
     Nove problemi risolti più due da modellare.
 

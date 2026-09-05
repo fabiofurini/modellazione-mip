@@ -25,7 +25,7 @@ quattro quesiti:
    per l'istanza, e costruire a mano una soluzione duale ammissibile per
    ottenere il bound dal lato opposto.
 
-Il `lb ≤ z(MILP) ≤ ub` che ne risulta è il filo conduttore del corso: un
+Il `lb ≤ z(\mathit{MILP}) ≤ ub` che ne risulta è il filo conduttore del corso: un
 modello non si limita a scriverlo, lo si stringe da entrambi i lati prima di
 affidarlo al solver. Un solver interrotto a metà, del resto, un certificato lo
 fornisce eccome — l'incumbent `ObjVal` e il bound `ObjBound` racchiudono

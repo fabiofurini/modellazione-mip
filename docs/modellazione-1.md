@@ -14,12 +14,12 @@ equazioni e disequazioni che rendono realizzabile una soluzione).
 
 !!! note "Notazione dei valori ottimi"
     $X$ è l'**insieme ammissibile** (i punti che soddisfano tutti i vincoli,
-    domini compresi); $z(\mathrm{MILP})$, $z(\mathrm{LP})$, $z(\mathrm{D})$ sono
+    domini compresi); $z(\mathit{MILP})$, $z(\mathit{LP})$, $z(\mathit{D})$ sono
     i valori ottimi del MILP, del suo rilassamento e del duale del rilassamento.
-    Le soluzioni **costruite a mano** si segnano con la barra ($\bar x$), quelle
+    Le soluzioni **ammissibili** si segnano con la barra ($\bar x$), quelle
     **ottime** con la tilde ($\tilde x$). I bound si chiamano $LB$ e
     $UB$, qualunque sia il verso dell'obiettivo. Si usa sempre
-    $z(\mathrm{MILP})$ e mai $z^\star$: quale modello si ottimizza deve essere
+    $z(\mathit{MILP})$ e mai $z^\star$: quale modello si ottimizza deve essere
     esplicito.
 
 **Classi di modelli.** **LP** se obiettivo e vincoli sono lineari e le variabili
@@ -38,7 +38,7 @@ x_1,\ x_2 &\in \{0,1\}. &
 $$
 
 Il rilassamento LP sostituisce $x_1, x_2 \in \{0,1\}$ con $0 \le x_1, x_2 \le 1$
-e vale $z(\mathrm{LP}^+) = 3/2$. Quel valore è raggiunto da **infinite**
+e vale $z(\mathit{LP}^+) = 3/2$. Quel valore è raggiunto da **infinite**
 soluzioni ottime — tutti i punti del segmento $x_1 + x_2 = 3/2$ dentro il
 quadrato — fra cui $(3/4, 3/4)$, $(1, 1/2)$ e $(1/2, 1)$. Quale il solver
 restituisca dipende dall'algoritmo: sulla nostra installazione Gurobi dà
@@ -47,7 +47,7 @@ $(1/2, 1)$.
 Arrotondando $(3/4, 3/4)$ all'intero più vicino si ottiene $(1,1)$, che viola il
 vincolo ($2+2 = 4 > 3$): **non è nemmeno ammissibile**. Arrotondando $(1, 1/2)$
 si ottiene $(1, 0)$, ammissibile di valore $1$ — che è proprio l'ottimo intero,
-$z(\mathrm{MILP}) = 1$.
+$z(\mathit{MILP}) = 1$.
 
 ![Il rilassamento e i punti interi](img/cap01_rilassamento.png)
 
@@ -59,20 +59,20 @@ ammissibile vale più di $1$.
 ## I due rilassamenti, e da che parte stanno
 
 !!! note "Due versioni da non confondere"
-    - **rilassamento senza i bound** $z(\mathrm{LP})$: $x \in \{0,1\}$ diventa il solo
+    - **rilassamento senza i bound** $z(\mathit{LP})$: $x \in \{0,1\}$ diventa il solo
       $x \ge 0$. È quello di cui negli esercizi si scrive il duale a mano.
-    - **rilassamento con i bound** $z(\mathrm{LP}^+)$:
-      $x \in \{0,1\}$ diventa $0 \le x \le 1$. È `relax()` di Gurobi e il
-      rilassamento della radice del branch-and-bound.
+    - **rilassamento con i bound** $z(\mathit{LP}^+)$:
+      $x \in \{0,1\}$ diventa $0 \le x \le 1$. È `relax()` di Gurobi, il primo
+      rilassamento che il solver risolve.
 
-    In un massimo $z(\mathrm{LP}) \ge z(\mathrm{LP}^+) \ge z(\mathrm{MILP})$; in
+    In un massimo $z(\mathit{LP}) \ge z(\mathit{LP}^+) \ge z(\mathit{MILP})$; in
     un minimo i versi si rovesciano. I due coincidono quando gli altri vincoli
     implicano già $x \le 1$ — per esempio con un vincolo di assegnamento
     $\sum_m x_{jm} = 1$.
 
 Il rilassamento **toglie** vincoli, quindi
 
-$$X_{\mathrm{MILP}} \subseteq X_{\mathrm{LP}^+} \subseteq X_{\mathrm{LP}},$$
+$$X_{\mathit{MILP}} \subseteq X_{\mathit{LP}^+} \subseteq X_{\mathit{LP}},$$
 
 e ottimizzare su un insieme più grande non può dare un valore peggiore. In un
 massimo il rilassamento è un *upper* bound, in un minimo un *lower* bound: in
@@ -81,21 +81,24 @@ entrambi i casi è un bound **ottimistico**.
 !!! warning "Da quale lato arriva ciascun bound"
     Il duale del rilassamento **non** dà un bound «dall'altro lato». Per dualità
     debole, in un minimo ogni soluzione duale ammissibile vale al più
-    $z(\mathrm{LP})$, quindi al più $z(\mathrm{MILP})$: sta dalla *stessa* parte
+    $z(\mathit{LP})$, quindi al più $z(\mathit{MILP})$: sta dalla *stessa* parte
     del rilassamento. Il bound dall'altro lato — quello *pessimistico* — viene
     solo da una soluzione ammissibile del MILP, cioè da un'euristica o dal
     solver. In un problema di **minimo**:
 
-    $$z(\mathrm{D}) \le z(\mathrm{LP}) \le z(\mathrm{LP}^+) \le z(\mathrm{MILP}) \le c'\bar x$$
+    $$\textstyle\sum_i b_i \bar u_i \le z(\mathit{D}(\mathit{LP})) = z(\mathit{LP}) \le z(\mathit{LP}^+) \le z(\mathit{MILP}) \le \sum_j c_j \bar x_j$$
 
     per ogni $\bar x$ ammissibile intero; in un **massimo** tutti i versi si
     rovesciano.
 
 ## Tre «gap» da non confondere
 
-1. **Gap dell'euristica**, quando l'ottimo è noto:
-   $|z_{\text{eur}} - z(\mathrm{MILP})| / |z(\mathrm{MILP})|$. È quello riportato
-   nelle tabelle degli esercizi.
+1. **Gap dell'euristica.** Se $\bar x$ è la soluzione costruita dall'euristica,
+   il suo valore è $\sum_j c_j\, \bar x_j$ e il gap è
+   $\bigl|\sum_j c_j\, \bar x_j - z(\mathit{MILP})\bigr| / |z(\mathit{MILP})|$
+   quando l'ottimo è noto — è quello riportato nelle tabelle degli esercizi.
+   Quando l'ottimo non è noto lo si calcola rispetto a un bound duale, che ne
+   prende il posto.
 2. **Divario certificato** fra due bound noti, senza conoscere l'ottimo:
    $(\mathit{UB} - \mathit{LB})/|\mathit{UB}|$ per un minimo con
    $\mathit{UB} > 0$. Garantisce che l'ottimo stia nell'intervallo, non che sia
@@ -118,29 +121,25 @@ Il problema [7.1](scheduling-1.md) usa un *partitioning* per ogni lavoro, il
 [7.3](scheduling-3.md) un *packing*, e il [capitolo 2](modellazione-2.md) mostra
 il *covering* come traduzione diretta di una clausola OR.
 
-## Branch-and-bound in una pagina
+## Che cosa fa il solver con i due bound
 
-Per un problema di **minimo**:
+Un MILP con insieme ammissibile limitato si risolve con algoritmi dedicati. Come
+funzionano — come si esplora lo spazio delle soluzioni, come si separano i
+tagli, come si sceglie su che cosa ramificare — non è argomento di questo corso:
+le tecniche risolutive sono materia di un corso a parte. Qui interessa una cosa
+sola: i due bound che questo corso insegna a costruire a mano sono esattamente
+quelli su cui il solver lavora.
 
-1. si risolve il rilassamento LP del sottoproblema: se è inammissibile si
-   scarta; se la soluzione è intera diventa un candidato **incumbent**;
-2. altrimenti si sceglie una variabile frazionaria $x_j = v$ e si **ramifica**
-   in $x_j \le \lfloor v \rfloor$ e $x_j \ge \lceil v \rceil$: ogni soluzione
-   intera soddisfa una delle due, e nessuna entrambe;
-3. si **pota** un sottoproblema il cui rilassamento vale più dell'incumbent;
-4. si termina quando non restano sottoproblemi aperti.
+- Il **bound primale** è una soluzione ammissibile, e dà un valore da battere:
+  ogni parte dello spazio che non può fare meglio viene scartata senza
+  esplorarla.
+- Il **bound duale** viene dal rilassamento, e dice quanto si può sperare al
+  massimo: più è vicino all'ottimo intero — cioè più la formulazione è stretta,
+  si veda il [capitolo 3](legami.md) — meno lavoro resta da fare.
 
-Con variabili binarie l'albero ha al più $2^n$ foglie e l'algoritmo termina
-certamente; con variabili intere illimitate la terminazione non è garantita.
-
-!!! example "La traccia sull'esempio (è un massimo: si pota chi vale *meno*)"
-    - **Radice.** $z(\mathrm{LP}^+) = 3/2$ con $(1/2, 1)$: $x_1$ è frazionaria.
-    - **Ramo $x_1 \le 0$.** Ottimo $x_2 = 1$, valore $1$, intero: incumbent.
-    - **Ramo $x_1 \ge 1$.** Ottimo $x_2 = 1/2$, valore $3/2$: ancora
-      frazionaria. Il sottoramo $x_2 \le 0$ dà $(1,0)$ di valore $1$, che non
-      migliora; il sottoramo $x_2 \ge 1$ è inammissibile.
-    - **Fine.** $z(\mathrm{MILP}) = 1$, dimostrato. I cinque rilassamenti sono
-      risolti dallo script e salvati in `dati/cap01_branch.csv`.
+Il divario fra i due è quello che il solver riporta come `MIPGap`, ed è anche
+l'unica cosa che si può affermare con sicurezza quando l'ottimo non si
+raggiunge.
 
 ## Quello che questo capitolo lascia aperto
 
@@ -154,8 +153,7 @@ certamente; con variabili intere illimitate la terminazione non è garantita.
 
 ## Codice
 
-Lo script completo — i due rilassamenti, l'arrotondamento, la traccia del
-branch-and-bound e la figura — è
+Lo script completo — i due rilassamenti, l'arrotondamento e la figura — è
 [`python/cap01_modelli.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/cap01_modelli.py)
 (riproducibile con `python3 python/cap01_modelli.py` dalla cartella `python/`).
 Lo stesso codice è disponibile come notebook —
@@ -164,14 +162,14 @@ Lo stesso codice è disponibile come notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/cap01_modelli.py` (157 righe)"
+??? example "Mostra lo script completo — `python/cap01_modelli.py` (119 righe)"
 
     ```python
     """Capitolo 1 -- Che cos'e' un modello MIP: rilassamento, arrotondamento, bound.
 
     Verifica numerica degli esempi del capitolo: il controesempio
     dell'arrotondamento, i due rilassamenti (puro e con i bound conservati),
-    l'ottimo intero e la traccia del branch-and-bound svolto a mano nel testo.
+    l'ottimo intero e i due bound del sandwich.
     Tutti i numeri citati nella dispensa e sul sito escono da qui.
     """
     import gurobipy as gp
@@ -255,44 +253,6 @@ Lo stesso codice è disponibile come notebook —
     salva_dati(pd.DataFrame([{"modello": "esempio 1.1", "z_lp": zlp, "z_lp_rafforzato": zlpp,
                               "z_milp": zmilp}]), "cap01_bound")
 
-
-    # ---------- 5. IL BRANCH-AND-BOUND SVOLTO A MANO ----------
-    intestazione("5. Branch-and-bound: la traccia riportata nel capitolo")
-
-
-    def nodo(fissa: dict):
-        """Rilassamento LP+ del sottoproblema con le variabili limitate da `fissa`.
-
-        `fissa` e' {indice: (lb, ub)}: sono i rami x_j <= floor(v) e x_j >= ceil(v).
-        """
-        m, x = modello_esempio(binarie=False, superiore=True)
-        for j, (lo, hi) in fissa.items():
-            x[j].LB, x[j].UB = lo, hi
-        m.optimize()
-        if m.Status != GRB.OPTIMAL:
-            return None, None
-        return m.ObjVal, (x[0].X, x[1].X)
-
-
-    passi = []
-    for etichetta, fissa in [("radice", {}),
-                             ("x1 <= 0", {0: (0.0, 0.0)}),
-                             ("x1 >= 1", {0: (1.0, 1.0)}),
-                             ("x1 >= 1, x2 <= 0", {0: (1.0, 1.0), 1: (0.0, 0.0)}),
-                             ("x1 >= 1, x2 >= 1", {0: (1.0, 1.0), 1: (1.0, 1.0)})]:
-        z, sol = nodo(fissa)
-        if z is None:
-            print(f"  {etichetta:20s} inammissibile: il ramo si scarta")
-            passi.append({"nodo": etichetta, "z_lp": None, "x1": None, "x2": None, "intera": False})
-            continue
-        intera = all(abs(v - round(v)) <= 1e-9 for v in sol)
-        print(f"  {etichetta:20s} z(LP+) = {frazione(z):>4}   x = ({frazione(sol[0])}, "
-              f"{frazione(sol[1])}){'   soluzione intera: candidato incumbent' if intera else '   frazionaria: si ramifica'}")
-        passi.append({"nodo": etichetta, "z_lp": z, "x1": sol[0], "x2": sol[1], "intera": intera})
-    salva_dati(pd.DataFrame(passi), "cap01_branch")
-    assert passi[0]["z_lp"] == 1.5 and passi[1]["z_lp"] == 1.0 and passi[2]["z_lp"] == 1.5
-    assert passi[3]["z_lp"] == 1.0 and passi[4]["z_lp"] is None
-    print("  L'incumbent finale vale 1: e' l'ottimo, e nessun sottoproblema resta aperto.")
 
     # ---------- 6. FIGURA: LA REGIONE AMMISSIBILE E I PUNTI INTERI ----------
     fig, ax = plt.subplots(figsize=(5.4, 5.0))

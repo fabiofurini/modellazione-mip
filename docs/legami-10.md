@@ -39,7 +39,7 @@ $v > 0$. È un argomento di ottimalità, e vale **solo all'ottimo**.
 !!! danger "Con $v = 0$ l'argomento cade, e $y$ smette di significare"
     Istanza a tre lavori, ricavi $(2,2,2)$, capacità 3:
 
-    | premio $v$ | vincoli | $z(\mathrm{MILP})$ | $y$, $x$ all'ottimo | $y$ dice «classe completa»? |
+    | premio $v$ | vincoli | $z(\mathit{MILP})$ | $y$, $x$ all'ottimo | $y$ dice «classe completa»? |
     |---:|---|---:|---|---|
     | $9$ | solo $y \le x_j$ | $15$ | $y=1$, $x=(1,1,1)$ | sì |
     | $9$ | entrambi | $15$ | $y=1$, $x=(1,1,1)$ | sì |
@@ -54,7 +54,7 @@ $v > 0$. È un argomento di ottimalità, e vale **solo all'ottimo**.
 
 ## La forza del rilassamento
 
-$z(\mathrm{LP}^+) = 15 = z(\mathrm{MILP})$ su questa istanza: entrambi i versi
+$z(\mathit{LP}^+) = 15 = z(\mathit{MILP})$ su questa istanza: entrambi i versi
 imposti danno un rilassamento esatto. Il secondo vincolo è debole nel
 rilassamento (con $x_j = 1/2$ il membro destro è negativo), ma qui non serve.
 

@@ -105,7 +105,7 @@ minimo fra capacità residua e domanda residua.
 Esecuzione: la sede 1 spedisce $8$ al cliente 1, $25$ al cliente 2, $17$ al
 cliente 3 (capacità esaurita); la sede 2 spedisce i restanti $10$ al
 cliente 3. Valore: $60+90 + (4{\cdot}8+5{\cdot}25+6{\cdot}17+3{\cdot}10) =
-150+289 = 439$. Quindi $z(\mathrm{MILP}) \le \mathit{UB} = 439$.
+150+289 = 439$. Quindi $z(\mathit{MILP}) \le \mathit{UB} = 439$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -118,16 +118,16 @@ $$
 $$
 
 di valore $8{\cdot}26/5 + 25{\cdot}29/5 + 27{\cdot}24/5 = 1581/5$. Per la
-dualità debole, $\mathit{LB} = 1581/5 \le z(\mathrm{LP}) \le z(\mathrm{MILP})
+dualità debole, $\mathit{LB} = 1581/5 \le z(\mathit{LP}) \le z(\mathit{MILP})
 \le \mathit{UB} = 439$.
 
-**Quello che dice il solver.** $z(\mathrm{LP}) = 1581/5$ esattamente: la
+**Quello che dice il solver.** $z(\mathit{LP}) = 1581/5$ esattamente: la
 soluzione duale a mano è già ottima. Rafforzando con $x_l \le 1$,
-$z(\mathrm{LP}^+) = 317$. $z(\mathrm{MILP}) = 365$, con entrambe le sedi
+$z(\mathit{LP}^+) = 317$. $z(\mathit{MILP}) = 365$, con entrambe le sedi
 aperte: la sede 1 serve il cliente 1 e parte del cliente 2, la sede 2 il
 resto del cliente 2 e tutto il cliente 3. Gap euristica $20{,}3\%$.
 
-| $UB$ | $LB$ (duale) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | gap |
+| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap |
 |---:|---:|---:|---:|---:|---:|
 | 439 | $1581/5$ | $1581/5$ | 317 | 365 | $20{,}3\%$ |
 

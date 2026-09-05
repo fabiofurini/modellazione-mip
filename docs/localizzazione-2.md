@@ -78,7 +78,7 @@ $m = 3$ sedi, $n = 3$ clienti, $k = 2$:
 
 Si aprono le prime $k$ sedi; ogni cliente va alla sede aperta più vicina.
 Aperte le sedi 1 e 2: cliente 1 → sede 2 (dist. 3), cliente 2 → sede 1
-(dist. 6), cliente 3 → sede 2 (dist. 9). Valore $3+6+9=18$: $z(\mathrm{MILP})
+(dist. 6), cliente 3 → sede 2 (dist. 9). Valore $3+6+9=18$: $z(\mathit{MILP})
 \le \mathit{UB} = 18$.
 
 ## Rilassamento LP e duale: il bound duale
@@ -90,14 +90,14 @@ $$
 \bar\mu_1 = 3,\quad \bar\mu_2 = 6,\quad \bar\mu_3 = 4,
 $$
 
-di valore $13$. Per la dualità debole, $\mathit{LB}=13 \le z(\mathrm{LP})
-\le z(\mathrm{MILP}) \le \mathit{UB}=18$.
+di valore $13$. Per la dualità debole, $\mathit{LB}=13 \le z(\mathit{LP})
+\le z(\mathit{MILP}) \le \mathit{UB}=18$.
 
-**Quello che dice il solver.** $z(\mathrm{LP}) = z(\mathrm{LP}^+) = 15$: il
-rilassamento è già intero su questa istanza. $z(\mathrm{MILP}) = 15$, con le
+**Quello che dice il solver.** $z(\mathit{LP}) = z(\mathit{LP}^+) = 15$: il
+rilassamento è già intero su questa istanza. $z(\mathit{MILP}) = 15$, con le
 sedi 1 e 3 aperte (non 1 e 2 come nell'euristica): gap euristica $20{,}0\%$.
 
-| $UB$ | $LB$ (duale) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | gap |
+| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap |
 |---:|---:|---:|---:|---:|---:|
 | 18 | 13 | 15 | 15 | 15 | $20{,}0\%$ |
 

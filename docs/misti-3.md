@@ -108,7 +108,7 @@ $35$ grammi di ferro (ne servono $60$) e $30$ di calcio (ne servono $40$).
   $40$: non serve altro.
 
 La dieta finale è latte $1$ kg, riso $2{,}25$ kg, pane $1$ kg, per un costo di
-$z(\mathrm{MILP}) \le \mathit{UB} = 39/4 = 9{,}75$.
+$z(\mathit{MILP}) \le \mathit{UB} = 39/4 = 9{,}75$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -148,7 +148,7 @@ $$\bar\alpha_j = \min_{i :\, g_{ij} > 0} \frac{w_i}{g_{ij}},
 
 e si tiene il nutriente che dà il bound più alto. Sull'istanza il ferro dà
 $60 \cdot 3/20 = 9$ e il calcio $40 \cdot 1/15 = 8/3$: il migliore è il ferro,
-$z(\mathrm{MILP}) \ge \mathit{LB} = 9$.
+$z(\mathit{MILP}) \ge \mathit{LB} = 9$.
 
 ## Soluzione ottima
 
@@ -156,7 +156,7 @@ La dieta ottima è riso $1{,}4$ kg, pane $1{,}4$ kg, patate $1$ kg: tre cibi
 diversi, come richiesto, con $60$ grammi di ferro (il minimo esatto) e $40$ di
 calcio (di nuovo il minimo esatto).
 
-| $LB$ (duale) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | $UB$ (euristica) | gap |
+| $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap |
 |---:|---:|---:|---:|---:|---:|
 | 9 | $46/5$ | $48/5$ | $48/5$ | $39/4$ | $1{,}6\%$ |
 

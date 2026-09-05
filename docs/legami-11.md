@@ -36,7 +36,7 @@ mancante «$y_j = 1 \Rightarrow q_j \ge \ell$».
 ## La forza del rilassamento
 
 Tre tipi, ricavi unitari $(4, 3, 5)$, risorsa $12$, capacità $10$ ciascuno,
-soglia $\ell = 3$, almeno due tipi: $z(\mathrm{MILP}) = 57$, con
+soglia $\ell = 3$, almeno due tipi: $z(\mathit{MILP}) = 57$, con
 $q = (3, 0, 9)$. Il rilassamento vale anch'esso $57$: qui il conteggio non
 introduce alcun gap.
 

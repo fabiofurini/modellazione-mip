@@ -20,7 +20,7 @@ modellazione consiste proprio nel riconoscere quali.
   contenitori e la qualità si misura su quanto i contenitori si somigliano.
 
 Quattro di questi problemi hanno in comune un tratto che nelle tre famiglie non
-si era presentato: il **rilassamento lineare è debole**, e in due casi vale
+si era presentato: il **rilassamento LP è debole**, e in due casi vale
 esattamente zero. La ragione è sempre la stessa: una soluzione frazionaria può
 spezzare a metà ogni oggetto e metterne una metà in ciascun contenitore,
 pareggiando tutto.
@@ -87,7 +87,7 @@ pareggiando tutto.
 
     ---
 
-    Conteggi interi e vincoli di composizione. Il rilassamento lineare non
+    Conteggi interi e vincoli di composizione. Il rilassamento LP non
     vede la parità: il bound utile è combinatorio.
 
     [:octicons-arrow-right-24: ILP · conteggi interi](misti-6.md)

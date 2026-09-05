@@ -101,7 +101,7 @@ Classe per classe: il primo lavoro paga anche il setup, se ci sta.
 - **Passo 4.** $t_4 = 6 > 5$: saltato. **Passi 5–7.** Classe 3: $s_3 + t_j > 5$:
   saltati.
 
-Profitto $10 + 6 + 8 - 10 - 5 = 9$: $z(\mathrm{MILP}) \ge 9$.
+Profitto $10 + 6 + 8 - 10 - 5 = 9$: $z(\mathit{MILP}) \ge 9$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -118,15 +118,15 @@ $$
 
 **Una soluzione duale a mano.** $\bar\lambda = 0$ e
 $\bar\pi = \max_j r_j/t_j = \tfrac{10}{5} = 2$: valore $100$. Quindi
-$9 \le z(\mathrm{MILP}) \le 100$: un bound grossolano, come spesso i bound «di
+$9 \le z(\mathit{MILP}) \le 100$: un bound grossolano, come spesso i bound «di
 zaino», che ignora setup e costi.
 
-**Quello che dice il solver.** $z(\mathrm{LP}) = 425/13 = 32{,}7$ (con
-$\pi = \tfrac{17}{26}$ e alcuni $\lambda_j > 0$); $z(\mathrm{LP}^+) = 329/13$.
+**Quello che dice il solver.** $z(\mathit{LP}) = 425/13 = 32{,}7$ (con
+$\pi = \tfrac{17}{26}$ e alcuni $\lambda_j > 0$); $z(\mathit{LP}^+) = 329/13$.
 Ottimo intero $21$: classi 2 e 3, lavori $3, 4, 5, 6$, profitto $30 - 9$.
 L'euristica resta a $9$ (gap $57\%$): l'ordine di scansione conta.
 
-| $LB$ | $UB$ (duale a mano) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | gap euristica |
+| $LB$ | $UB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|---:|
 | 9 | 100 | $425/13$ | $329/13$ | 21 | $57{,}1\%$ |
 

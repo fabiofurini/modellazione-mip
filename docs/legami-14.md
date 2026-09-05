@@ -59,7 +59,7 @@ grafico — sotto la funzione.
 Attenzione a non confondere due cose: l'adiacenza cambia l'**insieme intero** (i
 due modelli hanno ottimi diversi, $29{,}25$ e $33$), ma **non** la forza del
 rilassamento — con $w_t$ frazionarie il vincolo di adiacenza non morde e i due
-modelli hanno lo stesso $z(\mathrm{LP}^+) = 117/4$.
+modelli hanno lo stesso $z(\mathit{LP}^+) = 117/4$.
 
 ## In gurobipy, e dove si rivede
 

@@ -12,7 +12,7 @@ Un modello con variabili binarie e intere non si *scrive* soltanto: si
 un'implicazione logica, e lo studente deve saper provare che la impone davvero
 — in entrambi i versi, oppure spiegando perché un verso segue dall'ottimalità.
 Poi il modello si *stringe*: un'euristica costruttiva fornisce un upper bound
-e una soluzione duale del rilassamento lineare fornisce un lower bound, che
+e una soluzione duale del rilassamento LP fornisce un lower bound, che
 intrappolano il valore ottimo fra i due — la stessa tecnica usata in pratica
 quando un'istanza reale è troppo grande per essere risolta all'ottimo provato.
 Infine il modello si *risolve*, con Gurobi da Python.

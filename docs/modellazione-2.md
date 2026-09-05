@@ -176,8 +176,8 @@ In tutti, $x_p = 1$ se il progetto $p$ è scelto.
         anche $x_1 + x_2 + x_3 \ge 2 x_4$: un vincolo invece di tre, con le
         stesse $16$ soluzioni binarie ma **più forte** nel rilassamento. Su
         $\max x_1+x_2+x_3+3x_4$ con $x_1+x_2+x_3+2x_4 \le 3$ e
-        $z(\mathrm{MILP}) = 3$, le tre clausole danno
-        $z(\mathrm{LP}^+) = 27/7 \approx 3{,}86$ e il vincolo contato
+        $z(\mathit{MILP}) = 3$, le tre clausole danno
+        $z(\mathit{LP}^+) = 27/7 \approx 3{,}86$ e il vincolo contato
         $15/4 = 3{,}75$.
 
 ??? question "2.5 — Scissioni (dieci progetti)"
@@ -209,8 +209,8 @@ x_p &\in \{0,1\}. &
 $$
 
 Senza i vincoli logici l'ottimo è $30$. Con i vincoli logici scende a
-$z(\mathrm{MILP}) = 28$, con i progetti $1, 2, 3, 5, 8$ di costo complessivo
-$14$: il budget è saturo. Il rilassamento $z(\mathrm{LP}^+)$ vale $29$.
+$z(\mathit{MILP}) = 28$, con i progetti $1, 2, 3, 5, 8$ di costo complessivo
+$14$: il budget è saturo. Il rilassamento $z(\mathit{LP}^+)$ vale $29$.
 
 !!! tip "Quanto tagliano sei implicazioni"
     Le $2^{10} = 1024$ assegnazioni si riducono a $234$ quando si impongono

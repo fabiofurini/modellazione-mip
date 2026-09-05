@@ -41,7 +41,7 @@ perché allora $\kappa_j + t_i - M \le \sum_h t_h + t_i - \sum_h t_h = t_i \le \
 ## La forza del rilassamento
 
 Tre lavori di durata $(3, 2, 4)$ su una macchina, obiettivo makespan:
-$z(\mathrm{MILP}) = 9 = \sum_h t_h$ (ovvio: una sola macchina), con
+$z(\mathit{MILP}) = 9 = \sum_h t_h$ (ovvio: una sola macchina), con
 completamenti $(3, 5, 9)$. Il rilassamento vale $4$: con $s_{ij} = 1/2$ tutti i
 vincoli di precedenza si spengono a metà e i lavori possono sovrapporsi. È il
 rilassamento più debole di tutto il capitolo, e spiega perché i modelli di

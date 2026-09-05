@@ -34,7 +34,7 @@ $$z ~\ge~ t_j\, x_j, \qquad \forall j \qquad (n \text{ vincoli}), \qquad z \ge 0
 ## La forza del rilassamento
 
 $\min z$ con $z \ge t_j x_j$, $t = (4, 7, 3)$ e $\sum_j x_j \ge 2$: l'ottimo
-intero è $z(\mathrm{MILP}) = 4$ (si scelgono i lavori 1 e 3, e il massimo è 4).
+intero è $z(\mathit{MILP}) = 4$ (si scelgono i lavori 1 e 3, e il massimo è 4).
 Il rilassamento vale $168/61 \approx 2{,}75$: la soluzione frazionaria
 $x_j = z/t_j$ spalma la scelta su tutti e tre i lavori e abbassa il massimo. Il
 legame di massimo dà rilassamenti **deboli**: è una delle ragioni per cui i

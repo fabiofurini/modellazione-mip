@@ -43,7 +43,7 @@ cioè $0 \ge 2k$, inammissibile per $k > 0$.
 ## La forza del rilassamento
 
 Sull'istanza dei cinque pesi, $\min |L_1 - L_2|$ ha ottimo
-$z(\mathrm{MILP}) = 1$ e rilassamento $z(\mathrm{LP}^+) = 0$: il continuo divide
+$z(\mathit{MILP}) = 1$ e rilassamento $z(\mathit{LP}^+) = 0$: il continuo divide
 $21$ in due metà uguali e azzera lo scarto. Il rilassamento di un obiettivo di
 valore assoluto è tipicamente $0$, cioè inutile.
 

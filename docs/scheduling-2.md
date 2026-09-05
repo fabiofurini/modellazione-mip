@@ -131,7 +131,7 @@ assegnamento: conviene consumare poca disponibilità).
   minimo è la macchina 2, $x[3][2] = 1$, $ra[2] = 7$.
 
 Macchine usate 2 e 3: $\bar y = (0, 1, 1)$, valore $12$, quindi
-$z(\mathrm{MILP}) \le 12$. Next-fit, first-fit e le varianti «prima le
+$z(\mathit{MILP}) \le 12$. Next-fit, first-fit e le varianti «prima le
 macchine già aperte» usano le macchine 1 e 2 (valore $15$).
 
 ## Rilassamento LP e duale: il bound duale
@@ -156,18 +156,18 @@ $\bar\mu_2 = \min\{\tfrac{8}{5}, \tfrac{7}{2}, \tfrac{5}{6}\} = \tfrac{5}{6}$,
 $\bar\mu_3 = \min\{\tfrac{32}{5}, \tfrac{91}{20}, \tfrac{25}{6}\} = \tfrac{25}{6}$.
 Valore $\tfrac{25}{4}$:
 
-$$\tfrac{25}{4} ~\le~ z(\mathrm{MILP}) ~\le~ 12.$$
+$$\tfrac{25}{4} ~\le~ z(\mathit{MILP}) ~\le~ 12.$$
 
 Un bound debole: il costo fisso si paga per intero appena la macchina si usa,
 ma il rilassamento lo spalma sui minuti.
 
-**Quello che dice il solver.** $z(\mathrm{LP}) = 25/4$: la soluzione a mano è
+**Quello che dice il solver.** $z(\mathit{LP}) = 25/4$: la soluzione a mano è
 ottima per il duale. Con $y_m \le 1$ e $x_{jm} \le 1$ il rilassamento con i bound
-vale $z(\mathrm{LP}^+) = 1273/200 = 6{,}365$; con i link disaggregati
+vale $z(\mathit{LP}^+) = 1273/200 = 6{,}365$; con i link disaggregati
 $x_{jm} \le y_m$ sale a $440/67 = 6{,}567$. Ottimo intero $12$: macchine 2 e 3
 accese, $\tilde x_{12} = \tilde x_{23} = \tilde x_{33} = 1$.
 
-| $UB$ | $LB$ (duale a mano) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | gap euristica |
+| $UB$ | $LB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|---:|
 | 12 | $25/4$ | $25/4$ | $1273/200$ | 12 | $0{,}0\%$ |
 
@@ -181,7 +181,7 @@ accese, $\tilde x_{12} = \tilde x_{23} = \tilde x_{33} = 1$.
   $(x_{1m} \,\mathtt{OR}\, \dots \,\mathtt{OR}\, x_{nm}) \Rightarrow y_m$; De Morgan
   e distributività danno la CNF $(\mathtt{NOT}\,x_{1m} \,\mathtt{OR}\, y_m) \,\mathtt{AND}\, \dots$,
   cioè i vincoli **disaggregati** $x_{jm} \le y_m$: implicati dal modello, ma non
-  dal rilassamento — aggiunti, portano $z(\mathrm{LP}^+)$ a $440/67$. Stesso
+  dal rilassamento — aggiunti, portano $z(\mathit{LP}^+)$ a $440/67$. Stesso
   insieme intero, rilassamento più stretto.
 - Il verso opposto, $\sum_j x_{jm} \ge y_m$, non è valido ma si può aggiungere
   senza perdere l'ottimo.

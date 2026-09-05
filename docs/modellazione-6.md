@@ -69,11 +69,11 @@ L'ordine di lettura non si cambia: `Status`, poi `SolCount`, poi `ObjVal` e
 
 | `Status` | valore | `SolCount` | Che cosa si può dire |
 |---|---:|---:|---|
-| `OPTIMAL` | 2 | $\ge 1$ | $z(\mathrm{MILP}) = $ `ObjVal`, dimostrato |
+| `OPTIMAL` | 2 | $\ge 1$ | $z(\mathit{MILP}) = $ `ObjVal`, dimostrato |
 | `INFEASIBLE` | 3 | 0 | il modello non ha soluzioni ammissibili |
 | `UNBOUNDED` | 5 | 0 | manca un vincolo, o un bound su una variabile |
 | `TIME_LIMIT` | 9 | 0 | niente: né una soluzione né, in generale, un bound utile |
-| `TIME_LIMIT` | 9 | $\ge 1$ | `ObjBound` $\le z(\mathrm{MILP}) \le$ `ObjVal` |
+| `TIME_LIMIT` | 9 | $\ge 1$ | `ObjBound` $\le z(\mathit{MILP}) \le$ `ObjVal` |
 | `SOLUTION_LIMIT` | 10 | $\ge 1$ | come sopra |
 
 !!! example "I quattro casi sull'istanza del problema 7.1"
@@ -126,7 +126,7 @@ zlp = r.ObjVal
 duali = {c.ConstrName: c.Pi for c in r.getConstrs()}
 ```
 
-Sull'istanza del problema 7.1, $z(\mathrm{LP}^+) = z(\mathrm{LP}) = 53/5$ — i
+Sull'istanza del problema 7.1, $z(\mathit{LP}^+) = z(\mathit{LP}) = 53/5$ — i
 due rilassamenti coincidono perché i vincoli di assegnamento implicano già
 $x_{jm} \le 1$ — e i duali non nulli sono $\tilde\mu = (2,\ 4{,}8,\ 5)$ e
 $\tilde\pi_2 = -0{,}2$: la macchina 2 è la sola risorsa stretta.
@@ -153,7 +153,7 @@ salva_dati(pd.DataFrame([riga]), "sched1_bound")         #     -> dati/sched1_bo
 ```
 
 Sull'istanza del problema 7.1 il protocollo produce $\mathit{LB} = 10$,
-$z(\mathrm{LP}) = 53/5$, $z(\mathrm{MILP}) = 11$, $\mathit{UB} = 11$, e la riga
+$z(\mathit{LP}) = 53/5$, $z(\mathit{MILP}) = 11$, $\mathit{UB} = 11$, e la riga
 finisce in `dati/sched1_bound.csv`. Da lì la leggono la dispensa, la pagina del
 sito e `verifica_numeri.py`: **un solo posto in cui il numero esiste**.
 

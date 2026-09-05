@@ -29,7 +29,7 @@ per $w$ la conclusione si indebolisce in «esiste un ottimo».
 ## La forza del rilassamento
 
 $17$ pezzi unitari, capienza $K = 5$: il rilassamento dà $w \ge 17/5 = 3{,}4$ e
-l'ottimo intero è $z(\mathrm{MILP}) = 4$. Il gap $4 - 17/5 = 3/5$ viene tutto
+l'ottimo intero è $z(\mathit{MILP}) = 4$. Il gap $4 - 17/5 = 3/5$ viene tutto
 dall'interezza: nessun taglio lineare sulle sole $x$ lo chiude, serve una
 disuguaglianza che usi $w$ intera.
 

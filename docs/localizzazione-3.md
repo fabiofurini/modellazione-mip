@@ -88,7 +88,7 @@ Si aprono le prime $k$ sedi. Cliente 1: segnale $10\ge5$ ma 2 sedi forti
 ($>1$): **non coperto**. Cliente 2: segnale $5\ge5$, 0 sedi forti:
 **coperto**. Cliente 3: segnale $7\ge5$, 1 sede forte: **coperto**. Clienti
 4 e 5: segnale insufficiente: **non coperti**. Valore $20+5=25$:
-$z(\mathrm{MILP}) \ge \mathit{LB} = 25$.
+$z(\mathit{MILP}) \ge \mathit{LB} = 25$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -100,15 +100,15 @@ $$
 
 di valore $m\sum_c\bar\lambda_c = 3\cdot75/2=225/2$. Per la dualità debole
 (problema di massimo: l'euristica dà il lower bound, il duale l'upper
-bound), $\mathit{LB}=25 \le z(\mathrm{MILP}) \le z(\mathrm{LP}) \le
+bound), $\mathit{LB}=25 \le z(\mathit{MILP}) \le z(\mathit{LP}) \le
 \mathit{UB}=225/2$.
 
-**Quello che dice il solver.** $z(\mathrm{LP}) = 41925/646 \approx 64{,}9$,
-$z(\mathrm{LP}^+) = 125/2 = 62{,}5$. $z(\mathrm{MILP}) = 45$, con le sedi 1
+**Quello che dice il solver.** $z(\mathit{LP}) = 41925/646 \approx 64{,}9$,
+$z(\mathit{LP}^+) = 125/2 = 62{,}5$. $z(\mathit{MILP}) = 45$, con le sedi 1
 e 3 installate e i clienti 1, 2, 4 coperti (non 3 né 5): diverso da quanto
 trovato dall'euristica. Gap euristica $44{,}4\%$.
 
-| $LB$ | $UB$ (duale) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | gap |
+| $LB$ | $UB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap |
 |---:|---:|---:|---:|---:|---:|
 | 25 | $225/2$ | $41925/646$ | $125/2$ | 45 | $44{,}4\%$ |
 

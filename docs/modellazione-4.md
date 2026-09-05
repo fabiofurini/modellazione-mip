@@ -17,12 +17,12 @@ più grande non può essere più alto. In un massimo la disuguaglianza si rovesc
 
 | Nome | Che cosa si toglie | Nota |
 |---|---|---|
-| $z(\mathrm{LP})$, puro | $x \in \{0,1\}$ diventa $x \ge 0$ | è quello di cui si scrive il duale a mano: ha meno vincoli, quindi un duale con meno variabili |
-| $z(\mathrm{LP}^+)$, con i bound conservati | $x \in \{0,1\}$ diventa $0 \le x \le 1$ | è `relax()` di Gurobi e il rilassamento della radice |
-| $z(\mathrm{LP}^{++})$, rafforzato | come sopra, più disuguaglianze valide | vedi sotto |
+| $z(\mathit{LP})$, puro | $x \in \{0,1\}$ diventa $x \ge 0$ | è quello di cui si scrive il duale a mano: ha meno vincoli, quindi un duale con meno variabili |
+| $z(\mathit{LP}^+)$, con i bound conservati | $x \in \{0,1\}$ diventa $0 \le x \le 1$ | è `relax()` di Gurobi e il rilassamento della radice |
+| $z(\mathit{LP}^{++})$, rafforzato | come sopra, più disuguaglianze valide | vedi sotto |
 
 In un minimo
-$z(\mathrm{LP}) \le z(\mathrm{LP}^+) \le z(\mathrm{LP}^{++}) \le z(\mathrm{MILP})$.
+$z(\mathit{LP}) \le z(\mathit{LP}^+) \le z(\mathit{LP}^{++}) \le z(\mathit{MILP})$.
 
 !!! note "I due rilassamenti coincidono più spesso di quanto sembri"
     Se il modello contiene un vincolo di assegnamento $\sum_m x_{jm} = 1$ con
@@ -56,16 +56,16 @@ ricetta per costruire una soluzione duale ha un significato economico.
   **qualunque** soluzione duale ammissibile, anche costruita a mano.
 - **Dualità forte**: se l'LP ha ottimo finito, $\max b'u = \min c'x$. Serve come
   **controllo**: l'ottimo del duale scritto a mano deve coincidere con
-  $z(\mathrm{LP})$. Gli script del corso lo verificano con un `assert`.
+  $z(\mathit{LP})$. Gli script del corso lo verificano con un `assert`.
 
-E poi: siccome $X_{\mathrm{MILP}} \subseteq X_{\mathrm{LP}}$,
+E poi: siccome $X_{\mathit{MILP}} \subseteq X_{\mathit{LP}}$,
 
-$$b'\bar u ~\le~ z(\mathrm{LP}) ~\le~ z(\mathrm{MILP}).$$
+$$b'\bar u ~\le~ z(\mathit{LP}) ~\le~ z(\mathit{MILP}).$$
 
 !!! danger "Non esiste «il duale del MILP»"
     Il duale che si scrive è quello del **rilassamento**. Il MILP non ha un
     duale lineare, e la dualità forte fra MILP e un qualsiasi programma lineare
-    in generale non vale: il salto $z(\mathrm{MILP}) - z(\mathrm{LP})$ è
+    in generale non vale: il salto $z(\mathit{MILP}) - z(\mathit{LP})$ è
     precisamente ciò che manca.
 
 ## Tre ricette per costruire a mano una soluzione duale
@@ -83,7 +83,7 @@ $$b'\bar u ~\le~ z(\mathrm{LP}) ~\le~ z(\mathrm{MILP}).$$
 
 Qualunque ricetta si usi, la soluzione va **verificata ammissibile** per il
 duale — è l'unica cosa che rende valido il bound — e il suo valore confrontato
-con $z(\mathrm{LP})$.
+con $z(\mathit{LP})$.
 
 ## Un problema di minimo, per esteso
 
@@ -137,7 +137,7 @@ $$\mathit{LB} = 3 + 0 + 1 + 0 + 0 + 3 = 7.$$
 le squadre $1$, $2$, $4$, di costo $4+3+3 = 10$: soluzione ammissibile e
 **intera**, quindi $\mathit{UB} = 10$.
 
-| $UB$ (euristica costruttiva) | $LB$ (duale a mano) | $z(\mathrm{LP})$ | $z(\mathrm{MILP})$ | gap euristica |
+| $UB$ (euristica costruttiva) | $LB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|
 | 10 | 7 | $15/2$ | 10 | $0{,}0\%$ |
 
@@ -161,7 +161,7 @@ $\min\ C v$ con $w_j v \ge p_j$ per ogni $j$.
   $C \bar v = 18$. In un **massimo** il duale dà un **upper** bound:
   $\mathit{UB} = 18$.
 
-$$16 ~\le~ z(\mathrm{MILP}) = 17 ~\le~ z(\mathrm{LP}^+) = \tfrac{71}{4} ~\le~ z(\mathrm{LP}) = 18.$$
+$$16 ~\le~ z(\mathit{MILP}) = 17 ~\le~ z(\mathit{LP}^+) = \tfrac{71}{4} ~\le~ z(\mathit{LP}) = 18.$$
 
 Qui il duale a mano è **ottimo** per il rilassamento senza i bound, e il rilassamento con
 i bound conservati è strettamente migliore ($71/4 < 18$): il vincolo
@@ -170,8 +170,8 @@ $x_j \le 1$ morde, perché senza di esso l'LP prende $9/5$ unità dell'oggetto 1
 ![Il sandwich dei due problemi](img/cap04_sandwich.png)
 
 !!! note "Il sandwich scritto una volta per tutte"
-    $$\text{minimo:}\quad z(\mathrm{D}) \le z(\mathrm{LP}) \le z(\mathrm{LP}^+) \le z(\mathrm{MILP}) \le \mathit{UB}_{\text{eur}}$$
-    $$\text{massimo:}\quad \mathit{LB}_{\text{eur}} \le z(\mathrm{MILP}) \le z(\mathrm{LP}^+) \le z(\mathrm{LP}) \le z(\mathrm{D})$$
+    $$\text{minimo:}\quad \textstyle\sum_i b_i \bar u_i \le z(\mathit{D}(\mathit{LP})) = z(\mathit{LP}) \le z(\mathit{LP}^+) \le z(\mathit{MILP}) \le \sum_j c_j \bar x_j$$
+    $$\text{massimo:}\quad \textstyle\sum_j c_j \bar x_j \le z(\mathit{MILP}) \le z(\mathit{LP}^+) \le z(\mathit{LP}) = z(\mathit{D}(\mathit{LP})) \le \sum_i b_i \bar u_i$$
 
     Il *lato del rilassamento* è ottimistico e contiene tutti i bound duali; il
     *lato dell'euristica* è pessimistico e contiene tutte le soluzioni
@@ -181,8 +181,8 @@ $x_j \le 1$ morde, perché senza di esso l'LP prende $9/5$ unità dell'oggetto 1
 ## Disuguaglianze valide e vincoli che preservano l'ottimalità
 
 - Una **disuguaglianza valida** è soddisfatta da *tutte* le soluzioni
-  ammissibili intere: aggiungerla non cambia $z(\mathrm{MILP})$; se riduce
-  $z(\mathrm{LP}^+)$ si chiama **taglio**.
+  ammissibili intere: aggiungerla non cambia $z(\mathit{MILP})$; se riduce
+  $z(\mathit{LP}^+)$ si chiama **taglio**.
 - Un **vincolo che preserva l'ottimalità** taglia alcune soluzioni ammissibili
   ma non tutte quelle ottime. Non è una disuguaglianza valida, e va dichiarato
   come tale (esempio: $z_j \le M_j y_j$ nel [problema 8.4](localizzazione-4.md)).
@@ -199,8 +199,8 @@ soluzione ottima del rilassamento è $\tilde x = (1,\ 1/4,\ 1,\ 0)$:
 | $\{1,3,4\}$ | $2$ | 2 | soddisfatto (all'uguaglianza) |
 | $\{2,3,4\}$ | $5/4$ | 2 | soddisfatto |
 
-Aggiungendo i quattro tagli, $z(\mathrm{LP}^+)$ scende da $71/4 = 17{,}75$ a
-$69/4 = 17{,}25$ e $z(\mathrm{MILP})$ resta $17$.
+Aggiungendo i quattro tagli, $z(\mathit{LP}^+)$ scende da $71/4 = 17{,}75$ a
+$69/4 = 17{,}25$ e $z(\mathit{MILP})$ resta $17$.
 
 ## Formulazioni più forti
 
@@ -230,7 +230,7 @@ poliedri. Il caso di riferimento è l'[attivazione](legami-01.md).
 
 ## I duali dell'LP non sono i prezzi marginali del MILP
 
-| $C$ | $z(\mathrm{MILP})$ | $z(\mathrm{LP}^+)$ | duale dell'LP | variazione vera |
+| $C$ | $z(\mathit{MILP})$ | $z(\mathit{LP}^+)$ | duale dell'LP | variazione vera |
 |---:|---:|---:|---:|---:|
 | 8 | 16 | 16 | $2$ | — |
 | 9 | 17 | $71/4$ | $7/4$ | $+1$ |
@@ -246,7 +246,7 @@ mentre il duale promette $7/4$.
     Del duale dell'LP resta vero l'unico uso che il corso ne fa: è un **bound**.
     Come indicazione gestionale («conviene comprare un'unità in più?») va
     verificata risolvendo di nuovo il MILP: la differenza
-    $z(\mathrm{MILP})(b_i + 1) - z(\mathrm{MILP})(b_i)$ è l'unica risposta
+    $z(\mathit{MILP})(b_i + 1) - z(\mathit{MILP})(b_i)$ è l'unica risposta
     corretta, e non c'è una formula chiusa che la dia.
 
 ## Il protocollo dei bound del corso
@@ -256,7 +256,7 @@ ammissibile **e intera** da un'euristica, verificata su vincoli, bound e
 interezza; (2) il duale del rilassamento senza i bound, generale e per l'istanza; (3) una
 soluzione duale ammissibile costruita a mano, con la ricetta dichiarata; (4) i
 due rilassamenti dal solver; (5) l'ottimo e la tabella
-$\mathit{UB} \cdot \mathit{LB} \cdot z(\mathrm{LP}) \cdot z(\mathrm{LP}^+) \cdot z(\mathrm{MILP}) \cdot$ gap;
+$\mathit{UB} \cdot \mathit{LB} \cdot z(\mathit{LP}) \cdot z(\mathit{LP}^+) \cdot z(\mathit{MILP}) \cdot$ gap;
 (6) le considerazioni aggiuntive.
 
 Ogni numero della tabella esiste in un CSV prodotto dallo script del problema, e
@@ -279,7 +279,7 @@ il notebook è
     Un problema di minimo e uno di massimo, scritti con il loro duale; una soluzione
     duale costruita a mano e la verifica della dualita' debole; il confronto fra il
     rilassamento senza i bound e quello con i bound conservati; un taglio di copertura; il
-    bound del branch-and-bound letto da Gurobi; e il controesempio che mostra perche'
+    bound letto da Gurobi a fine risoluzione; e il controesempio che mostra perche'
     i duali dell'LP non sono i prezzi marginali del MILP.
     """
     import gurobipy as gp
@@ -445,8 +445,8 @@ il notebook è
                               "z_lp_con_tagli": zlp43_dopo, "z_milp": z43}]), "cap04_tagli")
 
     # ---------- 4. QUELLO CHE FA IL SOLVER: relax() E ObjBound ----------
-    intestazione("4.4  Il rilassamento della radice e il bound del branch-and-bound")
-    m44, x44 = primale_41()          # la copertura: qui il branch-and-bound deve ramificare
+    intestazione("4.4  Il primo rilassamento e il bound finale del solver")
+    m44, x44 = primale_41()          # la copertura: qui il solver deve lavorare
     m44.Params.OutputFlag = 0
     m44.optimize()
     print(f"  Status = {m44.Status} (2 = OPTIMAL), SolCount = {m44.SolCount}")
@@ -460,7 +460,7 @@ il notebook è
     print(f"  Il rilassamento vale {frazione(zrad)}, l'ottimo intero {frazione(m44.ObjVal)}: il")
     print("  gap c'e', ma NodeCount = 0. Gurobi lo chiude *nella radice*, con presolve,")
     print("  tagli propri ed euristiche, senza mai ramificare.")
-    # per vedere il branch-and-bound al lavoro si spengono presolve, tagli ed euristiche
+    # per vedere il solver al lavoro si spengono presolve, tagli ed euristiche
     m45, x45 = primale_41()
     m45.Params.Presolve = 0
     m45.Params.Cuts = 0

@@ -45,7 +45,7 @@ disuguaglianze.
 
 Domanda $6$ in ciascuno di tre periodi, disponibilità totale $15 < 18$,
 penalità $\pi^+ = 3$ e $\pi^- = 2$. Il modello rigido sarebbe **inammissibile**;
-quello morbido dà $z(\mathrm{MILP}) = 6$, con $q = (3, 6, 6)$ e una
+quello morbido dà $z(\mathit{MILP}) = 6$, con $q = (3, 6, 6)$ e una
 sotto-copertura di $3$ concentrata sul primo periodo. Nulla, nei dati, dice che
 vada concentrata: qualunque ripartizione della sotto-copertura totale $3$ ha lo
 stesso costo, e il solver ne restituisce una.

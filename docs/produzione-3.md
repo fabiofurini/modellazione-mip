@@ -116,7 +116,7 @@ Sull'istanza si attivano i tipi $2$ e $1$ al lotto minimo, poi si riempie: la
 produzione è $(11, 26, 0)$, l'acciaio si esaurisce e restano $220$ ore. Il
 profitto è $8700$ più il premio di $500$:
 
-$$z(\mathrm{MILP}) \ge \mathit{LB} = 9200 .$$
+$$z(\mathit{MILP}) \ge \mathit{LB} = 9200 .$$
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -167,7 +167,7 @@ $$
 \qquad b_2\, \bar\pi_2 = 13\,200 .
 $$
 
-Il bound migliore è quello dell'acciaio: $z(\mathrm{MILP}) \le \mathit{UB} = 11\,250$.
+Il bound migliore è quello dell'acciaio: $z(\mathit{MILP}) \le \mathit{UB} = 11\,250$.
 
 ## Soluzione ottima
 
@@ -175,18 +175,18 @@ La produzione ottima è $(26, 16, 0)$: si attivano i tipi $1$ e $2$, si incassa
 il premio, si consumano tutte e $100$ le tonnellate di acciaio e $1180$ ore
 sulle $1200$ disponibili.
 
-| $LB$ (euristica) | $z(\mathrm{MILP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{LP})$ | $UB$ (duale) | gap |
+| $LB$ (euristica) | $z(\mathit{MILP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{LP})$ | $UB$ (duale) | gap |
 |---:|---:|---:|---:|---:|---:|
 | 9200 | 9700 | 9750 | $20625/2$ | 11250 | $5{,}2\%$ |
 
 ![Piano ottimo](img/cap09_veicoli_ottimo.png)
 
 !!! tip "Qui il rilassamento con i bound batte il duale a mano"
-    È l'unico problema del capitolo in cui $z(\mathrm{LP}^+) = 9750$ è
+    È l'unico problema del capitolo in cui $z(\mathit{LP}^+) = 9750$ è
     *migliore* del bound duale costruito a mano ($11\,250$), e di pochissimo
     peggiore dell'ottimo ($9700$). La ragione è che il rilassamento senza i
     bound lascia $y_j$ e $z$ crescere sopra $1$, e con esse il premio:
-    $z(\mathrm{LP}) = 20625/2 \approx 10\,312$. Aggiungere $y_j \le 1$ e
+    $z(\mathit{LP}) = 20625/2 \approx 10\,312$. Aggiungere $y_j \le 1$ e
     $z \le 1$ toglie proprio quella libertà. Quando il modello contiene
     indicatori premiati, il rilassamento con i bound non è un dettaglio.
 

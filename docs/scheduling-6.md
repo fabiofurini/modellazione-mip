@@ -93,7 +93,7 @@ Classe per classe; dalla seconda classe il primo lavoro paga anche $u$.
   $t_4 + u = 25 \le 30$: $x[4] = 1$, $z = 1$, $ra = 5$.
 - **Passi 5–6.** Classe 3: $t_5, t_6 > 5$, saltati.
 
-Ricavo $10 + 5 + 12 + 5 = 32$: $z(\mathrm{MILP}) \ge 32$.
+Ricavo $10 + 5 + 12 + 5 = 32$: $z(\mathit{MILP}) \ge 32$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -112,13 +112,13 @@ $$
 **Una soluzione duale a mano.** Il premio di ogni classe caricato su un solo
 lavoro: $\bar\pi_1 = -5$, $\bar\pi_3 = -4$, $\bar\pi_5 = -10$; $\bar\lambda = 0$;
 $\bar\mu = \max_j (r_j - \bar\pi_j)/t_j = \max\{3, \tfrac{1}{3}, \tfrac{24}{25}, \tfrac{4}{5}, 2, \tfrac{11}{19}\} = 3$;
-valore $150$: $32 \le z(\mathrm{MILP}) \le 150$.
+valore $150$: $32 \le z(\mathit{MILP}) \le 150$.
 
-**Quello che dice il solver.** $z(\mathrm{LP}) = 5280/113 = 46{,}7$. Ottimo
+**Quello che dice il solver.** $z(\mathit{LP}) = 5280/113 = 46{,}7$. Ottimo
 intero $42$: la sola classe 3 completa, lavori 5 e 6 ($48 \le 50$, $z = 0$),
 ricavo $10 + 22 + 10$. Gap dell'euristica $24\%$.
 
-| $LB$ | $UB$ (duale a mano) | $z(\mathrm{LP})$ | $z(\mathrm{MILP})$ | gap euristica |
+| $LB$ | $UB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|
 | 32 | 150 | $5280/113$ | 42 | $23{,}8\%$ |
 

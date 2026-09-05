@@ -100,7 +100,7 @@ quindi l'ordine è $1, 3, 4, 6, 5, 2$:
 - offerta 5 $\{2,4\}$: scartata, l'oggetto $4$ è già venduto;
 - offerta 2 $\{2\}$: accettata (profitto 3).
 
-Si accettano le offerte $1, 2, 3$: $z(\mathrm{MILP}) \ge \mathit{LB} = 21$.
+Si accettano le offerte $1, 2, 3$: $z(\mathit{MILP}) \ge \mathit{LB} = 21$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -131,7 +131,7 @@ L'ammissibilità è immediata: per ogni offerta $j$,
 $$\sum_{i \in B_j} \bar\lambda_i \;\ge\; |B_j| \cdot \frac{p_j}{|B_j|} = p_j .$$
 
 Sull'istanza $\bar\lambda = (6, 5, 6, 6)$ e
-$z(\mathrm{MILP}) \le \mathit{UB} = 23$.
+$z(\mathit{MILP}) \le \mathit{UB} = 23$.
 
 !!! warning "Una ricetta grossolana costa molto"
     La ricetta «ovvia» $\bar\lambda_i = \max_{j :\, i \in B_j} p_j$ (senza
@@ -145,7 +145,7 @@ $z(\mathrm{MILP}) \le \mathit{UB} = 23$.
 All'ottimo si accettano le offerte $4$ ($\{1,3\}$, profitto $12$) e $5$
 ($\{2,4\}$, profitto $10$): tutti e quattro gli oggetti vengono venduti.
 
-| $LB$ (euristica) | $z(\mathrm{MILP})$ | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $UB$ (duale) | gap |
+| $LB$ (euristica) | $z(\mathit{MILP})$ | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $UB$ (duale) | gap |
 |---:|---:|---:|---:|---:|---:|
 | 21 | 22 | 22 | 22 | 23 | $4{,}5\%$ |
 
@@ -159,13 +159,13 @@ sullo scaffale.
 
 - Le disuguaglianze valide $x_j \le 1$ sono implicate dai vincoli di oggetto
   ogni volta che $B_j \ne \emptyset$: infatti
-  $z(\mathrm{LP}) = z(\mathrm{LP}^+) = 22$.
-- Su questa istanza si ha anche $z(\mathrm{LP}) = z(\mathrm{MILP})$: il
+  $z(\mathit{LP}) = z(\mathit{LP}^+) = 22$.
+- Su questa istanza si ha anche $z(\mathit{LP}) = z(\mathit{MILP})$: il
   rilassamento cade in un vertice intero. È un caso fortunato, non una proprietà
   del set packing. Il controesempio minimo è il **triangolo**: tre oggetti e tre
   offerte che ne chiedono due ciascuna, tutte di profitto $1$. Lì
-  $z(\mathrm{LP}) = 3/2$ (con $x = 1/2$ su tutte e tre) contro
-  $z(\mathrm{MILP}) = 1$.
+  $z(\mathit{LP}) = 3/2$ (con $x = 1/2$ su tutte e tre) contro
+  $z(\mathit{MILP}) = 1$.
 - Il set packing è NP-difficile in generale, ma diventa facile quando la matrice
   di incidenza è *perfetta* o *bilanciata*. Il triangolo è il più piccolo grafo
   non perfetto in questo senso, ed è il motivo per cui le *clique inequalities*

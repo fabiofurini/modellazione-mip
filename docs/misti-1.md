@@ -109,7 +109,7 @@ Sull'istanza l'ordine per preferenza è $3, 5, 1, 2, 4$.
   la b ($3 \le 3$): si prende con il contributo di $8$ euro; la preferenza
   arriva a $17 \ge 16$ e ci si ferma.
 
-Il contributo totale è $z(\mathrm{MILP}) \le \mathit{UB} = 8$.
+Il contributo totale è $z(\mathit{MILP}) \le \mathit{UB} = 8$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -154,12 +154,12 @@ $\bar\sigma = (0,\ 0,\ 1,\ 0,\ 4)$, con valore
 $$\mathit{LB} = -(0+0+1+0+4) - 20 \cdot 2 + 16 \cdot 3 = 3 .$$
 
 Questa soluzione è **ottima** per il rilassamento senza i bound: infatti
-$z(\mathrm{LP}) = z(\mathrm{LP}^+) = 3$.
+$z(\mathit{LP}) = z(\mathit{LP}^+) = 3$.
 
 !!! warning "Un bound onesto può essere molto lontano"
-    Qui $\mathit{LB} = 3$ e $z(\mathrm{MILP}) = 5$: il gap fra il bound duale e
+    Qui $\mathit{LB} = 3$ e $z(\mathit{MILP}) = 5$: il gap fra il bound duale e
     l'ottimo intero è del $40\%$, e il gap certificato fra euristica e duale è
-    del $100\%$. Non c'è nulla di sbagliato: il rilassamento lineare può
+    del $100\%$. Non c'è nulla di sbagliato: il rilassamento LP può
     prendere «mezzo premio» a metà preferenza, e questa libertà vale molto. È il
     caso più estremo del corso, e serve a ricordare che un bound valido non è
     automaticamente un bound utile.
@@ -175,7 +175,7 @@ Si prendono i premi $3$ e $5$ con i soli punti ($10 + 7 = 17$) e il premio $4$
 con il contributo ($2$ punti e $5$ euro): i punti usati sono $19$ su $20$, la
 preferenza è $7 + 6 + 3 = 16$, esattamente la soglia.
 
-| $UB$ | $LB$ (duale) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | gap |
+| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap |
 |---:|---:|---:|---:|---:|---:|
 | 8 | 3 | 3 | 3 | 5 | $60{,}0\%$ |
 
@@ -189,7 +189,7 @@ costa solo $5$ euro di contributo.
 ## Considerazioni aggiuntive
 
 - Le disuguaglianze valide $x_i \le 1$ e $y_i \le 1$ sono implicate dai vincoli
-  di mutua esclusione: infatti $z(\mathrm{LP}) = z(\mathrm{LP}^+)$.
+  di mutua esclusione: infatti $z(\mathit{LP}) = z(\mathit{LP}^+)$.
 - Se per qualche premio fosse $c_i = 0$, la seconda modalità dominerebbe la
   prima (meno punti, stesso costo) e la variabile $x_i$ potrebbe essere
   eliminata. È un controllo sui dati che vale la pena fare.

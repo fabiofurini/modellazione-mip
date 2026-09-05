@@ -23,8 +23,8 @@ soluzione che esiste davvero.
 
 !!! danger "Il verso del bound dipende dall'obiettivo, non dall'euristica"
     In un problema di **minimo** il valore di una soluzione ammissibile è un
-    *upper* bound: $z(\mathrm{MILP}) \le \mathit{UB}$. In un **massimo** è un
-    *lower* bound: $\mathit{LB} \le z(\mathrm{MILP})$. Chiamare $UB$ il
+    *upper* bound: $z(\mathit{MILP}) \le \mathit{UB}$. In un **massimo** è un
+    *lower* bound: $\mathit{LB} \le z(\mathit{MILP})$. Chiamare $UB$ il
     risultato di una euristica costruttiva su un massimo è l'errore di segno più comune del
     corso.
 
@@ -49,7 +49,7 @@ rompono sull'indice più piccolo, così l'esecuzione è riproducibile.
 
 Sull'istanza del [problema 7.1](scheduling-1.md) (un **minimo**):
 
-| Euristica | $UB$ | $z(\mathrm{MILP})$ | gap |
+| Euristica | $UB$ | $z(\mathit{MILP})$ | gap |
 |---|---:|---:|---:|
 | next-fit | 14 | 11 | $27{,}3\%$ |
 | first-fit | 14 | 11 | $27{,}3\%$ |
@@ -89,7 +89,7 @@ impossibili da sistemare.
 
     **Il bound elementare.** Il makespan è almeno
     $\max(\max_j t_j,\ \sum_j t_j / k) = \max(5, 9) = 9$. L'ottimo è proprio
-    $z(\mathrm{MILP}) = 9$ — si raggiunge con $\{5,4\}$, $\{5,4\}$,
+    $z(\mathit{MILP}) = 9$ — si raggiunge con $\{5,4\}$, $\{5,4\}$,
     $\{3,3,3\}$ — e l'LPT sbaglia del $22{,}2\%$.
 
 !!! tip "Due bound gratis, da confrontare"
@@ -131,7 +131,7 @@ Euristica costruttivaZaino(p, w, C):
 
 Su $p = (10,7,6,4)$, $w = (5,4,3,3)$, $C = 9$: rapporti $2$, $7/4$, $2$, $4/3$;
 si prendono gli oggetti 1 e 3 (peso $8$), valore $16$. Poiché il problema è di
-**massimo**, $\mathit{LB} = 16 \le z(\mathrm{MILP}) = 17$, gap $5{,}9\%$:
+**massimo**, $\mathit{LB} = 16 \le z(\mathit{MILP}) = 17$, gap $5{,}9\%$:
 l'ottimo prende gli oggetti 1 e 2 riempiendo lo zaino esattamente. La euristica costruttiva
 sbaglia perché l'oggetto 3 lascia un residuo inutilizzabile.
 
@@ -158,7 +158,7 @@ LeastUnitCost(d, f, h):
 Su $d = (20, 10, 30, 40, 10)$, lancio $f = 50$, magazzino $h = 1$: dal periodo 1
 conviene coprire 2 periodi (costo unitario $2$); dal periodo 3 altri 2 (costo
 unitario $\approx 1{,}286$); dal periodo 5 solo quello (costo unitario $5$).
-Costo $\mathit{UB} = 200$ contro $z(\mathrm{MILP}) = 170$, gap $17{,}6\%$ — che
+Costo $\mathit{UB} = 200$ contro $z(\mathit{MILP}) = 170$, gap $17{,}6\%$ — che
 è anche il valore che darebbe Wagner–Whitin, essendo esatto su questo modello.
 
 ## Ricerca locale, e che cosa non dà
@@ -194,7 +194,7 @@ $9$: per arrivarci serve una mossa di **scambio** fra due macchine.
 
 ## Il quadro delle euristiche
 
-| Euristica | Verso | valore | $z(\mathrm{MILP})$ | gap |
+| Euristica | Verso | valore | $z(\mathit{MILP})$ | gap |
 |---|---|---:|---:|---:|
 | next-fit / first-fit (assegnamento) | min ($UB$) | 14 | 11 | $27{,}3\%$ |
 | best-fit sul costo (assegnamento) | min ($UB$) | 11 | 11 | $0{,}0\%$ |

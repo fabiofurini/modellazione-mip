@@ -130,7 +130,7 @@ fatti sono nascosti nel dominio delle $z_t$, che sono non negative.
     costo che dipendono dal periodo; la $B$ ha coefficienti uniformi e si
     estende meglio se si aggiungono i licenziamenti (basta una seconda famiglia
     $\ell_t \ge 0$ e il bilancio $y_t = y_{t-1} + z_t - \ell_t$). Sull'istanza
-    anche i *rilassamenti* coincidono: $z(\mathrm{LP}) = 15\,960$ per entrambe.
+    anche i *rilassamenti* coincidono: $z(\mathit{LP}) = 15\,960$ per entrambe.
     Due formulazioni equivalenti sull'intero non lo sono sempre sul
     rilassamento; qui lo sono, e la verifica va fatta, non data per scontata.
 
@@ -177,7 +177,7 @@ indietro.
 - mese 3: $\lceil 4 \cdot 140/160 \rceil = 4$ operai, un'altra assunzione.
 
 Il costo, incluso il termine costante $m_0\, w\, n = 9000$, è
-$z(\mathrm{MILP}) \le \mathit{UB} = 18\,200$.
+$z(\mathit{MILP}) \le \mathit{UB} = 18\,200$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -229,7 +229,7 @@ la manodopera aggiuntiva è regalata.
 | assunzioni $z_t$ | 0 | 1 | 0 |
 | scorta $s_t$ | 0 | 20 | — |
 
-| $UB$ | $LB$ (duale) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | gap |
+| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap |
 |---:|---:|---:|---:|---:|---:|
 | 18200 | 13500 | 15960 | 15960 | 16660 | $9{,}2\%$ |
 

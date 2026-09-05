@@ -39,8 +39,8 @@ spinte sono presenti e le due conclusioni valgono insieme.
 
 ## La forza del rilassamento
 
-Il min-max su quell'istanza dà $z(\mathrm{LP}^+) = 21/2 = 10{,}5$ contro
-$z(\mathrm{MILP}) = 11$: il rilassamento distribuisce i pesi a metà esatta, cosa
+Il min-max su quell'istanza dà $z(\mathit{LP}^+) = 21/2 = 10{,}5$ contro
+$z(\mathit{MILP}) = 11$: il rilassamento distribuisce i pesi a metà esatta, cosa
 che l'interezza non permette.
 
 ## In gurobipy, e dove si rivede

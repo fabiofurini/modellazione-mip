@@ -101,7 +101,7 @@ macchina **più piena** fra quelle che bastano:
 - **Passo 3.** Lavoro 3 ($t_3 = 75$): la 3 non basta; fra 1 e 2 la più piena è
   la 1: $x[3][1] = 1$, $ra[1] = 30$.
 
-Profitto $10 + 15 + 30 - 20 - 15 = 20$: $z(\mathrm{MILP}) \ge 20$. Next-fit e
+Profitto $10 + 15 + 30 - 20 - 15 = 20$: $z(\mathit{MILP}) \ge 20$. Next-fit e
 first-fit riempiono prima la macchina 1 e arrivano a $5$.
 
 ## Rilassamento LP e duale: il bound duale
@@ -121,16 +121,16 @@ $$
 poi $\bar\mu_j = \max\{0, \max_m (r_j - t_j \bar\pi_m)\}$:
 $\bar\mu_1 = \tfrac{25}{4}$, $\bar\mu_2 = 9$, $\bar\mu_3 = \tfrac{75}{4}$; valore $34$:
 
-$$20 ~\le~ z(\mathrm{MILP}) ~\le~ 34.$$
+$$20 ~\le~ z(\mathit{MILP}) ~\le~ 34.$$
 
-**Quello che dice il solver.** $z(\mathrm{LP}) = 34$: la soluzione a mano è
+**Quello che dice il solver.** $z(\mathit{LP}) = 34$: la soluzione a mano è
 ottima per il duale; il rilassamento con i bound scende a $680/21 = 32{,}38$.
 Ottimo intero $25$: i lavori 1 e 3 sulla macchina 3 ($25 + 75 = 100$,
 esattamente la disponibilità), profitto $40 - 15$; il lavoro 2 non conviene
 perché richiederebbe una seconda macchina ($c_1 = 20 > r_2 = 15$). Gap
 dell'euristica: $20\%$.
 
-| $LB$ (best-fit) | $UB$ (duale a mano) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | gap euristica |
+| $LB$ (best-fit) | $UB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|---:|
 | 20 | 34 | 34 | $680/21$ | 25 | $20{,}0\%$ |
 

@@ -32,16 +32,16 @@ Si distinguono tre cose:
 !!! danger "Un $M$ non valido non è «un po' diverso»"
     Con $a = (3,4,5)$, $b = 6$ e $x$ binarie, il massimo di $a'x$ è $12$, quindi
     $M = 12 - 6 = 6$ è valido. Su $\max\ x_1 + x_2 + x_3 + y$ l'ottimo è
-    $z(\mathrm{MILP}) = 3$ (con $y = 0$ e tutte le $x$ a 1). Con $M = 5$ il
+    $z(\mathit{MILP}) = 3$ (con $y = 0$ e tutte le $x$ a 1). Con $M = 5$ il
     vincolo con $y = 0$ resta $3x_1 + 4x_2 + 5x_3 \le 11$, che esclude
     $x = (1,1,1)$: l'ottimo scende a $2$. Il modello non risponde più alla
     domanda posta.
 
 ## La forza del rilassamento
 
-| $M$ | $z(\mathrm{LP}^+)$ | |
+| $M$ | $z(\mathit{LP}^+)$ | |
 |---|---:|---|
-| $6$ (il minimo dimostrato) | $3$ | coincide con $z(\mathrm{MILP})$ |
+| $6$ (il minimo dimostrato) | $3$ | coincide con $z(\mathit{MILP})$ |
 | $20$ | $37/10 = 3{,}7$ | |
 | $1000$ | $1997/500 \approx 3{,}994$ | quasi il massimo possibile, $4$ |
 

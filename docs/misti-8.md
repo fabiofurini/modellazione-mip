@@ -87,7 +87,7 @@ regola, con due ordini diversi, dà due risultati.
   $6 \to$ CD2, $5 \to$ CD1, $4 \to$ CD2, $3 \to$ CD1. Durate finali $18$ e
   $17$: differenza $1$.
 
-Si tiene la migliore: $z(\mathrm{MILP}) \le \mathit{UB} = 1$.
+Si tiene la migliore: $z(\mathit{MILP}) \le \mathit{UB} = 1$.
 
 ## Rilassamento LP e duale: di nuovo zero
 
@@ -134,12 +134,12 @@ numero dispari non possono essere uguali, e la loro differenza $|D_1 - D_2|$ ha
 la stessa parità di $D$, cioè è dispari. Una differenza dispari e non negativa
 vale almeno $1$:
 
-$$z(\mathrm{MILP}) \ge \mathit{LB} = 1 .$$
+$$z(\mathit{MILP}) \ge \mathit{LB} = 1 .$$
 
 L'euristica LPT raggiunge esattamente $1$: i due bound coincidono, e la
 soluzione euristica è ottima. Lo si sa *prima* di chiamare il solver, ed è il
 caso più netto del corso in cui un argomento combinatorio di due righe fa il
-lavoro che il rilassamento lineare non riesce a fare.
+lavoro che il rilassamento LP non riesce a fare.
 
 ## Soluzione ottima
 
@@ -148,7 +148,7 @@ lavoro che il rilassamento lineare non riesce a fare.
 | CD 1 | 1, 2, 3 | 18 |
 | CD 2 | 4, 5, 6 | 17 |
 
-| $LB$ (parità) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | $UB$ (euristica) | gap |
+| $LB$ (parità) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap |
 |---:|---:|---:|---:|---:|---:|
 | 1 | 0 | 0 | 1 | 1 | $0\%$ |
 

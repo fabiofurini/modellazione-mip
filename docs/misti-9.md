@@ -87,7 +87,7 @@ l'euristica *fallisce*.
   $10$; libro 1 sullo scaffale 2, che arriva a $8$. Altezze
   $\max(4, 7) = 7$ e $\max(5, 8) = 8$, somma $15$.
 
-$$z(\mathrm{MILP}) \le \mathit{UB} = 15 .$$
+$$z(\mathit{MILP}) \le \mathit{UB} = 15 .$$
 
 !!! warning "L'ordine giusto dipende dal vincolo, non dall'obiettivo"
     L'ordine per altezza decrescente è quello suggerito dall'*obiettivo*, ma il
@@ -136,7 +136,7 @@ almeno $\lceil 18/10 \rceil = 2$ scaffali non vuoti. Uno di essi ospita il libro
 più alto e misura almeno $8$; l'altro contiene almeno un libro, quindi misura
 almeno $\min_{b \ne 1} h_b = 4$. Sommando,
 
-$$z(\mathrm{MILP}) \ge \mathit{LB} = 8 + 4 = 12 ,$$
+$$z(\mathit{MILP}) \ge \mathit{LB} = 8 + 4 = 12 ,$$
 
 meglio del bound duale $8$. Anche qui il salto viene dall'interezza: il
 rilassamento può mettere metà libro su ciascuno scaffale e pagare metà altezza
@@ -149,7 +149,7 @@ due volte, cioè in totale ancora $8$.
 | scaffale 1 | 1, 2 | 8 su 10 | 8 |
 | scaffale 2 | 3, 4 | 10 su 10 | 7 |
 
-| $LB$ (combinatorio) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | $UB$ (euristica) | gap |
+| $LB$ (combinatorio) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap |
 |---:|---:|---:|---:|---:|---:|
 | 12 | 8 | 8 | 15 | 15 | $0\%$ |
 

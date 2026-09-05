@@ -29,10 +29,10 @@ solo se $f_j > 0$, come nella [tecnica 3.1](legami-01.md).
 ## La forza del rilassamento
 
 Due impianti, costi fissi $f = (10, 14)$, costi unitari $c = (3, 2)$, capacità
-$C = (6, 7)$, domanda $D = 9$. L'ottimo è $z(\mathrm{MILP}) = 44$ (entrambi
+$C = (6, 7)$, domanda $D = 9$. L'ottimo è $z(\mathit{MILP}) = 44$ (entrambi
 aperti, $q = (2, 7)$).
 
-| Coefficiente della binaria | $z(\mathrm{LP}^+)$ |
+| Coefficiente della binaria | $z(\mathit{LP}^+)$ |
 |---|---:|
 | la capacità $C_j$ | $112/3 \approx 37{,}33$ |
 | un big-M $= 100$ (più $q_j \le C_j$ a parte) | $1059/50 = 21{,}18$ |

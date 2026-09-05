@@ -123,7 +123,7 @@ Sull'istanza la configurazione più economica da installare è la $2$ (costo $6$
 la seconda la $1$ (costo $7$): si decorano $19$ alberi con la $2$ e uno con la
 $1$. Servono allora $42$ luci del colore 1 e $59$ del colore 2, e l'euristica
 compra $30$ scatole di tipo 1. Il costo totale è
-$z(\mathrm{MILP}) \le \mathit{UB} = 3121$.
+$z(\mathit{MILP}) \le \mathit{UB} = 3121$.
 
 L'euristica sceglie la configurazione più economica da installare, la $2$, che
 però è la più avida di luci del colore costoso: il conto lo pagano le scatole. È
@@ -172,7 +172,7 @@ scatola danno lo stesso prezzo per luce, $\bar\beta_2 = 50$:
 
 $$i_1 + 2 \cdot 50 = 107, \qquad i_2 + 3 \cdot 50 = 156, \qquad i_3 + 2 \cdot 50 = 108 ,$$
 
-dunque $\bar\alpha = 107$ e $z(\mathrm{MILP}) \ge \mathit{LB} = 20 \cdot 107 = 2140$.
+dunque $\bar\alpha = 107$ e $z(\mathit{MILP}) \ge \mathit{LB} = 20 \cdot 107 = 2140$.
 
 ## Soluzione ottima
 
@@ -180,7 +180,7 @@ Si decorano $19$ alberi con la configurazione 1 e uno con la 3, e si comprano
 $20$ scatole di tipo 1. Le luci servono $78$ del colore 1 (se ne comprano $200$:
 ne avanzano molte) e $40$ del colore 2 (se ne comprano esattamente $40$).
 
-| $LB$ (duale) | $z(\mathrm{LP})$ | $z(\mathrm{LP}^+)$ | $z(\mathrm{MILP})$ | $UB$ (euristica) | gap |
+| $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap |
 |---:|---:|---:|---:|---:|---:|
 | 2140 | 2140 | 2141 | 2141 | 3121 | $45{,}8\%$ |
 
