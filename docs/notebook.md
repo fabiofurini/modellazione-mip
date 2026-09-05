@@ -43,6 +43,29 @@ cella, con le figure che compaiono sotto le celle invece di finire in un file.
 | [Brani fra CD](misti-8.md) | MILP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam10_8_cd.ipynb) |
 | [Libri fra scaffali](misti-9.md) | MILP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam10_9_scaffali.ipynb) |
 
+## I quindici modelli numerici
+
+Uno per modello, da EX 1 a EX 15 — l'elenco completo è nella pagina
+[Quindici modelli numerici](numerici.md).
+
+| Modello | Classe | Notebook |
+|---|---|---|
+| EX 1 — Il furgone da otto posti | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex01_furgone.ipynb) |
+| [EX 2 — Linee di autobus](ex-02.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex02_linee.ipynb) |
+| [EX 3 — Staffetta](ex-03.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex03_staffetta.ipynb) |
+| EX 4 — Scarpe: produzione, scorte e assunzioni | MILP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex04_scarpe.ipynb) |
+| EX 5 — Veicoli con quantità minima | ILP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex05_veicoli.ipynb) |
+| [EX 6 — Hub-and-spoke](ex-06.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex06_hub.ipynb) |
+| EX 7 — Aerei su commessa con costo fisso | ILP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex07_aerei.ipynb) |
+| [EX 8 — Seminari](ex-08.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex08_seminari.ipynb) |
+| EX 9 — Le otto regine | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex09_regine.ipynb) |
+| [EX 10 — Utensili di una macchina CNC](ex-10.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex10_utensili.ipynb) |
+| [EX 11 — Bilanciamento fra due operai](ex-11.md) | MILP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex11_bilanciamento.ipynb) |
+| EX 12 — Scarpe con soglia minima di produzione | ILP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex12_scarpe_soglia.ipynb) |
+| EX 13 — Fondi acquistabili a lotti | ILP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex13_fondi.ipynb) |
+| EX 14 — I turni del pronto soccorso | ILP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex14_turni.ipynb) |
+| EX 15 — L'orario della scuola di musica | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex15_orario.ipynb) |
+
 ## Come sono fatti
 
 I notebook non si scrivono a mano: si generano dagli script con

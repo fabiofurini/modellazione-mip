@@ -81,6 +81,15 @@ suo [notebook che si apre in Colab](notebook.md), senza installare niente.
 
 **[I problemi](problemi.md)**
 
+*[Quindici modelli numerici](numerici.md)* — da EX 1 a EX 15, con la pagina online per
+
+EX 2 [Linee di autobus](ex-02.md) ·
+EX 3 [Staffetta](ex-03.md) ·
+EX 6 [Hub-and-spoke](ex-06.md) ·
+EX 8 [Seminari](ex-08.md) ·
+EX 10 [Utensili CNC](ex-10.md) ·
+EX 11 [Bilanciamento](ex-11.md)
+
 *[Assegnamento e scheduling](scheduling.md)*
 
 7.1 [Assegnamento a costo minimo](scheduling-1.md) ·
@@ -116,14 +125,7 @@ suo [notebook che si apre in Colab](notebook.md), senza installare niente.
 10.8 [Brani fra CD](misti-8.md) ·
 10.9 [Libri fra scaffali](misti-9.md)
 
-*Modelli numerici*
 
-EX 2 [Linee di autobus](ex-02.md) ·
-EX 3 [Staffetta](ex-03.md) ·
-EX 6 [Hub-and-spoke](ex-06.md) ·
-EX 8 [Seminari](ex-08.md) ·
-EX 10 [Utensili CNC](ex-10.md) ·
-EX 11 [Bilanciamento](ex-11.md)
 
 **Il corso**
 

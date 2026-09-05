@@ -114,6 +114,14 @@ nav:
       - 6. Dal modello a Python/Gurobi: modellazione-6.md
   - I problemi:
       - problemi.md
+      - Modelli numerici:
+          - numerici.md
+          - EX 2 Linee di autobus: ex-02.md
+          - EX 3 Staffetta: ex-03.md
+          - EX 6 Hub-and-spoke: ex-06.md
+          - EX 8 Seminari: ex-08.md
+          - EX 10 Utensili CNC: ex-10.md
+          - EX 11 Bilanciamento: ex-11.md
       - Assegnamento e scheduling:
           - scheduling.md
           - 7.1 Assegnamento a costo minimo: scheduling-1.md
@@ -123,18 +131,12 @@ nav:
           - 7.5 Classi con setup: scheduling-5.md
           - 7.6 Classi con premio: scheduling-6.md
           - 7.7 Ritardo totale: scheduling-7.md
-          - EX 2 Linee di autobus: ex-02.md
-          - EX 3 Staffetta: ex-03.md
-          - EX 8 Seminari: ex-08.md
-          - EX 11 Bilanciamento: ex-11.md
       - Localizzazione e copertura:
           - localizzazione.md
           - 8.1 Localizzazione capacitata: localizzazione-1.md
           - 8.2 p-mediana: localizzazione-2.md
           - 8.3 Copertura con interferenza: localizzazione-3.md
           - 8.4 Hub con costo massimo: localizzazione-4.md
-          - EX 6 Hub-and-spoke: ex-06.md
-          - EX 10 Utensili CNC: ex-10.md
       - Pianificazione della produzione:
           - produzione.md
           - 9.1 Lotti con costo fisso: produzione-1.md

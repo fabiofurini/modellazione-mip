@@ -1,11 +1,21 @@
 # I problemi
 
-Tre famiglie di problemi più un capitolo di modelli misti, ognuno con i suoi
-esercizi risolti: modello, dimostrazione dei legami fra le variabili, istanza,
+Quindici modelli numerici, tre famiglie di problemi e un capitolo di modelli
+misti, ognuno con i suoi esercizi risolti: modello, dimostrazione dei legami fra le variabili, istanza,
 euristica costruttiva, duale del rilassamento LP, soluzione con Gurobi e
 domande di modellazione aggiuntive.
 
 <div class="grid cards" markdown>
+
+-   :material-numeric: **Quindici modelli numerici**
+
+    ---
+
+    Gli esempi più facili, con dati espliciti e poche variabili: uno per
+    tecnica, da leggere prima delle famiglie per prendere le misure. Da EX 1 a
+    EX 15.
+
+    [:octicons-arrow-right-24: I quindici modelli](numerici.md)
 
 -   :material-timer-sand: **Assegnamento e scheduling**
 
