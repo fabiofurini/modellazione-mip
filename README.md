@@ -21,8 +21,7 @@ Modelli di programmazione lineare intera per l'Ingegneria Gestionale — come si
 costruisce un modello con variabili binarie e intere, come si *dimostra* che fa
 quello che deve, come lo si stringe fra un'euristica e un bound duale (gli
 stessi bound a cui ricorre un solver reale quando non riesce a raggiungere
-l'ottimo provato), come lo si risolve con Gurobi. Secondo corso della serie iniziata con il
-[Laboratorio di Ricerca Operativa](https://fabiofurini.github.io/laboratorio-ricerca-operativa/).
+l'ottimo provato), come lo si risolve con Gurobi.
 
 **📖 Dispensa online: [fabiofurini.github.io/modellazione-mip](https://fabiofurini.github.io/modellazione-mip/)**
 

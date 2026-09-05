@@ -5,8 +5,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
 **Modelli di programmazione lineare intera per l'Ingegneria Gestionale** — la
 dispensa del corso in versione online, con codice Python/Gurobi, notebook e
-istanze riproducibili. È il secondo corso della serie iniziata con il
-[Laboratorio di Ricerca Operativa](https://fabiofurini.github.io/laboratorio-ricerca-operativa/).
+istanze riproducibili.
 
 Un modello con variabili binarie e intere non si *scrive* soltanto: si
 *dimostra*. Ogni vincolo che lega due famiglie di variabili impone
