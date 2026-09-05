@@ -4,10 +4,13 @@
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap05_euristiche.ipynb)
 
-Un'euristica costruttiva costruisce **una** soluzione ammissibile, in fretta,
-senza dimostrare niente sulla sua qualità. È l'altra metà del sandwich del
+Un'euristica costruttiva costruisce **una** soluzione in fretta, aggiungendo un
+elemento per volta e senza mai tornare indietro. Non dimostra niente sulla sua
+qualità, e non garantisce nemmeno di arrivare a una soluzione ammissibile: può
+bloccarsi a metà, con un elemento che non entra da nessuna parte. Quando finisce
+con una soluzione ammissibile, quella soluzione è l'altra metà del sandwich del
 [capitolo 4](modellazione-4.md): il lato pessimistico, quello garantito da una
-soluzione che esiste davvero.
+soluzione che esiste davvero; quando fallisce, bound primale non ce n'è.
 
 !!! note "Che cosa deve produrre un'euristica in questo corso"
     1. uno **pseudocodice** leggibile, con l'ordine di scansione, il criterio di
