@@ -25,22 +25,28 @@ equazioni e disequazioni che rendono realizzabile una soluzione).
     $z(\mathit{MILP})$ e mai $z^\star$: quale modello si ottimizza deve essere
     esplicito.
 
-**Classi di modelli.** Un modello ha $n$ variabili $x_1, x_2, \dots, x_n$,
-indicizzate da $j \in \{1, 2, \dots, n\}$, e $m$ vincoli, indicizzati da
-$i \in \{1, 2, \dots, m\}$. I dati sono gli $n$ coefficienti di costo $c_j$, gli
-$m \cdot n$ coefficienti $a_{ij}$ e gli $m$ termini noti $b_i$. In tutte le
-classi obiettivo e vincoli sono le stesse funzioni lineari: a cambiare è solo il
-**dominio** delle variabili, cioè l'ultima riga del modello. Qui sotto la forma
-canonica di minimo; un modello di massimo si scrive con $\max$ e vincoli di
-verso $\le$.
+**Classi di modelli.** LP dritto è la *classe* di problemi, $\mathit{LP}$ in
+corsivo è *un* problema di quella classe; lo stesso per ILP, BIP e MILP. In
+tutte le classi obiettivo e vincoli sono lineari: cambia solo il dominio delle
+variabili, cioè l'ultima riga del modello. Un modello ha $n$ variabili, con
+$j \in \{1, 2, \dots, n\}$, e $m$ vincoli, con $i \in \{1, 2, \dots, m\}$; i dati
+sono i costi $c_j$, i coefficienti $a_{ij}$ e i termini noti $b_i$. Gli insiemi
+$M_{\le}$, $M_{=}$, $M_{\ge}$ ripartiscono $\{1, 2, \dots, m\}$ secondo il verso
+del vincolo; $N_{\ge 0}$, $N_{\gtreqless 0}$, $N_{\le 0}$ ripartiscono
+$\{1, 2, \dots, n\}$ secondo il segno della variabile. L'obiettivo è qui di
+minimo; con $\max$ cambia solo il verso dell'ottimizzazione.
 
 **Un modello di LP** — tutte le variabili continue:
 
 $$
 \begin{aligned}
 \min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
-\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
-x_j &\ge 0, & \forall j \in \{1, 2, \dots, n\}.
+\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\le b_i, & \forall i \in M_{\le},\\
+\sum_{j=1}^{n} a_{ij}\, x_j &= b_i, & \forall i \in M_{=},\\
+\sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in M_{\ge},\\
+x_j &\ge 0, & \forall j \in N_{\ge 0},\\
+x_j &\gtreqless 0, & \forall j \in N_{\gtreqless 0},\\
+x_j &\le 0, & \forall j \in N_{\le 0}.
 \end{aligned}
 $$
 
@@ -49,8 +55,12 @@ $$
 $$
 \begin{aligned}
 \min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
-\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
-x_j &\in \mathbb{Z}_{\ge 0}, & \forall j \in \{1, 2, \dots, n\}.
+\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\le b_i, & \forall i \in M_{\le},\\
+\sum_{j=1}^{n} a_{ij}\, x_j &= b_i, & \forall i \in M_{=},\\
+\sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in M_{\ge},\\
+x_j &\in \mathbb{Z}_{\ge 0}, & \forall j \in N_{\ge 0},\\
+x_j &\in \mathbb{Z}, & \forall j \in N_{\gtreqless 0},\\
+x_j &\in \mathbb{Z}_{\le 0}, & \forall j \in N_{\le 0}.
 \end{aligned}
 $$
 
@@ -59,27 +69,33 @@ $$
 $$
 \begin{aligned}
 \min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
-\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
+\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\le b_i, & \forall i \in M_{\le},\\
+\sum_{j=1}^{n} a_{ij}\, x_j &= b_i, & \forall i \in M_{=},\\
+\sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in M_{\ge},\\
 x_j &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
 
-**Un modello di MILP** — variabili intere e continue insieme, con
-$J \subseteq \{1, 2, \dots, n\}$ l'insieme degli indici delle variabili intere:
+**Un modello di MILP** — con $J \subseteq \{1, 2, \dots, n\}$ l'insieme degli indici delle variabili intere e i segni del modello di LP:
 
 $$
 \begin{aligned}
 \min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
-\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
-x_j &\in \mathbb{Z}_{\ge 0}, & \forall j \in J,\\
-x_j &\ge 0, & \forall j \in \{1, 2, \dots, n\} \setminus J.
+\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\le b_i, & \forall i \in M_{\le},\\
+\sum_{j=1}^{n} a_{ij}\, x_j &= b_i, & \forall i \in M_{=},\\
+\sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in M_{\ge},\\
+x_j &\in \mathbb{Z}, & \forall j \in J,\\
+x_j &\in \mathbb{R}, & \forall j \in \{1, 2, \dots, n\} \setminus J.
 \end{aligned}
 $$
 
-L'obiettivo somma i costi delle decisioni prese; ogni vincolo $i$ impone che la
-combinazione lineare $\sum_{j=1}^{n} a_{ij}\, x_j$ raggiunga almeno la soglia
-$b_i$; l'ultima riga dichiara il dominio ed è l'unica cosa che distingue le
-quattro classi. Questo corso lavora quasi solo con MILP.
+L'obiettivo somma i costi delle decisioni prese; ogni vincolo $i$ lega le
+variabili al termine noto $b_i$; l'ultima riga dichiara il dominio ed è l'unica
+cosa che distingue le quattro classi. Ogni dato e ogni simbolo è definito prima
+di essere usato: in ogni modello le variabili sono introdotte prima della
+formulazione, i vincoli di dominio chiudono il modello e un elenco spiega
+obiettivo e vincoli famiglia per famiglia. Questo corso lavora quasi solo con
+MILP.
 
 ## Perché l'interezza conta
 
