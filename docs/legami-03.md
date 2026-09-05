@@ -5,22 +5,22 @@
 ## Il legame in parole
 
 «Se si produce, si produce almeno $\ell$»: la quantità $q_j$ vale zero oppure
-sta fra una soglia $\ell$ e la capacità $C_j$. Non è un intervallo: è l'unione
+sta fra una soglia $\ell$ e la capacità $c_j$. Non è un intervallo: è l'unione
 di un punto e di un intervallo. Una variabile con questo dominio si chiama
 **semicontinua**.
 
 ## I vincoli
 
-$$\ell\, y_j ~\le~ q_j ~\le~ C_j\, y_j, \qquad \forall j \qquad (2m \text{ vincoli}).$$
+$$\ell\, y_j ~\le~ q_j ~\le~ c_j\, y_j, \qquad \forall j \qquad (2m \text{ vincoli}).$$
 
 ## La dimostrazione
 
 Entrambi i versi sono imposti dai vincoli. Se $y_j = 0$: $0 \le q_j \le 0$, cioè
-$q_j = 0$. Se $y_j = 1$: $\ell \le q_j \le C_j$. Quindi
+$q_j = 0$. Se $y_j = 1$: $\ell \le q_j \le c_j$. Quindi
 
-$$q_j \in \{0\} \cup [\ell,\ C_j],$$
+$$q_j \in \{0\} \cup [\ell,\ c_j],$$
 
-esattamente il dominio voluto. Serve $\ell \le C_j$, altrimenti $y_j = 1$ è
+esattamente il dominio voluto. Serve $\ell \le c_j$, altrimenti $y_j = 1$ è
 inammissibile e la variabile è costretta a zero: un errore di dati che il solver
 segnala come inammissibilità solo se $y_j$ è forzata a 1 da altri vincoli.
 

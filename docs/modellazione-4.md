@@ -80,7 +80,7 @@ $$\textstyle\sum_i b_i \bar\pi_i ~\le~ z(\mathit{LP}) ~\le~ z(\mathit{MILP}).$$
    la variabile duale corrispondente fino a saturare il primo vincolo duale che
    si oppone, e si aggiornano i residui.
 3. **Il rapporto migliore.** Con un solo vincolo di capacità in un massimo,
-   $\bar v = \max_j p_j / w_j$ è ammissibile e dà il bound $C \bar v$.
+   $\bar v = \max_j p_j / w_j$ è ammissibile e dà il bound $b \bar v$.
 
 Qualunque ricetta si usi, la soluzione va **verificata ammissibile** per il
 duale — è l'unica cosa che rende valido il bound — e il suo valore confrontato
@@ -150,16 +150,16 @@ L'euristica era già ottima, ma non lo si può sapere dai bound.
 
 !!! abstract "Zaino"
     Quattro oggetti di valore $p = (10, 7, 6, 4)$ e peso $w = (5, 4, 3, 3)$;
-    capacità $C = 9$.
+    capacità $b = 9$.
 
 Il duale del rilassamento senza i bound ha una sola variabile $v \ge 0$:
-$\min\ C v$ con $w_j v \ge p_j$ per ogni $j$.
+$\min\ b v$ con $w_j v \ge p_j$ per ogni $j$.
 
 - **Euristica** (euristica costruttiva per rapporto): rapporti $2$, $7/4$, $2$, $4/3$; si
   prendono gli oggetti 1 e 3 (peso $8$), valore $16$. In un **massimo**
   l'euristica dà un **lower** bound: $\mathit{LB} = 16$.
 - **Duale a mano** (ricetta 3): $\bar v = \max_j p_j/w_j = 2$, valore
-  $C \bar v = 18$. In un **massimo** il duale dà un **upper** bound:
+  $b \bar v = 18$. In un **massimo** il duale dà un **upper** bound:
   $\mathit{UB} = 18$.
 
 $$16 ~\le~ z(\mathit{MILP}) = 17 ~\le~ z(\mathit{LP}^+) = \tfrac{71}{4} ~\le~ z(\mathit{LP}) = 18.$$
@@ -194,8 +194,8 @@ $x_j \le 1$ morde, perché senza di esso l'LP prende $9/5$ unità dell'oggetto 1
   come tale (esempio: $z_j \le M_j y_j$ nel [problema 8.4](localizzazione-4.md)).
 
 **Il taglio di copertura.** Un insieme $S$ è una *copertura* se
-$\sum_{j \in S} w_j > C$; allora $\sum_{j \in S} x_j \le |S| - 1$ è valida. Sullo
-zaino ($w = (5,4,3,3)$, $C = 9$) le coperture minimali sono le quattro terne. La
+$\sum_{j \in S} w_j > b$; allora $\sum_{j \in S} x_j \le |S| - 1$ è valida. Sullo
+zaino ($w = (5,4,3,3)$, $b = 9$) le coperture minimali sono le quattro terne. La
 soluzione ottima del rilassamento è $\tilde x = (1,\ 1/4,\ 1,\ 0)$:
 
 | Copertura $S$ | $\sum_{j \in S} \tilde x_j$ | $\|S\|-1$ | |
@@ -236,7 +236,7 @@ poliedri. Il caso di riferimento è l'[attivazione](legami-01.md).
 
 ## I duali dell'LP non sono i prezzi marginali del MILP
 
-| $C$ | $z(\mathit{MILP})$ | $z(\mathit{LP}^+)$ | duale dell'LP | variazione vera |
+| $b$ | $z(\mathit{MILP})$ | $z(\mathit{LP}^+)$ | duale dell'LP | variazione vera |
 |---:|---:|---:|---:|---:|
 | 8 | 16 | 16 | $2$ | — |
 | 9 | 17 | $71/4$ | $7/4$ | $+1$ |
@@ -245,7 +245,7 @@ poliedri. Il caso di riferimento è l'[attivazione](legami-01.md).
 | 12 | 23 | 23 | $7/4$ | $+3$ |
 
 Il duale dell'LP è il rapporto $p_j/w_j$ dell'oggetto «critico». La variazione
-vera dell'ottimo intero è a scatti: da $C = 9$ a $C = 10$ non cambia *affatto*,
+vera dell'ottimo intero è a scatti: da $b = 9$ a $b = 10$ non cambia *affatto*,
 mentre il duale promette $7/4$.
 
 !!! note "Che cosa si può dire, allora"

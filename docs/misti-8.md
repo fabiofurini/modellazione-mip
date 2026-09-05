@@ -128,10 +128,10 @@ $-d_i/m + d_i/m = 0 \le 0$. Il valore è $\mathit{LB} = 0$.
 
 ## Un argomento di parità che chiude il problema
 
-Le durate sono numeri interi e i CD sono due: le loro durate $D_1$ e $D_2$ sono
-interi che sommano a $D = 35$, che è **dispari**. Due interi che sommano a un
-numero dispari non possono essere uguali, e la loro differenza $|D_1 - D_2|$ ha
-la stessa parità di $D$, cioè è dispari. Una differenza dispari e non negativa
+Le durate sono numeri interi e i CD sono due: le loro durate $q_1$ e $q_2$ sono
+interi che sommano a $q = 35$, che è **dispari**. Due interi che sommano a un
+numero dispari non possono essere uguali, e la loro differenza $|q_1 - q_2|$ ha
+la stessa parità di $q$, cioè è dispari. Una differenza dispari e non negativa
 vale almeno $1$:
 
 $$z(\mathit{MILP}) \ge \mathit{LB} = 1 .$$

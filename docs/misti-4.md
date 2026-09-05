@@ -56,9 +56,9 @@ della configurazione.
     Il vincolo delle luci è una **disponibilità**: per ogni colore, le luci
     comprate devono essere almeno quelle richieste. Non c'è alcun big-M, perché
     entrambi i membri sono somme di quantità reali. Il conteggio delle scatole
-    nasce da qui: se le luci di colore $l$ richieste sono $U_l$ e una scatola ne
+    nasce da qui: se le luci di colore $l$ richieste sono $u_l$ e una scatola ne
     contiene $v_{bl}$, comprando solo scatole di tipo $b$ servirebbero
-    $\lceil U_l / v_{bl} \rceil$ scatole. Il modello non scrive il tetto: lo
+    $\lceil u_l / v_{bl} \rceil$ scatole. Il modello non scrive il tetto: lo
     ottiene imponendo $y_b$ intera.
 
 !!! note "Il legame «configurazione usata»"

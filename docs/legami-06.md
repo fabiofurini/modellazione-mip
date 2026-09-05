@@ -10,21 +10,21 @@ alto), **max-min** (massimizzare il carico più basso) e **differenza**
 
 ## I vincoli
 
-Con $L_k$ il carico della risorsa $k$, $k = 1, \dots, K$:
+Con $\ell_k$ il carico della risorsa $k \in \{1, 2, \dots, m\}$:
 
 $$
 \begin{aligned}
-\text{min-max:}&\quad \min T \quad\text{con}\quad T \ge L_k,\ \forall k &&(K \text{ vincoli}),\\
-\text{max-min:}&\quad \max U \quad\text{con}\quad U \le L_k,\ \forall k &&(K \text{ vincoli}),\\
-\text{differenza:}&\quad \min\,(T - U) \quad\text{con entrambi} &&(2K \text{ vincoli}).
+\text{min-max:}&\quad \min z \quad\text{con}\quad z \ge \ell_k,\ \forall k &&(m \text{ vincoli}),\\
+\text{max-min:}&\quad \max u \quad\text{con}\quad u \le \ell_k,\ \forall k &&(m \text{ vincoli}),\\
+\text{differenza:}&\quad \min\,(z - u) \quad\text{con entrambi} &&(2m \text{ vincoli}).
 \end{aligned}
 $$
 
 ## La dimostrazione
 
 Ciascuna è l'[ausiliaria di massimo](legami-05.md) (o di minimo) con l'argomento
-di scambio nel verso giusto: in un $\min T$ la $T$ scende al massimo dei
-carichi; in un $\max U$ la $U$ sale al minimo. Nella differenza entrambe le
+di scambio nel verso giusto: in un $\min z$ la $z$ scende al massimo dei
+carichi; in un $\max u$ la $u$ sale al minimo. Nella differenza entrambe le
 spinte sono presenti e le due conclusioni valgono insieme.
 
 !!! danger "I tre obiettivi non si confrontano"

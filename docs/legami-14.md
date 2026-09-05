@@ -6,8 +6,8 @@
 
 Il costo non è proporzionale alla quantità: cambia a scaglioni — sconti sopra
 una soglia, sovrapprezzi oltre una capacità, tariffe a fasce. La funzione $g(q)$
-è continua e lineare a tratti, con nodi $q_0 < q_1 < \dots < q_K$ e valori
-$g_0, \dots, g_K$.
+è continua e lineare a tratti, con nodi $q_0 < q_1 < \dots < q_p$ e valori
+$g_0, \dots, g_p$.
 
 ## I vincoli
 
@@ -16,10 +16,10 @@ l'indicatore del tratto $t$ (fra $q_{t-1}$ e $q_t$):
 
 $$
 \begin{aligned}
-\sum_{k=0}^{K} \lambda_k &= 1 &&\qquad (1 \text{ vincolo}),\\
-q = \sum_{k=0}^{K} q_k \lambda_k, \qquad g(q) &= \sum_{k=0}^{K} g_k \lambda_k &&\qquad (2 \text{ vincoli}),\\
-\sum_{t=1}^{K} w_t &= 1 &&\qquad (1 \text{ vincolo}),\\
-\lambda_k &\le \!\!\sum_{t \,:\, k \in \{t-1,\,t\}}\!\! w_t, \quad \forall k &&\qquad (K + 1 \text{ vincoli}).
+\sum_{k=0}^{p} \lambda_k &= 1 &&\qquad (1 \text{ vincolo}),\\
+q = \sum_{k=0}^{p} q_k \lambda_k, \qquad g(q) &= \sum_{k=0}^{p} g_k \lambda_k &&\qquad (2 \text{ vincoli}),\\
+\sum_{t=1}^{p} w_t &= 1 &&\qquad (1 \text{ vincolo}),\\
+\lambda_k &\le \!\!\sum_{t \,:\, k \in \{t-1,\,t\}}\!\! w_t, \quad \forall k &&\qquad (p + 1 \text{ vincoli}).
 \end{aligned}
 $$
 

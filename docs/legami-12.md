@@ -17,10 +17,10 @@ $$
 \sum_{i} p_{iv} = 1 \quad \forall v \qquad (n \text{ vincoli}).
 $$
 
-**Espansione binaria** di $v \in \{0, 1, \dots, 2^K - 1\}$:
+**Espansione binaria** di $v \in \{0, 1, \dots, 2^p - 1\}$:
 
-$$v = \sum_{k=0}^{K-1} 2^k\, b_k, \qquad b_k \in \{0,1\}
-\qquad (1 \text{ vincolo}, K \text{ binarie}).$$
+$$v = \sum_{k=0}^{p-1} 2^k\, b_k, \qquad b_k \in \{0,1\}
+\qquad (1 \text{ vincolo}, p \text{ binarie}).$$
 
 ## La dimostrazione
 
@@ -28,7 +28,7 @@ L'alldiff è un **doppio set partitioning**: il primo gruppo dà «ogni oggetto 
 valore», il secondo «ogni valore a un solo oggetto». Insieme impongono una
 biiezione, cioè valori tutti distinti. L'espansione binaria è la
 rappresentazione in base 2, unica per ogni intero in quell'intervallo: la
-corrispondenza fra $v$ e $(b_0, \dots, b_{K-1})$ è biunivoca.
+corrispondenza fra $v$ e $(b_0, \dots, b_{p-1})$ è biunivoca.
 
 !!! note "L'alldiff ha rilassamento esatto, l'espansione no"
     La matrice del doppio partitioning è quella del problema di assegnamento: è
@@ -37,8 +37,8 @@ corrispondenza fra $v$ e $(b_0, \dots, b_{K-1})$ è biunivoca.
     dello script entrambi valgono $7$: l'interezza è gratis.
 
     L'espansione binaria, al contrario, non aggiunge forza: $\sum_k 2^k b_k$ con
-    $b_k \in [0,1]$ copre tutto $[0, 2^K - 1]$ in modo continuo, esattamente
-    come $v \ge 0$, $v \le 2^K - 1$. Serve a *riformulare*, non a rafforzare —
+    $b_k \in [0,1]$ copre tutto $[0, 2^p - 1]$ in modo continuo, esattamente
+    come $v \ge 0$, $v \le 2^p - 1$. Serve a *riformulare*, non a rafforzare —
     per esempio quando un'altra parte del modello ha bisogno di indicatori
     binari e non di una variabile intera.
 

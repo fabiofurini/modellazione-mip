@@ -14,7 +14,7 @@ Con $q_j \ge 0$ la quantità e $y_j$ l'indicatore:
 
 $$
 \begin{aligned}
-q_j &\le C_j\, y_j, & \forall j &\qquad (n \text{ vincoli}),\\
+q_j &\le c_j\, y_j, & \forall j &\qquad (n \text{ vincoli}),\\
 q_j &\ge \ell\, y_j, & \forall j &\qquad (n \text{ vincoli}),\\
 \sum_{j=1}^{n} y_j &\ge p & &\qquad (1 \text{ vincolo}).
 \end{aligned}
