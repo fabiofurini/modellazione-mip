@@ -17,15 +17,69 @@ equazioni e disequazioni che rendono realizzabile una soluzione).
     domini compresi); $z(\mathit{MILP})$, $z(\mathit{LP})$, $z(\mathit{D})$ sono
     i valori ottimi del MILP, del suo rilassamento e del duale del rilassamento.
     Le soluzioni **ammissibili** si segnano con la barra ($\bar x$), quelle
-    **ottime** con la tilde ($\tilde x$). I bound si chiamano $LB$ e
-    $UB$, qualunque sia il verso dell'obiettivo. Si usa sempre
+    **ottime** con la tilde ($\tilde x$). I bound si chiamano $\mathit{LB}$ e
+    $\mathit{UB}$, qualunque sia il verso dell'obiettivo; quando serve dire da
+    quale soluzione arrivano si scrive $\mathit{LB}(\bar x)$, $\mathit{UB}(\bar x)$
+    per una soluzione ammissibile del modello e $\mathit{LB}(\bar\pi)$,
+    $\mathit{UB}(\bar\pi)$ per una soluzione ammissibile del duale. Si usa sempre
     $z(\mathit{MILP})$ e mai $z^\star$: quale modello si ottimizza deve essere
     esplicito.
 
-**Classi di modelli.** **LP** se obiettivo e vincoli sono lineari e le variabili
-continue; **ILP** se tutte le variabili sono intere; **BIP** se tutte sono
-$0/1$; **MILP** se alcune sono intere o binarie e altre continue. Questo corso
-lavora quasi solo con MILP.
+**Classi di modelli.** Un modello ha $n$ variabili $x_1, x_2, \dots, x_n$,
+indicizzate da $j \in \{1, 2, \dots, n\}$, e $m$ vincoli, indicizzati da
+$i \in \{1, 2, \dots, m\}$. I dati sono gli $n$ coefficienti di costo $c_j$, gli
+$m \cdot n$ coefficienti $a_{ij}$ e gli $m$ termini noti $b_i$. In tutte le
+classi obiettivo e vincoli sono le stesse funzioni lineari: a cambiare è solo il
+**dominio** delle variabili, cioè l'ultima riga del modello. Qui sotto la forma
+canonica di minimo; un modello di massimo si scrive con $\max$ e vincoli di
+verso $\le$.
+
+**Un modello di LP** — tutte le variabili continue:
+
+$$
+\begin{aligned}
+\min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
+\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
+x_j &\ge 0, & \forall j \in \{1, 2, \dots, n\}.
+\end{aligned}
+$$
+
+**Un modello di ILP** — tutte le variabili intere:
+
+$$
+\begin{aligned}
+\min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
+\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
+x_j &\in \mathbb{Z}_{\ge 0}, & \forall j \in \{1, 2, \dots, n\}.
+\end{aligned}
+$$
+
+**Un modello di BIP** — tutte le variabili binarie:
+
+$$
+\begin{aligned}
+\min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
+\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
+x_j &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\}.
+\end{aligned}
+$$
+
+**Un modello di MILP** — variabili intere e continue insieme, con
+$J \subseteq \{1, 2, \dots, n\}$ l'insieme degli indici delle variabili intere:
+
+$$
+\begin{aligned}
+\min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
+\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
+x_j &\in \mathbb{Z}_{\ge 0}, & \forall j \in J,\\
+x_j &\ge 0, & \forall j \in \{1, 2, \dots, n\} \setminus J.
+\end{aligned}
+$$
+
+L'obiettivo somma i costi delle decisioni prese; ogni vincolo $i$ impone che la
+combinazione lineare $\sum_{j=1}^{n} a_{ij}\, x_j$ raggiunga almeno la soglia
+$b_i$; l'ultima riga dichiara il dominio ed è l'unica cosa che distingue le
+quattro classi. Questo corso lavora quasi solo con MILP.
 
 ## Perché l'interezza conta
 
@@ -44,10 +98,13 @@ quadrato — fra cui $(3/4, 3/4)$, $(1, 1/2)$ e $(1/2, 1)$. Quale il solver
 restituisca dipende dall'algoritmo: sulla nostra installazione Gurobi dà
 $(1/2, 1)$.
 
-Arrotondando $(3/4, 3/4)$ all'intero più vicino si ottiene $(1,1)$, che viola il
-vincolo ($2+2 = 4 > 3$): **non è nemmeno ammissibile**. Arrotondando $(1, 1/2)$
-si ottiene $(1, 0)$, ammissibile di valore $1$ — che è proprio l'ottimo intero,
-$z(\mathit{MILP}) = 1$.
+L'esito dell'arrotondamento dipende dal punto di partenza **e** dal verso. Da
+$(3/4, 3/4)$: per eccesso si ottiene $(1,1)$, che viola il vincolo
+($2+2 = 4 > 3$); per difetto si ottiene $(0,0)$, ammissibile ma di valore $0$.
+Da questo punto **nessuno** dei due versi trova l'ottimo. Da $(1, 1/2)$: per
+eccesso si ottiene ancora $(1,1)$, non ammissibile; per difetto si ottiene
+$(1, 0)$, ammissibile di valore $1$ — che è proprio l'ottimo intero,
+$z(\mathit{MILP}) = 1$. Non c'è un verso «giusto».
 
 ![Il rilassamento e i punti interi](img/cap01_rilassamento.png)
 
@@ -84,18 +141,26 @@ entrambi i casi è un bound **ottimistico**.
     $z(\mathit{LP})$, quindi al più $z(\mathit{MILP})$: sta dalla *stessa* parte
     del rilassamento. Il bound dall'altro lato — quello *pessimistico* — viene
     solo da una soluzione ammissibile del MILP, cioè da un'euristica o dal
-    solver. In un problema di **minimo**:
+    solver. Sia $(\bar x_1, \bar x_2, \dots, \bar x_n)$ una soluzione ammissibile
+    del MILP, di valore $\sum_{j=1}^{n} c_j\, \bar x_j$, e
+    $(\bar\pi_1, \bar\pi_2, \dots, \bar\pi_m)$ una soluzione ammissibile del
+    duale del rilassamento, di valore $\sum_{i=1}^{m} b_i\, \bar\pi_i$. In un
+    problema di **minimo** la prima dà $\mathit{UB}(\bar x)$ e la seconda
+    $\mathit{LB}(\bar\pi)$:
 
-    $$\textstyle\sum_i b_i \bar u_i \le z(\mathit{D}(\mathit{LP})) = z(\mathit{LP}) \le z(\mathit{LP}^+) \le z(\mathit{MILP}) \le \sum_j c_j \bar x_j$$
+    $$\mathit{LB}(\bar\pi) \le z(\mathit{D}(\mathit{LP})) = z(\mathit{LP}) \le z(\mathit{LP}^+) \le z(\mathit{MILP}) \le \mathit{UB}(\bar x)$$
 
-    per ogni $\bar x$ ammissibile intero; in un **massimo** tutti i versi si
-    rovesciano.
+    in un problema di **massimo** i ruoli si scambiano, la prima dà
+    $\mathit{LB}(\bar x)$ e la seconda $\mathit{UB}(\bar\pi)$:
+
+    $$\mathit{LB}(\bar x) \le z(\mathit{MILP}) \le z(\mathit{LP}^+) \le z(\mathit{LP}) = z(\mathit{D}(\mathit{LP})) \le \mathit{UB}(\bar\pi)$$
 
 ## Tre «gap» da non confondere
 
 1. **Gap dell'euristica.** Se $\bar x$ è la soluzione costruita dall'euristica,
-   il suo valore è $\sum_j c_j\, \bar x_j$ e il gap è
-   $\bigl|\sum_j c_j\, \bar x_j - z(\mathit{MILP})\bigr| / |z(\mathit{MILP})|$
+   il suo valore $\sum_{j=1}^{n} c_j\, \bar x_j$ è il bound $\mathit{UB}(\bar x)$
+   in un minimo (e $\mathit{LB}(\bar x)$ in un massimo), e il gap è
+   $\bigl|\mathit{UB}(\bar x) - z(\mathit{MILP})\bigr| / |z(\mathit{MILP})|$
    quando l'ottimo è noto — è quello riportato nelle tabelle degli esercizi.
    Quando l'ottimo non è noto lo si calcola rispetto a un bound duale, che ne
    prende il posto.

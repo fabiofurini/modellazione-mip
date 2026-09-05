@@ -11,9 +11,10 @@ non ha finito.
 
 ## Che cos'è un rilassamento
 
-Un **rilassamento** di $\min\{c'x : x \in X\}$ è un problema
-$\min\{c'x : x \in \hat X\}$ con $X \subseteq \hat X$: il minimo su un insieme
-più grande non può essere più alto. In un massimo la disuguaglianza si rovescia.
+Un **rilassamento** di un problema di minimo con insieme ammissibile $X$ è un
+problema con lo stesso obiettivo e un insieme ammissibile più grande,
+$X \subseteq \hat X$: il minimo su un insieme più grande non può essere più
+alto. In un massimo la disuguaglianza si rovescia.
 
 | Nome | Che cosa si toglie | Nota |
 |---|---|---|
@@ -36,13 +37,13 @@ Primale di **minimo**, vincoli indicizzati da $i$, variabili da $j$:
 
 | Nel primale (min) | Nel duale (max) |
 |---|---|
-| vincolo $i$ di verso $\ge$ | variabile $u_i \ge 0$ |
-| vincolo $i$ di verso $\le$ | variabile $u_i \le 0$ |
-| vincolo $i$ di uguaglianza | variabile $u_i$ libera |
+| vincolo $i$ di verso $\ge$ | variabile $\pi_i \ge 0$ |
+| vincolo $i$ di verso $\le$ | variabile $\pi_i \le 0$ |
+| vincolo $i$ di uguaglianza | variabile $\pi_i$ libera |
 | variabile $x_j \ge 0$ | vincolo $j$ di verso $\le c_j$ |
 | variabile $x_j$ libera | vincolo $j$ di uguaglianza $= c_j$ |
 
-L'obiettivo duale è $\max \sum_i b_i u_i$. Se il primale è di **massimo**, tutti
+L'obiettivo duale è $\max \sum_i b_i \pi_i$. Se il primale è di **massimo**, tutti
 i versi si rovesciano e il duale è di minimo.
 
 Il vincolo duale $j$ dice: «il valore che attribuisco alle risorse consumate
@@ -51,16 +52,16 @@ ricetta per costruire una soluzione duale ha un significato economico.
 
 ## Dualità debole, dualità forte
 
-- **Dualità debole**: $b'\bar u \le c'\bar x$ per ogni coppia di soluzioni
+- **Dualità debole**: $\sum_i b_i \bar\pi_i \le \sum_j c_j \bar x_j$ per ogni coppia di soluzioni
   ammissibili. *Sempre*, senza ipotesi. È questa che serve: dà un lower bound da
   **qualunque** soluzione duale ammissibile, anche costruita a mano.
-- **Dualità forte**: se l'LP ha ottimo finito, $\max b'u = \min c'x$. Serve come
+- **Dualità forte**: se il rilassamento ha ottimo finito, $z(\mathit{D}(\mathit{LP})) = z(\mathit{LP})$. Serve come
   **controllo**: l'ottimo del duale scritto a mano deve coincidere con
   $z(\mathit{LP})$. Gli script del corso lo verificano con un `assert`.
 
 E poi: siccome $X_{\mathit{MILP}} \subseteq X_{\mathit{LP}}$,
 
-$$b'\bar u ~\le~ z(\mathit{LP}) ~\le~ z(\mathit{MILP}).$$
+$$\textstyle\sum_i b_i \bar\pi_i ~\le~ z(\mathit{LP}) ~\le~ z(\mathit{MILP}).$$
 
 !!! danger "Non esiste «il duale del MILP»"
     Il duale che si scrive è quello del **rilassamento**. Il MILP non ha un
@@ -104,32 +105,32 @@ x_j &\in \{0,1\}, & \forall j \in \{1, \dots, 4\}.
 \end{aligned}
 $$
 
-**Il duale del rilassamento senza i bound**, con $u_i \ge 0$ per ogni vincolo di
+**Il duale del rilassamento senza i bound**, con $\pi_i \ge 0$ per ogni vincolo di
 copertura:
 
 $$
 \begin{aligned}
-\max ~~ \sum_{i=1}^{6} u_i & &\\
-\text{soggetto a}\quad \sum_{i \,:\, j \in S_i} u_i &\le c_j, & \forall j,\\
-u_i &\ge 0, & \forall i.
+\max ~~ \sum_{i=1}^{6} \pi_i & &\\
+\text{soggetto a}\quad \sum_{i \,:\, j \in S_i} \pi_i &\le c_j, & \forall j,\\
+\pi_i &\ge 0, & \forall i.
 \end{aligned}
 $$
 
 Per l'istanza, ogni squadra copre tre zone:
-$u_1 + u_3 + u_4 \le 4$, $u_1 + u_2 + u_5 \le 3$, $u_2 + u_3 + u_6 \le 5$,
-$u_4 + u_5 + u_6 \le 3$.
+$\pi_1 + \pi_3 + \pi_4 \le 4$, $\pi_1 + \pi_2 + \pi_5 \le 3$, $\pi_2 + \pi_3 + \pi_6 \le 5$,
+$\pi_4 + \pi_5 + \pi_6 \le 3$.
 
 **Una soluzione duale a mano (ricetta 2).**
 
 - **Zona 1** ($\{1,2\}$): residui $(4,3,5,3)$, il minimo fra le squadre 1 e 2 è
-  $3$. $\bar u_1 = 3$; residui $(1,0,5,3)$.
+  $3$. $\bar \pi_1 = 3$; residui $(1,0,5,3)$.
 - **Zona 2** ($\{2,3\}$): il residuo della squadra 2 è $0$, quindi
-  $\bar u_2 = 0$.
-- **Zona 3** ($\{1,3\}$): minimo fra $1$ e $5$, cioè $1$. $\bar u_3 = 1$;
+  $\bar \pi_2 = 0$.
+- **Zona 3** ($\{1,3\}$): minimo fra $1$ e $5$, cioè $1$. $\bar \pi_3 = 1$;
   residui $(0,0,4,3)$.
 - **Zone 4 e 5**: le squadre 1 e 2 hanno residuo nullo,
-  $\bar u_4 = \bar u_5 = 0$.
-- **Zona 6** ($\{3,4\}$): minimo fra $4$ e $3$, cioè $3$. $\bar u_6 = 3$.
+  $\bar \pi_4 = \bar \pi_5 = 0$.
+- **Zona 6** ($\{3,4\}$): minimo fra $4$ e $3$, cioè $3$. $\bar \pi_6 = 3$.
 
 $$\mathit{LB} = 3 + 0 + 1 + 0 + 0 + 3 = 7.$$
 
@@ -170,12 +171,17 @@ $x_j \le 1$ morde, perché senza di esso l'LP prende $9/5$ unità dell'oggetto 1
 ![Il sandwich dei due problemi](img/cap04_sandwich.png)
 
 !!! note "Il sandwich scritto una volta per tutte"
-    $$\text{minimo:}\quad \textstyle\sum_i b_i \bar u_i \le z(\mathit{D}(\mathit{LP})) = z(\mathit{LP}) \le z(\mathit{LP}^+) \le z(\mathit{MILP}) \le \sum_j c_j \bar x_j$$
-    $$\text{massimo:}\quad \textstyle\sum_j c_j \bar x_j \le z(\mathit{MILP}) \le z(\mathit{LP}^+) \le z(\mathit{LP}) = z(\mathit{D}(\mathit{LP})) \le \sum_i b_i \bar u_i$$
+    $$\text{minimo:}\quad \mathit{LB}(\bar\pi) \le z(\mathit{D}(\mathit{LP})) = z(\mathit{LP}) \le z(\mathit{LP}^+) \le z(\mathit{MILP}) \le \mathit{UB}(\bar x)$$
+    $$\text{massimo:}\quad \mathit{LB}(\bar x) \le z(\mathit{MILP}) \le z(\mathit{LP}^+) \le z(\mathit{LP}) = z(\mathit{D}(\mathit{LP})) \le \mathit{UB}(\bar\pi)$$
+
+    dove $(\bar\pi_1, \bar\pi_2, \dots, \bar\pi_m)$ è una soluzione duale
+    ammissibile del rilassamento, di valore $\sum_{i=1}^{m} b_i\, \bar\pi_i$, e
+    $(\bar x_1, \bar x_2, \dots, \bar x_n)$ una soluzione ammissibile del MILP,
+    di valore $\sum_{j=1}^{n} c_j\, \bar x_j$.
 
     Il *lato del rilassamento* è ottimistico e contiene tutti i bound duali; il
     *lato dell'euristica* è pessimistico e contiene tutte le soluzioni
-    ammissibili. Il nome ($LB$ o $UB$) dipende dal verso
+    ammissibili. Il nome ($\mathit{LB}$ o $\mathit{UB}$) dipende dal verso
     dell'obiettivo, il ruolo no.
 
 ## Disuguaglianze valide e vincoli che preservano l'ottimalità
