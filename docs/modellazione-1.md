@@ -26,67 +26,94 @@ equazioni e disequazioni che rendono realizzabile una soluzione).
     esplicito.
 
 **Classi di modelli.** LP dritto è la *classe* di problemi, $\mathit{LP}$ in
-corsivo è *un* problema di quella classe; lo stesso per ILP, BIP e MILP. In
-tutte le classi obiettivo e vincoli sono lineari: cambia solo il dominio delle
-variabili, cioè l'ultima riga del modello. Un modello ha $n$ variabili, con
-$j \in \{1, 2, \dots, n\}$, e $m$ vincoli, con $i \in \{1, 2, \dots, m\}$; i dati
-sono i costi $c_j$, i coefficienti $a_{ij}$ e i termini noti $b_i$. Qui i vincoli sono di verso $\ge$, le
-variabili non negative e l'obiettivo di minimo; con $\max$ cambia solo il verso
-dell'ottimizzazione.
+corsivo è *un* problema di quella classe; lo stesso per ILP, BIP e MILP. Un
+modello ha $n$ variabili, con $j \in \{1, 2, \dots, n\}$, e $m$ vincoli, con
+$i \in \{1, 2, \dots, m\}$; i dati sono i costi $c_j$, i coefficienti $a_{ij}$ e
+i termini noti $b_i$.
 
-**Un modello di LP** — tutte le variabili continue:
+**Che cosa può contenere un modello:**
 
-$$
-\begin{aligned}
-\min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
-\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
-x_j &\ge 0, & \forall j \in \{1, 2, \dots, n\}.
-\end{aligned}
-$$
+- una **funzione obiettivo lineare** nelle variabili, da minimizzare o da
+  massimizzare;
+- **vincoli lineari** di tre tipi: di verso $\ge$, per una richiesta da
+  soddisfare; di verso $\le$, per una capacità da rispettare; di uguaglianza,
+  per un bilancio o un'assegnazione esatta;
+- **variabili**, in una o più famiglie, ciascuna con il proprio dominio,
+  dichiarato in fondo al modello.
 
-**Un modello di ILP** — tutte le variabili intere:
+Nessuna delle tre cose ha una forma obbligata: quanti vincoli, di quale tipo e
+con quante famiglie di variabili lo decide il problema.
 
-$$
-\begin{aligned}
-\min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
-\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
-x_j &\in \mathbb{Z}_{\ge 0}, & \forall j \in \{1, 2, \dots, n\}.
-\end{aligned}
-$$
+**Che cosa distingue le quattro classi: i domini.**
 
-**Un modello di BIP** — tutte le variabili binarie:
+- **LP**: tutte le variabili continue. In questo corso un modello di LP non si
+  scrive mai da zero: arriva come *rilassamento* di un modello MIP, quando si
+  lasciano cadere i vincoli di interezza.
+- **ILP**: tutte le variabili intere.
+- **BIP**: tutte le variabili binarie.
+- **MILP**: alcune intere o binarie e altre continue.
 
-$$
-\begin{aligned}
-\min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
-\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
-x_j &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\}.
-\end{aligned}
-$$
+È lì che vive la differenza di difficoltà: un LP si risolve in tempo
+polinomiale, un ILP e un MILP in generale no.
 
-**Un modello di MILP** — con $J \subseteq \{1, 2, \dots, n\}$ l'insieme degli indici delle variabili intere:
+!!! example "Un modello di ILP"
+    Quante unità comprare da due fornitori, $x_1$ e $x_2$, a lotti interi.
 
-$$
-\begin{aligned}
-\min ~~ \sum_{j=1}^{n} c_j\, x_j & & \\
-\text{soggetto a} \quad \sum_{j=1}^{n} a_{ij}\, x_j &\ge b_i, & \forall i \in \{1, 2, \dots, m\},\\
-x_j &\in \mathbb{Z}_{\ge 0}, & \forall j \in J,\\
-x_j &\ge 0, & \forall j \in \{1, 2, \dots, n\} \setminus J.
-\end{aligned}
-$$
+    $$
+    \begin{aligned}
+    \min ~~ 4x_1 + 7x_2 & & \\
+    \text{soggetto a} \quad 2x_1 + 3x_2 &\ge 12, & \\
+    x_1 + x_2 &\le 5, & \\
+    x_1,\ x_2 &\in \mathbb{Z}_{\ge 0}. &
+    \end{aligned}
+    $$
 
-Sono i modelli nella loro forma più semplice: un modello può contenere anche
-vincoli di verso $\le$ e vincoli di uguaglianza — e quelli dei capitoli
-successivi li usano tutti e tre — oltre a famiglie di variabili diverse fra
-loro.
+    L'obiettivo minimizza la spesa; il vincolo $\ge$ copre la domanda di $12$
+    unità, quello $\le$ limita a cinque i lotti totali. Tutte le variabili sono
+    intere: è un ILP.
 
-L'obiettivo somma i costi delle decisioni prese; ogni vincolo $i$ lega le
-variabili al termine noto $b_i$; l'ultima riga dichiara il dominio ed è l'unica
-cosa che distingue le quattro classi. Ogni dato e ogni simbolo è definito prima
-di essere usato: in ogni modello le variabili sono introdotte prima della
-formulazione, i vincoli di dominio chiudono il modello e un elenco spiega
-obiettivo e vincoli famiglia per famiglia. Questo corso lavora quasi solo con
-MILP.
+!!! example "Un modello di BIP"
+    Quali progetti finanziare: $y_k = 1$ se il progetto $k$ si finanzia, $0$
+    altrimenti.
+
+    $$
+    \begin{aligned}
+    \max ~~ 5y_1 + 4y_2 + 6y_3 & & \\
+    \text{soggetto a} \quad y_1 + y_2 + y_3 &\le 2, & \\
+    y_1 + y_3 &\ge 1, & \\
+    y_1,\ y_2,\ y_3 &\in \{0, 1\}. &
+    \end{aligned}
+    $$
+
+    L'obiettivo massimizza il valore dei progetti scelti; il vincolo $\le$ ne
+    ammette al più due, quello $\ge$ impone almeno uno fra il primo e il terzo.
+    Tutte le variabili sono binarie: è un BIP.
+
+!!! example "Un modello di MILP"
+    Due prodotti da fabbricare, con $x_1$ e $x_2$ le quantità prodotte, e un
+    impianto da attivare o no, con $y = 1$ se lo si attiva e $y = 0$ altrimenti.
+
+    $$
+    \begin{aligned}
+    \max ~~ 3x_1 + 8x_2 - 10y & & \\
+    \text{soggetto a} \quad x_1 + x_2 &= 6, & \\
+    x_2 - 4y &\le 0, & \\
+    x_1 &\ge 1, & \\
+    x_1,\ x_2 &\ge 0, & \\
+    y &\in \{0, 1\}. &
+    \end{aligned}
+    $$
+
+    L'obiettivo massimizza il ricavo meno il costo dell'impianto; l'uguaglianza
+    impone di produrre esattamente sei unità, il vincolo $\le$ consente al più
+    quattro unità del secondo prodotto e solo a impianto attivo (con $y = 0$
+    resta $x_2 \le 0$), il vincolo $\ge$ chiede almeno un'unità del primo. Due
+    variabili continue e una binaria: è un MILP.
+
+Ogni dato e ogni simbolo è definito prima di essere usato: in ogni modello le
+variabili sono introdotte prima della formulazione, i vincoli di dominio
+chiudono il modello e un elenco spiega obiettivo e vincoli famiglia per
+famiglia. Questo corso lavora quasi solo con MILP.
 
 ## Perché l'interezza conta
 
