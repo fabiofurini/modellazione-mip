@@ -59,7 +59,8 @@ ricetta per costruire una soluzione duale ha un significato economico.
   **controllo**: l'ottimo del duale scritto a mano deve coincidere con
   $z(\mathit{LP})$. Gli script del corso lo verificano con un `assert`.
 
-E poi: siccome $X_{\mathit{MILP}} \subseteq X_{\mathit{LP}}$,
+E poi: siccome ogni soluzione ammissibile del MILP è ammissibile anche per il
+rilassamento,
 
 $$\textstyle\sum_i b_i \bar\pi_i ~\le~ z(\mathit{LP}) ~\le~ z(\mathit{MILP}).$$
 

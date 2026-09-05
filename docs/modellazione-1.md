@@ -118,11 +118,11 @@ famiglia. Questo corso lavora quasi solo con MILP.
 ## Perché l'interezza conta
 
 $$
-\begin{aligned}
-\max ~~ x_1 + x_2 & & \\
-\text{soggetto a} \quad 2x_1 + 2x_2 &\le 3, & \\
-x_1,\ x_2 &\in \{0,1\}. &
-\end{aligned}
+\begin{array}{r r c r c l}
+\max & x_1 & + & x_2 &  & \\
+\text{soggetto a} & 2x_1 & + & 2x_2 & \le & 3,\\
+ & x_1 & , & x_2 & \in & \{0, 1\}.
+\end{array}
 $$
 
 Il rilassamento LP sostituisce $x_1, x_2 \in \{0,1\}$ con $0 \le x_1, x_2 \le 1$
@@ -161,10 +161,8 @@ ammissibile vale più di $1$.
     implicano già $x \le 1$ — per esempio con un vincolo di assegnamento
     $\sum_m x_{jm} = 1$.
 
-Il rilassamento **toglie** vincoli, quindi
-
-$$X_{\mathit{MILP}} \subseteq X_{\mathit{LP}^+} \subseteq X_{\mathit{LP}},$$
-
+Il rilassamento **toglie** vincoli: ogni soluzione ammissibile del MILP resta
+ammissibile per il rilassamento, che quindi ottimizza su un insieme più grande —
 e ottimizzare su un insieme più grande non può dare un valore peggiore. In un
 massimo il rilassamento è un *upper* bound, in un minimo un *lower* bound: in
 entrambi i casi è un bound **ottimistico**.
