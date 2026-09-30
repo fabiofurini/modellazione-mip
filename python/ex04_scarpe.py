@@ -12,6 +12,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, valuta)
 from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -78,6 +79,7 @@ def duale(d, s0, y0):
 
 
 m3, x3, s3, y3, z3 = modello(d3, s0, y0)
+salva_modello(m3, "ex04_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 # produzione "just in time": ogni mese si produce esattamente la domanda netta,
@@ -112,6 +114,7 @@ print(f"  Costo della soluzione euristica: ub = {frazione(ub3)}")
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 dl3 = duale(d3, s0, y0)
+salva_modello(dl3, "ex04_duale")
 # ricetta: l'ora di lavoro vale beta = w / ore (quanto costa davvero), quindi un
 # paio vale al piu' alpha = mat + ore_paio * beta; gamma = 0
 beta_v = w3 / ore3

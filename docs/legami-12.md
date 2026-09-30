@@ -13,14 +13,20 @@ variabili binarie (*espansione binaria*).
 **Alldiff**, con $p_{iv} = 1$ se l'oggetto $i$ riceve il valore $v$:
 
 $$
-\sum_{v} p_{iv} = 1 \quad \forall i \qquad (n \text{ vincoli}), \qquad
-\sum_{i} p_{iv} = 1 \quad \forall v \qquad (n \text{ vincoli}).
+\begin{aligned}
+\sum_{v} p_{iv} &= 1, & \forall i & \qquad (n \text{ vincoli}),\\
+\sum_{i} p_{iv} &= 1, & \forall v & \qquad (n \text{ vincoli}).
+\end{aligned}
 $$
 
 **Espansione binaria** di $v \in \{0, 1, \dots, 2^p - 1\}$:
 
-$$v = \sum_{k=0}^{p-1} 2^k\, b_k, \qquad b_k \in \{0,1\}
-\qquad (1 \text{ vincolo}, p \text{ binarie}).$$
+$$
+\begin{aligned}
+v &= \sum_{k=0}^{p-1} 2^k\, b_k, & &\qquad (1 \text{ vincolo}),\\
+b_k &\in \{0, 1\}, & \forall k \in \{0, 1, \dots, p-1\} & \qquad (p \text{ binarie}).
+\end{aligned}
+$$
 
 ## La dimostrazione
 

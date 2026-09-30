@@ -11,6 +11,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, valuta)
 from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -68,6 +69,7 @@ def duale(a, b, p, q, M):
 
 
 m11, x11, y11 = modello(a11, b11, p11, q11, M11)
+salva_modello(m11, "ex12_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
 # euristica costruttiva sul prezzo per grammo di pelle (la risorsa piu' stretta), rispettando la
@@ -103,6 +105,7 @@ print("  Soluzione euristica: " + ", ".join(f"{x_e[j]} {NOMI[j]}" for j in R(ns)
 
 # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 d11 = duale(a11, b11, p11, q11, M11)
+salva_modello(d11, "ex12_duale")
 migliore, mano, scelta = float("inf"), None, None
 for i in R(nr):
     prezzo = max(p11[j] / a11[i][j] for j in R(ns))

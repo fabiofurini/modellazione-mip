@@ -12,6 +12,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, stampa_soluzione, valuta)
 from stile import intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -47,6 +48,7 @@ def duale(c, p):
 
 
 m, x = modello(c, p)
+salva_modello(m, "ex02_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 # euristica costruttiva sulle linee: ogni linea alla compagnia piu' economica fra quelle non sature
@@ -68,6 +70,7 @@ print(f"  Soluzione euristica: " + ", ".join(f"linea {j + 1} -> compagnia {scelt
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 d = duale(c, p)
+salva_modello(d, "ex02_duale")
 mano = {f"alpha[{j}]": min(c[i][j] for i in R(nc)) for j in R(nl)}   # beta = 0
 lb, viol = valuta(d, mano)
 assert viol <= 1e-9, viol

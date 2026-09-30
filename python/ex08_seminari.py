@@ -13,6 +13,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, valuta)
 from stile import intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -60,6 +61,7 @@ def duale(p, q):
 
 
 m, x = modello(p, q)
+salva_modello(m, "ex08_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND: E' UN MASSIMO) ----------
 # euristica costruttiva: la sessione col punteggio piu' alto, poi la migliore compatibile
@@ -89,6 +91,7 @@ print(f"  Soluzione euristica: " + ", ".join(f"seminario {s + 1} nello slot {k +
 
 # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 d = duale(p, q)
+salva_modello(d, "ex08_duale")
 # ricetta: tutto a zero tranne gamma, che copre il punteggio piu' alto
 pmax = max(p[s][k] for s in R(ns) for k in R(nk))
 mano = {"gamma": pmax}

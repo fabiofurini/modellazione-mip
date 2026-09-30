@@ -13,8 +13,13 @@ modello inammissibile e uno utile.
 
 Al posto di $a' x = \beta$ si scrive
 
-$$a' x + s^- - s^+ = \beta, \qquad s^-,\ s^+ \ge 0
-\qquad (1 \text{ vincolo}, 2 \text{ variabili continue}),$$
+$$
+\begin{aligned}
+a' x + s^- - s^+ &= \beta, & &\qquad (1 \text{ vincolo}),\\
+s^- &\ge 0, & &\qquad (1 \text{ variabile continua}),\\
+s^+ &\ge 0, & &\qquad (1 \text{ variabile continua}),
+\end{aligned}
+$$
 
 e nell'obiettivo si aggiunge $\pi^- s^- + \pi^+ s^+$ con penalità
 $\pi^-, \pi^+ > 0$. La variabile $s^-$ misura di quanto si sta **sotto** il

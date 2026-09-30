@@ -15,6 +15,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, valuta)
 from stile import intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -56,6 +57,7 @@ def duale(pr, T, K):
 
 
 m, x, y = modello(pr, T, K)
+salva_modello(m, "ex10_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND: E' UN MASSIMO) ----------
 # euristica costruttiva: si scandiscono le operazioni per profitto decrescente e si carica il
@@ -81,6 +83,7 @@ print(f"  Soluzione euristica: operazioni " + ", ".join(str(i + 1) for i in sort
 
 # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 d = duale(pr, T, K)
+salva_modello(d, "ex10_duale")
 # ricetta: si spalma il profitto di ogni operazione in parti uguali sui suoi utensili,
 # e alpha e' il carico massimo che un utensile riceve
 mano = {f"beta[{i},{j}]": pr[i] / len(T[i]) for i in R(no) for j in T[i]}

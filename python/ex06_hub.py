@@ -12,6 +12,7 @@ from euristiche import euristica_copertura
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, valuta)
 from stile import intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -54,6 +55,7 @@ def duale(copre):
 
 
 m, y = modello(copre)
+salva_modello(m, "ex06_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 e = euristica_copertura([1] * n, copre)
@@ -66,6 +68,7 @@ print(f"  Soluzione euristica: hub in " + ", ".join(CITTA[j] for j in scelti)
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 d = duale(copre)
+salva_modello(d, "ex06_duale")
 # euristica costruttiva duale sulle citta': si alza u_i fino a saturare il primo vincolo duale che si oppone
 residuo = [1.0] * n
 mano = {}

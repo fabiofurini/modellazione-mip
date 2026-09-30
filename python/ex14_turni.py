@@ -15,6 +15,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, stampa_lp, valuta)
 from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -65,6 +66,7 @@ def duale(a, b, c):
 
 
 m13, x13 = modello(a13, b13, c13)
+salva_modello(m13, "ex14_primale")
 print("  Il modello dell'istanza:")
 stampa_lp(m13)
 
@@ -104,6 +106,7 @@ print("  Soluzione euristica: " + ", ".join(f"{x_eur[j]} dello schema {j + 1}" f
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 d13 = duale(a13, b13, c13)
+salva_modello(d13, "ex14_duale")
 # ricetta del rapporto migliore: stesso prezzo t su tutti i giorni. Ogni schema
 # copre 4 + 1/2 = 9/2 giornate, quindi il vincolo duale e' (9/2) t <= c_j:
 # il t piu' grande ammissibile e' min_j c_j / (9/2).

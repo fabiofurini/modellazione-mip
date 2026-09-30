@@ -10,8 +10,12 @@ operai) e ciascuno porta una capacità $c$.
 
 ## I vincoli
 
-$$\sum_{i} a_i\, x_i ~\le~ c\, w, \qquad w \in \mathbb{Z}_{\ge 0}
-\qquad (1 \text{ vincolo}, 1 \text{ variabile intera}).$$
+$$
+\begin{aligned}
+\sum_{i} a_i\, x_i &~\le~ c\, w, & &\qquad (1 \text{ vincolo}),\\
+w &~\in~ \mathbb{Z}_{\ge 0}. & &\qquad (1 \text{ variabile intera})
+\end{aligned}
+$$
 
 ## La dimostrazione
 

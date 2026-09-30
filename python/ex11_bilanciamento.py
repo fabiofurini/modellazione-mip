@@ -18,6 +18,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, valuta)
 from stile import intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -68,6 +69,7 @@ def duale_minmax(d):
 
 
 m, x, z = modello_minmax(d)
+salva_modello(m, "ex11_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 # LPT su due operai: i lavori in ordine di durata decrescente, ciascuno al meno carico
@@ -88,6 +90,7 @@ print(f"  ub = max dei carichi = {frazione(ub)}")
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 dl, pi1, pi2 = duale_minmax(d)
+salva_modello(dl, "ex11_duale")
 # ricetta: i vincoli d_j (pi1 - pi2) <= 0 impongono pi1 <= pi2; con pi1 = pi2 = t il
 # vincolo -pi1 - pi2 <= 1 da' t >= -1/2, e l'obiettivo -D t cresce al calare di t
 mano = {"pi1": -0.5, "pi2": -0.5}

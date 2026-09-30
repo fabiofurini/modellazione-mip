@@ -12,6 +12,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, stampa_lp, valuta)
 from stile import ARANCIO, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -63,6 +64,7 @@ def duale(p, f, h, M, H):
 
 
 m6, x6, y6 = modello(p6, f6, h6, M6, H6)
+salva_modello(m6, "ex07_primale")
 print("  Il modello dell'istanza:")
 stampa_lp(m6)
 
@@ -101,6 +103,7 @@ print(f"  Soluzione euristica: " + ", ".join(f"{aerei(x_e[j])} al cliente {j + 1
 
 # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 d6 = duale(p6, f6, h6, M6, H6)
+salva_modello(d6, "ex07_duale")
 # ricetta: beta_j = f_j / M_j (il massimo consentito dalla colonna di y_j, cioe' il
 # setup spalmato sugli aerei ordinati) e alpha il piu' piccolo valore che rende
 # ammissibili tutte le colonne di x

@@ -62,9 +62,9 @@ polinomiale, un ILP e un MILP in generale no.
     $$
     \begin{array}{r r c r c l}
     \min & 4x_1 & + & 7x_2 &  & \\
-    \text{soggetto a} & 2x_1 & + & 3x_2 & \ge & 12,\\
-     & x_1 & + & x_2 & \le & 5,\\
-     & x_1 & , & x_2 & \in & \mathbb{Z}_{\ge 0}.
+    \text{soggetto a} & 2x_1 & + & 3x_2 & \ge & 12\\
+     & x_1 & + & x_2 & \le & 5\\
+     & x_1,& & x_2 & \in & \mathbb{Z}_{\ge 0}
     \end{array}
     $$
 
@@ -79,9 +79,9 @@ polinomiale, un ILP e un MILP in generale no.
     $$
     \begin{array}{r r c r c r c l}
     \max & 5y_1 & + & 4y_2 & + & 6y_3 &  & \\
-    \text{soggetto a} & y_1 & + & y_2 & + & y_3 & \le & 2,\\
-     & y_1 &  &  & + & y_3 & \ge & 1,\\
-     & y_1 & , & y_2 & , & y_3 & \in & \{0, 1\}.
+    \text{soggetto a} & y_1 & + & y_2 & + & y_3 & \le & 2\\
+     & y_1 &  &  & + & y_3 & \ge & 1\\
+     & y_1,& & y_2,& & y_3 & \in & \{0, 1\}
     \end{array}
     $$
 
@@ -96,11 +96,11 @@ polinomiale, un ILP e un MILP in generale no.
     $$
     \begin{array}{r r c r c r c l}
     \max & 3x_1 & + & 8x_2 & - & 10y &  & \\
-    \text{soggetto a} & x_1 & + & x_2 &  &  & = & 6,\\
-     &  &  & x_2 & - & 4y & \le & 0,\\
-     & x_1 &  &  &  &  & \ge & 1,\\
-     & x_1 & , & x_2 &  &  & \ge & 0,\\
-     &  &  &  &  & y & \in & \{0, 1\}.
+    \text{soggetto a} & x_1 & + & x_2 &  &  & = & 6\\
+     &  &  & x_2 & - & 4y & \le & 0\\
+     & x_1 &  &  &  &  & \ge & 1\\
+     & x_1,& & x_2 &  &  & \ge & 0\\
+     &  &  &  &  & y & \in & \{0, 1\}
     \end{array}
     $$
 
@@ -120,8 +120,8 @@ famiglia. Questo corso lavora quasi solo con MILP.
 $$
 \begin{array}{r r c r c l}
 \max & x_1 & + & x_2 &  & \\
-\text{soggetto a} & 2x_1 & + & 2x_2 & \le & 3,\\
- & x_1 & , & x_2 & \in & \{0, 1\}.
+\text{soggetto a} & 2x_1 & + & 2x_2 & \le & 3\\
+ & x_1,& & x_2 & \in & \{0, 1\}
 \end{array}
 $$
 

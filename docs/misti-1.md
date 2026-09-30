@@ -7,7 +7,7 @@
 !!! abstract "Problema 10.1"
     Un programma fedeltà mette a disposizione $s \in \mathbb{Z}_{\ge 1}$ premi e
     un cliente dispone di $p \in \mathbb{Q}_{>0}$ punti. Ogni premio
-    $i \in \{1, \dots, s\}$ si può ottenere in due modi alternativi: con i soli
+    $i \in \{1, 2, \dots, s\}$ si può ottenere in due modi alternativi: con i soli
     punti, spendendone $a_i \in \mathbb{Q}_{>0}$; oppure spendendone soltanto
     $b_i \in \mathbb{Q}_{>0}$ (con $b_i < a_i$) e aggiungendo un contributo in
     denaro di $c_i \in \mathbb{Q}_{\ge 0}$ euro. Ogni premio si può ottenere al
@@ -31,10 +31,10 @@ variabili binarie.
 $$
 \begin{aligned}
 \min ~~ & \sum_{i=1}^{s} c_i\, y_i\\
-\text{s.a.} \quad & x_i + y_i \le 1, && \forall i \in \{1, \dots, s\},\\
+\text{s.a.} \quad & x_i + y_i \le 1, && \forall i \in \{1, 2, \dots, s\},\\
 & \sum_{i=1}^{s} \bigl(a_i\, x_i + b_i\, y_i\bigr) \le p,\\
 & \sum_{i=1}^{s} d_i\,(x_i + y_i) \ge \ell,\\
-& x_i \in \{0, 1\}, \quad y_i \in \{0, 1\}, && \forall i \in \{1, \dots, s\}.
+& x_i \in \{0, 1\}, \quad y_i \in \{0, 1\}, && \forall i \in \{1, 2, \dots, s\}.
 \end{aligned}
 $$
 
@@ -120,8 +120,8 @@ minimo, quindi i vincoli $\le$ danno duali di segno negativo.
 $$
 \begin{aligned}
 \max ~~ & -\sum_{i=1}^{s} \sigma_i - p\, \pi + \ell\, \rho\\
-\text{s.a.} \quad & -\sigma_i - a_i\, \pi + d_i\, \rho \le 0, && \forall i \in \{1, \dots, s\},\\
-& -\sigma_i - b_i\, \pi + d_i\, \rho \le c_i, && \forall i \in \{1, \dots, s\},\\
+\text{s.a.} \quad & -\sigma_i - a_i\, \pi + d_i\, \rho \le 0, && \forall i \in \{1, 2, \dots, s\},\\
+& -\sigma_i - b_i\, \pi + d_i\, \rho \le c_i, && \forall i \in \{1, 2, \dots, s\},\\
 & \sigma_i \ge 0, \quad \pi \ge 0, \quad \rho \ge 0.
 \end{aligned}
 $$

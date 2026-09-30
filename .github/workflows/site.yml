@@ -24,6 +24,8 @@ jobs:
       - run: git diff --exit-code -- dati
       - run: python3 python/genera_notebook.py --verifica
       - run: python3 python/incorpora_codice.py --verifica
+      - run: python3 python/incorpora_modelli.py --verifica
+      - run: python3 python/genera_raccolta.py --verifica
       - run: mkdocs build --strict
       - uses: actions/upload-pages-artifact@v3
         with:

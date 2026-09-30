@@ -12,6 +12,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, valuta)
 from stile import ARANCIO, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -65,6 +66,7 @@ def duale(a, b, p, q, M):
 
 
 m4, x4, y4 = modello(a4, b4, p4, q4, M4)
+salva_modello(m4, "ex05_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
 # euristica costruttiva sul profitto per ora di lavoro (la risorsa piu' stretta): si accende un
@@ -100,6 +102,7 @@ print(f"  Soluzione euristica: " + ", ".join(f"{x_e[j]} {NOMI[j]}" for j in R(ns
 
 # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 d4 = duale(a4, b4, p4, q4, M4)
+salva_modello(d4, "ex05_duale")
 # ricetta: lam = mu = 0 (il lotto minimo non si valuta) e una sola risorsa
 # valutata al prezzo che nessun veicolo riesce a battere
 migliore, mano, scelta = float("inf"), None, None

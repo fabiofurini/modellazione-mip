@@ -6,8 +6,8 @@
 
 !!! abstract "Problema 10.7"
     Un'azienda ha $s \in \mathbb{Z}_{\ge 1}$ filiali e vende
-    $r \in \mathbb{Z}_{\ge 1}$ prodotti. Per ogni filiale $i \in \{1, \dots, s\}$
-    e ogni prodotto $j \in \{1, \dots, r\}$, il valore
+    $r \in \mathbb{Z}_{\ge 1}$ prodotti. Per ogni filiale $i \in \{1, 2, \dots, s\}$
+    e ogni prodotto $j \in \{1, 2, \dots, r\}$, il valore
     $v_{ij} \in \mathbb{Q}_{\ge 0}$ è il fatturato in milioni di euro generato da
     quella filiale con quel prodotto. Per effetto di una nuova norma antitrust
     l'azienda deve dividersi in due società più piccole; ogni filiale è
@@ -34,9 +34,9 @@ $2 \sum_i v_{ij}\, x_i - T_j$.
 $$
 \begin{aligned}
 \min ~~ & z\\
-\text{s.a.} \quad & z - 2 \sum_{i=1}^{s} v_{ij}\, x_i + T_j \ge 0, && \forall j \in \{1, \dots, r\},\\
-& z + 2 \sum_{i=1}^{s} v_{ij}\, x_i - T_j \ge 0, && \forall j \in \{1, \dots, r\},\\
-& x_i \in \{0,1\}, && \forall i \in \{1, \dots, s\},\\
+\text{s.a.} \quad & z - 2 \sum_{i=1}^{s} v_{ij}\, x_i + T_j \ge 0, && \forall j \in \{1, 2, \dots, r\},\\
+& z + 2 \sum_{i=1}^{s} v_{ij}\, x_i - T_j \ge 0, && \forall j \in \{1, 2, \dots, r\},\\
+& x_i \in \{0,1\}, && \forall i \in \{1, 2, \dots, s\},\\
 & z \gtreqless 0.
 \end{aligned}
 $$
@@ -102,7 +102,7 @@ $$
 \begin{aligned}
 \max ~~ & \sum_{j=1}^{r} T_j\,(\mu_j - \lambda_j)\\
 \text{s.a.} \quad & \sum_{j=1}^{r} (\lambda_j + \mu_j) = 1,\\
-& 2 \sum_{j=1}^{r} v_{ij}\,(\mu_j - \lambda_j) \le 0, && \forall i \in \{1, \dots, s\},\\
+& 2 \sum_{j=1}^{r} v_{ij}\,(\mu_j - \lambda_j) \le 0, && \forall i \in \{1, 2, \dots, s\},\\
 & \lambda_j \ge 0, \quad \mu_j \ge 0.
 \end{aligned}
 $$
@@ -141,7 +141,7 @@ Se il rilassamento non dice niente, bisogna cercare altrove. Per ogni prodotto
 $j$ si può calcolare, guardando *quel solo prodotto*, il minimo squilibrio
 ottenibile:
 
-$$g_j = \min_{S \subseteq \{1,\dots,s\}}
+$$g_j = \min_{S \subseteq \{1, 2, \dots,s\}}
       \Bigl| 2 \sum_{i \in S} v_{ij} - T_j \Bigr| .$$
 
 È il classico problema della partizione su una sola colonna, e con $s$ piccolo

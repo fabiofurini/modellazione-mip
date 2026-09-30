@@ -1,0 +1,162 @@
+"""Il modello dell'istanza scritto per esteso, generato dal modello Gurobi.
+
+Regola del corso: il box `modello` e' sempre simbolico ($n$, $m$, $k$, $c_j$),
+il box `istanza` e' sempre **in esteso**, una colonna per variabile, come nei
+sorgenti originali. Scriverlo a mano significa farlo divergere dai numeri, cosi'
+lo si genera dal modello che il solver risolve davvero.
+
+Convenzioni rispettate (le stesse dei sorgenti di Fabio):
+
+* una colonna per variabile, i termini incolonnati;
+* nessuna punteggiatura dopo il termine noto;
+* nella riga delle variabili la virgola sta attaccata alla variabile;
+* una sola famiglia di variabili per riga di dominio;
+* coefficiente $1$ sottinteso, frazioni come `\\frac{a}{b}`.
+
+Uso dentro uno script:
+
+    from esteso import salva_modello
+    salva_modello(m, "ex08_primale")     # -> dati/modelli/ex08_primale.tex
+"""
+from fractions import Fraction
+from pathlib import Path
+
+import gurobipy as gp
+from gurobipy import GRB
+
+BASE = Path(__file__).resolve().parent.parent
+DIR_MODELLI = BASE / "dati" / "modelli"
+
+GRECHE = ("alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta",
+          "iota", "kappa", "lambda", "mu", "nu", "xi", "rho", "sigma", "tau",
+          "phi", "chi", "psi", "omega", "pi")
+
+VERSO = {"<": "\\le", ">": "\\ge", "=": "="}
+
+
+# ---------------------------------------------------------------- nomi
+
+def _indice(pezzo: str) -> str:
+    """Indice in base 1 come nella dispensa: `0` -> `1`, `ab` -> `ab`."""
+    pezzo = pezzo.strip()
+    try:
+        return str(int(pezzo) + 1)
+    except ValueError:
+        return pezzo
+
+
+def nome_latex(nome: str) -> str:
+    """`x[0,1]` -> `x_{12}`, `alpha[2]` -> `\\alpha_3`, `gamma` -> `\\gamma`."""
+    radice, _, coda = nome.partition("[")
+    radice = radice.strip()
+    testa = f"\\{radice}" if radice in GRECHE else radice
+    if not coda:
+        return testa
+    indici = "".join(_indice(p) for p in coda.rstrip("]").split(","))
+    return f"{testa}_{{{indici}}}" if len(indici) > 1 else f"{testa}_{indici}"
+
+
+def famiglia(nome: str) -> str:
+    """La radice del nome: tutte le `x[...]` stanno sulla stessa riga di dominio."""
+    return nome.partition("[")[0].strip()
+
+
+# ---------------------------------------------------------------- numeri
+
+def numero(x: float) -> str:
+    """Intero, frazione ridotta o decimale con la virgola, come nella dispensa."""
+    f = Fraction(x).limit_denominator(10_000)
+    if f.denominator == 1:
+        return str(f.numerator)
+    if abs(float(f) - x) > 1e-9:
+        return f"{x:g}".replace(".", "{,}")
+    return f"\\frac{{{f.numerator}}}{{{f.denominator}}}"
+
+
+def _termine(coef: float, var: str, primo: bool) -> str:
+    """Un addendo con il suo segno; il coefficiente 1 non si scrive."""
+    if abs(coef) < 1e-12:
+        return ""
+    segno = "-" if coef < 0 else ("" if primo else "+")
+    modulo = abs(coef)
+    testo = "" if abs(modulo - 1) < 1e-12 else numero(modulo)
+    return f"{segno}{testo}{var}"
+
+
+# ---------------------------------------------------------------- domini
+
+def _dominio(v) -> tuple[str, str]:
+    """(verso, insieme) della riga di dominio di una variabile."""
+    if v.VType == GRB.BINARY:
+        return "\\in", "\\{0, 1\\}"
+    if v.VType == GRB.INTEGER:
+        return "\\in", "\\Z_{\\ge 0}" if v.LB == 0 else "\\Z"
+    if v.LB <= -GRB.INFINITY / 2:
+        return "\\gtreqless", "0"
+    if v.LB == 0:
+        return "\\ge", "0"
+    return "\\ge", numero(v.LB)
+
+
+# ---------------------------------------------------------------- il corpo
+
+def array_esteso(m: gp.Model, etichetta_vincoli: str = "soggetto a") -> str:
+    """Il `\\begin{array}...\\end{array}` del modello, una colonna per variabile."""
+    m.update()
+    variabili = m.getVars()
+    nomi = [nome_latex(v.VarName) for v in variabili]
+    n = len(variabili)
+    posizione = {v.VarName: k for k, v in enumerate(variabili)}
+
+    def riga(etichetta: str, coef: dict[str, float], verso: str, rhs) -> list[str]:
+        celle = [etichetta] + [""] * n + [verso, "" if rhs is None else rhs]
+        primo = True
+        for nome, c in coef.items():
+            t = _termine(c, nomi[posizione[nome]], primo)
+            if t:
+                celle[1 + posizione[nome]] = t
+                primo = False
+        return celle
+
+    righe = []
+
+    obiettivo = m.getObjective()
+    coef_obj = {obiettivo.getVar(i).VarName: obiettivo.getCoeff(i)
+                for i in range(obiettivo.size())}
+    verso_obj = "\\min" if m.ModelSense == GRB.MINIMIZE else "\\max"
+    righe.append(riga(verso_obj, coef_obj, "", None))
+
+    for k, c in enumerate(m.getConstrs()):
+        espressione = m.getRow(c)
+        coef = {espressione.getVar(i).VarName: espressione.getCoeff(i)
+                for i in range(espressione.size())}
+        etichetta = f"\\text{{{etichetta_vincoli}}}" if k == 0 else ""
+        righe.append(riga(etichetta, coef, VERSO[c.Sense], numero(c.RHS)))
+
+    # domini: una riga per famiglia di variabili, virgola attaccata alla variabile
+    gruppi: dict[tuple, list[int]] = {}
+    for k, v in enumerate(variabili):
+        gruppi.setdefault((famiglia(v.VarName), _dominio(v)), []).append(k)
+    for (_, (verso, insieme)), indici in gruppi.items():
+        celle = [""] + [""] * n + [verso, insieme]
+        for posto, k in enumerate(indici):
+            celle[1 + k] = nomi[k] + ("," if posto < len(indici) - 1 else "")
+        righe.append(celle)
+
+    # oltre nove colonne lo spazio fra le colonne si azzera: il modello
+    # deve stare nella larghezza della pagina senza uscire dal margine
+    glue = "@{}" if n > 9 else "@{\\,}"
+    spec = "r" + (glue + "r") * n + " c l"
+    corpo = "\\\\\n".join(" & ".join(r) for r in righe)
+    return f"\\begin{{array}}{{{spec}}}\n{corpo}\n\\end{{array}}"
+
+
+def salva_modello(m: gp.Model, nome: str, etichetta_vincoli: str = "soggetto a") -> str:
+    """Scrive `dati/modelli/<nome>.tex` e restituisce il corpo dell'array."""
+    corpo = array_esteso(m, etichetta_vincoli)
+    DIR_MODELLI.mkdir(parents=True, exist_ok=True)
+    percorso = DIR_MODELLI / f"{nome}.tex"
+    percorso.write_text(corpo + "\n", encoding="utf-8")
+    print(f"  [modello] {percorso.relative_to(BASE)} "
+          f"({len(m.getVars())} variabili, {len(m.getConstrs())} vincoli)")
+    return corpo

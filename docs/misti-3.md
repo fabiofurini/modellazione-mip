@@ -7,9 +7,9 @@
 !!! abstract "Problema 10.3"
     Un nutrizionista deve comporre una dieta mensile scegliendo fra
     $s \in \mathbb{Z}_{\ge 1}$ cibi e controllando $r \in \mathbb{Z}_{\ge 1}$
-    nutrienti. Per ogni cibo $i \in \{1, \dots, s\}$, il valore
+    nutrienti. Per ogni cibo $i \in \{1, 2, \dots, s\}$, il valore
     $w_i \in \mathbb{Q}_{>0}$ è il costo di un chilo; per ogni cibo $i$ e ogni
-    nutriente $j \in \{1, \dots, r\}$, il valore $g_{ij} \in \mathbb{Q}_{\ge 0}$
+    nutriente $j \in \{1, 2, \dots, r\}$, il valore $g_{ij} \in \mathbb{Q}_{\ge 0}$
     è la quantità di nutriente $j$ contenuta in un chilo di cibo $i$. Per ogni
     nutriente $j$, l'assunzione mensile deve stare fra $a_j \in \mathbb{Q}_{>0}$
     e $b_j \in \mathbb{Q}_{>0}$. Se un cibo entra nella dieta se ne devono
@@ -30,12 +30,12 @@ $y_i \in \{0,1\}$ vale $1$ se il cibo $i$ entra nella dieta.
 $$
 \begin{aligned}
 \min ~~ & \sum_{i=1}^{s} w_i\, x_i\\
-\text{s.a.} \quad & \sum_{i=1}^{s} g_{ij}\, x_i \ge a_j, && \forall j \in \{1, \dots, r\},\\
-& \sum_{i=1}^{s} g_{ij}\, x_i \le b_j, && \forall j \in \{1, \dots, r\},\\
-& x_i - c_i\, y_i \ge 0, && \forall i \in \{1, \dots, s\},\\
-& x_i - d_i\, y_i \le 0, && \forall i \in \{1, \dots, s\},\\
+\text{s.a.} \quad & \sum_{i=1}^{s} g_{ij}\, x_i \ge a_j, && \forall j \in \{1, 2, \dots, r\},\\
+& \sum_{i=1}^{s} g_{ij}\, x_i \le b_j, && \forall j \in \{1, 2, \dots, r\},\\
+& x_i - c_i\, y_i \ge 0, && \forall i \in \{1, 2, \dots, s\},\\
+& x_i - d_i\, y_i \le 0, && \forall i \in \{1, 2, \dots, s\},\\
 & \sum_{i=1}^{s} y_i \ge t,\\
-& x_i \ge 0, \quad y_i \in \{0,1\}, && \forall i \in \{1, \dots, s\}.
+& x_i \ge 0, \quad y_i \in \{0,1\}, && \forall i \in \{1, 2, \dots, s\}.
 \end{aligned}
 $$
 
@@ -119,8 +119,8 @@ varietà.
 $$
 \begin{aligned}
 \max ~~ & \sum_{j=1}^{r} a_j\, \alpha_j - \sum_{j=1}^{r} b_j\, \beta_j + t\, \tau\\
-\text{s.a.} \quad & \sum_{j=1}^{r} g_{ij}\,(\alpha_j - \beta_j) + \lambda_i - \mu_i \le w_i, && \forall i \in \{1, \dots, s\},\\
-& -c_i\, \lambda_i + d_i\, \mu_i + \tau \le 0, && \forall i \in \{1, \dots, s\},\\
+\text{s.a.} \quad & \sum_{j=1}^{r} g_{ij}\,(\alpha_j - \beta_j) + \lambda_i - \mu_i \le w_i, && \forall i \in \{1, 2, \dots, s\},\\
+& -c_i\, \lambda_i + d_i\, \mu_i + \tau \le 0, && \forall i \in \{1, 2, \dots, s\},\\
 & \alpha_j \ge 0, \quad \beta_j \ge 0, \quad \lambda_i \ge 0, \quad \mu_i \ge 0, \quad \tau \ge 0.
 \end{aligned}
 $$

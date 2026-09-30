@@ -11,7 +11,12 @@ di un punto e di un intervallo. Una variabile con questo dominio si chiama
 
 ## I vincoli
 
-$$\ell\, y_j ~\le~ q_j ~\le~ c_j\, y_j, \qquad \forall j \qquad (2m \text{ vincoli}).$$
+$$
+\begin{aligned}
+\ell\, y_j &~\le~ q_j, & \forall j & \qquad (m \text{ vincoli}),\\
+q_j &~\le~ c_j\, y_j, & \forall j & \qquad (m \text{ vincoli}).
+\end{aligned}
+$$
 
 ## La dimostrazione
 

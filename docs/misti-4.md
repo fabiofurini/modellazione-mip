@@ -9,12 +9,12 @@
     per le festività. Ogni albero può essere decorato secondo una delle
     $n \in \mathbb{Z}_{\ge 1}$ configurazioni possibili, ciascuna caratterizzata
     da luci di $m \in \mathbb{Z}_{\ge 1}$ colori diversi. Per ogni configurazione
-    $c \in \{1, \dots, n\}$ e ogni colore $l \in \{1, \dots, m\}$, il valore
+    $c \in \{1, 2, \dots, n\}$ e ogni colore $l \in \{1, 2, \dots, m\}$, il valore
     $u_{cl} \in \mathbb{Z}_{\ge 0}$ è il numero di luci di colore $l$ richieste
     dalla configurazione $c$, e $i_c \in \mathbb{Q}_{>0}$ è il costo di
     installazione di un albero decorato secondo quella configurazione. Tutte le
     luci vanno acquistate sul mercato, dove si vendono in scatole di
-    $k \in \mathbb{Z}_{\ge 1}$ tipi: per ogni tipo $b \in \{1, \dots, k\}$ e ogni
+    $k \in \mathbb{Z}_{\ge 1}$ tipi: per ogni tipo $b \in \{1, 2, \dots, k\}$ e ogni
     colore $l$, il valore $v_{bl} \in \mathbb{Z}_{\ge 0}$ è il numero di luci di
     colore $l$ contenute in una scatola di tipo $b$, e
     $p_b \in \mathbb{Q}_{\ge 0}$ è il suo costo. Per garantire una varietà visiva
@@ -37,9 +37,9 @@ $$
 \begin{aligned}
 \min ~~ & \sum_{c=1}^{n} i_c\, x_c + \sum_{b=1}^{k} p_b\, y_b\\
 \text{s.a.} \quad & \sum_{c=1}^{n} x_c = q,\\
-& \sum_{b=1}^{k} v_{bl}\, y_b - \sum_{c=1}^{n} u_{cl}\, x_c \ge 0, && \forall l \in \{1, \dots, m\},\\
+& \sum_{b=1}^{k} v_{bl}\, y_b - \sum_{c=1}^{n} u_{cl}\, x_c \ge 0, && \forall l \in \{1, 2, \dots, m\},\\
 & \sum_{c=1}^{n} z_c \ge f,\\
-& x_c - z_c \ge 0, && \forall c \in \{1, \dots, n\},\\
+& x_c - z_c \ge 0, && \forall c \in \{1, 2, \dots, n\},\\
 & x_c \in \mathbb{Z}_{\ge 0}, \quad y_b \in \mathbb{Z}_{\ge 0}, \quad z_c \in \{0,1\}.
 \end{aligned}
 $$
@@ -138,9 +138,9 @@ legame.
 $$
 \begin{aligned}
 \max ~~ & q\, \alpha + f\, \gamma\\
-\text{s.a.} \quad & \alpha - \sum_{l=1}^{m} u_{cl}\, \beta_l + \delta_c \le i_c, && \forall c \in \{1, \dots, n\},\\
-& \sum_{l=1}^{m} v_{bl}\, \beta_l \le p_b, && \forall b \in \{1, \dots, k\},\\
-& \gamma - \delta_c \le 0, && \forall c \in \{1, \dots, n\},\\
+\text{s.a.} \quad & \alpha - \sum_{l=1}^{m} u_{cl}\, \beta_l + \delta_c \le i_c, && \forall c \in \{1, 2, \dots, n\},\\
+& \sum_{l=1}^{m} v_{bl}\, \beta_l \le p_b, && \forall b \in \{1, 2, \dots, k\},\\
+& \gamma - \delta_c \le 0, && \forall c \in \{1, 2, \dots, n\},\\
 & \alpha \gtreqless 0, \quad \beta_l \ge 0, \quad \gamma \ge 0, \quad \delta_c \ge 0.
 \end{aligned}
 $$

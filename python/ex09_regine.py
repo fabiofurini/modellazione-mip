@@ -12,6 +12,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, valuta)
 from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -50,6 +51,7 @@ def duale(n):
 
 
 m8, x8 = modello(N)
+salva_modello(m8, "ex09_primale")
 print(f"  Scacchiera {N}x{N}: {N * N} variabili binarie e {2 * N + (2 * N - 1) * 2} vincoli")
 print("  (una riga, una colonna e due diagonali per ogni retta della scacchiera).")
 
@@ -83,6 +85,7 @@ print(f"  Regine piazzate dall'euristica costruttiva: {lb8}  ->  lb = {frazione(
 
 # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 d8 = duale(N)
+salva_modello(d8, "ex09_duale")
 mano = {f"alpha[{i}]": 1.0 for i in R(N)}       # beta = gamma = delta = 0
 ub8, viol = valuta(d8, mano)
 assert viol <= 1e-9, viol

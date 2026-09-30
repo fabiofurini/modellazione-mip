@@ -6,8 +6,8 @@
 
 !!! abstract "Problema 9.3"
     Un'azienda produce $s \in \mathbb{Z}_{\ge 1}$ tipi di veicolo usando
-    $k \in \mathbb{Z}_{\ge 1}$ risorse. Per ogni risorsa $i \in \{1, \dots, k\}$
-    e ogni tipo $j \in \{1, \dots, s\}$, il valore $a_{ij} \in \mathbb{Q}_{\ge 0}$
+    $k \in \mathbb{Z}_{\ge 1}$ risorse. Per ogni risorsa $i \in \{1, 2, \dots, k\}$
+    e ogni tipo $j \in \{1, 2, \dots, s\}$, il valore $a_{ij} \in \mathbb{Q}_{\ge 0}$
     è la quantità di risorsa $i$ necessaria per una unità del tipo $j$, e
     $b_i \in \mathbb{Q}_{>0}$ è la disponibilità della risorsa $i$. Per ogni tipo
     $j$, il valore $\bar p_j \in \mathbb{Q}_{>0}$ è il profitto di una unità e
@@ -31,9 +31,9 @@ tipo $j$.
 $$
 \begin{aligned}
 \max ~~ & \sum_{j=1}^{s} \bar p_j\, x_j + \bar r\, z\\
-\text{s.a.} \quad & \sum_{j=1}^{s} a_{ij}\, x_j \le b_i, && \forall i \in \{1, \dots, k\},\\
-& x_j - \bar q_j\, y_j \ge 0, && \forall j \in \{1, \dots, s\},\\
-& x_j - M_j\, y_j \le 0, && \forall j \in \{1, \dots, s\},\\
+\text{s.a.} \quad & \sum_{j=1}^{s} a_{ij}\, x_j \le b_i, && \forall i \in \{1, 2, \dots, k\},\\
+& x_j - \bar q_j\, y_j \ge 0, && \forall j \in \{1, 2, \dots, s\},\\
+& x_j - M_j\, y_j \le 0, && \forall j \in \{1, 2, \dots, s\},\\
 & -\sum_{j=1}^{s} y_j + 2\, z \le 0,\\
 & x_j \in \mathbb{Z}_{\ge 0}, \quad y_j \in \{0,1\}, \quad z \in \{0,1\}.
 \end{aligned}
@@ -128,8 +128,8 @@ $\gamma \ge 0$ al premio.
 $$
 \begin{aligned}
 \min ~~ & \sum_{i=1}^{k} b_i\, \pi_i\\
-\text{s.a.} \quad & \sum_{i=1}^{k} a_{ij}\, \pi_i - \ell_j + \beta_j \ge \bar p_j, && \forall j \in \{1, \dots, s\},\\
-& \bar q_j\, \ell_j - M_j\, \beta_j - \gamma \ge 0, && \forall j \in \{1, \dots, s\},\\
+\text{s.a.} \quad & \sum_{i=1}^{k} a_{ij}\, \pi_i - \ell_j + \beta_j \ge \bar p_j, && \forall j \in \{1, 2, \dots, s\},\\
+& \bar q_j\, \ell_j - M_j\, \beta_j - \gamma \ge 0, && \forall j \in \{1, 2, \dots, s\},\\
 & 2\, \gamma \ge \bar r,\\
 & \pi_i \ge 0, \quad \ell_j \ge 0, \quad \beta_j \ge 0, \quad \gamma \ge 0.
 \end{aligned}

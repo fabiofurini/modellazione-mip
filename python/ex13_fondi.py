@@ -12,6 +12,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, stampa_lp, valuta)
 from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -51,6 +52,7 @@ def duale(c, p, B):
 
 
 m12, x12 = modello(c12, p12, B12)
+salva_modello(m12, "ex13_primale")
 print("  Il modello dell'istanza:")
 stampa_lp(m12)
 
@@ -90,6 +92,7 @@ print(f"  Soluzione euristica: {x_eur[0]} lotti del fondo 1 e {x_eur[1]} del fon
 
 # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 d12 = duale(c12, p12, B12)
+salva_modello(d12, "ex13_duale")
 # controesempio: la scelta alpha = 5/32, beta = 1/8 non e' ammissibile
 tentativo = {"alpha": 5 / 32, "beta": 1 / 8}
 val_t, viol_t = valuta(d12, tentativo)

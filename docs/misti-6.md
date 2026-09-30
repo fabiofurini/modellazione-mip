@@ -6,13 +6,13 @@
 
 !!! abstract "Problema 10.6"
     Un'azienda gestisce $r \in \mathbb{Z}_{\ge 1}$ campi estivi per ospitare
-    bambini durante le vacanze. Per ogni campo $j \in \{1, \dots, r\}$, il valore
+    bambini durante le vacanze. Per ogni campo $j \in \{1, 2, \dots, r\}$, il valore
     $d_j \in \mathbb{Z}_{\ge 1}$ è il numero massimo di bambini ospitabili.
     L'azienda ha ricevuto richieste da bambini di $s \in \mathbb{Z}_{\ge 1}$
-    nazionalità diverse: per ogni nazionalità $i \in \{1, \dots, s\}$ ci sono
+    nazionalità diverse: per ogni nazionalità $i \in \{1, 2, \dots, s\}$ ci sono
     $f_i \in \mathbb{Z}_{\ge 0}$ bambine e $g_i \in \mathbb{Z}_{\ge 0}$ bambini.
     In ogni campo il numero di bambine deve essere maggiore o uguale a quello dei
-    bambini, e il numero di bambini della nazionalità $c \in \{1, \dots, s\}$
+    bambini, e il numero di bambini della nazionalità $c \in \{1, 2, \dots, s\}$
     deve essere maggiore o uguale a quello di ogni altra nazionalità. L'azienda
     vuole massimizzare il numero totale di bambini accettati.
 
@@ -30,11 +30,11 @@ i bambini.
 $$
 \begin{aligned}
 \max ~~ & \sum_{i=1}^{s} \sum_{j=1}^{r} \bigl(x_{ij} + y_{ij}\bigr)\\
-\text{s.a.} \quad & \sum_{j=1}^{r} x_{ij} \le f_i, && \forall i \in \{1, \dots, s\},\\
-& \sum_{j=1}^{r} y_{ij} \le g_i, && \forall i \in \{1, \dots, s\},\\
-& \sum_{i=1}^{s} \bigl(x_{ij} + y_{ij}\bigr) \le d_j, && \forall j \in \{1, \dots, r\},\\
-& \sum_{i=1}^{s} \bigl(x_{ij} - y_{ij}\bigr) \ge 0, && \forall j \in \{1, \dots, r\},\\
-& x_{cj} + y_{cj} - \sum_{i \ne c} \bigl(x_{ij} + y_{ij}\bigr) \ge 0, && \forall j \in \{1, \dots, r\},\\
+\text{s.a.} \quad & \sum_{j=1}^{r} x_{ij} \le f_i, && \forall i \in \{1, 2, \dots, s\},\\
+& \sum_{j=1}^{r} y_{ij} \le g_i, && \forall i \in \{1, 2, \dots, s\},\\
+& \sum_{i=1}^{s} \bigl(x_{ij} + y_{ij}\bigr) \le d_j, && \forall j \in \{1, 2, \dots, r\},\\
+& \sum_{i=1}^{s} \bigl(x_{ij} - y_{ij}\bigr) \ge 0, && \forall j \in \{1, 2, \dots, r\},\\
+& x_{cj} + y_{cj} - \sum_{i \ne c} \bigl(x_{ij} + y_{ij}\bigr) \ge 0, && \forall j \in \{1, 2, \dots, r\},\\
 & x_{ij} \in \mathbb{Z}_{\ge 0}, \quad y_{ij} \in \mathbb{Z}_{\ge 0}.
 \end{aligned}
 $$
@@ -53,7 +53,7 @@ in minoranza.
     $s > 2$ il testo del problema chiede
 
     $$x_{cj} + y_{cj} \;\ge\; x_{ij} + y_{ij}
-    \qquad \forall i \in \{1, \dots, s\},\ i \ne c,\ \forall j \in \{1, \dots, r\} ,$$
+    \qquad \forall i \in \{1, 2, \dots, s\},\ i \ne c,\ \forall j \in \{1, 2, \dots, r\} ,$$
 
     cioè $(s-1)\,r$ disuguaglianze. La forma aggregata scritta qui sopra è
     *più forte*: impone che la nazionalità $c$ non sia meno di *tutte le altre
@@ -119,8 +119,8 @@ $$
 \begin{aligned}
 \min ~~ & \sum_{i=1}^{s} f_i\, \alpha_i + \sum_{i=1}^{s} g_i\, \beta_i
       + \sum_{j=1}^{r} d_j\, \gamma_j\\
-\text{s.a.} \quad & \alpha_i + \gamma_j - \delta_j + \sigma_i\, \varepsilon_j \ge 1, && \forall i \in \{1, \dots, s\},\ \forall j \in \{1, \dots, r\},\\
-& \beta_i + \gamma_j + \delta_j + \sigma_i\, \varepsilon_j \ge 1, && \forall i \in \{1, \dots, s\},\ \forall j \in \{1, \dots, r\},\\
+\text{s.a.} \quad & \alpha_i + \gamma_j - \delta_j + \sigma_i\, \varepsilon_j \ge 1, && \forall i \in \{1, 2, \dots, s\},\ \forall j \in \{1, 2, \dots, r\},\\
+& \beta_i + \gamma_j + \delta_j + \sigma_i\, \varepsilon_j \ge 1, && \forall i \in \{1, 2, \dots, s\},\ \forall j \in \{1, 2, \dots, r\},\\
 & \alpha_i \ge 0, \quad \beta_i \ge 0, \quad \gamma_j \ge 0, \quad \delta_j \ge 0, \quad \varepsilon_j \ge 0.
 \end{aligned}
 $$

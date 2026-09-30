@@ -12,6 +12,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, valuta)
 from stile import intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -49,6 +50,7 @@ def duale(t):
 
 
 m, x = modello(t)
+salva_modello(m, "ex03_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 # euristica costruttiva sugli stili nell'ordine dato: il nuotatore piu' veloce fra quelli liberi
@@ -69,6 +71,7 @@ print(f"  Soluzione euristica: " + ", ".join(f"{STILI[s]} -> {NUOTATORI[scelta[s
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 d = duale(t)
+salva_modello(d, "ex03_duale")
 mano = {f"alpha[{s}]": min(t[s]) for s in R(ns)}       # beta = 0
 lb, viol = valuta(d, mano)
 assert viol <= 1e-9, viol

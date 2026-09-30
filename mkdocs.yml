@@ -116,12 +116,21 @@ nav:
       - problemi.md
       - Modelli numerici:
           - numerici.md
+          - EX 1 Il furgone da otto posti: ex-01.md
           - EX 2 Linee di autobus: ex-02.md
           - EX 3 Staffetta: ex-03.md
+          - EX 4 Scarpe, produzione e assunzioni: ex-04.md
+          - EX 5 Veicoli con quantità minima: ex-05.md
           - EX 6 Hub-and-spoke: ex-06.md
+          - EX 7 Aerei su commessa: ex-07.md
           - EX 8 Seminari: ex-08.md
+          - EX 9 Le otto regine: ex-09.md
           - EX 10 Utensili CNC: ex-10.md
           - EX 11 Bilanciamento: ex-11.md
+          - EX 12 Scarpe con soglia: ex-12.md
+          - EX 13 Fondi a lotti: ex-13.md
+          - EX 14 Turni del pronto soccorso: ex-14.md
+          - EX 15 Orario della scuola di musica: ex-15.md
       - Assegnamento e scheduling:
           - scheduling.md
           - 7.1 Assegnamento a costo minimo: scheduling-1.md
@@ -156,3 +165,4 @@ nav:
   - Il corso:
       - organizzazione.md
       - Notebook in Colab: notebook.md
+      - Materiale scaricabile: materiale.md

@@ -6,7 +6,7 @@
 
 !!! abstract "Problema 10.9"
     Una biblioteca deve sistemare $n \in \mathbb{Z}_{\ge 1}$ libri su degli
-    scaffali. Ogni libro $b \in \{1, \dots, n\}$ ha larghezza
+    scaffali. Ogni libro $b \in \{1, 2, \dots, n\}$ ha larghezza
     $w_b \in \mathbb{Z}_{\ge 1}$ e altezza $h_b \in \mathbb{Z}_{\ge 1}$. Sono
     disponibili $m \in \mathbb{Z}_{\ge 1}$ scaffali, ciascuno di larghezza
     massima $c \in \mathbb{Q}_{>0}$. Ogni libro va assegnato a esattamente uno
@@ -26,9 +26,9 @@ $s$; $y_s \ge 0$ è l'altezza dello scaffale $s$.
 $$
 \begin{aligned}
 \min ~~ & \sum_{s=1}^{m} y_s\\
-\text{s.a.} \quad & \sum_{s=1}^{m} x_{bs} = 1, && \forall b \in \{1, \dots, n\},\\
-& \sum_{b=1}^{n} w_b\, x_{bs} \le c, && \forall s \in \{1, \dots, m\},\\
-& -h_b\, x_{bs} + y_s \ge 0, && \forall b \in \{1, \dots, n\},\ \forall s \in \{1, \dots, m\},\\
+\text{s.a.} \quad & \sum_{s=1}^{m} x_{bs} = 1, && \forall b \in \{1, 2, \dots, n\},\\
+& \sum_{b=1}^{n} w_b\, x_{bs} \le c, && \forall s \in \{1, 2, \dots, m\},\\
+& -h_b\, x_{bs} + y_s \ge 0, && \forall b \in \{1, 2, \dots, n\},\ \forall s \in \{1, 2, \dots, m\},\\
 & x_{bs} \in \{0,1\}, \quad y_s \ge 0.
 \end{aligned}
 $$
@@ -106,8 +106,8 @@ Si associano $\alpha_b$ libera all'assegnamento, $\beta_s \le 0$ alla larghezza
 $$
 \begin{aligned}
 \max ~~ & \sum_{b=1}^{n} \alpha_b + c \sum_{s=1}^{m} \beta_s\\
-\text{s.a.} \quad & \sum_{b=1}^{n} \gamma_{bs} \le 1, && \forall s \in \{1, \dots, m\},\\
-& \alpha_b + w_b\, \beta_s - h_b\, \gamma_{bs} \le 0, && \forall b \in \{1, \dots, n\},\ \forall s \in \{1, \dots, m\},\\
+\text{s.a.} \quad & \sum_{b=1}^{n} \gamma_{bs} \le 1, && \forall s \in \{1, 2, \dots, m\},\\
+& \alpha_b + w_b\, \beta_s - h_b\, \gamma_{bs} \le 0, && \forall b \in \{1, 2, \dots, n\},\ \forall s \in \{1, 2, \dots, m\},\\
 & \alpha_b \gtreqless 0, \quad \beta_s \le 0, \quad \gamma_{bs} \ge 0.
 \end{aligned}
 $$

@@ -24,8 +24,8 @@ tratta abbastanza scatole per le unità spedite.
 
 ## Modello
 
-Per brevità $P = \{1, \dots, k\}$ è l'insieme dei prodotti, $S = \{1, \dots, n\}$
-quello degli stabilimenti e $C = \{1, \dots, m\}$ quello dei clienti.
+Per brevità $P = \{1, 2, \dots, k\}$ è l'insieme dei prodotti, $S = \{1, 2, \dots, n\}$
+quello degli stabilimenti e $C = \{1, 2, \dots, m\}$ quello dei clienti.
 
 **Variabili.** $x_{psc} \in \mathbb{Z}_{\ge 0}$ unità del prodotto $p$ spedite
 da $s$ a $c$; $y_{sc} \in \mathbb{Z}_{\ge 0}$ scatole spedite da $s$ a $c$.

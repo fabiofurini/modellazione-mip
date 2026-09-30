@@ -197,14 +197,14 @@ Con i dieci progetti dell'esercizio 2.1, ricavi e costi
 | ricavo $r_p$ | 9 | 7 | 4 | 8 | 3 | 6 | 2 | 5 | 7 | 6 |
 | costo $b_p$ | 4 | 3 | 2 | 4 | 2 | 3 | 1 | 3 | 4 | 3 |
 
-e budget $B = 14$:
+e budget $B = 14$, con $n = 10$ progetti:
 
 $$
 \begin{aligned}
-\max ~~ \sum_{p=1}^{10} r_p x_p & &\\
-\text{soggetto a}\quad \sum_{p=1}^{10} b_p x_p &\le B, &\\
+\max ~~ \sum_{p=1}^{n} r_p\, x_p & &\\
+\text{soggetto a}\quad \sum_{p=1}^{n} b_p\, x_p &\le B, &\\
 \text{gli 8 vincoli} &\text{ dell'esercizio 2.1}, &\\
-x_p &\in \{0,1\}. &
+x_p &\in \{0, 1\}, & \forall p \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
 

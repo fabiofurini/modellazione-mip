@@ -22,6 +22,7 @@ site/
 STILE_E_FORMATO.md
 dispensa/
 soluzioni/
+slides/
 
 # i PDF pubblicati sul sito vanno invece versionati
 !docs/pdf/*.pdf

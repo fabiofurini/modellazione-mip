@@ -10,7 +10,12 @@ macchina più carica.
 
 ## I vincoli
 
-$$z ~\ge~ t_j\, x_j, \qquad \forall j \qquad (n \text{ vincoli}), \qquad z \ge 0.$$
+$$
+\begin{aligned}
+z &~\ge~ t_j\, x_j, & \forall j & \qquad (n \text{ vincoli}),\\
+z &~\ge~ 0. & &
+\end{aligned}
+$$
 
 ## La dimostrazione, in tre passi
 

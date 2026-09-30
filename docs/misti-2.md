@@ -7,7 +7,7 @@
 !!! abstract "Problema 10.2"
     Un banditore ha un insieme $S = \{1, 2, \dots, n\}$ di
     $n \in \mathbb{Z}_{\ge 1}$ oggetti da vendere e ha ricevuto
-    $r \in \mathbb{Z}_{\ge 1}$ offerte. Per ogni offerta $j \in \{1, \dots, r\}$,
+    $r \in \mathbb{Z}_{\ge 1}$ offerte. Per ogni offerta $j \in \{1, 2, \dots, r\}$,
     l'insieme $B_j \subseteq S$ è il sottoinsieme di oggetti richiesti e
     $p_j \in \mathbb{Q}_{>0}$ il profitto in euro se l'offerta viene accettata.
     Ogni oggetto può essere venduto al più una volta, e un'offerta può essere
@@ -27,7 +27,7 @@ $$
 \begin{aligned}
 \max ~~ & \sum_{j=1}^{r} p_j\, x_j\\
 \text{s.a.} \quad & \sum_{j :\, i \in B_j} x_j \le 1, && \forall i \in S,\\
-& x_j \in \{0,1\}, && \forall j \in \{1, \dots, r\}.
+& x_j \in \{0,1\}, && \forall j \in \{1, 2, \dots, r\}.
 \end{aligned}
 $$
 
@@ -110,7 +110,7 @@ oggetto.
 $$
 \begin{aligned}
 \min ~~ & \sum_{i \in S} \lambda_i\\
-\text{s.a.} \quad & \sum_{i \in B_j} \lambda_i \ge p_j, && \forall j \in \{1, \dots, r\},\\
+\text{s.a.} \quad & \sum_{i \in B_j} \lambda_i \ge p_j, && \forall j \in \{1, 2, \dots, r\},\\
 & \lambda_i \ge 0, && \forall i \in S.
 \end{aligned}
 $$

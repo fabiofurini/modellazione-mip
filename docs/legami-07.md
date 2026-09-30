@@ -11,7 +11,12 @@ obiettivo e il caso in vincolo si comportano in modo **radicalmente diverso**.
 
 - **In obiettivo, minimizzando**: una variabile $d \ge 0$ e due vincoli,
 
-    $$d \ge u - v, \qquad d \ge v - u \qquad (2 \text{ vincoli}),$$
+    $$
+    \begin{aligned}
+    d &\ge u - v, & &\qquad (1 \text{ vincolo}),\\
+    d &\ge v - u, & &\qquad (1 \text{ vincolo}),
+    \end{aligned}
+    $$
 
     con $d$ nell'obiettivo da minimizzare. Nessuna binaria.
 
@@ -22,7 +27,12 @@ obiettivo e il caso in vincolo si comportano in modo **radicalmente diverso**.
   disgiunzione «$u - v \ge k$ *oppure* $v - u \ge k$», e richiede una binaria
   $b$ e un big-M:
 
-    $$u - v \ge k - M(1 - b), \qquad v - u \ge k - M b \qquad (2 \text{ vincoli}, 1 \text{ binaria}).$$
+    $$
+    \begin{aligned}
+    u - v &\ge k - M(1 - b), & &\qquad (1 \text{ vincolo}),\\
+    v - u &\ge k - M\, b. & &\qquad (1 \text{ vincolo}, 1 \text{ binaria})
+    \end{aligned}
+    $$
 
 ## La dimostrazione
 
