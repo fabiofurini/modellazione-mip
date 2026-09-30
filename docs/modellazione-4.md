@@ -510,7 +510,7 @@ il notebook è
     print("  MILP, e usarlo come tale e' un errore, non un'approssimazione.")
 
     # ---------- 6. FIGURA: IL SANDWICH DEI DUE PROBLEMI ----------
-    fig, ax = plt.subplots(figsize=(7.2, 3.4))
+    fig, ax = plt.subplots(figsize=(7.2, 2.5))
     etichette = ["copertura (min)", "zaino (max)"]
     lb = [lb41, lb42]
     ub = [ub41_primale, ub42]
