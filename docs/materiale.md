@@ -99,5 +99,22 @@ python3 python/verifica_numeri.py    # ogni numero citato nei testi
 python3 -m mkdocs build --strict     # il sito
 ```
 
-La licenza inclusa nel pacchetto pip di `gurobipy` (2000 variabili, 2000
-vincoli) basta per tutte le istanze del corso.
+
+## La licenza di Gurobi
+
+```bash
+python3 -m pip install gurobipy
+```
+
+Il pacchetto pip include una **licenza dimostrativa** (fino a 2000 variabili e
+2000 vincoli): basta per tutte le istanze di questo corso. All'avvio compare la
+riga `Restricted license - for non-production use only`: è normale.
+
+**Licenza accademica completa, gratuita:**
+
+1. registrarsi su <https://portal.gurobi.com> con l'email istituzionale;
+2. richiedere una *Named-User Academic License*;
+3. eseguire il comando `grbgetkey XXXXXXXX-...` mostrato dal portale (serve la
+   rete di ateneo o la VPN);
+4. la licenza finisce in `~/gurobi.lic` e da quel momento non ci sono limiti di
+   dimensione.
