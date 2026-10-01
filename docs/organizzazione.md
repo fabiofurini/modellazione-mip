@@ -25,7 +25,7 @@ quattro quesiti:
    ottenere il bound dal lato opposto.
 
 Il `lb ≤ z(\mathit{MILP}) ≤ ub` che ne risulta è il filo conduttore del corso: un
-modello non si limita a scriverlo, lo si stringe da entrambi i lati prima di
+modello non si limita a scriverlo: se ne racchiude l'ottimo fra due numeri prima di
 affidarlo al solver. Un solver interrotto a metà, del resto, un certificato lo
 fornisce eccome — l'incumbent `ObjVal` e il bound `ObjBound` racchiudono
 l'ottimo in un intervallo, e il `MIPGap` ne misura l'ampiezza. Il punto

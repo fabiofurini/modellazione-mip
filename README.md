@@ -19,7 +19,7 @@
 
 Modelli di programmazione lineare intera per l'Ingegneria Gestionale — come si
 costruisce un modello con variabili binarie e intere, come si *dimostra* che fa
-quello che deve, come lo si stringe fra un'euristica e un bound duale (gli
+quello che deve, come se ne racchiude l'ottimo fra un'euristica e un bound duale (gli
 stessi bound a cui ricorre un solver reale quando non riesce a raggiungere
 l'ottimo provato), come lo si risolve con Gurobi.
 

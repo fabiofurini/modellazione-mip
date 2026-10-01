@@ -32,7 +32,7 @@ Python sotto licenza
 
     ---
 
-    I ventitré problemi delle quattro famiglie: enunciato, modello simbolico,
+    I ventitré problemi delle tre famiglie e dei problemi misti: enunciato, modello simbolico,
     istanza, euristica, duale del rilassamento, ottimo, domande aggiuntive e una
     variante svolta per intero.
 
@@ -53,7 +53,7 @@ Python sotto licenza
     ---
 
     Il percorso in quarantatré slide: il metodo, i quattordici legami, il
-    sandwich dei bound, le quattro famiglie, il formato dell'esame.
+    sandwich dei bound, le tre famiglie e i problemi misti, il formato dell'esame.
 
     [:octicons-download-24: slide-mip.pdf](pdf/slide-mip.pdf)
 

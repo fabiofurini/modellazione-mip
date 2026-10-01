@@ -3,28 +3,55 @@
 Materiale didattico ideato e sviluppato da **[Fabio Furini](https://sites.google.com/view/fabiofurini/home-page)**, professore
 associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma.
 
-**Modelli di programmazione lineare intera per l'Ingegneria Gestionale** — la
-dispensa del corso in versione online, con codice Python/Gurobi, notebook e
-istanze riproducibili.
+**Modelli di programmazione lineare intera per l'Ingegneria Gestionale.**
 
-Un modello con variabili binarie e intere non si *scrive* soltanto: si
-*dimostra*. Ogni vincolo che lega due famiglie di variabili impone
-un'implicazione logica, e lo studente deve saper provare che la impone davvero
-— in entrambi i versi, oppure spiegando perché un verso segue dall'ottimalità.
-Poi il modello si *stringe*: un'euristica costruttiva fornisce un upper bound
-e una soluzione duale del rilassamento LP fornisce un lower bound, che
-intrappolano il valore ottimo fra i due — la stessa tecnica usata in pratica
-quando un'istanza reale è troppo grande per essere risolta all'ottimo provato.
-Infine il modello si *risolve*, con Gurobi da Python.
+> Un furgone da otto posti. Quattro gruppi di turisti, di $2$, $3$, $4$ e $5$
+> persone, che offrono $30$, $50$, $80$ e $70$ euro e non vogliono essere
+> separati. Se ne possono accettare al più due, e se accetti il secondo devi
+> accettare anche il quarto. Quanto incassi, al massimo?
 
-Tutti i modelli si possono eseguire **subito nel browser**: ogni capitolo ha il
-suo [notebook che si apre in Colab](notebook.md), senza installare niente.
+Tre righe di testo, e dentro c'è un problema che a occhio non si risolve e per
+tentativi nemmeno. Questo corso insegna a scriverlo come modello, a risolverlo
+con Gurobi in dieci righe di Python, e — la parte che di solito manca — a
+**sapere quanto vale la soluzione che hai in mano** anche quando il solver non
+arriva in fondo.
+
+Sono $38$ problemi risolti per intero, $44$ notebook che girano nel browser
+senza installare niente, e ogni numero che leggi è prodotto da uno script e
+verificato da un `assert`: se cambi un dato, cambiano le pagine.
+
+<div class="grid cards" markdown>
+
+-   :material-text-box-outline: **Si parte da un testo**
+
+    Quattro righe di enunciato, dei dati, una domanda.
+
+-   :material-function-variant: **Si scrive il modello**
+
+    Variabili con il loro dominio, obiettivo, vincoli — e il legame fra le
+    variabili spiegato, non solo scritto.
+
+-   :material-arrow-collapse-vertical: **Si racchiude l'ottimo**
+
+    $\mathit{LB} \le z(\mathit{MILP}) \le \mathit{UB}$: un'euristica da
+    sopra, un certificato duale da sotto.
+
+-   :material-language-python: **Si risolve**
+
+    Gurobi da Python, con lo script completo in pagina e un notebook che si
+    apre in Colab.
+
+</div>
+
+Tutti i modelli si possono eseguire **subito nel browser**: ogni script del
+corso ha il suo [notebook che si apre in Colab](notebook.md), senza installare
+niente.
 
 !!! tip "Il metodo del corso"
-    Per ogni problema: modello → dimostrazione dei legami → istanza →
+    Per ogni problema: modello → legami fra le variabili → istanza →
     euristica (upper bound) → duale del rilassamento LP (lower bound) →
-    soluzione con il solver → **domande di modellazione aggiuntive**, perché
-    il modello base lo si legge, la variante la si scrive.
+    soluzione con il solver → **domande di modellazione aggiuntive**: si cambia
+    un dato o si aggiunge un vincolo, e si rifanno modello e bound.
 
 ## Le due parti del corso
 

@@ -3,12 +3,11 @@
 **Classe:** BIP · ILP · MILP · **Script:** uno per modello,
 `python/ex01_furgone.py` … `python/ex15_orario.py`
 
-I quindici modelli numerici del corso, da EX 1 a EX 15. Sono gli esempi più
-facili: dati espliciti, poche variabili, un solo passaggio per ciascuna tecnica.
-Vengono prima delle famiglie di problemi proprio per questo — si leggono per
-prendere le misure, e poi si affrontano i problemi generali.
+I quindici modelli numerici del corso, da EX 1 a EX 15. Dati espliciti, poche
+variabili, una tecnica per modello: sono i più facili, e vengono prima delle
+famiglie di problemi e dei problemi misti.
 
-Il formato è ridotto ma conserva sempre gli stessi cinque pezzi:
+Ogni modello numerico ha sempre le stesse cinque parti:
 
 1. l'enunciato, con i dati dell'istanza;
 2. le **variabili**, con il loro dominio e il loro conteggio;
