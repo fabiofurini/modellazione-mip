@@ -48,6 +48,16 @@ Python sotto licenza
 
     [:octicons-download-24: dispensa-4-organizzazione.pdf](pdf/dispensa-4-organizzazione.pdf)
 
+-   :material-help-circle-outline: **Dispensa V --- Problemi da modellare**
+
+    ---
+
+    Quaranta problemi dati come arrivano davvero, senza il modello già scritto:
+    venti con i dati numerici espliciti e venti in forma simbolica. Le soluzioni
+    sono riservate ai docenti.
+
+    [:octicons-download-24: dispensa-5-damodellare.pdf](pdf/dispensa-5-damodellare.pdf)
+
 -   :material-presentation: **Le slide del corso**
 
     ---

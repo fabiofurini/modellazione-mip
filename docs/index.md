@@ -37,7 +37,9 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 - **Due o tre domande aggiuntive su ogni problema**: si cambia un dato o si
   aggiunge un vincolo, e si rifanno modello e bound. Per ciascuno degli esercizi
   una variante è svolta per intero, come modello di risposta.
-- **Due problemi dati come arrivano davvero**, senza il modello già scritto.
+- **Quaranta problemi da modellare**, dati come arrivano davvero e senza il
+  modello già scritto: venti con i dati numerici espliciti e venti in forma
+  simbolica.
 - **Quarantaquattro [notebook](notebook.md)** che girano in Colab, senza
   installare niente: lo stesso codice delle pagine, cella per cella.
 - **Nessun risultato trascritto a mano**: ogni numero viene da uno script che si
