@@ -101,8 +101,17 @@ $n = 5$ giorni, $r_0 = r_n = 0$, domanda totale $110$ unità.
 scorta, ma un lancio ogni giorno. Costo $270 + 250 = 520$.
 
 **(b) Least unit cost.** Si parte dal primo periodo scoperto e si copre con un
-solo lancio il numero di periodi che minimizza il costo medio per unità, poi si
-ricomincia. Costo $O(n^2)$.
+solo lancio il numero di periodi che minimizza il costo medio per unità,
+
+$$\frac{q + \sum_{i=1}^{k-1} h \cdot (\text{unità tenute } i \text{ periodi})}
+       {\sum_{i=0}^{k-1} d_{t+i}} ,$$
+
+poi si ricomincia. Costo $O(n^2)$. Al numeratore ci sono solo il lancio e il
+magazzino: il costo di produzione $p$ non compare perché le alternative che si
+confrontano partono tutte dallo stesso periodo e coprono comunque le stesse
+domande, quindi pagano lo stesso $p$ per unità e non cambiano il confronto. I
+numeri qui sotto sono dunque costi *incrementali* di lancio più magazzino, non
+il costo pieno di un'unità.
 
 - periodo 1: copre fino al 2, quantità $30$, costo medio $2$;
 - periodo 3: copre fino al 4, quantità $70$, costo medio $\approx 1{,}286$;

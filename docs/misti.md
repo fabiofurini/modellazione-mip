@@ -61,8 +61,8 @@ pareggiando tutto.
 
     ---
 
-    Quantità intere e variabili semicontinue: un alimento si compra a zero
-    oppure sopra la sua soglia.
+    Quantità continue con lotto minimo: un alimento si compra a zero oppure
+    fra la sua soglia e il suo tetto.
 
     [:octicons-arrow-right-24: MILP · lotto minimo](misti-3.md)
 
