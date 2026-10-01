@@ -12,6 +12,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, valuta)
 from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -23,8 +24,8 @@ d1 = [15, 8]        # capacita' dei campi
 c1 = 0              # nazionalita' che deve essere maggioritaria (indice 0 = nazionalita' 1)
 s1, r1 = len(f1), len(d1)
 salva_dati(pd.DataFrame({"nazionalita": R(1, s1 + 1), "bambine": f1, "bambini": g1}),
-           "campi1_dati")
-salva_dati(pd.DataFrame({"campo": R(1, r1 + 1), "capacita": d1}), "campi1_capacita")
+           "fam10_6_dati")
+salva_dati(pd.DataFrame({"campo": R(1, r1 + 1), "capacita": d1}), "fam10_6_capacita")
 
 
 def modello_1(f, g, d, c):
@@ -72,6 +73,7 @@ def duale_1(f, g, d, c):
 
 
 m1, x1, y1 = modello_1(f1, g1, d1, c1)
+salva_modello(m1, "fam10_6_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
 # euristica costruttiva campo per campo: si riempie il campo corrente prendendo prima la
@@ -118,6 +120,7 @@ print("  resta nessuno che possa fare da maggioranza e il campo resta vuoto.")
 
 # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 dl1 = duale_1(f1, g1, d1, c1)
+salva_modello(dl1, "fam10_6_duale")
 # ricetta: alpha = beta = delta = eps = 0 e gamma_j = 1, cioe' si valuta solo la
 # capacita': ogni bambino accettato occupa un posto, quindi non se ne possono
 # accettare piu' di sum_j d_j
@@ -138,7 +141,7 @@ for j in R(r1):
         f"naz. {i + 1} -> {int(x1[i, j].X)} bambine e {int(y1[i, j].X)} bambini" for i in R(s1))
         + f"; {int(tot)} posti su {d1[j]}")
 riga = registra_bound("1 campi", ub1, lb1, zlp1, zlp1r, z1, senso="max")
-salva_dati(pd.DataFrame([riga]), "campi1_bound")
+salva_dati(pd.DataFrame([riga]), "fam10_6_bound")
 assert lb1 <= z1 <= zlp1 <= ub1 + 1e-9
 print(f"  Il bound duale {frazione(ub1)} coincide con l'ottimo: la capacita' e' satura e il")
 print("  certificato chiude il gap. Il divario da colmare era tutto dal lato dell'euristica.")
@@ -155,7 +158,7 @@ print(f"  accettati sono al piu' 2 * {sum(f1)} = {2 * sum(f1)}.")
 salva_dati(pd.DataFrame([{"argomento": "capacita' dei campi", "bound": ub1},
                          {"argomento": "nazionalita' maggioritaria", "bound": 2 * tot_c},
                          {"argomento": "bambine disponibili", "bound": 2 * sum(f1)}]),
-           "campi1_argomenti")
+           "fam10_6_argomenti")
 
 # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 varianti = {}
@@ -182,7 +185,7 @@ varianti["1b"] = variante("1b. La nazionalita' 1 non puo' essere divisa fra piu'
 print("       e' esattamente cio' che fa l'euristica: il secondo campo resta vuoto e si torna")
 print(f"       al valore {frazione(lb1)}.")
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
-           "campi1_varianti")
+           "fam10_6_varianti")
 
 # ---------- 7. FIGURA ----------
 fig, ax = plt.subplots(figsize=(6.8, 3.0))

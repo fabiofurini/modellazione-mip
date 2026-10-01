@@ -14,6 +14,7 @@ from euristiche import best_fit, first_fit, matrice, next_fit
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
                  registra_bound, rilassamento, risolvi, stampa_soluzione, valuta)
 from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -23,8 +24,8 @@ t2 = [[6, 5, 3], [5, 10, 2], [20, 13, 10]]
 c2 = [8, 7, 5]
 a2 = [25, 20, 12]
 salva_dati(pd.DataFrame([{"lavoro": j + 1, "macchina": m + 1, "t": t2[j][m]}
-                         for j in R(3) for m in R(3)]), "sched2_lavori")
-salva_dati(pd.DataFrame({"macchina": R(1, 4), "c": c2, "a": a2}), "sched2_macchine")
+                         for j in R(3) for m in R(3)]), "fam07_2_lavori")
+salva_dati(pd.DataFrame({"macchina": R(1, 4), "c": c2, "a": a2}), "fam07_2_macchine")
 
 
 def modello_2(t, c, a):
@@ -56,6 +57,7 @@ def valore_2(e, c):
 
 
 m2, x2, y2 = modello_2(t2, c2, a2)
+salva_modello(m2, "fam07_2_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 print("Euristiche costruttive:")
@@ -74,6 +76,7 @@ ub2 = min(valore_2(e, c2) for _, e in eur2)
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 d2 = duale_2(t2, c2, a2)
+salva_modello(d2, "fam07_2_duale")
 mano = {f"pi[{mm}]": c2[mm] / a2[mm] for mm in R(3)}
 mano.update({f"mu[{j}]": min(t2[j][mm] * c2[mm] / a2[mm] for mm in R(3)) for j in R(3)})
 lb2, viol = valuta(d2, mano)
@@ -88,7 +91,7 @@ z2 = risolvi(m2)
 print("Soluzione ottima del MILP:")
 stampa_soluzione(m2, solo_non_nulle=True)
 riga = registra_bound("2 costo fisso", ub2, lb2, zlp2, zlp2r, z2)
-salva_dati(pd.DataFrame([riga]), "sched2_bound")
+salva_dati(pd.DataFrame([riga]), "fam07_2_bound")
 
 # ---------- 4bis. RILASSAMENTO CON I LINK DISAGGREGATI ----------
 # la stessa istanza con i vincoli di link disaggregati x_jm <= y_m: rilassamento più forte
@@ -117,7 +120,7 @@ varianti["2a"] = variante("2a. Una macchina usata lavora almeno 8 minuti (sum_j 
 m, x, y = modello_2(t2, c2, a2)
 m.addConstr(y[0] <= y[2], name="1_implica_3")
 varianti["2b"] = variante("2b. Se si usa la macchina 1 si usa anche la 3 (y_1 <= y_3)", m)
-salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "sched2_varianti")
+salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_2_varianti")
 
 # ---------- 6. FIGURE ----------
 

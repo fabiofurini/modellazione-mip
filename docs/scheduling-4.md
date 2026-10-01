@@ -156,7 +156,7 @@ notebook: [`notebooks/fam07_4_parallelo.ipynb`](https://github.com/fabiofurini/m
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam07_4_parallelo.py` (123 righe)"
+??? example "Mostra lo script completo — `python/fam07_4_parallelo.py` (126 righe)"
 
     ```python
     """Problema 7.4 -- Lavori in parallelo: il tempo di lavorazione come massimo.
@@ -174,6 +174,7 @@ notebook: [`notebooks/fam07_4_parallelo.ipynb`](https://github.com/fabiofurini/m
     from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
                      registra_bound, risolvi, stampa_soluzione, valuta)
     from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -182,8 +183,8 @@ notebook: [`notebooks/fam07_4_parallelo.ipynb`](https://github.com/fabiofurini/m
     t4 = [[6, 5, 3], [5, 10, 2], [20, 13, 10]]
     p4 = [1, 2, 2]
     salva_dati(pd.DataFrame([{"lavoro": j + 1, "macchina": m + 1, "t": t4[j][m]}
-                             for j in R(3) for m in R(3)]), "sched4_lavori")
-    salva_dati(pd.DataFrame({"macchina": R(1, 4), "p": p4}), "sched4_macchine")
+                             for j in R(3) for m in R(3)]), "fam07_4_lavori")
+    salva_dati(pd.DataFrame({"macchina": R(1, 4), "p": p4}), "fam07_4_macchine")
 
 
     def modello_4(t, p):
@@ -229,6 +230,7 @@ notebook: [`notebooks/fam07_4_parallelo.ipynb`](https://github.com/fabiofurini/m
 
 
     m4, x4, y4 = modello_4(t4, p4)
+    salva_modello(m4, "fam07_4_primale")
 
     # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
     xe, ye, passi = euristica_4(t4, p4)
@@ -240,6 +242,7 @@ notebook: [`notebooks/fam07_4_parallelo.ipynb`](https://github.com/fabiofurini/m
 
     # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
     d4 = duale_4(t4, p4)
+    salva_modello(d4, "fam07_4_duale")
     mano = {f"lam[{j},{mm}]": 1 / 3 for j in R(3) for mm in R(3)}
     mano.update({f"mu[{j}]": min(t4[j][mm] / 3 for mm in R(3)) for j in R(3)})
     lb4, viol = valuta(d4, mano)
@@ -253,7 +256,7 @@ notebook: [`notebooks/fam07_4_parallelo.ipynb`](https://github.com/fabiofurini/m
     print("Soluzione ottima del MILP:")
     stampa_soluzione(m4, solo_non_nulle=True)
     riga = registra_bound("4 parallelo", ub4, lb4, zlp4, zlp4r, z4)
-    salva_dati(pd.DataFrame([riga]), "sched4_bound")
+    salva_dati(pd.DataFrame([riga]), "fam07_4_bound")
 
     # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
@@ -279,7 +282,7 @@ notebook: [`notebooks/fam07_4_parallelo.ipynb`](https://github.com/fabiofurini/m
     m.addConstrs((y[mm] <= max(t4[j][mm] for j in R(3)) * vv[mm] for mm in R(3)), name="attiva")
     m.setObjective(y.sum() + gp.quicksum(g4[mm] * vv[mm] for mm in R(3)), GRB.MINIMIZE)
     varianti["4b"] = variante("4b. Costo fisso 4 se la macchina lavora (y_m <= M_m v_m)", m)
-    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "sched4_varianti")
+    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_4_varianti")
 
     print("Fine.")
     ```

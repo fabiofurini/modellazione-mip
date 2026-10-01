@@ -236,7 +236,7 @@ Lo stesso codice è disponibile come notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam07_1_assegnamento.py` (141 righe)"
+??? example "Mostra lo script completo — `python/fam07_1_assegnamento.py` (144 righe)"
 
     ```python
     """Problema 7.1 -- Assegnamento a costo minimo con disponibilita' (GAP).
@@ -255,6 +255,7 @@ Lo stesso codice è disponibile come notebook —
     from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
                      registra_bound, risolvi, stampa_soluzione, valuta)
     from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -265,8 +266,8 @@ Lo stesso codice è disponibile come notebook —
     a1 = [5, 6, 7]
     n, k = 3, 3
     salva_dati(pd.DataFrame([{"lavoro": j + 1, "macchina": m + 1, "t": t1[j][m], "c": c1[j][m]}
-                             for j in R(n) for m in R(k)]), "sched1_lavori")
-    salva_dati(pd.DataFrame({"macchina": R(1, k + 1), "a": a1}), "sched1_macchine")
+                             for j in R(n) for m in R(k)]), "fam07_1_lavori")
+    salva_dati(pd.DataFrame({"macchina": R(1, k + 1), "a": a1}), "fam07_1_macchine")
 
 
     def modello_1(t, c, a):
@@ -296,6 +297,7 @@ Lo stesso codice è disponibile come notebook —
 
 
     m1, x1 = modello_1(t1, c1, a1)
+    salva_modello(m1, "fam07_1_primale")
 
     # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
     print("Euristiche costruttive:")
@@ -313,6 +315,7 @@ Lo stesso codice è disponibile come notebook —
 
     # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
     d1 = duale_1(t1, c1, a1)
+    salva_modello(d1, "fam07_1_duale")
     mano = {f"mu[{j}]": min(c1[j]) for j in R(n)}
     lb1, viol = valuta(d1, mano)
     assert viol <= 1e-9, viol
@@ -326,7 +329,7 @@ Lo stesso codice è disponibile come notebook —
     print("Soluzione ottima del MILP:")
     stampa_soluzione(m1, solo_non_nulle=True)
     riga = registra_bound("1 assegnamento", ub1, lb1, zlp1, zlp1r, z1)
-    salva_dati(pd.DataFrame([riga]), "sched1_bound")
+    salva_dati(pd.DataFrame([riga]), "fam07_1_bound")
     ott1 = {(j, mm) for j in R(n) for mm in R(k) if x1[j, mm].X > 0.5}
 
     # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
@@ -352,7 +355,7 @@ Lo stesso codice è disponibile come notebook —
     m.update()
     m.setObjective(m.getObjective() + gp.quicksum(g1[mm] * y[mm] for mm in R(3)), GRB.MINIMIZE)
     varianti["1b"] = variante("1b. Costo fisso g_m = 3 per macchina usata (x_jm <= y_m)", m)
-    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "sched1_varianti")
+    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_1_varianti")
 
     # ---------- 6. FIGURE ----------
 

@@ -135,7 +135,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam08_2_pmediana.py` (141 righe)"
+??? example "Mostra lo script completo — `python/fam08_2_pmediana.py` (144 righe)"
 
     ```python
     """Problema 8.2 -- Localizzazione con numero massimo di sedi (p-mediana).
@@ -151,6 +151,7 @@ Script completo —
     from mip import (due_rilassamenti, frazione, nuovo_modello, registra_bound,
                      risolvi, stampa_soluzione, valuta)
     from stile import CICLO, intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -161,7 +162,7 @@ Script completo —
     k2 = 2
     m, n = 3, 3
     salva_dati(pd.DataFrame([{"sede": l + 1, "cliente": c + 1, "d": dist2[l][c]}
-                             for l in R(m) for c in R(n)]), "loc2_distanze")
+                             for l in R(m) for c in R(n)]), "fam08_2_distanze")
 
 
     def modello_2(dist, k):
@@ -191,6 +192,7 @@ Script completo —
 
 
     m2, x2, y2 = modello_2(dist2, k2)
+    salva_modello(m2, "fam08_2_primale")
 
     # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 
@@ -223,6 +225,7 @@ Script completo —
     # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 
     d2 = duale_2(dist2, k2)
+    salva_modello(d2, "fam08_2_duale")
     mano = {"varrho": 0.0}
     mano.update({f"mu[{c}]": min(dist2[l][c] for l in R(m)) for c in R(n)})
     lb2, viol = valuta(d2, mano)
@@ -237,7 +240,7 @@ Script completo —
     print("Soluzione ottima del MILP:")
     stampa_soluzione(m2, solo_non_nulle=True)
     riga = registra_bound("2 p-mediana", ub2, lb2, zlp2, zlp2r, z2)
-    salva_dati(pd.DataFrame([riga]), "loc2_bound")
+    salva_dati(pd.DataFrame([riga]), "fam08_2_bound")
 
     # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
@@ -258,7 +261,7 @@ Script completo —
     mod, x, y = modello_2(dist2, k2)
     mod.addConstrs((y[l, 0] == 0 for l in R(3) if dist2[l][0] > 4), name="distanza_max_cliente1")
     varianti["2b"] = variante("2b. Il cliente 1 servito entro distanza 4 (y_l1 = 0 se d_l1 > 4)", mod)
-    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "loc2_varianti")
+    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam08_2_varianti")
 
     # ---------- 6. FIGURE ----------
 

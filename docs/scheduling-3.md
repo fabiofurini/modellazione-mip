@@ -163,7 +163,7 @@ notebook: [`notebooks/fam07_3_selezione.ipynb`](https://github.com/fabiofurini/m
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam07_3_selezione.py` (110 righe)"
+??? example "Mostra lo script completo — `python/fam07_3_selezione.py` (113 righe)"
 
     ```python
     """Problema 7.3 -- Selezione di lavori con ricavo e macchine a costo fisso.
@@ -181,6 +181,7 @@ notebook: [`notebooks/fam07_3_selezione.ipynb`](https://github.com/fabiofurini/m
     from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
                      registra_bound, risolvi, stampa_soluzione, valuta)
     from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -190,8 +191,8 @@ notebook: [`notebooks/fam07_3_selezione.ipynb`](https://github.com/fabiofurini/m
     r3 = [10, 15, 30]
     c3 = [20, 30, 15]
     a3 = [105, 110, 100]
-    salva_dati(pd.DataFrame({"lavoro": R(1, 4), "t": t3, "r": r3}), "sched3_lavori")
-    salva_dati(pd.DataFrame({"macchina": R(1, 4), "c": c3, "a": a3}), "sched3_macchine")
+    salva_dati(pd.DataFrame({"lavoro": R(1, 4), "t": t3, "r": r3}), "fam07_3_lavori")
+    salva_dati(pd.DataFrame({"macchina": R(1, 4), "c": c3, "a": a3}), "fam07_3_macchine")
 
 
     def modello_3(t, r, c, a):
@@ -224,6 +225,7 @@ notebook: [`notebooks/fam07_3_selezione.ipynb`](https://github.com/fabiofurini/m
 
 
     m3, x3, y3 = modello_3(t3, r3, c3, a3)
+    salva_modello(m3, "fam07_3_primale")
 
     # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
     T3 = matrice(t3, 3)
@@ -239,6 +241,7 @@ notebook: [`notebooks/fam07_3_selezione.ipynb`](https://github.com/fabiofurini/m
 
     # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
     d3 = duale_3(t3, r3, c3, a3)
+    salva_modello(d3, "fam07_3_duale")
     mano = {f"pi[{mm}]": c3[mm] / a3[mm] for mm in R(3)}
     mano.update({f"mu[{j}]": max([0] + [r3[j] - t3[j] * c3[mm] / a3[mm] for mm in R(3)]) for j in R(3)})
     ub3, viol = valuta(d3, mano)
@@ -252,7 +255,7 @@ notebook: [`notebooks/fam07_3_selezione.ipynb`](https://github.com/fabiofurini/m
     print("Soluzione ottima del MILP:")
     stampa_soluzione(m3, solo_non_nulle=True)
     riga = registra_bound("3 selezione", ub3, lb3, zlp3, zlp3r, z3, senso="max")
-    salva_dati(pd.DataFrame([riga]), "sched3_bound")
+    salva_dati(pd.DataFrame([riga]), "fam07_3_bound")
 
     # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
@@ -273,7 +276,7 @@ notebook: [`notebooks/fam07_3_selezione.ipynb`](https://github.com/fabiofurini/m
     m, x, y = modello_3(t3, r3, c3, a3)
     m.addConstr(x.sum(2, "*") <= x.sum(1, "*"), name="3_solo_se_2")
     varianti["3b"] = variante("3b. Il lavoro 3 si esegue solo se si esegue il lavoro 2", m)
-    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "sched3_varianti")
+    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_3_varianti")
 
     print("Fine.")
     ```

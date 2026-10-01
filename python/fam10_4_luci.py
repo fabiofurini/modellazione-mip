@@ -12,6 +12,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, valuta)
 from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -26,10 +27,10 @@ f1 = 2                           # configurazioni diverse richieste
 nc, nl, nb = len(i1), len(u1[0]), len(p1)
 salva_dati(pd.DataFrame({"configurazione": R(1, nc + 1), "costo": i1,
                          "colore_1": [u[0] for u in u1], "colore_2": [u[1] for u in u1]}),
-           "luci1_configurazioni")
+           "fam10_4_configurazioni")
 salva_dati(pd.DataFrame({"scatola": R(1, nb + 1), "costo": p1,
                          "colore_1": [v[0] for v in v1], "colore_2": [v[1] for v in v1]}),
-           "luci1_scatole")
+           "fam10_4_scatole")
 
 
 def modello_1(q, i, u, p, v, f):
@@ -74,6 +75,7 @@ def duale_1(q, i, u, p, v, f):
 
 
 m1, x1, y1, z1 = modello_1(q1, i1, u1, p1, v1, f1)
+salva_modello(m1, "fam10_4_primale")
 print("  Prezzo di una luce, colore per colore, in ciascun tipo di scatola:")
 for b in R(nb):
     print(f"    scatola {b + 1}: " + ", ".join(
@@ -127,6 +129,7 @@ print("  E' il tipico errore di un'euristica costruttiva che guarda una sola voc
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 dl1 = duale_1(q1, i1, u1, p1, v1, f1)
+salva_modello(dl1, "fam10_4_duale")
 # ricetta: gamma = delta = 0; si valuta un solo colore, al prezzo per luce piu'
 # basso che nessuna scatola riesce a battere; poi ogni albero costa almeno
 # alpha = min_c (i_c + prezzo delle sue luci)
@@ -163,7 +166,7 @@ for l in R(nl):
     compra = sum(v1[b][l] * y1[b].X for b in R(nb))
     print(f"    colore {l + 1}: servono {int(serve)} luci, se ne comprano {int(compra)}")
 riga = registra_bound("1 luci", ub1, lb1, zlp1, zlp1r, z1v)
-salva_dati(pd.DataFrame([riga]), "luci1_bound")
+salva_dati(pd.DataFrame([riga]), "fam10_4_bound")
 assert lb1 <= zlp1 <= z1v <= ub1 + 1e-9
 
 # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
@@ -184,7 +187,7 @@ m, x, y, z = modello_1(q1, i1, u1, p1, v1, f1)
 m.addConstrs((x[c] - 3 * z[c] >= 0 for c in R(nc)), name="lotto_minimo")
 varianti["1b"] = variante("1b. Ogni configurazione usata decora almeno tre alberi", m)
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
-           "luci1_varianti")
+           "fam10_4_varianti")
 
 # ---------- 6. FIGURA ----------
 fig, ax = plt.subplots(figsize=(6.8, 3.0))

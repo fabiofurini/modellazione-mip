@@ -12,6 +12,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, valuta)
 from stile import ARANCIO, BLU, ROSSO, TEAL, VERDE, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -27,7 +28,7 @@ n3, m3 = 3, 2
 # il piu' piccolo big-M valido per tipo: quante unita' al massimo consentono le risorse
 M3 = [min(b3[i] // a3[i][j] for i in R(m3)) for j in R(n3)]
 salva_dati(pd.DataFrame({"tipo": R(1, n3 + 1), "acciaio": a3[0], "ore": a3[1],
-                         "profitto": p3, "minimo": q3, "M": M3}), "veic3_dati")
+                         "profitto": p3, "minimo": q3, "M": M3}), "fam09_3_dati")
 print(f"  Risorse: {b3[0]} t di acciaio, {b3[1]} ore. Big-M per tipo (dai soli dati): {M3}")
 
 
@@ -67,6 +68,7 @@ def duale_3(a, b, p, q, r):
 
 
 m3m, x3, y3, z3 = modello_3(a3, b3, p3, q3, r3)
+salva_modello(m3m, "fam09_3_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND: E' UN MASSIMO) ----------
 # euristica costruttiva: si attivano due tipi (per incassare il premio) partendo dai profitti per
@@ -105,6 +107,7 @@ print(f"  lb = {sum(p3[j] * x_eur[j] for j in R(n3))} + {r3} di premio = {frazio
 
 # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 dl3 = duale_3(a3, b3, p3, q3, r3)
+salva_modello(dl3, "fam09_3_duale")
 # ricetta: gamma = r/2 (il minimo ammesso dal vincolo 2 gamma >= r), beta = 0, e
 # lambda_j = gamma / q_j (ogni tipo attivato "porta" la sua quota di premio); poi si
 # valuta una sola risorsa al prezzo che copre tutti i tipi, e si sceglie la migliore
@@ -140,7 +143,7 @@ print("  Soluzione ottima: produzione " + ", ".join(str(round(x3[j].X)) for j in
 print("  Risorse usate: " + ", ".join(
     f"{frazione(sum(a3[i][j] * round(x3[j].X) for j in R(n3)))} su {b3[i]}" for i in R(m3)))
 riga = registra_bound("3 veicoli", ub3, lb3, zlp3, zlp3r, z3v, senso="max")
-salva_dati(pd.DataFrame([riga]), "veic3_bound")
+salva_dati(pd.DataFrame([riga]), "fam09_3_bound")
 assert lb3 <= z3v <= zlp3 + 1e-6 <= ub3 + 1e-6
 
 # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
@@ -168,7 +171,7 @@ print("      premio nullo l'ottimo non ha alcun motivo di alzare z, e il vincolo
 print("      non lo impone. Per farne un indicatore fedele serve anche il verso opposto.")
 varianti["3b"] = zz
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
-           "veic3_varianti")
+           "fam09_3_varianti")
 
 # ---------- 6. FIGURA ----------
 fig, ax = plt.subplots(figsize=(6.8, 3.0))

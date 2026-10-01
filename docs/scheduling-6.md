@@ -152,7 +152,7 @@ notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurin
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam07_6_classipremio.py` (146 righe)"
+??? example "Mostra lo script completo — `python/fam07_6_classipremio.py` (149 righe)"
 
     ```python
     """Problema 7.6 -- Classi con premio di completamento e riduzione se e solo se.
@@ -169,6 +169,7 @@ notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurin
     from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
                      registra_bound, risolvi, stampa_soluzione, valuta)
     from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -180,8 +181,8 @@ notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurin
     v6 = [5, 4, 10]
     a6, u6 = 50, 10
     salva_dati(pd.DataFrame({"lavoro": R(1, 7), "r": r6, "t": t6,
-                             "classe": [c + 1 for j in R(6) for c in R(3) if j in J6[c]]}), "sched6_lavori")
-    salva_dati(pd.DataFrame({"classe": R(1, 4), "v": v6}), "sched6_classi")
+                             "classe": [c + 1 for j in R(6) for c in R(3) if j in J6[c]]}), "fam07_6_lavori")
+    salva_dati(pd.DataFrame({"classe": R(1, 4), "v": v6}), "fam07_6_classi")
 
 
     def coppie(J):
@@ -248,6 +249,7 @@ notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurin
 
 
     m6, x6, y6, z6 = modello_6(r6, t6, J6, v6, a6, u6)
+    salva_modello(m6, "fam07_6_primale")
 
     # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
     xe, ye, ze, passi = euristica_6(r6, t6, J6, v6, a6, u6)
@@ -259,6 +261,7 @@ notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurin
 
     # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
     d6 = duale_6(r6, t6, J6, v6, a6, u6)
+    salva_modello(d6, "fam07_6_duale")
     pi_mano = {f"pi[{J6[c][0]}]": -v6[c] for c in R(3)}      # il primo lavoro di ogni classe porta il premio
     mu_mano = max((r6[j] - pi_mano.get(f"pi[{j}]", 0)) / t6[j] for j in R(6))
     mano = dict(pi_mano, mu=mu_mano)
@@ -273,7 +276,7 @@ notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurin
     print("Soluzione ottima del MILP:")
     stampa_soluzione(m6, solo_non_nulle=True)
     riga = registra_bound("6 classi premio", ub6, lb6, zlp6, zlp6r, z6v, senso="max")
-    salva_dati(pd.DataFrame([riga]), "sched6_bound")
+    salva_dati(pd.DataFrame([riga]), "fam07_6_bound")
 
     # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
@@ -298,7 +301,7 @@ notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurin
     m.update()
     m.setObjective(m.getObjective() - w6 * gp.quicksum(st[c] - y[c] for c in R(3)), GRB.MAXIMIZE)
     varianti["6b"] = variante("6b. Penalità 3 per classe iniziata e non completata (s_c >= x_j)", m)
-    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "sched6_varianti")
+    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_6_varianti")
 
     print("Fine.")
     ```

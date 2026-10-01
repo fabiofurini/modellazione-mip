@@ -149,12 +149,12 @@ zlp, zlp_raff, pi = due_rilassamenti(m, d)               #     controlla la dual
 
 z = risolvi(m)                                           # (5) il MIP
 riga = registra_bound("7.1 assegnamento", ub, lb, zlp, zlp_raff, z)   # (6) la tabella
-salva_dati(pd.DataFrame([riga]), "sched1_bound")         #     -> dati/sched1_bound.csv
+salva_dati(pd.DataFrame([riga]), "fam07_1_bound")         #     -> dati/fam07_1_bound.csv
 ```
 
 Sull'istanza del problema 7.1 il protocollo produce $\mathit{LB} = 10$,
 $z(\mathit{LP}) = 53/5$, $z(\mathit{MILP}) = 11$, $\mathit{UB} = 11$, e la riga
-finisce in `dati/sched1_bound.csv`. Da lì la leggono la dispensa, la pagina del
+finisce in `dati/fam07_1_bound.csv`. Da lì la leggono la dispensa, la pagina del
 sito e `verifica_numeri.py`: **un solo posto in cui il numero esiste**.
 
 ![I quattro numeri del protocollo](img/cap06_protocollo.png)

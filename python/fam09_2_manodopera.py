@@ -13,6 +13,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  rilassamento, risolvi, valuta)
 from stile import ARANCIO, BLU, ROSSO, TEAL, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -23,7 +24,7 @@ p2 = [15, 15, 15]          # costo di produzione per paio
 h2 = [3, 3]                # costo di magazzino a fine mese
 w2, r2, g2, u2, m2, r0 = 1500, 160, 4, 100, 2, 0
 n2 = len(d2)
-salva_dati(pd.DataFrame({"mese": R(1, n2 + 1), "domanda": d2, "costo_paio": p2}), "prod2_dati")
+salva_dati(pd.DataFrame({"mese": R(1, n2 + 1), "domanda": d2, "costo_paio": p2}), "fam09_2_dati")
 print(f"  {m2} operai all'inizio, {r2} h al mese ciascuno, {g2} h per paio: la capacita'")
 print(f"  iniziale e' {m2 * r2 // g2} paia al mese. Salario {w2}, assunzione {u2}.")
 
@@ -85,7 +86,9 @@ def duale_A(d, p, h, w, r, g, u, m0, r0):
 
 
 mA, xA, sA, zA = modello_A(d2, p2, h2, w2, r2, g2, u2, m2, r0)
+salva_modello(mA, "fam09_2_primale")
 mB, xB, sB, yB = modello_B(d2, p2, h2, w2, r2, g2, u2, m2, r0)
+salva_modello(mB, "fam09_2_primale_b")
 costante_A = m2 * w2 * n2          # il salario degli operai iniziali, fuori dal modello A
 zA_val = risolvi(mA) + costante_A
 zB_val = risolvi(mB)
@@ -135,6 +138,7 @@ print(f"  Costo dell'euristica: ub = {frazione(ub2)}")
 
 # ---------- 4. DUALE E LOWER BOUND ----------
 dl2 = duale_A(d2, p2, h2, w2, r2, g2, u2, m2, r0)
+salva_modello(dl2, "fam09_2_duale")
 # ricetta: nu = 0 (le ore non si pagano) e mu_t = costo minimo per avere un paio al mese t
 mu = []
 for t in R(n2):
@@ -149,7 +153,7 @@ print(f"    mu = " + ", ".join(frazione(v) for v in mu)
 zlp2, zlp2r, _ = due_rilassamenti(mA, dl2)
 zlp2, zlp2r = zlp2 + costante_A, zlp2r + costante_A
 riga = registra_bound("2 manodopera", ub2, lb2, zlp2, zlp2r, zA_val)
-salva_dati(pd.DataFrame([riga]), "prod2_bound")
+salva_dati(pd.DataFrame([riga]), "fam09_2_bound")
 assert lb2 <= zlp2 <= zA_val <= ub2 + 1e-9
 
 # ---------- 5. CONFRONTO DEI RILASSAMENTI DELLE DUE FORMULAZIONI ----------
@@ -160,7 +164,7 @@ print(f"  Rilassamenti: A -> {frazione(zlpA + costante_A)}   B -> {frazione(zlpB
 salva_dati(pd.DataFrame([{"formulazione": "A (assunzioni)", "z_lp": zlpA + costante_A,
                           "z_milp": zA_val},
                          {"formulazione": "B (organico)", "z_lp": zlpB, "z_milp": zB_val}]),
-           "prod2_formulazioni")
+           "fam09_2_formulazioni")
 
 # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 varianti = {}
@@ -189,7 +193,7 @@ varianti["2b"] = variante("2b. Straordinari: fino a 40 h per operaio, 25 euro l'
 print("     straordinari usati: " + ", ".join(frazione(o[t].X) for t in R(n2))
       + "  (nessuno: anticipare la produzione e tenerla a magazzino costa meno)")
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
-           "prod2_varianti")
+           "fam09_2_varianti")
 
 # ---------- 7. FIGURA ----------
 fig, ax = plt.subplots(figsize=(7.0, 3.2))

@@ -219,7 +219,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_5_spedizioni.py` (217 righe)"
+??? example "Mostra lo script completo — `python/fam10_5_spedizioni.py` (220 righe)"
 
     ```python
     """Problema 12.2 -- Spedizioni in scatole: flusso multiprodotto e conteggio dei
@@ -238,6 +238,7 @@ Script completo —
     from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                      risolvi, valuta)
     from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -256,9 +257,9 @@ Script completo —
     nk, nm, nn = len(d2), len(d2[0]), len(a2[0])   # prodotti, clienti, stabilimenti
     D2 = sum(d2[p][c] for p in R(nk) for c in R(nm))
     salva_dati(pd.DataFrame([{"prodotto": p + 1, "cliente": c + 1, "domanda": d2[p][c]}
-                             for p in R(nk) for c in R(nm)]), "spedizioni2_domanda")
+                             for p in R(nk) for c in R(nm)]), "fam10_5_domanda")
     salva_dati(pd.DataFrame([{"prodotto": p + 1, "stabilimento": s + 1, "disponibilita": a2[p][s]}
-                             for p in R(nk) for s in R(nn)]), "spedizioni2_disponibilita")
+                             for p in R(nk) for s in R(nn)]), "fam10_5_disponibilita")
     print(f"  Unita' da spedire in tutto: {D2}; capacita' di una scatola: {w2}.")
 
 
@@ -299,6 +300,7 @@ Script completo —
 
 
     m2, x2, y2 = modello_2(d2, a2, w2)
+    salva_modello(m2, "fam10_5_primale")
 
     # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
     # cliente per cliente: si cerca di servirlo da un solo stabilimento, quello che
@@ -349,6 +351,7 @@ Script completo —
 
     # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
     dl2 = duale_2(d2, a2, w2)
+    salva_modello(dl2, "fam10_5_duale")
     # ricetta: beta = 0, gamma_sc = 1/w (il massimo consentito da w gamma <= 1) e
     # alpha_pc = 1/w: ogni unita' ordinata occupa 1/w di scatola
     mano = ({f"gamma[{s},{c}]": 1 / w2 for s in R(nn) for c in R(nm)}
@@ -376,7 +379,7 @@ Script completo —
     print(f"  Sommando: lb = {frazione(lb2)}.")
     salva_dati(pd.DataFrame([{"argomento": "duale del rilassamento LP", "bound": lb_lp},
                              {"argomento": "scatole per cliente", "bound": lb2}]),
-               "spedizioni2_argomento")
+               "fam10_5_argomento")
 
     # ---------- 5. OTTIMO DEL MILP ----------
     z2 = risolvi(m2)
@@ -388,7 +391,7 @@ Script completo —
                 print(f"  Stabilimento {s + 1} -> cliente {c + 1}: "
                       f"{scatole(y2[s, c].X)} con {carico}")
     riga = registra_bound("2 spedizioni", ub2, lb2, zlp2, zlp2r, z2)
-    salva_dati(pd.DataFrame([riga]), "spedizioni2_bound")
+    salva_dati(pd.DataFrame([riga]), "fam10_5_bound")
     assert lb2 <= z2 <= ub2 + 1e-9
 
     # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
@@ -415,7 +418,7 @@ Script completo —
                  name="capacita")
     varianti["2b"] = variante("2b. Prodotti diversi non possono viaggiare nella stessa scatola", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
-               "spedizioni2_varianti")
+               "fam10_5_varianti")
 
     # ---------- 7. FIGURA ----------
     fig, ax = plt.subplots(figsize=(6.4, 3.0))

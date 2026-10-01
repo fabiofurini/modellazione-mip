@@ -12,6 +12,7 @@ from gurobipy import GRB
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  rilassamento, risolvi, valuta)
 from stile import ARANCIO, BLU, ROSSO, TEAL, VERDE, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
@@ -29,7 +30,7 @@ t2 = 3                                 # almeno tre cibi diversi
 s2, r2 = len(w2), len(a2)
 salva_dati(pd.DataFrame({"cibo": CIBI, "costo": w2,
                          "ferro": [g[0] for g in g2], "calcio": [g[1] for g in g2],
-                         "min": c2, "max": d2}), "dieta2_dati")
+                         "min": c2, "max": d2}), "fam10_3_dati")
 
 
 def modello_2(w, g, a, b, c, d, t):
@@ -67,6 +68,7 @@ def duale_2(w, g, a, b, c, d, t):
 
 
 m2, x2, y2 = modello_2(w2, g2, a2, b2, c2, d2, t2)
+salva_modello(m2, "fam10_3_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 # euristica costruttiva: si parte dal lotto minimo di tutti i cibi piu' economici fino a raggiungere t,
@@ -108,6 +110,7 @@ print("  Soluzione euristica: " + ", ".join(f"{CIBI[i]} {x_eur[i]:.4g} kg" for i
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 dl2 = duale_2(w2, g2, a2, b2, c2, d2, t2)
+salva_modello(dl2, "fam10_3_duale")
 # ricetta: beta = mu = tau = 0 (i massimi, i tetti e la varieta' non si valutano);
 # alpha_j = il piu' grande prezzo del nutriente j che nessun cibo riesce a battere
 # si tiene un solo nutriente per volta e si sceglie quello che da' il bound migliore
@@ -138,7 +141,7 @@ for j in R(r2):
     print(f"    {NUTRIENTI[j]}: {sum(g2[i][j] * x2[i].X for i in R(s2)):.4g} g "
           f"(fra {a2[j]} e {b2[j]})")
 riga = registra_bound("2 dieta", ub2, lb2, zlp2, zlp2r, z2)
-salva_dati(pd.DataFrame([riga]), "dieta2_bound")
+salva_dati(pd.DataFrame([riga]), "fam10_3_bound")
 assert lb2 <= zlp2 <= z2 <= ub2 + 1e-9
 
 # ---------- 5. SENZA IL LOTTO MINIMO IL CONTEGGIO E' VUOTO ----------
@@ -169,7 +172,7 @@ varianti["2a"] = variante("2a. Il lotto minimo sale a 2 kg per cibo (c_i = 2)", 
 m, x, y = modello_2(w2, g2, a2, b2, c2, d2, 4)
 varianti["2b"] = variante("2b. Si vogliono almeno quattro cibi diversi (t = 4)", m)
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
-           "dieta2_varianti")
+           "fam10_3_varianti")
 
 # ---------- 7. FIGURA ----------
 fig, ax = plt.subplots(figsize=(6.8, 3.0))

@@ -164,7 +164,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam08_1_capacitata.py` (160 righe)"
+??? example "Mostra lo script completo — `python/fam08_1_capacitata.py` (163 righe)"
 
     ```python
     """Problema 8.1 -- Localizzazione capacitata (costo minimo).
@@ -181,6 +181,7 @@ Script completo —
     from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
                      registra_bound, risolvi, stampa_soluzione, valuta)
     from stile import CICLO, intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -193,9 +194,9 @@ Script completo —
     d1 = [8, 25, 27]                 # domanda dei clienti
     m, n = 2, 3
     salva_dati(pd.DataFrame([{"sede": l + 1, "cliente": c + 1, "t": t1[l][c]}
-                             for l in R(m) for c in R(n)]), "loc1_costi")
-    salva_dati(pd.DataFrame({"sede": R(1, m + 1), "u": u1, "i": i1}), "loc1_sedi")
-    salva_dati(pd.DataFrame({"cliente": R(1, n + 1), "d": d1}), "loc1_clienti")
+                             for l in R(m) for c in R(n)]), "fam08_1_costi")
+    salva_dati(pd.DataFrame({"sede": R(1, m + 1), "u": u1, "i": i1}), "fam08_1_sedi")
+    salva_dati(pd.DataFrame({"cliente": R(1, n + 1), "d": d1}), "fam08_1_clienti")
 
 
     def modello_1(t, u, i, d):
@@ -224,6 +225,7 @@ Script completo —
 
 
     m1, x1, y1 = modello_1(t1, u1, i1, d1)
+    salva_modello(m1, "fam08_1_primale")
 
     # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 
@@ -263,6 +265,7 @@ Script completo —
     # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 
     d1_ = duale_1(t1, u1, i1, d1)
+    salva_modello(d1_, "fam08_1_duale")
     mano = {f"mu[{l}]": i1[l] / u1[l] for l in R(m)}
     mano.update({f"pi[{c}]": min(t1[l][c] + mano[f"mu[{l}]"] for l in R(m)) for c in R(n)})
     lb1, viol = valuta(d1_, mano)
@@ -278,7 +281,7 @@ Script completo —
     print("Soluzione ottima del MILP:")
     stampa_soluzione(m1, solo_non_nulle=True)
     riga = registra_bound("1 localizzazione capacitata", ub1, lb1, zlp1, zlp1r, z1)
-    salva_dati(pd.DataFrame([riga]), "loc1_bound")
+    salva_dati(pd.DataFrame([riga]), "fam08_1_bound")
 
     # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
@@ -299,7 +302,7 @@ Script completo —
     mod, x, y = modello_1(t1, u1, i1, d1)
     mod.addConstr(x[1] <= x[0], name="2_solo_se_1")
     varianti["1b"] = variante("1b. La sede 2 si apre solo se si apre la sede 1 (x_2 <= x_1)", mod)
-    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "loc1_varianti")
+    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam08_1_varianti")
 
     # ---------- 6. FIGURE ----------
 

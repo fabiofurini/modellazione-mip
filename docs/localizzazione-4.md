@@ -159,7 +159,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam08_4_hub.py` (161 righe)"
+??? example "Mostra lo script completo — `python/fam08_4_hub.py` (164 righe)"
 
     ```python
     """Problema 8.4 -- Localizzazione di hub con costo di connessione massimo.
@@ -177,6 +177,7 @@ Script completo —
     from mip import (due_rilassamenti, frazione, nuovo_modello, registra_bound,
                      rilassamento, risolvi, stampa_soluzione, valuta)
     from stile import intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -188,8 +189,8 @@ Script completo —
     k4 = 2                                     # capacità di ciascun hub
     n, m = 3, 3
     salva_dati(pd.DataFrame([{"terminale": i + 1, "hub": j + 1, "c": c4[i][j]}
-                             for i in R(n) for j in R(m)]), "hub4_costi")
-    salva_dati(pd.DataFrame({"hub": R(1, m + 1), "f": f4}), "hub4_attivazione")
+                             for i in R(n) for j in R(m)]), "fam08_4_costi")
+    salva_dati(pd.DataFrame({"hub": R(1, m + 1), "f": f4}), "fam08_4_attivazione")
 
 
     def modello_4(c, f, k):
@@ -221,6 +222,7 @@ Script completo —
 
 
     m4, x4, y4, z4 = modello_4(c4, f4, k4)
+    salva_modello(m4, "fam08_4_primale")
 
     # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 
@@ -242,6 +244,7 @@ Script completo —
     # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 
     d4 = duale_4(c4, f4, k4)
+    salva_modello(d4, "fam08_4_duale")
     beta_mano = [f4[j] / k4 for j in R(m)]     # il massimo ammesso da k*beta_j <= f_j
     alpha_mano = min(beta_mano)                # deve reggere per OGNI hub j, non solo il più conveniente
     mano = {f"gamma[{i},{j}]": 0.0 for i in R(n) for j in R(m)}
@@ -259,7 +262,7 @@ Script completo —
     print("Soluzione ottima del MILP:")
     stampa_soluzione(m4, solo_non_nulle=True)
     riga = registra_bound("4 hub", ub4, lb4, zlp4, zlp4r, z4v, senso="min")
-    salva_dati(pd.DataFrame([riga]), "hub4_bound")
+    salva_dati(pd.DataFrame([riga]), "fam08_4_bound")
 
     # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
@@ -306,7 +309,7 @@ Script completo —
     mod, x, y, z = modello_4(c4, f4, k4)
     mod.addConstr(x[0, 1] == 0, name="terminale1_non_hub2")
     varianti["4b"] = variante("4b. Il terminale 1 non può connettersi all'hub 2 (x_12 = 0)", mod)
-    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "hub4_varianti")
+    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam08_4_varianti")
 
     # ---------- 6. FIGURE ----------
 

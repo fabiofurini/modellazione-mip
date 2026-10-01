@@ -225,7 +225,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_1_premi.py` (174 righe)"
+??? example "Mostra lo script completo — `python/fam10_1_premi.py` (177 righe)"
 
     ```python
     """Problema 10.1 -- Premi acquistabili con due modalita'.
@@ -242,6 +242,7 @@ Notebook —
     from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                      risolvi, valuta)
     from stile import ARANCIO, BLU, ROSSO, TEAL, intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -254,7 +255,7 @@ Notebook —
     p1, ell1 = 20, 16            # punti disponibili e preferenza minima richiesta
     s1 = len(a1)
     salva_dati(pd.DataFrame({"premio": R(1, s1 + 1), "a": a1, "b": b1, "c": c1, "d": d1}),
-               "premi1_dati")
+               "fam10_1_dati")
     print(f"  {s1} premi, {p1} punti disponibili, preferenza minima richiesta {ell1}")
 
 
@@ -287,6 +288,7 @@ Notebook —
 
 
     m1, x1, y1 = modello_1(a1, b1, c1, d1, p1, ell1)
+    salva_modello(m1, "fam10_1_primale")
 
     # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
     # euristica costruttiva: si scorrono i premi per preferenza decrescente; ciascuno si prende con i soli
@@ -318,6 +320,7 @@ Notebook —
 
     # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
     dl1 = duale_1(a1, b1, c1, d1, p1, ell1)
+    salva_modello(dl1, "fam10_1_duale")
     # ricetta: si scelgono il prezzo pi di un punto e il prezzo rho di una unita' di
     # preferenza; i duali della mutua esclusione si ricavano da questi ponendo
     # sigma_i = max(0, d_i rho - a_i pi), cioe' il minimo che rende ammissibile il vincolo
@@ -356,7 +359,7 @@ Notebook —
           f" su {p1}; preferenza "
           f"{sum(d1[i - 1] for i in soli_punti + con_contributo)} >= {ell1}")
     riga = registra_bound("1 premi", ub1, lb1, zlp1, zlp1r, z1)
-    salva_dati(pd.DataFrame([riga]), "premi1_bound")
+    salva_dati(pd.DataFrame([riga]), "fam10_1_bound")
     assert lb1 <= zlp1 <= z1 <= ub1 + 1e-9
 
     # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
@@ -378,7 +381,7 @@ Notebook —
     m.addConstr(gp.quicksum(x[i] + y[i] for i in R(s1)) >= 4, name="almeno_quattro")
     varianti["1b"] = variante("1b. Si vogliono almeno quattro premi (sum_i (x_i+y_i) >= 4)", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
-               "premi1_varianti")
+               "fam10_1_varianti")
 
     # ---------- 6. FIGURA ----------
     fig, ax = plt.subplots(figsize=(6.8, 3.0))

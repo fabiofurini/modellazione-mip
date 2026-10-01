@@ -199,7 +199,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_8_cd.py` (182 righe)"
+??? example "Mostra lo script completo — `python/fam10_8_cd.py` (185 righe)"
 
     ```python
     """Problema 11.3 -- Brani su piu' CD: minimizzare la differenza fra il piu' lungo
@@ -216,6 +216,7 @@ Notebook —
     from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                      risolvi, valuta)
     from stile import ARANCIO, BLU, TEAL, intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -225,7 +226,7 @@ Notebook —
     w3 = [1, 1]                  # brani minimi per CD
     n3, m3 = len(d3), len(w3)
     D3 = sum(d3)
-    salva_dati(pd.DataFrame({"brano": R(1, n3 + 1), "durata": d3}), "cd3_dati")
+    salva_dati(pd.DataFrame({"brano": R(1, n3 + 1), "durata": d3}), "fam10_8_dati")
     print(f"  Durata totale della raccolta: {D3} minuti su {m3} CD.")
 
 
@@ -267,6 +268,7 @@ Notebook —
 
 
     m3mod, x3, y3, z3v = modello_3(d3, w3)
+    salva_modello(m3mod, "fam10_8_primale")
 
     # ---------- 2. DUE EURISTICHE A CONFRONTO (UPPER BOUND) ----------
     def riempi(d, m, ordine, etichetta):
@@ -302,6 +304,7 @@ Notebook —
 
     # ---------- 3. IL RILASSAMENTO LP NON DICE NIENTE ----------
     dl3 = duale_3(d3, w3)
+    salva_modello(dl3, "fam10_8_duale")
     mano = {f"gamma[{j}]": 1 / m3 for j in R(m3)} | {f"delta[{j}]": 1 / m3 for j in R(m3)}
     lb_lp, viol = valuta(dl3, mano)
     assert viol <= 1e-9, viol
@@ -329,7 +332,7 @@ Notebook —
     print("  coincidono e la soluzione euristica e' gia' ottima, senza bisogno del solver.")
     salva_dati(pd.DataFrame([{"argomento": "parita' della durata totale", "bound": lb3},
                              {"argomento": "duale del rilassamento LP", "bound": lb_lp}]),
-               "cd3_argomento")
+               "fam10_8_argomento")
 
     # ---------- 5. OTTIMO DEL MILP ----------
     z3 = risolvi(m3mod)
@@ -338,7 +341,7 @@ Notebook —
         brani = [i + 1 for i in R(n3) if x3[i, j].X > 0.5]
         print(f"  CD {j + 1}: brani {brani}, durata {frazione(carichi_ott[j])} minuti")
     riga = registra_bound("3 cd", ub3, lb3, zlp3, zlp3r, z3)
-    salva_dati(pd.DataFrame([riga]), "cd3_bound")
+    salva_dati(pd.DataFrame([riga]), "fam10_8_bound")
     assert lb3 <= z3 <= ub3 + 1e-9 and abs(z3 - lb3) <= 1e-9
 
     # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
@@ -363,7 +366,7 @@ Notebook —
     print(f"       con tre CD la durata totale {D3} non e' piu' divisibile in parti uguali:")
     print("       l'argomento di parita' va rifatto e non basta piu' a dimostrare l'ottimalita'.")
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
-               "cd3_varianti")
+               "fam10_8_varianti")
 
     # ---------- 7. FIGURA ----------
     fig, ax = plt.subplots(figsize=(6.8, 2.9))

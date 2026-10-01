@@ -12,13 +12,14 @@ from euristiche import best_fit, first_fit, matrice, next_fit
 from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
                  registra_bound, risolvi, stampa_soluzione, valuta)
 from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
+from esteso import salva_modello
 
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
 t7 = [5, 4, 6]
 d7 = [3, 4, 10]
-salva_dati(pd.DataFrame({"lavoro": R(1, 4), "t": t7, "d": d7}), "sched7_lavori")
+salva_dati(pd.DataFrame({"lavoro": R(1, 4), "t": t7, "d": d7}), "fam07_7_lavori")
 
 
 def modello_7(t, d):
@@ -71,6 +72,7 @@ def euristica_7(t, d, ordine=None):
 
 
 m7, s7, k7, tau7, M7 = modello_7(t7, d7)
+salva_modello(m7, "fam07_7_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 print(f"Big-M = somma dei tempi = {M7}")
@@ -83,6 +85,7 @@ print(f"  ub = {ub7}")
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 D7 = duale_7(t7, d7)
+salva_modello(D7, "fam07_7_duale")
 lb7, viol = valuta(D7, {"gamma[0]": 1, "delta[0]": 1})
 assert viol <= 1e-9
 print(f"Soluzione duale a mano: gamma_1 = 1, delta_1 = 1, il resto 0  ->  lb = {frazione(lb7)}")
@@ -93,11 +96,11 @@ z7 = risolvi(m7)
 print("Soluzione ottima del MILP:")
 stampa_soluzione(m7, solo_non_nulle=True)
 riga = registra_bound("7 ritardo", ub7, lb7, zlp7, zlp7r, z7)
-salva_dati(pd.DataFrame([riga]), "sched7_bound")
+salva_dati(pd.DataFrame([riga]), "fam07_7_bound")
 ordine_ott = sorted(R(3), key=lambda j: k7[j].X)
 print("Sequenza ottima:", " -> ".join(str(j + 1) for j in ordine_ott))
 riga = registra_bound("7 ritardo", ub7, lb7, zlp7, zlp7r, z7)
-salva_dati(pd.DataFrame([riga]), "sched7_bound")
+salva_dati(pd.DataFrame([riga]), "fam07_7_bound")
 
 # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
@@ -121,7 +124,7 @@ T = m.addVar(name="T")
 m.addConstrs((T >= tau[j] for j in R(3)), name="ritardo_max")
 m.setObjective(T, GRB.MINIMIZE)
 varianti["7b"] = variante("7b. Minimizzare il ritardo massimo (min-max: T >= tau_j)", m)
-salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "sched7_varianti")
+salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_7_varianti")
 
 # ---------- 6. FIGURE ----------
 # ritardo: Gantt della sequenza naturale e di quella ottima

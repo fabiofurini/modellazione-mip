@@ -157,7 +157,7 @@ notebook: [`notebooks/fam07_5_classisetup.ipynb`](https://github.com/fabiofurini
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam07_5_classisetup.py` (127 righe)"
+??? example "Mostra lo script completo — `python/fam07_5_classisetup.py` (130 righe)"
 
     ```python
     """Problema 7.5 -- Una macchina, classi di lavori con setup.
@@ -174,6 +174,7 @@ notebook: [`notebooks/fam07_5_classisetup.ipynb`](https://github.com/fabiofurini
     from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
                      registra_bound, risolvi, stampa_soluzione, valuta)
     from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -186,8 +187,8 @@ notebook: [`notebooks/fam07_5_classisetup.ipynb`](https://github.com/fabiofurini
     s5 = [10, 12, 6]
     a5 = 50
     salva_dati(pd.DataFrame({"lavoro": R(1, 8), "r": r5, "t": t5,
-                             "classe": [c + 1 for j in R(7) for c in R(3) if j in J5[c]]}), "sched5_lavori")
-    salva_dati(pd.DataFrame({"classe": R(1, 4), "f": f5, "s": s5}), "sched5_classi")
+                             "classe": [c + 1 for j in R(7) for c in R(3) if j in J5[c]]}), "fam07_5_lavori")
+    salva_dati(pd.DataFrame({"classe": R(1, 4), "f": f5, "s": s5}), "fam07_5_classi")
 
 
     def modello_5(r, t, J, f, s, a):
@@ -241,6 +242,7 @@ notebook: [`notebooks/fam07_5_classisetup.ipynb`](https://github.com/fabiofurini
 
 
     m5, x5, y5 = modello_5(r5, t5, J5, f5, s5, a5)
+    salva_modello(m5, "fam07_5_primale")
 
     # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
     xe, ye, passi = euristica_5(r5, t5, J5, f5, s5, a5)
@@ -252,6 +254,7 @@ notebook: [`notebooks/fam07_5_classisetup.ipynb`](https://github.com/fabiofurini
 
     # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
     d5 = duale_5(r5, t5, J5, f5, s5, a5)
+    salva_modello(d5, "fam07_5_duale")
     pi_mano = max(r5[j] / t5[j] for j in R(7))
     ub5, viol = valuta(d5, {"pi": pi_mano})
     assert viol <= 1e-9
@@ -263,7 +266,7 @@ notebook: [`notebooks/fam07_5_classisetup.ipynb`](https://github.com/fabiofurini
     print("Soluzione ottima del MILP:")
     stampa_soluzione(m5, solo_non_nulle=True)
     riga = registra_bound("5 classi setup", ub5, lb5, zlp5, zlp5r, z5, senso="max")
-    salva_dati(pd.DataFrame([riga]), "sched5_bound")
+    salva_dati(pd.DataFrame([riga]), "fam07_5_bound")
 
     # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
@@ -284,7 +287,7 @@ notebook: [`notebooks/fam07_5_classisetup.ipynb`](https://github.com/fabiofurini
     m, x, y = modello_5(r5, t5, J5, f5, s5, a5)
     m.addConstr(y[2] <= y[0], name="3_solo_se_1")
     varianti["5b"] = variante("5b. La classe 3 si attiva solo se si attiva la classe 1 (y_3 <= y_1)", m)
-    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "sched5_varianti")
+    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_5_varianti")
 
     print("Fine.")
     ```

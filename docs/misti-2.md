@@ -198,7 +198,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_2_asta.py` (187 righe)"
+??? example "Mostra lo script completo — `python/fam10_2_asta.py` (190 righe)"
 
     ```python
     """Problema 10.3 -- Asta combinatoria (set packing).
@@ -216,6 +216,7 @@ Notebook —
     from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                      risolvi, stampa_lp, valuta)
     from stile import ARANCIO, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -228,7 +229,7 @@ Notebook —
     salva_dati(pd.DataFrame({"offerta": [j + 1 for j in R(r3)],
                              "oggetti": ["{" + ",".join(str(i + 1) for i in B3[j]) + "}"
                                          for j in R(r3)],
-                             "profitto": p3}), "asta3_dati")
+                             "profitto": p3}), "fam10_2_dati")
 
 
     def modello_3(n, B, p, extra=None):
@@ -256,6 +257,7 @@ Notebook —
 
 
     m3, x3 = modello_3(n3, B3, p3)
+    salva_modello(m3, "fam10_2_primale")
     print("  Il modello dell'istanza:")
     stampa_lp(m3)
 
@@ -293,6 +295,7 @@ Notebook —
 
     # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
     dl3, lam3 = duale_3(n3, B3, p3)
+    salva_modello(dl3, "fam10_2_duale")
     # Ricetta a mano: si spalma ogni offerta sui suoi oggetti e si prende il massimo,
     # lam_i = max_{j : i in B_j} p_j / |B_j|. E' sempre ammissibile perche' per ogni
     # offerta j vale sum_{i in B_j} lam_i >= |B_j| * p_j / |B_j| = p_j.
@@ -324,7 +327,7 @@ Notebook —
     print("  ma non perche' un vincolo lo imponga: i vincoli sono <=, non =. Con altre offerte la")
     print("  soluzione ottima potrebbe lasciare oggetti sullo scaffale.")
     riga = registra_bound("3 asta", ub3, lb3, zlp3, zlp3r, z3, senso="max")
-    salva_dati(pd.DataFrame([riga]), "asta3_bound")
+    salva_dati(pd.DataFrame([riga]), "fam10_2_bound")
     assert lb3 <= z3 <= zlp3r <= zlp3 <= ub3 + 1e-9
 
     # ---------- 5. I DUE RILASSAMENTI E L'INTEREZZA ----------
@@ -346,7 +349,7 @@ Notebook —
     assert zlp_tri > z_tri + 1e-9
     salva_dati(pd.DataFrame([{"istanza": "asta 10.3", "z_lp": zlp3, "z_milp": z3},
                              {"istanza": "triangolo", "z_lp": zlp_tri, "z_milp": z_tri}]),
-               "asta3_triangolo")
+               "fam10_2_triangolo")
 
     # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
     varianti = {}
@@ -367,7 +370,7 @@ Notebook —
     m.addConstr(gp.quicksum(len(B3[j]) * x[j] for j in R(r3)) <= 2, name="consegne")
     varianti["3b"] = variante("3b. Si consegnano al piu' due oggetti (sum_j |B_j| x_j <= 2)", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
-               "asta3_varianti")
+               "fam10_2_varianti")
 
     # ---------- 7. FIGURA ----------
     fig, ax = plt.subplots(figsize=(6.8, 3.2))

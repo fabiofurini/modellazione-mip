@@ -176,7 +176,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam09_1_lotti.py` (154 righe)"
+??? example "Mostra lo script completo — `python/fam09_1_lotti.py` (157 righe)"
 
     ```python
     """Problema 9.1 -- Produzione e lotti con costo fisso di lancio.
@@ -193,6 +193,7 @@ Notebook —
     from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                      risolvi, valuta)
     from stile import ARANCIO, BLU, ROSSO, TEAL, VERDE, intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -207,7 +208,7 @@ Notebook —
     # il piu' piccolo big-M valido: in un ottimo non si produce mai piu' della domanda residua
     M1 = [sum(d1[t:]) + rn for t in R(n1)]
     salva_dati(pd.DataFrame({"giorno": R(1, n1 + 1), "domanda": d1, "costo_unitario": p1,
-                             "costo_lancio": q1, "M": M1}), "prod1_dati")
+                             "costo_lancio": q1, "M": M1}), "fam09_1_dati")
 
 
     def modello_1(d, p, q, h, r0, rn):
@@ -244,6 +245,7 @@ Notebook —
 
 
     m1, x1, s1, y1 = modello_1(d1, p1, q1, h1, r0, rn)
+    salva_modello(m1, "fam09_1_primale")
     print(f"  Domanda totale {sum(d1)}; big-M per giorno (domanda residua): {M1}")
 
     # ---------- 2. EURISTICHE COSTRUTTIVE (UPPER BOUND) ----------
@@ -272,6 +274,7 @@ Notebook —
 
     # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
     dl1 = duale_1(d1, p1, q1, h1, r0, rn)
+    salva_modello(dl1, "fam09_1_duale")
     # ricetta: pi = 0 (i lanci si regalano) e mu_t = costo minimo per avere una unita' al giorno t
     mu = []
     for t in R(n1):
@@ -292,7 +295,7 @@ Notebook —
           + ", ".join(frazione(x1[t].X) for t in R(n1))
           + "; scorte " + ", ".join(frazione(s1[t].X) for t in R(n1 - 1)))
     riga = registra_bound("1 lotti con setup", ub1, lb1, zlp1, zlp1r, z1)
-    salva_dati(pd.DataFrame([riga]), "prod1_bound")
+    salva_dati(pd.DataFrame([riga]), "fam09_1_bound")
     assert lb1 <= zlp1 <= z1 <= ub1 + 1e-9
 
     # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
@@ -314,7 +317,7 @@ Notebook —
     m.addConstrs((x[t] >= 25 * y[t] for t in R(n1)), name="lotto_minimo")
     varianti["1b"] = variante("1b. Lotto minimo di 25 litri se si produce (x_t >= 25 y_t)", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
-               "prod1_varianti")
+               "fam09_1_varianti")
 
     # ---------- 6. FIGURA ----------
     fig, ax = plt.subplots(figsize=(7.0, 3.4))

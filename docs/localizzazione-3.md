@@ -146,7 +146,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam08_3_copertura.py` (145 righe)"
+??? example "Mostra lo script completo — `python/fam08_3_copertura.py` (148 righe)"
 
     ```python
     """Problema 8.3 -- Copertura del segnale con interferenza (massimo profitto).
@@ -162,6 +162,7 @@ Script completo —
     from mip import (due_rilassamenti, frazione, nuovo_modello, registra_bound,
                      risolvi, stampa_soluzione, valuta)
     from stile import intestazione, plt, salva_dati, salva_figura
+    from esteso import salva_modello
 
     R = range
 
@@ -174,8 +175,8 @@ Script completo —
     m, n = 3, 5
     L3 = [[l for l in R(m) if s3[l][c] >= b3] for c in R(n)]   # L_c: sedi "forti" per il cliente c
     salva_dati(pd.DataFrame([{"sede": l + 1, "cliente": c + 1, "s": s3[l][c]}
-                             for l in R(m) for c in R(n)]), "loc3_segnale")
-    salva_dati(pd.DataFrame({"cliente": R(1, n + 1), "p": p3}), "loc3_clienti")
+                             for l in R(m) for c in R(n)]), "fam08_3_segnale")
+    salva_dati(pd.DataFrame({"cliente": R(1, n + 1), "p": p3}), "fam08_3_clienti")
 
 
     def modello_3(s, p, t, b, k):
@@ -211,6 +212,7 @@ Script completo —
 
 
     m3, x3, y3, L3m = modello_3(s3, p3, t3, b3, k3)
+    salva_modello(m3, "fam08_3_primale")
 
     # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
 
@@ -241,6 +243,7 @@ Script completo —
     # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 
     d3 = duale_3(s3, p3, t3, b3, k3)
+    salva_modello(d3, "fam08_3_duale")
     mano = {"mu": 0.0}
     mano.update({f"pi[{c}]": 0.0 for c in R(n)})
     mano.update({f"lam[{c}]": p3[c] / 2 for c in R(n)})
@@ -256,7 +259,7 @@ Script completo —
     print("Soluzione ottima del MILP:")
     stampa_soluzione(m3, solo_non_nulle=True)
     riga = registra_bound("3 copertura", ub3, lb3, zlp3, zlp3r, z3, senso="max")
-    salva_dati(pd.DataFrame([riga]), "loc3_bound")
+    salva_dati(pd.DataFrame([riga]), "fam08_3_bound")
 
     # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
@@ -277,7 +280,7 @@ Script completo —
     mod, x, y, L = modello_3(s3, p3, t3, b3, k3)
     mod.addConstr(x[0] <= x[2], name="1_implica_3")
     varianti["3b"] = variante("3b. Se si apre la sede 1 si apre anche la 3 (x_1 <= x_3)", mod)
-    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "loc3_varianti")
+    salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam08_3_varianti")
 
     # ---------- 6. FIGURE ----------
 
