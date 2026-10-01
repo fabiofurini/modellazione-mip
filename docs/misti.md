@@ -121,10 +121,3 @@ pareggiando tutto.
 
 </div>
 
-## Due problemi da modellare
-
-Il capitolo si chiude con due problemi dati come arrivano davvero — un testo,
-dei dati, una domanda — senza il modello già scritto: **la settimana del
-deposito** (10.10) e **il presidio tecnico** (10.11). Le soluzioni delle loro
-domande, come tutte le altre del corso, stanno nel documento riservato ai
-docenti e non sono pubblicate.

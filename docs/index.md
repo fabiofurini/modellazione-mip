@@ -5,6 +5,9 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
 **Modelli di programmazione lineare intera per l'Ingegneria Gestionale.**
 
+[:octicons-download-24: Le cinque dispense in PDF](materiale.md){ .md-button .md-button--primary }
+[:octicons-play-24: I notebook in Colab](notebook.md){ .md-button }
+
 ## Che cosa si impara a fare
 
 - **Leggere un problema e scriverne il modello.** Quali sono le decisioni, quali
