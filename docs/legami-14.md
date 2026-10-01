@@ -1,4 +1,4 @@
-# 3.14 Funzioni lineari a tratti
+# 6.14 Funzioni lineari a tratti
 
 **Tecnica:** continue con binarie di tratto · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -62,7 +62,7 @@ due modelli hanno ottimi diversi, $29{,}25$ e $33$), ma **non** la forza del
 rilassamento — con $w_t$ frazionarie il vincolo di adiacenza non morde e i due
 modelli hanno lo stesso $z(\mathit{LP}^+) = 117/4$.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 m.addConstr(lam.sum() == 1, name="convessa")
@@ -75,5 +75,4 @@ for k in range(K + 1):                       # adiacenza: lambda_k solo sui trat
 
 Gurobi offre anche `addGenConstrPWL` e i tipi SOS2, che fanno lo stesso lavoro
 internamente; qui la formulazione manuale resta il materiale principale, perché
-è quella di cui si deve saper dimostrare la correttezza. Si rivede
-nell'esercizio 10.1 (premi con due modalità).
+è quella di cui si deve saper dimostrare la correttezza.

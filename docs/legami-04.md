@@ -1,4 +1,4 @@
-# 3.4 Conteggi interi e arrotondamento all'intero superiore
+# 6.4 Conteggi interi e arrotondamento all'intero superiore
 
 **Tecnica:** intera con binarie · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -37,12 +37,10 @@ l'ottimo intero è $z(\mathit{MILP}) = 4$. Il gap $4 - 17/5 = 3/5$ viene tutto
 dall'interezza: nessun taglio lineare sulle sole $x$ lo chiude, serve una
 disuguaglianza che usi $w$ intera.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 w = m.addVar(vtype=GRB.INTEGER, name="w")
 m.addConstr(gp.quicksum(a[i] * x[i] for i in range(n)) <= K * w, name="capienza")
 ```
 
-Si rivede negli esercizi 10.4 (scatole di luci), 10.5 (spedizioni) e 9.2
-(manodopera).

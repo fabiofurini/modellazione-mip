@@ -1,4 +1,4 @@
-# 3.6 Min-max, max-min e differenza
+# 6.6 Min-max, max-min e differenza
 
 **Tecnica:** continua con continue · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -43,7 +43,7 @@ Il min-max su quell'istanza dà $z(\mathit{LP}^+) = 21/2 = 10{,}5$ contro
 $z(\mathit{MILP}) = 11$: il rilassamento distribuisce i pesi a metà esatta, cosa
 che l'interezza non permette.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 T = m.addVar(name="T")
@@ -51,5 +51,3 @@ m.addConstrs((T >= carico[k] for k in range(K)), name="max")
 m.setObjective(T, GRB.MINIMIZE)
 ```
 
-Si rivede nella domanda 7.4.1 (makespan), nell'esercizio 10.7 (suddivisione
-antitrust) e nell'10.8 (distribuzione dei brani sui CD).

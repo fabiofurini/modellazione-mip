@@ -1,4 +1,4 @@
-# 3.10 «Se e solo se»
+# 6.10 «Se e solo se»
 
 **Tecnica:** binaria con binarie · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -58,11 +58,10 @@ $z(\mathit{LP}^+) = 15 = z(\mathit{MILP})$ su questa istanza: entrambi i versi
 imposti danno un rilassamento esatto. Il secondo vincolo è debole nel
 rilassamento (con $x_j = 1/2$ il membro destro è negativo), ma qui non serve.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 m.addConstrs((y <= x[j] for j in range(p)), name="iff_su")
 m.addConstr(y >= gp.quicksum(x[j] for j in range(p)) - (p - 1), name="iff_giu")
 ```
 
-Si rivede nel problema [7.6](scheduling-6.md) e nell'esercizio 9.3.

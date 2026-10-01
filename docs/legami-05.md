@@ -1,4 +1,4 @@
-# 3.5 L'ausiliaria di massimo
+# 6.5 L'ausiliaria di massimo
 
 **Tecnica:** continua con binarie · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -45,12 +45,10 @@ $x_j = z/t_j$ spalma la scelta su tutti e tre i lavori e abbassa il massimo. Il
 legame di massimo dà rilassamenti **deboli**: è una delle ragioni per cui i
 problemi di makespan sono difficili.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 z = m.addVar(name="z")
 m.addConstrs((z >= t[j] * x[j] for j in range(n)), name="massimo")
 ```
 
-Si rivede nei problemi [7.4](scheduling-4.md), [7.7](scheduling-7.md),
-[8.4](localizzazione-4.md) e 10.9 (libri sugli scaffali).

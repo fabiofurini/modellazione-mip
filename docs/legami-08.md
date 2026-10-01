@@ -1,4 +1,4 @@
-# 3.8 Big-M: vincoli condizionati e disgiunzioni
+# 6.8 Big-M: vincoli condizionati e disgiunzioni
 
 **Tecnica:** binaria con un vincolo · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -48,12 +48,10 @@ Si distinguono tre cose:
 Il degrado è monotono e rapido. La regola operativa: **calcolare $M$ dai dati,
 sempre, e scriverlo nel testo subito dopo il modello**.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 M = sum(max(a[j], 0) for j in range(n)) - b       # calcolato dai dati, non scelto a occhio
 m.addConstr(gp.quicksum(a[j] * x[j] for j in range(n)) <= b + M * (1 - y), name="cond")
 ```
 
-Si rivede nel problema [7.7](scheduling-7.md) e nella
-[tecnica 3.9](legami-09.md).

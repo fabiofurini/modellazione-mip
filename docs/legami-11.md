@@ -1,4 +1,4 @@
-# 3.11 Contare i tipi diversi
+# 6.11 Contare i tipi diversi
 
 **Tecnica:** binarie con continue e un conteggio · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -40,7 +40,7 @@ soglia $\ell = 3$, almeno due tipi: $z(\mathit{MILP}) = 57$, con
 $q = (3, 0, 9)$. Il rilassamento vale anch'esso $57$: qui il conteggio non
 introduce alcun gap.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 m.addConstrs((q[j] <= C[j] * y[j] for j in range(n)), name="attiva")
@@ -48,4 +48,3 @@ m.addConstrs((q[j] >= ell * y[j] for j in range(n)), name="lotto")
 m.addConstr(y.sum() >= p, name="almeno_p_tipi")
 ```
 
-Si rivede negli esercizi 9.3 (veicoli), 10.3 (dieta) e 10.4 (alberi).

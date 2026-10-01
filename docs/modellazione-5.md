@@ -10,7 +10,7 @@ elemento per volta e senza mai tornare indietro. Non dimostra niente sulla sua
 qualità, e non garantisce nemmeno di arrivare a una soluzione ammissibile: può
 bloccarsi a metà, con un elemento che non entra da nessuna parte. Quando finisce
 con una soluzione ammissibile, quella soluzione è l'altra metà del sandwich del
-[capitolo 4](modellazione-4.md): il lato pessimistico, quello garantito da una
+[capitolo 2](modellazione-4.md): il lato pessimistico, quello garantito da una
 soluzione che esiste davvero; quando fallisce, bound primale non ce n'è.
 
 !!! note "Che cosa deve produrre un'euristica in questo corso"
@@ -99,7 +99,7 @@ impossibili da sistemare.
 !!! tip "Due bound gratis, da confrontare"
     $\max_j t_j$ e $\sum_j t_j / k$ si calcolano senza risolvere niente, e il
     migliore dei due è già spesso vicino all'ottimo. Un bound «ovvio» che nessuno
-    scrive è un bound sprecato: il duale del [capitolo 4](modellazione-4.md)
+    scrive è un bound sprecato: il duale del [capitolo 2](modellazione-4.md)
     serve quando quelli ovvi non bastano, non al loro posto.
 
 ## Euristica costruttiva di copertura
@@ -117,7 +117,7 @@ Euristica costruttivaCopertura(c, S):
 
 Il criterio è il **costo per zona nuova**, non il costo assoluto.
 
-Sulle quattro squadre del [capitolo 4](modellazione-4.md), $c = (4,3,5,3)$:
+Sulle quattro squadre del [capitolo 2](modellazione-4.md), $c = (4,3,5,3)$:
 passo 1 rapporti $4/3$, $1$, $5/3$, $1$ → elemento 2 (copre le zone 1, 2, 5);
 passo 2 rapporti $2$, $5/2$, $3/2$ → elemento 4 (zone 4 e 6); passo 3 rapporti
 $4$ e $5$ → elemento 1. Soluzione $\{1,2,4\}$, costo $\mathit{UB} = 10$, che qui

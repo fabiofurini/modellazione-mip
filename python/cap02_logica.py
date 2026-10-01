@@ -13,6 +13,7 @@ from gurobipy import GRB
 from booleane import (AND, IMP, NOT, OR, V, cnf, equivalenti, scrivi, testo_cnf,
                       valuta, variabili, verifica, vincolo)
 from mip import ammissibile, frazione, nuovo_modello, rilassamento, risolvi, stampa_soluzione
+from esteso import salva_modello
 from stile import BLU, CICLO, ROSSO, TEAL, VERDE, intestazione, plt, salva_dati, salva_figura
 
 R = range
@@ -153,22 +154,22 @@ print("  enumerazione) ma rilassamenti diversi: il vincolo contato e' piu' forte
 # ---------- 5. UN MODELLO DI SELEZIONE CON I VINCOLI LOGICI ----------
 intestazione("5. Selezione di progetti soggetta alle implicazioni dell'esercizio 2.1")
 r = {1: 9, 2: 7, 3: 4, 4: 8, 5: 3, 6: 6, 7: 2, 8: 5, 9: 7, 10: 6}   # ricavi
-b = {1: 4, 2: 3, 3: 2, 4: 4, 5: 2, 6: 3, 7: 1, 8: 3, 9: 4, 10: 3}   # costi
-budget = 14
+c = {1: 4, 2: 3, 3: 2, 4: 4, 5: 2, 6: 3, 7: 1, 8: 3, 9: 4, 10: 3}   # costi
+b = 14                                                              # budget
 salva_dati(pd.DataFrame({"progetto": list(r), "ricavo": list(r.values()),
-                         "costo": list(b.values())}), "cap02_progetti")
+                         "costo": list(c.values())}), "cap02_progetti")
 
 
 def modello_selezione(con_logica=True):
     m = nuovo_modello("selezione_progetti")
-    xv = m.addVars(R(1, 11), vtype=GRB.BINARY, name="x")
-    m.setObjective(gp.quicksum(r[p] * xv[p] for p in R(1, 11)), GRB.MAXIMIZE)
-    m.addConstr(gp.quicksum(b[p] * xv[p] for p in R(1, 11)) <= budget, name="budget")
+    xv = m.addVars(10, vtype=GRB.BINARY, name="x")      # indici da 0: x[p-1] e' il progetto p
+    m.setObjective(gp.quicksum(r[p] * xv[p - 1] for p in R(1, 11)), GRB.MAXIMIZE)
+    m.addConstr(gp.quicksum(c[p] * xv[p - 1] for p in R(1, 11)) <= b, name="budget")
     if con_logica:
         for i, (_, formula) in enumerate(ESERCIZI["2.1"], 1):
             for j, cl in enumerate(cnf(formula), 1):
                 coef, verso, rhs = vincolo(cl)
-                lhs = gp.quicksum(k * xv[int(n[1:])] for n, k in coef.items())
+                lhs = gp.quicksum(k * xv[int(nome[1:]) - 1] for nome, k in coef.items())
                 m.addConstr(lhs <= rhs if verso == "<=" else lhs >= rhs, name=f"logica{i}_{j}")
     return m, xv
 
@@ -176,12 +177,13 @@ def modello_selezione(con_logica=True):
 m_libero, _ = modello_selezione(con_logica=False)
 z_libero = risolvi(m_libero)
 m_log, x_log = modello_selezione(con_logica=True)
+salva_modello(m_log, "cap02_progetti")
 z_log = risolvi(m_log)
 zlp_log, _, _ = rilassamento(m_log, rafforzato=True)
-scelti = sorted(p for p in R(1, 11) if x_log[p].X > 0.5)
+scelti = sorted(p for p in R(1, 11) if x_log[p - 1].X > 0.5)
 print(f"Senza i vincoli logici:  z = {frazione(z_libero)}")
 print(f"Con i vincoli logici:    z = {frazione(z_log)}   progetti scelti: {scelti}")
-print(f"                         costo {sum(b[p] for p in scelti)} su un budget di {budget}")
+print(f"                         costo {sum(c[p] for p in scelti)} su un budget di {b}")
 print(f"Rilassamento LP+ del modello con i vincoli logici: {frazione(zlp_log)}")
 for _, formula in ESERCIZI["2.1"]:
     assert valuta(formula, {f"x{p}": int(p in scelti) for p in R(1, 11)})

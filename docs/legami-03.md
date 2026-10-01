@@ -1,4 +1,4 @@
-# 3.3 Lotto minimo e variabile semicontinua
+# 6.3 Lotto minimo e variabile semicontinua
 
 **Tecnica:** binaria con continua · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -32,7 +32,7 @@ segnala come inammissibilità solo se $y_j$ è forzata a 1 da altri vincoli.
 
 ## La forza del rilassamento
 
-Sulla stessa istanza della [tecnica 3.2](legami-02.md) con $\ell = 5$: l'ottimo
+Sulla stessa istanza della [tecnica 6.2](legami-02.md) con $\ell = 5$: l'ottimo
 passa da $44$ a $z(\mathit{MILP}) = 49$, con $q = (5, 5)$ invece di $(2, 7)$ —
 la soglia costringe a produrre 5 nel secondo impianto anche se il primo è più
 caro. Ma $z(\mathit{LP}^+)$ resta $112/3$, **identico** al caso senza soglia.
@@ -44,7 +44,7 @@ caro. Ma $z(\mathit{LP}^+)$ resta $112/3$, **identico** al caso senza soglia.
     scarica sull'interezza — ed è per questo che i modelli con lotto minimo sono
     tipicamente più difficili di quelli senza, a parità di dimensione.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 m.addConstrs((q[j] >= ell * y[j] for j in range(mm)), name="lotto")
@@ -53,4 +53,4 @@ m.addConstrs((q[j] <= C[j] * y[j] for j in range(mm)), name="capacita")
 
 Gurobi ha anche il tipo `GRB.SEMICONT`, che dichiara direttamente il dominio; in
 questo corso si scrive la formulazione a mano, perché è quella che si deve saper
-dimostrare. Si rivede nella domanda 7.2.2 e negli esercizi 9.1 e 9.3.
+dimostrare.

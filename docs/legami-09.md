@@ -1,4 +1,4 @@
-# 3.9 Precedenze e sequenziamento
+# 6.9 Precedenze e sequenziamento
 
 **Tecnica:** binarie con continue, big-M · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -47,7 +47,7 @@ vincoli di precedenza si spengono a metà e i lavori possono sovrapporsi. È il
 rilassamento più debole di tutto il capitolo, e spiega perché i modelli di
 sequenziamento big-M scalano male.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 M = sum(t)                                    # l'orizzonte, dichiarato
@@ -58,5 +58,3 @@ for i in range(n):
         m.addConstr(kappa[j] >= kappa[i] + t[j] - M * (1 - s[j, i]), name=f"prec{j}{i}")
 ```
 
-Si rivede nel problema [7.7](scheduling-7.md), dove le date di rilascio
-permettono di ridurre $M$.

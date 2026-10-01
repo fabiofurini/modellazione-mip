@@ -1,4 +1,4 @@
-# 3.1 Attivazione: forma aggregata e forma disaggregata
+# 6.1 Attivazione: forma aggregata e forma disaggregata
 
 **Tecnica:** binarie con binarie · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -64,13 +64,10 @@ rilassamento più stretto: è il compromesso tipico di questa tecnica.
 
 ![Attivazione: i due rilassamenti](img/cap03_attivazione.png)
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 m.addConstrs((x[i, j] <= y[j] for i in range(n) for j in range(mm)), name="link")   # disaggregato
 m.addConstrs((x.sum("*", j) <= n * y[j] for j in range(mm)), name="link")           # aggregato
 ```
 
-Si rivede nei problemi [7.2](scheduling-2.md), [7.3](scheduling-3.md),
-[7.5](scheduling-5.md) e [8.4](localizzazione-4.md), dove il confronto fra le
-due forme è una domanda di modellazione.

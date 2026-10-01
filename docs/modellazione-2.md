@@ -181,23 +181,52 @@ In tutti, $x_p = 1$ se il progetto $p$ è scelto.
 
 ## I vincoli logici dentro un modello di ottimizzazione
 
-Con i dieci progetti dell'esercizio 2.1, ricavi e costi
+Dieci progetti, con ricavi e costi
 
 | progetto $p$ | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | ricavo $r_p$ | 9 | 7 | 4 | 8 | 3 | 6 | 2 | 5 | 7 | 6 |
-| costo $b_p$ | 4 | 3 | 2 | 4 | 2 | 3 | 1 | 3 | 4 | 3 |
+| costo $c_p$ | 4 | 3 | 2 | 4 | 2 | 3 | 1 | 3 | 4 | 3 |
 
-e budget $B = 14$, con $n = 10$ progetti:
+e budget $b = 14$. Con $x_p \in \{0,1\}$ che vale $1$ se il progetto $p$ si
+finanzia, il modello è
 
 $$
 \begin{aligned}
 \max ~~ \sum_{p=1}^{n} r_p\, x_p & &\\
-\text{soggetto a}\quad \sum_{p=1}^{n} b_p\, x_p &\le B, &\\
-\text{gli 8 vincoli} &\text{ dell'esercizio 2.1}, &\\
+\text{soggetto a} \quad \sum_{p=1}^{n} c_p\, x_p &\le b, &\\
+\text{le clausole delle sei implicazioni}, & &\\
 x_p &\in \{0, 1\}, & \forall p \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
+
+Le sei implicazioni, portate in forma normale congiuntiva, danno otto clausole,
+e ogni clausola è una disuguaglianza: sui dati di sopra il modello si scrive per
+esteso così, una colonna per variabile.
+
+<!-- modello-esteso: cap02_progetti -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrrrr c l}
+\max & 9x_1 & +7x_2 & +4x_3 & +8x_4 & +3x_5 & +6x_6 & +2x_7 & +5x_8 & +7x_9 & +6x_{10} &  & \\
+\text{soggetto a} & 4x_1 & +3x_2 & +2x_3 & +4x_4 & +2x_5 & +3x_6 & +x_7 & +3x_8 & +4x_9 & +3x_{10} & \le & 14\\
+ &  & -x_2 & +x_3 &  &  &  &  &  &  &  & \ge & 0\\
+ &  & x_2 &  & +x_4 &  &  &  &  &  &  & \le & 1\\
+ & x_1 &  &  &  &  & +x_6 & -x_7 &  &  &  & \le & 1\\
+ & -x_1 &  &  &  &  &  &  & +x_8 &  &  & \ge & 0\\
+ &  &  &  &  &  & -x_6 &  & +x_8 &  &  & \ge & 0\\
+ &  & x_2 & +x_3 &  &  &  &  &  & +x_9 &  & \le & 2\\
+ &  & x_2 &  &  &  &  &  &  &  & +x_{10} & \le & 1\\
+ &  &  & x_3 &  &  &  &  &  &  & +x_{10} & \le & 1\\
+ & x_1, & x_2, & x_3, & x_4, & x_5, & x_6, & x_7, & x_8, & x_9, & x_{10} & \in & \{0, 1\}
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
 
 Senza i vincoli logici l'ottimo è $30$. Con i vincoli logici scende a
 $z(\mathit{MILP}) = 28$, con i progetti $1, 2, 3, 5, 8$ di costo complessivo
@@ -230,12 +259,20 @@ for i, formula in enumerate(implicazioni, 1):          # una clausola, un vincol
 m.optimize()
 ```
 
-## Che cosa resta al capitolo successivo
+## Quello che questo capitolo ha messo in mano
 
-Qui i legami sono fra variabili **tutte binarie**. Quando una delle famiglie è
-continua o intera — «se la macchina non è accesa non produce», «questa variabile
-vale il massimo di quelle» — la CNF non basta più: servono i coefficienti, i
-big-M e gli argomenti di ottimalità del [capitolo 3](legami.md).
+Una condizione logica fra decisioni «sì/no» si scrive sempre allo stesso modo:
+una binaria per ogni fatto elementare, la condizione portata in forma normale
+congiuntiva — una congiunzione di OR — e ogni clausola diventa una
+disuguaglianza. L'AND non costa nulla, perché i vincoli sono già in AND fra
+loro; l'OR diventa una somma $\ge 1$; il NOT diventa $1 - x$; l'implicazione
+$x \Rightarrow y$ diventa $x \le y$; il «se e solo se» chiede entrambe le
+disuguaglianze.
+
+Tre forme ricorrono così spesso da avere un nome: il **set covering**
+($\sum_{j \in S} x_j \ge 1$, almeno uno), il **set packing** ($\le 1$, al più
+uno) e il **set partitioning** ($= 1$, esattamente uno). Riconoscerle in un
+enunciato è metà del lavoro di modellazione.
 
 ## Codice
 

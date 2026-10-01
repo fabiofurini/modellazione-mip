@@ -1,4 +1,4 @@
-# 3.7 Il valore assoluto
+# 6.7 Il valore assoluto
 
 **Tecnica:** continua con continue (e una binaria, quando serve) · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -39,7 +39,7 @@ obiettivo e il caso in vincolo si comportano in modo **radicalmente diverso**.
 Nel primo caso i due vincoli impongono $d \ge |u - v|$ (uno dei due membri
 destri *è* $|u-v|$); l'obiettivo, che minimizza $d$ e in cui $d$ non compare
 altrove, la porta all'uguaglianza con l'argomento di scambio della
-[tecnica 3.5](legami-05.md). Nel terzo caso, $b = 1$ disattiva il secondo
+[tecnica 6.5](legami-05.md). Nel terzo caso, $b = 1$ disattiva il secondo
 vincolo (se $M \ge k + \max(v-u)$) e lascia il primo, e viceversa: è una
 disgiunzione, non una congiunzione, e senza binaria si imporrebbero entrambi —
 cioè $0 \ge 2k$, inammissibile per $k > 0$.
@@ -57,7 +57,7 @@ $z(\mathit{MILP}) = 1$ e rilassamento $z(\mathit{LP}^+) = 0$: il continuo divide
 $21$ in due metà uguali e azzera lo scarto. Il rilassamento di un obiettivo di
 valore assoluto è tipicamente $0$, cioè inutile.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 d = m.addVar(name="d")
@@ -65,5 +65,3 @@ m.addConstr(d >= u - v, name="abs_piu")
 m.addConstr(d >= v - u, name="abs_meno")
 ```
 
-Si rivede negli esercizi 10.8 (CD) e 10.7 (antitrust), e nella
-[tecnica 3.13](legami-13.md) in una forma equivalente con due deviazioni.

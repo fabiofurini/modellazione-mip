@@ -215,9 +215,9 @@ relativo non si scrive e si riporta la differenza assoluta.
 | **set packing** | $\sum_{i \in I} x_i \le 1$ | al più un elemento di $I$ |
 | **set covering** | $\sum_{i \in I} x_i \ge 1$ | almeno un elemento di $I$ |
 
-Il problema [7.1](scheduling-1.md) usa un *partitioning* per ogni lavoro, il
-[7.3](scheduling-3.md) un *packing*, e il [capitolo 2](modellazione-2.md) mostra
-il *covering* come traduzione diretta di una clausola OR.
+Un vincolo «ogni lavoro a esattamente una macchina» è un *partitioning*; «al più
+un lavoro per fascia oraria» è un *packing*; «ogni zona coperta da almeno un
+presidio» è un *covering*, che è poi la traduzione diretta di una clausola OR.
 
 ## Che cosa fa il solver con i due bound
 
@@ -234,21 +234,26 @@ solver se li costruisce da sé, con le sue euristiche e i suoi rilassamenti.
   esplorarla.
 - Il **bound duale** viene dal rilassamento, e dice quanto si può sperare al
   massimo: più è vicino all'ottimo intero — cioè più la formulazione è stretta,
-  si veda il [capitolo 3](legami.md) — meno lavoro resta da fare.
+  meno lavoro resta da fare.
 
 Il divario fra i due è quello che il solver riporta come `MIPGap`, ed è anche
 l'unica cosa che si può affermare con sicurezza quando l'ottimo non si
 raggiunge.
 
-## Quello che questo capitolo lascia aperto
+## Quello che questo capitolo ha messo in mano
 
-| Domanda | Dove si risponde |
-|---|---|
-| Come si traducono le condizioni logiche in vincoli lineari? | [Capitolo 2](modellazione-2.md) |
-| Come si legano fra loro famiglie di variabili diverse? | [Capitolo 3](legami.md) |
-| Come si costruisce a mano un bound ottimistico? | [Capitolo 4](modellazione-4.md) |
-| Come si costruisce in fretta una soluzione ammissibile? | [Capitolo 5](modellazione-5.md) |
-| Come si scrive tutto in Python/Gurobi e come si leggono i risultati? | [Capitolo 6](modellazione-6.md) |
+Un modello MIP si scrive sempre con gli stessi cinque oggetti: i **dati**, che
+sono noti e non si decidono; le **variabili**, una per decisione, con il loro
+dominio; la **funzione obiettivo**, che dice che cosa si massimizza o si
+minimizza; i **vincoli**, uno per ogni frase dell'enunciato; e il **dominio**
+delle variabili, che è un vincolo anche lui, il più facile da dimenticare.
+
+Su un modello scritto si distinguono poi una **soluzione ammissibile**, che
+rispetta tutti i vincoli, e la **soluzione ottima**, che fra quelle ammissibili
+ha il valore migliore. Rilassare l'interezza dà il **rilassamento lineare**, un
+problema più facile il cui ottimo è un **bound**: pessimistico se viene da una
+soluzione ammissibile, ottimistico se viene da un rilassamento. La distanza fra
+i due è il **gap**.
 
 ## Codice
 

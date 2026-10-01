@@ -38,6 +38,7 @@ class Esito:
     valore: float = None         # valore della soluzione costruita
     residuo: float = None        # capacita' residua (zaino)
     lanci: dict = None           # {periodo: quantita' prodotta} (lot sizing)
+    tour: list = None            # sequenza dei nodi visitati (TSP)
 
     def assegnazione(self, j: int):
         """Macchina (0-based) a cui è assegnato il lavoro j, oppure None."""
@@ -325,4 +326,37 @@ def euristica_lotti(domanda, setup, magazzino) -> Esito:
     e.valore = sum(setup for t in lanci) + sum(
         magazzino * max(0, sum(lanci[s] for s in lanci if s <= t) - sum(domanda[:t + 1]))
         for t in range(T))
+    return e
+
+
+def vicino_piu_vicino(d, partenza: int = 0) -> Esito:
+    """Nearest neighbour per il TSP: dal nodo corrente si va sempre al piu' vicino
+    fra quelli non ancora visitati, e alla fine si torna alla partenza.
+
+    `d` e' la matrice delle distanze, simmetrica, con zeri sulla diagonale.
+    E' un'euristica costruttiva: costruisce una sola soluzione, un nodo per
+    volta, senza mai tornare indietro. Il tour che produce dipende dal nodo di
+    partenza.
+    """
+    n = len(d)
+    e = Esito(x={}, y=[0] * n)
+    visitati = [partenza]
+    e.y[partenza] = 1
+    costo = 0
+    while len(visitati) < n:
+        corrente = visitati[-1]
+        candidati = [j for j in range(n) if j not in visitati]
+        prossimo = min(candidati, key=lambda j: (d[corrente][j], j))
+        altri = ", ".join(f"{j + 1}: {d[corrente][j]:g}" for j in sorted(candidati))
+        e.traccia.passo(f"Dal nodo {corrente + 1} le distanze non visitate sono {altri}; "
+                        f"la minima e' {d[corrente][prossimo]:g}, si va al nodo {prossimo + 1}.")
+        costo += d[corrente][prossimo]
+        visitati.append(prossimo)
+        e.y[prossimo] = 1
+    ritorno = d[visitati[-1]][partenza]
+    e.traccia.passo(f"Visitati tutti i nodi: si torna dal {visitati[-1] + 1} al "
+                    f"{partenza + 1}, che costa {ritorno:g}.")
+    costo += ritorno
+    e.tour = visitati + [partenza]
+    e.valore = costo
     return e

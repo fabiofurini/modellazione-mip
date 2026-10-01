@@ -41,7 +41,7 @@ n, k = 3, 3
 
 
 def modello(t, co, a):
-    """Il problema 7.1: una addConstrs per famiglia, con il nome dell'etichetta."""
+    """Un assegnamento: una addConstrs per famiglia, con il nome dell'etichetta."""
     mm = nuovo_modello("assegnamento")
     x = mm.addVars(n, k, vtype=GRB.BINARY, name="x")          # dati -> variabili
     mm.setObjective(gp.quicksum(co[j][h] * x[j, h] for j in R(n) for h in R(k)), GRB.MINIMIZE)

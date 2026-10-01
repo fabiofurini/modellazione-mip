@@ -1,4 +1,4 @@
-# 3.13 Vincoli violabili, deviazioni e penalità
+# 6.13 Vincoli violabili, deviazioni e penalità
 
 **Tecnica:** continue con continue · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -36,7 +36,7 @@ $(\pi^- + \pi^+)\min(\sigma,\tau) > 0$.
 
 Quindi $s^-$ e $s^+$ sono davvero le parti positiva e negativa dello scarto, e
 $s^- + s^+ = |a'x - \beta|$ in ogni ottimo: la stessa cosa della
-[tecnica 3.7](legami-07.md), scritta con un'uguaglianza invece che con due
+[tecnica 6.7](legami-07.md), scritta con un'uguaglianza invece che con due
 disuguaglianze.
 
 !!! warning "Con penalità nulla le deviazioni perdono significato"
@@ -55,7 +55,7 @@ sotto-copertura di $3$ concentrata sul primo periodo. Nulla, nei dati, dice che
 vada concentrata: qualunque ripartizione della sotto-copertura totale $3$ ha lo
 stesso costo, e il solver ne restituisce una.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 sm = m.addVars(T, name="s_meno");  sp = m.addVars(T, name="s_piu")
@@ -64,5 +64,3 @@ m.setObjective(costo + gp.quicksum(pen_giu * sm[t] + pen_su * sp[t] for t in ran
                GRB.MINIMIZE)
 ```
 
-Si rivede nel modello numerico dell'orario della scuola di musica (EX 15) e
-nell'esercizio 9.1.

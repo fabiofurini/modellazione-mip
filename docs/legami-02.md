@@ -1,4 +1,4 @@
-# 3.2 Costo fisso, capacità e flusso continuo
+# 6.2 Costo fisso, capacità e flusso continuo
 
 **Tecnica:** binaria con continua · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -24,7 +24,7 @@ essa la sua contronominale «produce $\Rightarrow$ aperto». Se $y_j = 1$ il
 vincolo dà $q_j \le C_j$: la capacità.
 
 Il verso «aperto $\Rightarrow$ produce» non è imposto e segue dall'ottimalità
-solo se $f_j > 0$, come nella [tecnica 3.1](legami-01.md).
+solo se $f_j > 0$, come nella [tecnica 6.1](legami-01.md).
 
 ## La forza del rilassamento
 
@@ -45,11 +45,9 @@ Stesso insieme intero, stesso ottimo, rilassamenti lontanissimi.
     ricavato dai dati. Un big-M scelto «grande abbastanza» è sempre valido e
     quasi sempre pessimo.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 m.addConstrs((q[j] <= C[j] * y[j] for j in range(mm)), name="link")
 ```
 
-Si rivede nel problema [8.1](localizzazione-1.md) e in tutta la famiglia della
-produzione.

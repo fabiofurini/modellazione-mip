@@ -1,4 +1,4 @@
-# 3.12 Alldiff ed espansione binaria
+# 6.12 Alldiff ed espansione binaria
 
 **Tecnica:** binarie fra loro; intera con binarie · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
@@ -53,7 +53,7 @@ corrispondenza fra $v$ e $(b_0, \dots, b_{p-1})$ è biunivoca.
 $v \in \{0,\dots,7\}$ con $v \ge 5$, $\min v$: il modello dà $v = 5 = 1 + 4$,
 cioè $(b_0, b_1, b_2) = (1, 0, 1)$.
 
-## In gurobipy, e dove si rivede
+## In gurobipy
 
 ```python
 m.addConstrs((p.sum(i, "*") == 1 for i in range(n)), name="un_valore")
@@ -61,5 +61,3 @@ m.addConstrs((p.sum("*", v) == 1 for v in range(n)), name="alldiff")
 m.addConstr(v == gp.quicksum(2 ** k * b[k] for k in range(K)), name="espansione")
 ```
 
-L'alldiff si rivede nel modello numerico delle regine (EX 9) e nell'orario
-della scuola di musica (EX 15).

@@ -236,7 +236,7 @@ Notebook —
     """Problema 10.8 -- Brani su piu' CD: minimizzare la differenza fra il piu' lungo
     e il piu' corto.
 
-    Due variabili ausiliarie: y di massimo (tecnica 3.5) e z di minimo, con obiettivo
+    Due variabili ausiliarie: y di massimo (tecnica 6.5) e z di minimo, con obiettivo
     y - z. Come in 11.2 il rilassamento lineare vale zero, e il bound inferiore utile
     si ottiene da un argomento di parita' che decide da solo l'ottimalita'.
     """
