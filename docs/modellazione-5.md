@@ -32,7 +32,12 @@ soluzione che esiste davvero; quando fallisce, bound primale non ce n'è.
     risultato di una euristica costruttiva su un massimo è l'errore di segno più comune del
     corso.
 
-## Le tre euristiche di tipo bin packing
+## Bin packing: le regole di inserimento
+
+Il problema classico è il **bin packing**, il cui modello sta nel capitolo del
+solver: degli oggetti vanno messi in contenitori tutti uguali, di capacità
+limitata, usandone il meno possibile. Qui non lo si risolve: lo si *costruisce*,
+una scelta per volta.
 
 ```text
 Costruisci(n, k, t, a, gamma):
@@ -63,7 +68,14 @@ Il best-fit sul costo trova l'ottimo; ma nessun bound lo certifica — ci vuole 
 solver, o un bound duale che arrivi a $11$, e lì il duale a mano
 si ferma a $10$.
 
-## LPT: bilanciare su macchine identiche
+## $P||C_{\max}$: la regola del meno carico
+
+Il secondo classico è lo **scheduling su macchine identiche**, in notazione
+standard $P||C_{\max}$: $n$ lavori di durata $t_j$ su $k$ macchine uguali,
+minimizzando l'istante in cui finisce l'ultima. La regola naturale è il **list
+scheduling** — il lavoro corrente va sulla macchina meno carica — e l'ordine in
+cui si guardano i lavori decide il risultato. L'ordine migliore è per durata
+decrescente, e la regola che ne esce si chiama **LPT**.
 
 ```text
 LPT(n, k, t):
@@ -102,7 +114,7 @@ impossibili da sistemare.
     scrive è un bound sprecato: il duale del [capitolo 2](modellazione-4.md)
     serve quando quelli ovvi non bastano, non al loro posto.
 
-## Euristica costruttiva di copertura
+## Set covering: la regola del completamento più economico
 
 ```text
 Euristica costruttivaCopertura(c, S):
@@ -123,7 +135,12 @@ passo 2 rapporti $2$, $5/2$, $3/2$ → elemento 4 (zone 4 e 6); passo 3 rapporti
 $4$ e $5$ → elemento 1. Soluzione $\{1,2,4\}$, costo $\mathit{UB} = 10$, che qui
 è l'ottimo.
 
-## Euristica costruttiva per lo zaino: un lower bound
+## Zaino: la regola del rapporto migliore
+
+Lo **zaino** è il modello con cui si apre il capitolo del solver: gli oggetti
+hanno un valore oltre a un peso, e la risorsa è una sola. La regola costruttiva
+guarda il rapporto fra i due, e quello che produce è una soluzione ammissibile,
+quindi un bound primale.
 
 ```text
 Euristica costruttivaZaino(p, w, C):
@@ -138,6 +155,57 @@ si prendono gli oggetti 1 e 3 (peso $8$), valore $16$. Poiché il problema è di
 **massimo**, $\mathit{LB} = 16 \le z(\mathit{MILP}) = 17$, gap $5{,}9\%$:
 l'ottimo prende gli oggetti 1 e 2 riempiendo lo zaino esattamente. La euristica costruttiva
 sbaglia perché l'oggetto 3 lascia un residuo inutilizzabile.
+
+## TSP: il vicino più vicino
+
+Il quarto classico è il **commesso viaggiatore** (*travelling salesman problem*,
+TSP): date $n$ città e le distanze $d_{ij}$ fra ogni coppia, si cerca il giro
+più corto che le visiti tutte una volta sola e torni al punto di partenza. È il
+problema su cui la costruzione passo per passo si vede meglio, perché la
+soluzione è una sequenza: l'ordine *è* la soluzione.
+
+La regola costruttiva classica è il **vicino più vicino**: si parte da una
+città, e ogni volta si va alla più vicina fra quelle non ancora visitate; quando
+non ne restano, si torna alla partenza. È ammissibile per costruzione e veloce,
+perché a ogni passo guarda solo le distanze dalla città corrente.
+
+!!! example "Cinque città, cinque partenze"
+    Le distanze, simmetriche:
+
+    |  | 1 | 2 | 3 | 4 | 5 |
+    |---|---:|---:|---:|---:|---:|
+    | 1 | — | 5 | 2 | 2 | 9 |
+    | 2 | 5 | — | 4 | 3 | 4 |
+    | 3 | 2 | 4 | — | 4 | 7 |
+    | 4 | 2 | 3 | 4 | — | 7 |
+    | 5 | 9 | 4 | 7 | 7 | — |
+
+    Partendo dalla città 1: la più vicina è la 3 (distanza 2); da lì la 2 (4); da
+    lì la 4 (3); resta la 5 (7); e si torna alla 1, che costa 9. Il giro
+    $1 \to 3 \to 2 \to 4 \to 5 \to 1$ è lungo 25.
+
+    L'ultimo arco è quello che si paga: la regola sceglie bene finché ha scelta, e
+    all'ultimo passo non ne ha più. Cambiando la città di partenza cambia il giro:
+
+    | partenza | giro | lunghezza |
+    |---|---|---:|
+    | 1 | $1 \to 3 \to 2 \to 4 \to 5 \to 1$ | 25 |
+    | 2 | $2 \to 4 \to 1 \to 3 \to 5 \to 2$ | 18 |
+    | 3 | $3 \to 1 \to 4 \to 2 \to 5 \to 3$ | 18 |
+    | 4 | $4 \to 1 \to 3 \to 2 \to 5 \to 4$ | 19 |
+    | 5 | $5 \to 2 \to 4 \to 1 \to 3 \to 5$ | 18 |
+
+    Con cinque città i giri distinti sono $(5-1)!/2 = 12$ e si possono enumerare
+    tutti: l'ottimo è $1 \to 3 \to 5 \to 2 \to 4 \to 1$, lungo 18. Tre partenze
+    su cinque lo trovano, una resta a 19 e quella da cui siamo partiti a 25, cioè
+    il 38,9 % sopra l'ottimo.
+
+    Due cose da portare via. L'euristica dà *una* soluzione ammissibile, quindi un
+    bound superiore — qui $z(\mathit{MILP}) \le 25$ — e nient'altro; che 18 sia
+    l'ottimo lo sappiamo per enumerazione. E far girare la stessa regola da tutte
+    le partenze, tenendo il giro migliore, costa $n$ volte tanto e dà un bound
+    migliore: è la forma più semplice di *multi-start*, e resta un bound da un
+    lato solo.
 
 ## Lot sizing: copertura di periodi a costo unitario minimo
 
