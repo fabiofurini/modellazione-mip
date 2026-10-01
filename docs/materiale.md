@@ -8,6 +8,9 @@ Python sotto licenza
 
 ## Le tre dispense
 
+Se vuoi il corso intero da leggere offline, parti da questi tre PDF: sono il
+cuore del materiale. Quello che viene dopo e' di contorno.
+
 <div class="grid cards" markdown>
 
 -   :material-book-open-variant: **Modellazione**
@@ -46,7 +49,7 @@ Python sotto licenza
 
 <div class="grid cards" markdown>
 
--   :material-school-outline: **Organizzazione del corso**
+-   :material-school-outline: **Come si lavora con il corso**
 
     ---
 
@@ -60,9 +63,10 @@ Python sotto licenza
 
     ---
 
+    *Per esercitarsi — soluzioni riservate ai docenti.*
+
     Quaranta problemi dati come arrivano davvero, senza il modello già scritto:
-    venti con i dati numerici espliciti e venti in forma simbolica. Le soluzioni
-    sono riservate ai docenti.
+    venti con i dati numerici espliciti e venti in forma simbolica.
 
     [:octicons-download-24: esercizi.pdf](pdf/esercizi.pdf)
 

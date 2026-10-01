@@ -1,4 +1,10 @@
-# Organizzazione del corso
+# Come si lavora con il corso
+
+Il percorso è in due parti: prima si imparano gli strumenti di modellazione,
+poi li si applica a problemi completi. Il filo che le tiene insieme è uno solo —
+un modello non si limita a scriverlo: se ne racchiude l'ottimo fra due numeri,
+$\mathit{LB} \le z(\mathit{MILP}) \le \mathit{UB}$, prima ancora di affidarlo
+al solver.
 
 ## Percorso in due parti
 
@@ -77,8 +83,7 @@ anche quando il solver non arriva a nulla di utile.
 
 ## Riproducibilità
 
-```bash
-python3 -m pip install gurobipy matplotlib pandas
-python3 python/esegui_tutti.py       # rigenera dati, risultati, figure e notebook
-python3 python/verifica_numeri.py    # verifica ogni numero citato nella dispensa
-```
+Nessun numero di queste pagine è scritto a mano: escono tutti da uno script che
+si può rilanciare, e un controllo automatico verifica che testo e codice dicano
+la stessa cosa. I comandi stanno nella pagina del
+[materiale scaricabile](materiale.md#rigenerare-tutto).

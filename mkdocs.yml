@@ -163,7 +163,7 @@ nav:
           - 10.8 Brani fra CD: misti-8.md
           - 10.9 Libri fra scaffali: misti-9.md
       - Problemi da modellare: da-modellare.md
-  - Le dispense in PDF: materiale.md
+  - Materiale scaricabile: materiale.md
   - Il corso:
-      - organizzazione.md
+      - Come si lavora con il corso: organizzazione.md
       - Notebook in Colab: notebook.md

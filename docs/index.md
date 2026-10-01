@@ -36,7 +36,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
 </div>
 
-[:octicons-download-24: Le tre dispense in PDF](materiale.md){ .md-button .md-button--primary }
+[:octicons-download-24: Scarica il materiale del corso](materiale.md){ .md-button .md-button--primary }
 
 ## Che cosa si impara a fare
 
