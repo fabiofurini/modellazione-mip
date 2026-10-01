@@ -11,7 +11,7 @@ prendere le misure, e poi si affrontano i problemi generali.
 Il formato è ridotto ma conserva sempre gli stessi cinque pezzi:
 
 1. l'enunciato, con i dati dell'istanza;
-2. il **modello simbolico**, con le sue variabili e i suoi vincoli;
+2. le **variabili**, con il loro dominio e il loro conteggio;
 3. il **modello dell'istanza**, primale e duale;
 4. una soluzione ammissibile costruita a mano, che dà il bound primale;
 5. una soluzione duale costruita a mano, che dà il bound duale, e il confronto

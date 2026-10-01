@@ -26,7 +26,7 @@ suo [notebook che si apre in Colab](notebook.md), senza installare niente.
     soluzione con il solver → **domande di modellazione aggiuntive**, perché
     il modello base lo si legge, la variante la si scrive.
 
-## Le tre parti del corso
+## Le due parti del corso
 
 <div class="grid cards" markdown>
 
@@ -55,7 +55,7 @@ suo [notebook che si apre in Colab](notebook.md), senza installare niente.
 
     ---
 
-    Organizzazione, il formato dell'esame, le tre dispense in PDF, i notebook.
+    Organizzazione, il formato dell'esame, le dispense in PDF, i notebook.
 
     [:octicons-arrow-right-24: Organizzazione](organizzazione.md)
 
