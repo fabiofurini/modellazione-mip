@@ -6,6 +6,8 @@ Testi, figure e dati sono sotto licenza
 Python sotto licenza
 [MIT](https://github.com/fabiofurini/modellazione-mip/blob/main/LICENSE-CODE).
 
+## Le tre dispense
+
 <div class="grid cards" markdown>
 
 -   :material-book-open-variant: **Modellazione**
@@ -37,6 +39,12 @@ Python sotto licenza
     variante svolta per intero.
 
     [:octicons-download-24: dispensa-3-simbolici.pdf](pdf/dispensa-3-simbolici.pdf)
+
+</div>
+
+## Gli altri documenti
+
+<div class="grid cards" markdown>
 
 -   :material-school-outline: **Organizzazione del corso**
 

@@ -26,7 +26,7 @@ TESTA = """# Problemi da modellare
 
 **Quaranta problemi** dati come arrivano davvero — un testo, dei dati, una
 domanda — senza il modello già scritto: venti con i dati numerici espliciti e
-venti in forma simbolica. Sono una delle cinque dispense, e si scaricano anche
+venti in forma simbolica. Si scaricano anche
 [in PDF](pdf/dispensa-5-damodellare.pdf).
 
 Le soluzioni sono riservate ai docenti. Il metodo per rispondere è quello di
