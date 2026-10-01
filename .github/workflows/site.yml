@@ -26,7 +26,6 @@ jobs:
       - run: python3 python/incorpora_codice.py --verifica
       - run: python3 python/genera_tabelle.py --verifica
       - run: python3 python/incorpora_modelli.py --verifica
-      - run: python3 python/incorpora_simbolici.py --verifica
       - run: python3 python/controlla_modelli.py
       - run: python3 python/genera_damodellare.py --verifica
       - run: mkdocs build --strict
