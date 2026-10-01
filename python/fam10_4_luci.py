@@ -1,4 +1,4 @@
-"""Problema 12.1 -- Alberi di Natale: configurazioni e scatole di luci.
+"""Problema 10.4 -- Alberi di Natale: configurazioni e scatole di luci.
 
 Due decisioni intere legate da un vincolo di disponibilita': quante luci servono
 (dalle configurazioni scelte) e quante se ne comprano (dalle scatole). Sopra, il
@@ -17,7 +17,7 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("12.1 Alberi di Natale: configurazioni, luci e scatole")
+intestazione("10.4 Alberi di Natale: configurazioni, luci e scatole")
 q1 = 20                          # alberi da decorare
 i1 = [7, 6, 8]                   # costo di installazione di una configurazione
 u1 = [[4, 2], [2, 3], [2, 2]]    # luci di colore l richieste dalla configurazione c
@@ -207,7 +207,7 @@ ax.set_yticks(R(2))
 ax.set_yticklabels(etichette)
 ax.set_xlim(0, max(inst[k] + scat[k] for k in R(2)) * 1.18)
 ax.set_xlabel("costo (euro)")
-ax.set_title("12.1: dove va il costo")
+ax.set_title("10.4: dove va il costo")
 ax.legend(fontsize=8, loc="lower right")
 ax.invert_yaxis()
 salva_figura(fig, "cap10_luci_ottimo")

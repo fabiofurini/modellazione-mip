@@ -1,4 +1,4 @@
-"""Problema 11.3 -- Brani su piu' CD: minimizzare la differenza fra il piu' lungo
+"""Problema 10.8 -- Brani su piu' CD: minimizzare la differenza fra il piu' lungo
 e il piu' corto.
 
 Due variabili ausiliarie: y di massimo (tecnica 3.5) e z di minimo, con obiettivo
@@ -17,7 +17,7 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("11.3 Brani sui CD: pareggiare la durata del CD piu' lungo e del piu' corto")
+intestazione("10.8 Brani sui CD: pareggiare la durata del CD piu' lungo e del piu' corto")
 d3 = [5, 6, 7, 3, 4, 10]     # durata dei brani, in minuti
 w3 = [1, 1]                  # brani minimi per CD
 n3, m3 = len(d3), len(w3)
@@ -117,7 +117,7 @@ print("  spezza.")
 assert abs(zlp3) <= 1e-9
 
 # ---------- 4. IL BOUND DI PARITA' ----------
-intestazione("11.3 Un argomento di parita' che chiude il problema")
+intestazione("10.8 Un argomento di parita' che chiude il problema")
 print(f"  Le durate sono numeri interi e i CD sono {m3}: le due durate sommano a {D3}, che e'")
 print(f"  {'dispari' if D3 % 2 else 'pari'}. Due interi che sommano a un numero dispari non")
 print("  possono essere uguali, e la loro differenza e' essa stessa dispari: quindi vale")
@@ -179,7 +179,7 @@ ax.set_yticks(R(3))
 ax.set_yticklabels(["ingenua", "LPT", "ottimo"])
 ax.set_xlim(0, max(carichi_nat) + 9)
 ax.set_xlabel("durata del CD (minuti)")
-ax.set_title(f"11.3: la differenza scende da {frazione(diff_nat)} a {frazione(z3)}")
+ax.set_title(f"10.8: la differenza scende da {frazione(diff_nat)} a {frazione(z3)}")
 ax.invert_yaxis()
 salva_figura(fig, "cap10_cd_ottimo")
 print("Fine.")

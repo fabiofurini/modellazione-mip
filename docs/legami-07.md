@@ -65,5 +65,5 @@ m.addConstr(d >= u - v, name="abs_piu")
 m.addConstr(d >= v - u, name="abs_meno")
 ```
 
-Si rivede negli esercizi 11.3 (CD) e 11.2 (antitrust), e nella
+Si rivede negli esercizi 10.8 (CD) e 10.7 (antitrust), e nella
 [tecnica 3.13](legami-13.md) in una forma equivalente con due deviazioni.

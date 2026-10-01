@@ -1,4 +1,4 @@
-"""Problema 12.2 -- Spedizioni in scatole: flusso multiprodotto e conteggio dei
+"""Problema 10.5 -- Spedizioni in scatole: flusso multiprodotto e conteggio dei
 contenitori.
 
 Le quantita' spedite sono un flusso a piu' prodotti fra stabilimenti e clienti;
@@ -24,7 +24,7 @@ def scatole(n):
     return f"{int(n)} scatola" if int(n) == 1 else f"{int(n)} scatole"
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("12.2 Spedizioni in scatole: minimizzare il numero di scatole")
+intestazione("10.5 Spedizioni in scatole: minimizzare il numero di scatole")
 d2 = [[5, 0],       # unita' del prodotto p ordinate dal cliente c
       [2, 4]]
 a2 = [[8, 6],       # unita' del prodotto p disponibili nello stabilimento s
@@ -140,7 +140,7 @@ print(f"  lb = (unita' ordinate) / {w2} = {D2} / {w2} = {frazione(lb_lp)}")
 zlp2, zlp2r, _ = due_rilassamenti(m2, dl2)
 
 # ---------- 4. UN BOUND INTERO PIU' FORTE ----------
-intestazione("12.2 Il conteggio delle scatole per cliente")
+intestazione("10.5 Il conteggio delle scatole per cliente")
 clienti_attivi = [c for c in R(nm) if any(d2[p][c] > 0 for p in R(nk))]
 lb2 = float(len(clienti_attivi))
 print(f"  Ogni cliente con almeno un'unita' ordinata riceve almeno una scatola, e le scatole")
@@ -215,7 +215,7 @@ for c in R(nm):
 ax.set_xlim(-0.45, 1.5)
 ax.set_ylim(-0.6, max(nn, nm) - 0.4)
 ax.axis("off")
-ax.set_title(f"12.2: piano ottimo con {frazione(z2)} scatole")
+ax.set_title(f"10.5: piano ottimo con {frazione(z2)} scatole")
 salva_figura(fig, "cap10_spedizioni_ottimo")
 print("Fine.")
 

@@ -44,5 +44,5 @@ w = m.addVar(vtype=GRB.INTEGER, name="w")
 m.addConstr(gp.quicksum(a[i] * x[i] for i in range(n)) <= K * w, name="capienza")
 ```
 
-Si rivede negli esercizi 12.1 (scatole di luci), 12.2 (spedizioni) e 9.2
+Si rivede negli esercizi 10.4 (scatole di luci), 10.5 (spedizioni) e 9.2
 (manodopera).

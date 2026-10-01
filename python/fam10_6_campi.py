@@ -1,4 +1,4 @@
-"""Problema 11.1 -- Campi estivi: bambini di piu' nazionalita' in piu' campi.
+"""Problema 10.6 -- Campi estivi: bambini di piu' nazionalita' in piu' campi.
 
 Variabili di conteggio (non binarie), capacita' per campo e due vincoli di
 composizione: in ogni campo le bambine non devono essere meno dei bambini, e la
@@ -17,7 +17,7 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("11.1 Campi estivi: accettare il maggior numero di bambini")
+intestazione("10.6 Campi estivi: accettare il maggior numero di bambini")
 f1 = [8, 10]        # bambine disponibili per nazionalita'
 g1 = [4, 12]        # bambini disponibili per nazionalita'
 d1 = [15, 8]        # capacita' dei campi
@@ -147,7 +147,7 @@ print(f"  Il bound duale {frazione(ub1)} coincide con l'ottimo: la capacita' e' 
 print("  certificato chiude il gap. Il divario da colmare era tutto dal lato dell'euristica.")
 
 # ---------- 5. IL LIMITE VERO E' LA NAZIONALITA' MAGGIORITARIA ----------
-intestazione("11.1 Due argomenti combinatori sui bound")
+intestazione("10.6 Due argomenti combinatori sui bound")
 tot_c = f1[c1] + g1[c1]
 print(f"  In ogni campo la nazionalita' {c1 + 1} non e' meno di tutte le altre messe insieme,")
 print(f"  quindi in ogni campo occupa almeno meta' dei posti. Ne ha {tot_c} in tutto:")
@@ -214,7 +214,7 @@ ax.set_xticks(R(r1))
 ax.set_xticklabels(etichette)
 ax.set_ylim(-2, max(d1) + 2)
 ax.set_ylabel("bambini accettati")
-ax.set_title(f"11.1: euristica {frazione(lb1)} contro ottimo {frazione(z1)}")
+ax.set_title(f"10.6: euristica {frazione(lb1)} contro ottimo {frazione(z1)}")
 ax.legend(fontsize=7, ncol=2)
 salva_figura(fig, "cap10_campi_ottimo")
 print("Fine.")

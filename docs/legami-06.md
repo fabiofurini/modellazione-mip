@@ -51,5 +51,5 @@ m.addConstrs((T >= carico[k] for k in range(K)), name="max")
 m.setObjective(T, GRB.MINIMIZE)
 ```
 
-Si rivede nella domanda 7.4.1 (makespan), nell'esercizio 11.2 (suddivisione
-antitrust) e nell'11.3 (distribuzione dei brani sui CD).
+Si rivede nella domanda 7.4.1 (makespan), nell'esercizio 10.7 (suddivisione
+antitrust) e nell'10.8 (distribuzione dei brani sui CD).

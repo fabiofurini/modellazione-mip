@@ -48,4 +48,4 @@ m.addConstrs((q[j] >= ell * y[j] for j in range(n)), name="lotto")
 m.addConstr(y.sum() >= p, name="almeno_p_tipi")
 ```
 
-Si rivede negli esercizi 9.3 (veicoli), 10.2 (dieta) e 12.1 (alberi).
+Si rivede negli esercizi 9.3 (veicoli), 10.3 (dieta) e 10.4 (alberi).

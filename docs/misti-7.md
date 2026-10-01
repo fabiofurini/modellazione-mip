@@ -242,7 +242,7 @@ Script completo —
 ??? example "Mostra lo script completo — `python/fam10_7_antitrust.py` (305 righe)"
 
     ```python
-    """Problema 11.2 -- Suddivisione antitrust: due societa' il piu' simili possibile.
+    """Problema 10.7 -- Suddivisione antitrust: due societa' il piu' simili possibile.
 
     Le filiali vanno divise in due gruppi minimizzando, sul prodotto peggiore, la
     differenza di fatturato fra i due gruppi. E' la tecnica 3.6 (min-max) applicata
@@ -267,7 +267,7 @@ Script completo —
     R = range
 
     # ---------- 1. MODELLO E ISTANZA ----------
-    intestazione("11.2 Antitrust: dividere le filiali minimizzando lo squilibrio peggiore")
+    intestazione("10.7 Antitrust: dividere le filiali minimizzando lo squilibrio peggiore")
     v2 = [[3, 3, 2],      # fatturato della filiale i sul prodotto j (milioni)
           [6, 8, 5],
           [3, 4, 4],
@@ -374,7 +374,7 @@ Script completo —
     assert abs(zlp2) <= 1e-9
 
     # ---------- 4. UN BOUND COMBINATORIO PRODOTTO PER PRODOTTO ----------
-    intestazione("11.2 Il bound inferiore viene da un argomento combinatorio")
+    intestazione("10.7 Il bound inferiore viene da un argomento combinatorio")
     # per ogni prodotto, il minimo squilibrio ottenibile guardando quel solo prodotto
     def minimo_squilibrio(colonna, tot):
         s = len(colonna)
@@ -458,7 +458,7 @@ Script completo —
     ax.set_xticks(idx)
     ax.set_xticklabels([f"prodotto {j + 1}" for j in idx])
     ax.set_ylabel("fatturato (milioni)")
-    ax.set_title(f"11.2: partizione ottima, squilibrio peggiore {frazione(z2)}")
+    ax.set_title(f"10.7: partizione ottima, squilibrio peggiore {frazione(z2)}")
     ax.legend(fontsize=8)
     salva_figura(fig, "cap10_antitrust_ottimo")
     print("Fine.")

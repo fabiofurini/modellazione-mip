@@ -24,7 +24,7 @@ DIR_DOCS = BASE / "docs"
 REPO = "fabiofurini/modellazione-mip"
 SITO = "https://fabiofurini.github.io/modellazione-mip"
 RAW = f"https://raw.githubusercontent.com/{REPO}/main/python"
-MODULI = ("stile", "mip", "euristiche")      # i moduli comuni che ogni notebook scarica se mancano
+MODULI = ("stile", "mip", "euristiche", "esteso")   # i moduli comuni che ogni notebook scarica se mancano
 BADGE = "https://colab.research.google.com/assets/colab-badge.svg"
 
 RIGA = re.compile(r"^# [-=]{10,}$")
@@ -32,9 +32,10 @@ VOCE = re.compile(r"^\s+(\d+)\. ")
 
 PREPARAZIONE = f"""## Preparazione
 
-La cella qui sotto installa `gurobipy` e scarica i tre moduli comuni del corso:
-`stile.py` (palette), `mip.py` (rilassamento, duale, bound) ed `euristiche.py`
-(next-fit, first-fit, best-fit). La licenza inclusa nel pacchetto pip è limitata a **2000
+La cella qui sotto installa `gurobipy` e scarica i quattro moduli comuni del
+corso: `stile.py` (palette), `mip.py` (rilassamento, duale, bound),
+`euristiche.py` (next-fit, first-fit, best-fit) ed `esteso.py` (il modello
+dell'istanza scritto per esteso). La licenza inclusa nel pacchetto pip è limitata a **2000
 variabili e 2000 vincoli**: le istanze del corso sono piccole e ci stanno tutte
 con ampio margine. Per istanze più grandi si attiva la licenza accademica
 gratuita da [portal.gurobi.com](https://portal.gurobi.com).

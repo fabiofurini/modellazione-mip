@@ -227,7 +227,7 @@ Script completo —
 ??? example "Mostra lo script completo — `python/fam10_9_scaffali.py` (237 righe)"
 
     ```python
-    """Problema 11.4 -- Libri sugli scaffali: minimizzare la somma delle altezze.
+    """Problema 10.9 -- Libri sugli scaffali: minimizzare la somma delle altezze.
 
     Assegnamento con capacita' (la larghezza dello scaffale) e una variabile di
     massimo per scaffale (tecnica 3.5): l'altezza di uno scaffale e' quella del libro
@@ -246,7 +246,7 @@ Script completo —
     R = range
 
     # ---------- 1. MODELLO E ISTANZA ----------
-    intestazione("11.4 Libri sugli scaffali: minimizzare la somma delle altezze")
+    intestazione("10.9 Libri sugli scaffali: minimizzare la somma delle altezze")
     w4 = [3, 5, 4, 6]      # larghezza dei libri
     h4 = [8, 5, 7, 4]      # altezza dei libri
     c4 = 10                # larghezza di ogni scaffale
@@ -348,7 +348,7 @@ Script completo —
     zlp4, zlp4r, _ = due_rilassamenti(m4mod, dl4)
 
     # ---------- 4. UN BOUND COMBINATORIO PIU' FORTE ----------
-    intestazione("11.4 Il bound combinatorio: gli scaffali usati sono almeno due")
+    intestazione("10.9 Il bound combinatorio: gli scaffali usati sono almeno due")
     usati = -(-sum(w4) // c4)     # divisione intera per eccesso
     print(f"  La larghezza totale e' {sum(w4)} e ogni scaffale ne regge {c4}: servono almeno")
     print(f"  ceil({sum(w4)} / {c4}) = {usati} scaffali non vuoti.")
@@ -412,7 +412,7 @@ Script completo —
     ax.set_yticks([1, 11])
     ax.set_yticklabels(["scaffale 1", "scaffale 2"])
     ax.set_xlabel("larghezza")
-    ax.set_title(f"11.4: somma delle altezze {frazione(z4)}")
+    ax.set_title(f"10.9: somma delle altezze {frazione(z4)}")
     salva_figura(fig, "cap10_scaffali_ottimo")
     print("Fine.")
 
