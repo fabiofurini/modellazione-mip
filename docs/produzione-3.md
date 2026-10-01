@@ -207,19 +207,9 @@ sulle $1200$ disponibili.
     Il premio si incassa solo se si producono almeno *tre* tipi diversi. Come
     cambia il modello? Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
-
 ??? question "9.3.2 — Premio nullo"
     Il contributo per la diversificazione viene abolito, cioè $\bar r = 0$. Che
     cosa succede alla variabile $z$?
-
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ## Il sandwich sulla variante 3a
 

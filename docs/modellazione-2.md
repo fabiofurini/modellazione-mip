@@ -142,20 +142,12 @@ In tutti, $x_p = 1$ se il progetto $p$ è scelto.
     il 2 e il 3 allora non si sceglie il 9; (6) se si sceglie il 2 oppure il 3
     allora non si sceglie il 10.
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
 ??? question "2.2 — Antecedenti e conseguenti negati (dieci progetti)"
     (1) $\lnot x_3 \Rightarrow x_2$; (2) $\lnot x_4 \Rightarrow \lnot x_2$;
     (3) $x_7 \Rightarrow x_1 \land x_6$; (4) $x_8 \Rightarrow x_1 \lor x_6$;
     (5) $\lnot x_9 \Rightarrow x_2 \land x_3$;
     (6) $\lnot x_{10} \Rightarrow x_2 \lor x_3$.
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
 ??? question "2.3 — Antecedenti e conseguenti composti (otto progetti)"
     (1) $x_7 \lor x_3 \Rightarrow x_1 \land x_2$;
     (2) $x_1 \land x_6 \land x_7 \Rightarrow x_8$;
@@ -164,10 +156,6 @@ In tutti, $x_p = 1$ se il progetto $p$ è scelto.
     (5) $(x_2 \lor x_5) \land \lnot x_8 \Rightarrow x_3 \lor \lnot x_6$;
     (6) $(x_1 \lor x_4) \land (x_2 \lor x_5) \land \lnot x_8 \Rightarrow x_3 \land (\lnot x_6 \lor x_7)$.
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
 ??? question "2.4 — «Almeno due fra» (nove progetti)"
     (1) $x_4 \Rightarrow$ almeno due fra 1, 2, 3; (2) almeno due fra 6, 7, 8
     $\Rightarrow x_5$; (3) $\lnot x_4 \Rightarrow$ almeno due fra 1, 2, 3, 9;
@@ -175,10 +163,6 @@ In tutti, $x_p = 1$ se il progetto $p$ è scelto.
     (5) almeno due fra 1, 3, 5 $\Rightarrow \lnot x_9$;
     (6) $(x_1 \land x_2) \lor (x_3 \land x_4) \Rightarrow x_5$.
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
     !!! warning "«Almeno due» si scrive anche contando"
         Come conseguente dell'implicazione governata da $x_4$, la condizione è
         anche $x_1 + x_2 + x_3 \ge 2 x_4$: un vincolo invece di tre, con le
@@ -194,10 +178,6 @@ In tutti, $x_p = 1$ se il progetto $p$ è scelto.
     (4) $x_1 \land x_2 \Rightarrow x_3$; (5) $x_5 \lor x_6 \Rightarrow \lnot x_7$;
     (6) $\lnot x_8 \lor \lnot x_9 \Rightarrow x_{10}$.
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
 ## I vincoli logici dentro un modello di ottimizzazione
 
 Con i dieci progetti dell'esercizio 2.1, ricavi e costi

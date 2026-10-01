@@ -116,18 +116,10 @@ sedi 1 e 3 aperte (non 1 e 2 come nell'euristica): gap euristica $20{,}0\%$.
     Si devono aprire esattamente $k$ sedi. Come cambia il modello? Qual è il
     nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "8.2.2 — Copertura di prossimità per un cliente"
     Il cliente 1 deve essere servito entro distanza $4$. Come si modella?
     Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ## Il sandwich sulla variante 2a
 
 L'algebra chiude la questione in una riga: la colonna delle $x_l$ impone

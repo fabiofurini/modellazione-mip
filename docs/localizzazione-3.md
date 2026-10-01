@@ -127,18 +127,10 @@ trovato dall'euristica. Gap euristica $44{,}4\%$.
     Almeno 3 clienti devono essere coperti. Come cambia il modello? Qual è
     il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "8.3.2 — Installazione condizionata"
     La sede 1 può essere installata solo se lo è anche la sede 3. Come si
     modella? Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ## Il sandwich sulla variante 3a
 
 $\omega \le 0$ conviene lasciarlo a zero: abbassarlo costringe ogni $\lambda_c$ a

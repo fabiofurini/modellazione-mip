@@ -178,19 +178,9 @@ problema ha più ottimi.
     Il CD 1 è un supporto ridotto e non può superare i $15$ minuti. Come cambia
     il modello? Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
-
 ??? question "10.8.2 — Tre CD"
     La raccolta si distribuisce su tre CD invece che su due. Come cambia il
     modello? Qual è il nuovo ottimo?
-
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ## Il sandwich sulla variante 8b
 

@@ -204,19 +204,9 @@ costa solo $5$ euro di contributo.
     ne può prendere al più uno, in qualunque modalità. Come cambia il modello?
     Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
-
 ??? question "10.1.2 — Almeno quattro premi"
     Oltre alla soglia di preferenza, il cliente vuole almeno quattro premi
     diversi. Come cambia il modello? Qual è il nuovo ottimo?
-
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ## Il sandwich sulla variante 1b
 

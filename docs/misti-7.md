@@ -193,20 +193,10 @@ tabella la colonna si chiama «bound certificato» proprio per questo.
     Le filiali $1$ e $2$ condividono la sede e devono restare nella stessa
     società. Come cambia il modello? Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
-
 ??? question "10.7.2 — Min-sum invece di min-max"
     Si vuole minimizzare la *somma* delle differenze su tutti i prodotti invece
     della differenza peggiore. Come cambia il modello? La partizione ottima è la
     stessa?
-
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ## Il sandwich sulla variante 7a
 

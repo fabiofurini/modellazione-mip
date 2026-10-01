@@ -148,18 +148,10 @@ dell'euristica: $20\%$.
     Tutti i lavori vanno eseguiti. Come cambia il modello e quanto costa
     l'obbligo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "7.3.2 — Un lavoro condizionato a un altro"
     Si può eseguire il lavoro 3 solo se si esegue anche il lavoro 2. Scrivere
     il vincolo e trovare il nuovo ottimo.
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ## Il sandwich sulla variante 3b
 
 Il moltiplicatore nuovo $\lambda \ge 0$ sconta le colonne del lavoro 3 e carica

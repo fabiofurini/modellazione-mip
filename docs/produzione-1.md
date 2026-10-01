@@ -157,18 +157,10 @@ ottimista.
     L'impianto non può produrre più di $35$ unità al giorno. Come cambia il
     modello? Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "9.1.2 — Lotto minimo"
     Se in un giorno si produce, si devono produrre almeno $25$ unità. Come cambia
     il modello? Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ## Il sandwich sulla variante 1a
 
 Il tetto $x_t \le 35$ aggiunge al duale una famiglia $\nu_t \ge 0$ con termine

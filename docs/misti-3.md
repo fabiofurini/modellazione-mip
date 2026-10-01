@@ -188,19 +188,9 @@ maggiori di uno.
     Il lotto minimo sale da $1$ a $2$ chili per ogni cibo scelto. Come cambia il
     modello? Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
-
 ??? question "10.3.2 — Più varietà"
     Si vogliono almeno quattro cibi diversi invece di tre. Come cambia il
     modello? Qual è il nuovo ottimo?
-
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ## Il sandwich sulla variante 3b
 

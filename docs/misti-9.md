@@ -177,18 +177,8 @@ l'ottimo. Il gap certificato, prima di risolvere il MILP, è $(15-12)/15 = 20\%$
     La biblioteca compra un terzo scaffale, largo come gli altri. Qual è il
     nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
-
 ??? question "10.9.2 — Scaffali più larghi"
     Gli scaffali sono larghi $12$ invece di $10$. Qual è il nuovo ottimo?
-
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ## Il sandwich sulla variante 9b
 

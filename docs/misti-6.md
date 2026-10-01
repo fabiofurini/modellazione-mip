@@ -202,19 +202,9 @@ possa fare da maggioranza.
 ??? question "10.6.1 — Un campo più grande"
     Il campo 1 viene ampliato e arriva a $20$ posti. Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
-
 ??? question "10.6.2 — Una nazionalità non divisibile"
     Per motivi organizzativi i bambini della nazionalità 1 devono stare tutti
     nello stesso campo. Come cambia il modello? Qual è il nuovo ottimo?
-
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ## Il sandwich sulla variante 6a
 

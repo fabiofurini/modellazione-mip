@@ -257,19 +257,9 @@ euro contro i $1600$ di un'assunzione al terzo mese.
     Il costo di assunzione sale da $100$ a $3000$ euro (selezione e formazione).
     Come cambia il piano ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
-
 ??? question "9.2.2 — Straordinari"
     Ogni operaio può fare fino a $40$ ore di straordinario al mese, pagate $25$
     euro l'ora. Come cambia il modello? Conviene usarli?
-
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ## Il sandwich sulla variante 2a
 

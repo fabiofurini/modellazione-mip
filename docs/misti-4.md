@@ -207,20 +207,10 @@ Il bound duale sbaglia di **una** unità su $2141$, e il rilassamento con i boun
     Si vuole che compaiano tutte e tre le configurazioni. Come cambia il
     modello? Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
-
 ??? question "10.4.2 — Lotto minimo per configurazione"
     Ogni configurazione usata deve decorare almeno tre alberi (sotto quella
     soglia non vale la pena attrezzare la squadra). Come cambia il modello? Qual
     è il nuovo ottimo?
-
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ## Il sandwich sulla variante 4a
 

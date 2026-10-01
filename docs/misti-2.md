@@ -177,19 +177,9 @@ sullo scaffale.
     Le offerte $4$ e $5$ provengono dallo stesso partecipante, che può vincerne
     al più una. Come cambia il modello? Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
-
 ??? question "10.2.2 — Consegne limitate"
     In questa tornata il banditore può consegnare al più due oggetti in totale.
     Come cambia il modello? Qual è il nuovo ottimo?
-
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ## Il sandwich sulla variante 2b
 

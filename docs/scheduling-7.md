@@ -139,17 +139,9 @@ $\tilde\tau = (6, 0, 5)$.
 ??? question "7.7.1 — Date di rilascio"
     Il lavoro 2 non può iniziare prima dell'istante $\rho_2 = 2$.
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "7.7.2 — Minimizzare il ritardo massimo"
     Minimizzare il ritardo del lavoro più in ritardo.
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ## Il sandwich sulla variante 7a
 
 Le date di rilascio aggiungono $\varepsilon_j \ge 0$ con termine noto

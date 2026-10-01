@@ -198,19 +198,9 @@ ottimo.
 ??? question "10.5.1 — Scatole più piccole"
     Le scatole contengono $4$ unità invece di $10$. Qual è il nuovo ottimo?
 
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
-
 ??? question "10.5.2 — Prodotti separati"
     Prodotti diversi non possono viaggiare nella stessa scatola. Come cambia il
     modello? Qual è il nuovo ottimo?
-
-    !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
-        sotto, però, una variante di questo problema è svolta per intero:
-        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ## Il sandwich sulla variante 5a
 
