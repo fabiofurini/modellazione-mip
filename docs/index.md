@@ -5,41 +5,48 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
 **Modelli di programmazione lineare intera per l'Ingegneria Gestionale.**
 
-Il corso insegna tre cose, in quest'ordine: **tradurre** il testo di un problema
-in un modello con variabili binarie e intere, **risolverlo** con Gurobi da
-Python, e **certificare** la soluzione quando all'ottimo non ci si arriva.
+## Che cosa si impara a fare
 
-L'ultima è la parte che di solito manca. Appena l'istanza cresce, il solver si
-ferma prima di aver dimostrato l'ottimalità, e quello che resta in mano sono due
-numeri. Una soluzione ammissibile, costruita a mano con un'euristica, dà il
-bound da un lato; una soluzione ammissibile del duale del rilassamento lineare
-dà il bound dall'altro. L'ottimo sta in mezzo, e la distanza fra i due dice
-quanto ci si può ancora guadagnare: se è piccola, la soluzione che si ha in mano
-si può usare senza aspettare oltre.
+- **Tradurre** il testo di un problema in un modello MIP: riconoscere le
+  decisioni, scegliere le variabili e il loro dominio, scrivere obiettivo e
+  vincoli, e dire quanti vincoli sono in funzione dei dati.
+- **Giustificare** ogni vincolo che lega due famiglie di variabili: qual è
+  l'implicazione che impone, e se a imporla è il vincolo o l'ottimalità.
+- **Costruire a mano una soluzione ammissibile** con un'euristica, e dire che
+  bound se ne ricava.
+- **Scrivere il duale del rilassamento lineare** e costruirne a mano una
+  soluzione ammissibile, per avere il bound dall'altro lato.
+- **Certificare** una soluzione quando all'ottimo non ci si arriva: appena
+  l'istanza cresce il solver si ferma prima di aver dimostrato l'ottimalità, e
+  restano in mano i due bound. L'ottimo sta in mezzo, e la loro distanza dice
+  quanto ci si può ancora guadagnare.
+- **Risolvere** il modello con Gurobi da Python, e leggere quello che il solver
+  risponde.
 
-**Che cosa c'è dentro**
+## Come il corso ci arriva
 
-- sei capitoli di modellazione: logica e variabili binarie, i quattordici legami
-  fra variabili con le loro dimostrazioni, rilassamenti e bound, euristiche
-  costruttive, e il passaggio a Python/Gurobi;
-- quindici modelli numerici, uno per tecnica, con i dati scritti per esteso;
-- ventitré problemi risolti per intero — assegnamento e scheduling,
-  localizzazione e copertura, pianificazione della produzione, problemi misti —
-  ciascuno con euristica, duale, ottimo e una variante svolta;
-- due problemi dati come arrivano davvero, senza il modello già scritto;
-- quarantaquattro [notebook](notebook.md) che girano in Colab, senza
-  installare niente.
+- **Il metodo, in sei capitoli**: logica e variabili binarie, i quattordici
+  legami fra variabili con le loro dimostrazioni, rilassamenti e bound,
+  euristiche costruttive, Gurobi.
+- **Trentotto problemi svolti per intero**: quindici modelli numerici, uno per
+  tecnica, con i dati scritti per esteso; e ventitré problemi delle tre famiglie
+  — assegnamento e scheduling, localizzazione e copertura, pianificazione della
+  produzione — più i problemi misti. Ciascuno con enunciato, modello, istanza,
+  euristica, duale, ottimo e confronto.
+- **Due o tre domande aggiuntive su ogni problema**: si cambia un dato o si
+  aggiunge un vincolo, e si rifanno modello e bound. Per ciascuno degli esercizi
+  una variante è svolta per intero, come modello di risposta.
+- **Due problemi dati come arrivano davvero**, senza il modello già scritto.
+- **Quarantaquattro [notebook](notebook.md)** che girano in Colab, senza
+  installare niente: lo stesso codice delle pagine, cella per cella.
+- **Nessun risultato trascritto a mano**: ogni numero viene da uno script che si
+  può rilanciare, e un controllo automatico verifica che il testo e il codice
+  dicano la stessa cosa.
 
-Nessun risultato è trascritto a mano: ogni numero che si legge viene da uno
-script che si può rilanciare, e un controllo automatico verifica che il testo e
-il codice dicano la stessa cosa.
-
-
-!!! tip "Il metodo del corso"
-    Per ogni problema: modello → legami fra le variabili → istanza →
-    euristica (upper bound) → duale del rilassamento LP (lower bound) →
-    soluzione con il solver → **domande di modellazione aggiuntive**: si cambia
-    un dato o si aggiunge un vincolo, e si rifanno modello e bound.
+!!! tip "Il formato di ogni esercizio (e dell'esame)"
+    Modello → legami fra le variabili → istanza → euristica (upper bound) →
+    duale del rilassamento LP (lower bound) → soluzione con il solver →
+    domande di modellazione aggiuntive.
 
 ## Le due parti del corso
 
