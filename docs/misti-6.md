@@ -203,18 +203,37 @@ possa fare da maggioranza.
     Il campo 1 viene ampliato e arriva a $20$ posti. Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ??? question "10.6.2 — Una nazionalità non divisibile"
     Per motivi organizzativi i bambini della nazionalità 1 devono stare tutti
     nello stesso campo. Come cambia il modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
+
+## Il sandwich sulla variante 6a
+
+Il campo 1 passa da $15$ a $20$ posti: cambia un dato, non la struttura. La
+ricetta resta $\gamma_j = 1$ con tutte le altre duali a zero, perché ogni
+bambino accettato occupa un posto, e restituisce $\sum_j d_j = 28$ invece di
+$23$. Il certificato non cambia forma: cambia il dato che somma.
+
+<!-- tabella-variante: fam10_6a_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\mathit{UB}$ | $28$ | certificato duale costruito a mano |
+| $\mathit{LB}$ | $20$ | soluzione euristica |
+| $z(\mathit{LP})$ | $24$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $24$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $24$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
 
 ## Codice
 
@@ -227,7 +246,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_6_campi.py` (220 righe)"
+??? example "Mostra lo script completo — `python/fam10_6_campi.py` (255 righe)"
 
     ```python
     """Problema 11.1 -- Campi estivi: bambini di piu' nazionalita' in piu' campi.
@@ -450,6 +469,41 @@ Notebook —
     ax.legend(fontsize=7, ncol=2)
     salva_figura(fig, "cap10_campi_ottimo")
     print("Fine.")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 1a ----------
+    intestazione("10.6a Il sandwich sulla variante: il campo 1 arriva a 20 posti")
+    d1a = [20] + list(d1[1:])
+
+    # Cambia una capacita', non la struttura: stesso modello, stesso duale, stessa
+    # ricetta. Il bound «ogni bambino occupa un posto» segue i posti disponibili.
+    m1a, x1a, y1a = modello_1(f1, g1, d1a, c1)
+    salva_modello(m1a, "fam10_6a_primale")
+    dl1a = duale_1(f1, g1, d1a, c1)
+    salva_modello(dl1a, "fam10_6a_duale")
+
+    # -- euristica ammissibile: la stessa regola, con i posti nuovi --
+    x_1a, y_1a, passi_1a = euristica(f1, g1, d1a, c1)
+    for k, s in enumerate(passi_1a, 1):
+        print(f"  Passo {k}. {s}")
+    lb1a = sum(x_1a[i, j] + y_1a[i, j] for i in R(s1) for j in R(r1))
+    sol_1a = ({f"x[{i},{j}]": x_1a[i, j] for i in R(s1) for j in R(r1)}
+              | {f"y[{i},{j}]": y_1a[i, j] for i in R(s1) for j in R(r1)})
+    assert ammissibile(m1a, sol_1a), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  lb = {frazione(lb1a)}")
+
+    # -- certificato duale: la stessa ricetta, sui posti nuovi --
+    mano_1a = {f"gamma[{j}]": 1.0 for j in R(r1)}
+    ub1a, viol_1a = valuta(dl1a, mano_1a)
+    assert viol_1a <= 1e-9, viol_1a
+    print("Soluzione duale a mano: alpha = beta = delta = eps = 0 e gamma_j = 1, come nel")
+    print("  problema base: ogni bambino accettato occupa un posto, quindi non se ne possono")
+    print(f"  accettare piu' di sum_j d_j = {' + '.join(map(str, d1a))} = {frazione(ub1a)}.")
+    print("  Il certificato non cambia forma: cambia il dato che somma.")
+    zlp1a, zlp1ar, _ = due_rilassamenti(m1a, dl1a)
+    z1a_val = risolvi(m1a)
+    riga_1a = registra_bound("1a campo 1 a 20 posti", ub1a, lb1a, zlp1a, zlp1ar, z1a_val, senso="max")
+    salva_dati(pd.DataFrame([riga_1a]), "fam10_6a_bound")
+    assert lb1a <= z1a_val <= zlp1a + 1e-9 <= ub1a + 1e-9
     ```
 
 <!-- script-incorporato: fine -->

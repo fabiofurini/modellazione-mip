@@ -199,18 +199,38 @@ ottimo.
     Le scatole contengono $4$ unità invece di $10$. Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ??? question "10.5.2 — Prodotti separati"
     Prodotti diversi non possono viaggiare nella stessa scatola. Come cambia il
     modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
+
+## Il sandwich sulla variante 5a
+
+Cambia la capacità della scatola, $4$ invece di $10$, non la struttura: la
+ricetta resta $\beta = 0$ e $\gamma = \alpha = 1/w$, e il bound è sempre «unità
+ordinate diviso capacità», cioè $11/4$ invece di $11/10$. È inversamente
+proporzionale alla capacità: scatole più piccole lo alzano, e con esso l'ottimo,
+che passa da $2$ a $3$.
+
+<!-- tabella-variante: fam10_5a_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\mathit{UB}$ | $3$ | soluzione euristica |
+| $\mathit{LB}$ | $\frac{11}{4}$ | certificato duale costruito a mano |
+| $z(\mathit{LP})$ | $\frac{11}{4}$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $\frac{11}{4}$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $3$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
 
 ## Codice
 
@@ -223,7 +243,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_5_spedizioni.py` (220 righe)"
+??? example "Mostra lo script completo — `python/fam10_5_spedizioni.py` (256 righe)"
 
     ```python
     """Problema 12.2 -- Spedizioni in scatole: flusso multiprodotto e conteggio dei
@@ -446,6 +466,42 @@ Script completo —
     ax.set_title(f"12.2: piano ottimo con {frazione(z2)} scatole")
     salva_figura(fig, "cap10_spedizioni_ottimo")
     print("Fine.")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 2a ----------
+    intestazione("10.5a Il sandwich sulla variante: scatole da 4 unita' invece di 10")
+    W2A = 4
+
+    # Cambia la capacita' della scatola, non la struttura: modello, duale, euristica
+    # e ricetta sono gli stessi con w = 4. Il certificato si riscala da solo, ed e'
+    # il punto: il bound e' «unita' ordinate diviso capacita' della scatola».
+    m2a, x2a, y2a = modello_2(d2, a2, W2A)
+    salva_modello(m2a, "fam10_5a_primale")
+    dl2a = duale_2(d2, a2, W2A)
+    salva_modello(dl2a, "fam10_5a_duale")
+
+    # -- euristica ammissibile: la stessa regola, con la scatola piu' piccola --
+    x_2a, y_2a, passi_2a = euristica(d2, a2, W2A)
+    ub2a = sum(y_2a.values())
+    sol_2a = ({f"x[{p},{s},{c}]": x_2a[p, s, c] for p in R(nk) for s in R(nn) for c in R(nm)}
+              | {f"y[{s},{c}]": y_2a[s, c] for s in R(nn) for c in R(nm)})
+    assert ammissibile(m2a, sol_2a), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  Scatole usate dall'euristica: ub = {frazione(ub2a)}")
+
+    # -- certificato duale: la stessa ricetta, con 1/w nuovo --
+    mano_2a = ({f"gamma[{s},{c}]": 1 / W2A for s in R(nn) for c in R(nm)}
+               | {f"alpha[{p},{c}]": 1 / W2A for p in R(nk) for c in R(nm)})
+    lb2a, viol_2a = valuta(dl2a, mano_2a)
+    assert viol_2a <= 1e-9, viol_2a
+    print(f"Soluzione duale a mano: beta = 0, gamma_sc = alpha_pc = 1/{W2A}, come nel problema")
+    print("  base. I vincoli duali restano verificati per costruzione, e il bound e' sempre")
+    print(f"  «unita' ordinate diviso capacita'»: {D2} / {W2A} = {frazione(lb2a)}.")
+    print(f"  Con scatole da {w2} era {frazione(D2 / w2)}: il bound e' inversamente"
+          f" proporzionale alla capacita', quindi scatole piu' piccole lo alzano.")
+    zlp2a, zlp2ar, _ = due_rilassamenti(m2a, dl2a)
+    z2a_val = risolvi(m2a)
+    riga_2a = registra_bound("2a scatole da 4", ub2a, lb2a, zlp2a, zlp2ar, z2a_val)
+    salva_dati(pd.DataFrame([riga_2a]), "fam10_5a_bound")
+    assert lb2a <= zlp2a <= z2a_val <= ub2a + 1e-9
     ```
 
 <!-- script-incorporato: fine -->

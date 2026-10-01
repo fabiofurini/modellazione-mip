@@ -219,8 +219,8 @@ attese_var = {
     "fam09_2": {"2a": 19560, "2b": 16660},
     "fam09_3": {"3a": 9200, "3b": 9200},
     "fam10_1": {"1a": 10, "1b": 13},
-    "fam10_3": {"2a": 12, "2b": F("31/3")},
-    "fam10_2": {"3a": 21, "3b": 12},
+    "fam10_3": {"3a": 12, "3b": F("31/3")},
+    "fam10_2": {"2a": 21, "2b": 12},
     "fam10_6": {"1a": 24, "1b": 15},
     "fam10_7": {"2a": 6, "2b": 8},
     "fam10_8": {"3a": 5, "3b": 2},
@@ -272,13 +272,14 @@ print("modelli numerici EX 1, 3, 4, 6, 8, 11, 12, 13, 14 — bound e ottimi coin
 # Le tabelle della dispensa sono generate da questi CSV, quindi qui si verifica
 # che il sandwich regga e che l'ottimo della variante coincida con quello
 # registrato fra le domande aggiuntive.
-for csv in sorted(DATI.glob("fam0[78]_*[ab]_bound.csv")):
+for csv in sorted(DATI.glob("fam[01][0-9]_*[ab]_bound.csv")):
     r = pd.read_csv(csv).iloc[0]
     nome = csv.stem.replace("_bound", "")
-    # il verso non serve: in ogni caso i due bound racchiudono l'ottimo, e il
-    # rilassamento sta fra loro, dal lato ottimistico
+    # il verso non serve: in ogni caso i due bound racchiudono l'ottimo. Il
+    # rilassamento invece puo' stare fuori dal sandwich: nei modelli misti vale
+    # spesso zero, e il bound dal basso viene da un argomento combinatorio piu'
+    # forte di lui (e' il caso di 10.7a).
     assert r.lb - TOLL <= r.z_milp <= r.ub + TOLL, (nome, "ottimo fuori dal sandwich")
-    assert min(r.lb, r.ub) - TOLL <= r.z_lp <= max(r.lb, r.ub) + TOLL, (nome, "rilassamento fuori dal sandwich")
     sigla = nome.split("_")[-1]
     varianti_csv = DATI / (nome.rsplit("_", 1)[0] + "_varianti.csv")
     if varianti_csv.exists():
@@ -287,5 +288,5 @@ for csv in sorted(DATI.glob("fam0[78]_*[ab]_bound.csv")):
         attesi = v.loc[v[colonna] == sigla, "z"]
         if len(attesi):
             assert uguale(float(attesi.iloc[0]), r.z_milp), (nome, "ottimo diverso dalla variante")
-print("varianti dei cap. 7-8 — euristica, certificato e tabella dei bound coerenti")
+print("varianti dei cap. 7-10 — euristica, certificato e tabella dei bound coerenti")
 print("Tutte le verifiche superate.")

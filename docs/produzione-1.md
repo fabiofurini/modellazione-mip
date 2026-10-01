@@ -158,17 +158,38 @@ ottimista.
     modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "9.1.2 — Lotto minimo"
     Se in un giorno si produce, si devono produrre almeno $25$ unità. Come cambia
     il modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
+## Il sandwich sulla variante 1a
+
+Il tetto $x_t \le 35$ aggiunge al duale una famiglia $\nu_t \ge 0$ con termine
+noto $-35$. Alzare $\nu_t$ alza il tetto su $\mu_t$ e incassa $d_t$, ma costa
+$35$: conviene solo dove la domanda supera la capacità, e qui la catena delle
+scorte tiene già $\mu_t$ sotto il tetto, quindi il certificato resta quello del
+problema base. Cambia l'euristica: il quarto giorno sforerebbe, e le $5$ unità
+in eccesso si anticipano al terzo.
+
+<!-- tabella-variante: fam09_1a_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\mathit{UB}$ | $520$ | soluzione euristica |
+| $\mathit{LB}$ | $270$ | certificato duale costruito a mano |
+| $z(\mathit{LP})$ | $\frac{305365}{792}$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $\frac{305365}{792}$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $470$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
+
 ## Codice
 
 Script completo —
@@ -180,7 +201,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam09_1_lotti.py` (157 righe)"
+??? example "Mostra lo script completo — `python/fam09_1_lotti.py` (257 righe)"
 
     ```python
     """Problema 9.1 -- Produzione e lotti con costo fisso di lancio.
@@ -322,6 +343,106 @@ Notebook —
     varianti["1b"] = variante("1b. Lotto minimo di 25 litri se si produce (x_t >= 25 y_t)", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
                "fam09_1_varianti")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 1a ----------
+    intestazione("9.1a Il sandwich sulla variante: capacita' giornaliera di 35 litri")
+    CAP = 35
+
+
+    def modello_1a(d, p, q, h, r0, rn, cap=CAP):
+        mm, xx, ss, yy = modello_1(d, p, q, h, r0, rn)
+        mm.addConstrs((xx[t] <= cap for t in R(len(d))), name="capacita")
+        return mm, xx, ss, yy
+
+
+    def duale_1a(d, p, q, h, r0, rn, cap=CAP):
+        """Al duale di 9.1 si aggiunge nu_t >= 0 per ogni vincolo di capacita'
+        x_t <= cap, scritto come -x_t >= -cap: entra nell'obiettivo con il suo
+        termine noto, negativo, e allenta la colonna di x_t."""
+        nn = len(d)
+        MM = [sum(d[tt:]) + rn for tt in R(nn)]
+        b = [d[0] - r0] + d[1:nn - 1] + [d[nn - 1] + rn]
+        dl = nuovo_modello("duale_lotti_1a")
+        mu = dl.addVars(nn, lb=-GRB.INFINITY, name="mu")
+        pi = dl.addVars(nn, name="pi")
+        nu = dl.addVars(nn, name="nu")
+        dl.setObjective(gp.quicksum(b[tt] * mu[tt] for tt in R(nn))
+                        - cap * nu.sum(), GRB.MAXIMIZE)
+        dl.addConstrs((mu[tt] - pi[tt] - nu[tt] <= p[tt] for tt in R(nn)), name="rc_x")
+        dl.addConstrs((MM[tt] * pi[tt] <= q[tt] for tt in R(nn)), name="rc_y")
+        dl.addConstrs((-mu[tt] + mu[tt + 1] <= h[tt] for tt in R(nn - 1)), name="rc_s")
+        return dl
+
+
+    m1a, x1a, s1a, y1a = modello_1a(d1, p1, q1, h1, r0, rn)
+    salva_modello(m1a, "fam09_1a_primale")
+
+    # -- euristica ammissibile: lot-for-lot non sfora mai la capacita' se la domanda non la supera --
+    print("Euristica costruttiva: si produce ogni giorno la domanda del giorno (lot-for-lot). Se")
+    print("un giorno la domanda supera la capacita', l'eccedenza si anticipa al giorno prima, che")
+    print("la tiene in magazzino: e' l'unico modo di coprirla rispettando il vincolo.")
+    prod = list(d1)
+    for tt in R(n1 - 1, 0, -1):
+        if prod[tt] > CAP:
+            ecc = prod[tt] - CAP
+            prod[tt] -= ecc
+            prod[tt - 1] += ecc
+            print(f"  giorno {tt + 1}: domanda {d1[tt]} oltre la capacita'; {ecc} unita' anticipate "
+                  f"al giorno {tt}")
+    assert max(prod) <= CAP, "l'anticipo non basta: servirebbe spalmare su piu' giorni"
+    scorte = []
+    acc = 0
+    for tt in R(n1 - 1):
+        acc += prod[tt] - d1[tt]
+        scorte.append(acc)
+    ub1a = (sum(p1[tt] * prod[tt] for tt in R(n1)) + sum(q1[tt] for tt in R(n1) if prod[tt] > 0)
+            + sum(h1[tt] * scorte[tt] for tt in R(n1 - 1)))
+    sol_1a = ({f"x[{tt}]": prod[tt] for tt in R(n1)}
+              | {f"y[{tt}]": (1 if prod[tt] > 0 else 0) for tt in R(n1)}
+              | {f"s[{tt}]": scorte[tt] for tt in R(n1 - 1)})
+    assert ammissibile(m1a, sol_1a), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  produzione {prod}, scorte {scorte}  ->  ub = {frazione(ub1a)}")
+
+    # -- certificato duale: nu paga cap e incassa la domanda del giorno --
+    dl1a = duale_1a(d1, p1, q1, h1, r0, rn)
+    salva_modello(dl1a, "fam09_1a_duale")
+    b1 = [d1[0] - r0] + d1[1:n1 - 1] + [d1[n1 - 1] + rn]
+
+
+    def valore_duale_1a(nu_val, giorno):
+        """Alzando nu_giorno il tetto su mu_giorno sale, ma si paga cap per unita'."""
+        nu_v = [nu_val if tt == giorno else 0.0 for tt in R(n1)]
+        mu_v = []
+        for tt in R(n1):
+            tetto = p1[tt] + nu_v[tt]
+            mu_v.append(tetto if tt == 0 else min(mu_v[tt - 1] + h1[tt - 1], tetto))
+        return sum(b1[tt] * mu_v[tt] for tt in R(n1)) - CAP * sum(nu_v), mu_v, nu_v
+
+
+    giorno_1a = max(R(n1), key=lambda tt: b1[tt])
+    candidati_1a = [0.0] + [abs(p1[tt] - p1[giorno_1a]) + k for tt in R(n1) for k in (0, 1, 2)]
+    migliore_1a = max(sorted(set(candidati_1a)), key=lambda v: valore_duale_1a(v, giorno_1a)[0])
+    lb1a, mu_1a, nu_1a = valore_duale_1a(migliore_1a, giorno_1a)
+    mano_1a = ({f"mu[{tt}]": mu_1a[tt] for tt in R(n1)}
+               | {f"nu[{tt}]": nu_1a[tt] for tt in R(n1)})
+    lb1a_val, viol_1a = valuta(dl1a, mano_1a)
+    assert viol_1a <= 1e-9, viol_1a
+    print("Soluzione duale a mano: pi = 0 come nel problema base. Alzare nu_t di una unita' alza")
+    print(f"  il tetto su mu_t e incassa b_t, ma costa cap = {CAP}: conviene solo dove la domanda")
+    print("  supera la capacita'. Si prova sul giorno di domanda massima, il "
+          f"{giorno_1a + 1} (b = {b1[giorno_1a]}).")
+    if migliore_1a > 0:
+        print(f"  Il migliore e' nu = {frazione(migliore_1a)}.")
+    else:
+        print("  Qui nu resta a zero: anche sul giorno piu' carico la catena delle scorte tiene")
+        print("  mu sotto il tetto, quindi alzare nu costerebbe senza alzare nulla.")
+    print(f"  ->  lb = {frazione(lb1a_val)}")
+    zlp1a, zlp1ar, _ = due_rilassamenti(m1a, dl1a)
+    z1a = risolvi(m1a)
+    riga_1a = registra_bound("1a capacita' giornaliera", ub1a, lb1a_val, zlp1a, zlp1ar, z1a)
+    salva_dati(pd.DataFrame([riga_1a]), "fam09_1a_bound")
+    assert lb1a_val <= zlp1a <= z1a <= ub1a + 1e-9
+
 
     # ---------- 6. FIGURA ----------
     fig, ax = plt.subplots(figsize=(7.0, 3.4))

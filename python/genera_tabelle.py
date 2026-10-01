@@ -19,11 +19,13 @@ BASE = Path(__file__).resolve().parent.parent
 
 CONF = dict(dati=BASE / "dati", uscita=BASE / "dati/tabelle",
             testa=("", "valore", "che cos'è"),
-            voci=[("$\\ub$", "ub", "soluzione euristica"),
-                  ("$\\lb$", "lb", "certificato duale costruito a mano"),
-                  ("$\\zlp$", "z_lp", "rilassamento senza i bound"),
-                  ("$\\zlpp$", "z_lp_rafforzato", "rilassamento con i bound"),
-                  ("$\\zmilp$", "z_milp", "ottimo del MILP")])
+            voci={"min": [("$\\ub$", "ub", "soluzione euristica"),
+                          ("$\\lb$", "lb", "certificato duale costruito a mano")],
+                  "max": [("$\\ub$", "ub", "certificato duale costruito a mano"),
+                          ("$\\lb$", "lb", "soluzione euristica")]},
+            comuni=[("$\\zlp$", "z_lp", "rilassamento senza i bound"),
+                    ("$\\zlpp$", "z_lp_rafforzato", "rilassamento con i bound"),
+                    ("$\\zmilp$", "z_milp", "ottimo del MILP")])
 
 def numero(x) -> str:
     """Frazione ridotta o intero, come nella dispensa."""
@@ -31,10 +33,15 @@ def numero(x) -> str:
     return str(f.numerator) if f.denominator == 1 else f"\\frac{{{f.numerator}}}{{{f.denominator}}}"
 
 
+def voci(riga, conf):
+    """Le righe della tabella, nell'ordine, con le note giuste per il verso."""
+    return conf["voci"][str(riga.get("senso", "min"))] + conf["comuni"]
+
+
 def tabella(riga, conf) -> str:
     testa = conf["testa"]
     corpo = "\n".join(f"{etichetta} & ${numero(riga[colonna])}$ & {nota} \\\\"
-                      for etichetta, colonna, nota in conf["voci"])
+                      for etichetta, colonna, nota in voci(riga, conf))
     return ("\\begin{center}\\small\n\\begin{tabular}{lrl}\n\\toprule\n"
             f"{testa[0]} & {testa[1]} & {testa[2]} \\\\\n\\midrule\n{corpo}\n"
             "\\bottomrule\n\\end{tabular}\n\\end{center}\n")
@@ -50,7 +57,7 @@ def tabella_md(riga, conf) -> str:
     """La stessa tabella, in markdown, per le pagine del sito."""
     testa = conf["testa"]
     righe = [f"| {testa[0]} | {testa[1]} | {testa[2]} |", "|---|---:|---|"]
-    for etichetta, colonna, nota in conf["voci"]:
+    for etichetta, colonna, nota in voci(riga, conf):
         righe.append(f"| {SITO[etichetta]} | ${numero(riga[colonna])}$ | {nota} |")
     return "\n".join(righe) + "\n"
 
@@ -60,7 +67,7 @@ def main(verifica: bool = False) -> int:
     conf = CONF
     if True:
         conf["uscita"].mkdir(parents=True, exist_ok=True)
-        for csv in sorted(conf["dati"].glob("fam0[78]_*[ab]_bound.csv")):
+        for csv in sorted(conf["dati"].glob("fam[01][0-9]_*[ab]_bound.csv")):
             riga = pd.read_csv(csv).iloc[0]
             testo = tabella(riga, conf)
             for suffisso, contenuto in ((".tex", testo), (".md", tabella_md(riga, conf))):

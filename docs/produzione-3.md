@@ -208,18 +208,38 @@ sulle $1200$ disponibili.
     cambia il modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ??? question "9.3.2 — Premio nullo"
     Il contributo per la diversificazione viene abolito, cioè $\bar r = 0$. Che
     cosa succede alla variabile $z$?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
+
+## Il sandwich sulla variante 3a
+
+Il vincolo del premio tocca una sola colonna del duale, quella di $z$, che
+adesso vede $\bar r / 3$ invece di $\bar r / 2$. Con $\gamma = 500/3$ il bound
+scende da $11250$ a $32500/3$: chiedere tre tipi invece di due spalma il premio
+su più attivazioni, e i prezzi duali si abbassano. L'euristica non riesce ad
+accendere un terzo tipo e resta a $8700$.
+
+<!-- tabella-variante: fam09_3a_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\mathit{UB}$ | $\frac{32500}{3}$ | certificato duale costruito a mano |
+| $\mathit{LB}$ | $8700$ | soluzione euristica |
+| $z(\mathit{LP})$ | $\frac{29875}{3}$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $\frac{28750}{3}$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $9200$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
 
 ## Codice
 
@@ -232,7 +252,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam09_3_veicoli.py` (192 righe)"
+??? example "Mostra lo script completo — `python/fam09_3_veicoli.py` (284 righe)"
 
     ```python
     """Problema 9.3 -- Veicoli: lotto minimo e premio per la varieta'.
@@ -427,6 +447,98 @@ Script completo —
     ax.legend(fontsize=8)
     salva_figura(fig, "cap09_veicoli_ottimo")
     print("Fine.")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 3a ----------
+    intestazione("9.3a Il sandwich sulla variante: il premio richiede almeno tre tipi")
+    SOGLIA = 3
+
+
+    def modello_3a(a, b, p, q, r, soglia=SOGLIA):
+        mm, xx, yy, zz = modello_3(a, b, p, q, r)
+        mm.update()                                   # i nomi dei vincoli esistono dopo l'update
+        mm.remove(mm.getConstrByName("premio"))
+        mm.addConstr(-gp.quicksum(yy[j] for j in R(len(p))) + soglia * zz <= 0, name="premio")
+        return mm, xx, yy, zz
+
+
+    def duale_3a(a, b, p, q, r, soglia=SOGLIA):
+        """Rispetto al duale di 9.3 cambia una sola riga: la colonna di z, che
+        adesso vede il premio diviso per `soglia` invece che per due. Il resto del
+        duale e' identico --- il vincolo del premio tocca solo quella colonna."""
+        nn, mm_ = len(p), len(b)
+        MM = [min(b[i] // a[i][j] for i in R(mm_)) for j in R(nn)]
+        dl = nuovo_modello("duale_veicoli_3a")
+        pi = dl.addVars(mm_, name="pi")
+        alpha = dl.addVars(nn, lb=-GRB.INFINITY, ub=0.0, name="alpha")
+        beta = dl.addVars(nn, name="beta")
+        gm = dl.addVar(name="gamma")
+        dl.setObjective(gp.quicksum(b[i] * pi[i] for i in R(mm_)), GRB.MINIMIZE)
+        dl.addConstrs((gp.quicksum(a[i][j] * pi[i] for i in R(mm_)) + alpha[j] + beta[j] >= p[j]
+                       for j in R(nn)), name="rc_x")
+        dl.addConstrs((-q[j] * alpha[j] - MM[j] * beta[j] - gm >= 0 for j in R(nn)), name="rc_y")
+        dl.addConstr(soglia * gm >= r, name="rc_z")
+        return dl
+
+
+    m3a, x3a, y3a, z3a = modello_3a(a3, b3, p3, q3, r3)
+    salva_modello(m3a, "fam09_3a_primale")
+
+    # -- euristica ammissibile: la base, poi si accende il terzo tipo se il premio conviene --
+    print("Euristica costruttiva: si parte dalla soluzione del problema base; se i tipi attivi")
+    print("sono meno di tre, si prova ad accenderne un terzo al suo lotto minimo, togliendo")
+    print("unita' al tipo meno redditizio finche' le risorse bastano. Si tiene il piano migliore.")
+    x_3a = list(x_eur)
+    attivi_3a = [j for j in R(n3) if x_3a[j] > 0]
+    base_3a = sum(p3[j] * x_3a[j] for j in R(n3)) + (r3 if len(attivi_3a) >= SOGLIA else 0)
+    print(f"  soluzione base: tipi attivi {[j + 1 for j in attivi_3a]}, valore {frazione(base_3a)}")
+    migliore_3a = (base_3a, list(x_3a))
+    if len(attivi_3a) < SOGLIA:
+        for spento in (j for j in R(n3) if x_3a[j] == 0):
+            prova = list(x_3a)
+            prova[spento] = q3[spento]
+            peggiore = min(attivi_3a, key=lambda j: p3[j])
+            while any(sum(a3[i][j] * prova[j] for j in R(n3)) > b3[i] for i in R(m3)):
+                if prova[peggiore] == 0:
+                    break
+                prova[peggiore] -= 1
+            if all(sum(a3[i][j] * prova[j] for j in R(n3)) <= b3[i] for i in R(m3)) \
+                    and sum(1 for j in R(n3) if prova[j] > 0) >= SOGLIA:
+                valore = sum(p3[j] * prova[j] for j in R(n3)) + r3
+                print(f"  accendendo il tipo {spento + 1} al minimo {q3[spento]}: {frazione(valore)}")
+                if valore > migliore_3a[0]:
+                    migliore_3a = (valore, prova)
+    lb3a, x_mig = migliore_3a
+    att_mig = [j for j in R(n3) if x_mig[j] > 0]
+    sol_3a = ({f"x[{j}]": x_mig[j] for j in R(n3)}
+              | {f"y[{j}]": (1 if x_mig[j] > 0 else 0) for j in R(n3)}
+              | {"z": 1 if len(att_mig) >= SOGLIA else 0})
+    assert ammissibile(m3a, sol_3a), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  piano scelto {x_mig}  ->  lb = {frazione(lb3a)}")
+
+    # -- certificato duale: il premio si divide per tre invece che per due --
+    dl3a = duale_3a(a3, b3, p3, q3, r3)
+    salva_modello(dl3a, "fam09_3a_duale")
+    gamma_3a = r3 / SOGLIA
+    lam_3a = [gamma_3a / q3[j] for j in R(n3)]
+    bound_3a = {i: b3[i] * max((p3[j] + lam_3a[j]) / a3[i][j] for j in R(n3)) for i in R(m3)}
+    critica_3a = min(bound_3a, key=bound_3a.get)
+    prezzo_3a = max((p3[j] + lam_3a[j]) / a3[critica_3a][j] for j in R(n3))
+    mano_3a = ({"gamma": gamma_3a} | {f"pi[{i}]": 0.0 for i in R(m3)}
+               | {f"alpha[{j}]": -lam_3a[j] for j in R(n3)} | {f"beta[{j}]": 0.0 for j in R(n3)})
+    mano_3a[f"pi[{critica_3a}]"] = prezzo_3a
+    ub3a, viol_3a = valuta(dl3a, mano_3a)
+    assert viol_3a <= 1e-9, (viol_3a, mano_3a)
+    print(f"Soluzione duale a mano: la stessa ricetta del problema base, con gamma = r/{SOGLIA} =")
+    print(f"  {frazione(gamma_3a)} invece di r/2: chiedere tre tipi invece di due divide il premio")
+    print("  su piu' attivazioni, quindi ogni tipo ne porta una quota minore e i prezzi scendono.")
+    print(f"  lambda_j = gamma/q_j = {[frazione(v) for v in lam_3a]}; risorsa critica: "
+          f"la {critica_3a + 1}")
+    print(f"  ->  ub = {frazione(ub3a)}  (con la soglia a due era {frazione(ub3)})")
+    zlp3a, zlp3ar, _ = due_rilassamenti(m3a, dl3a)
+    z3a_val = risolvi(m3a)
+    riga_3a = registra_bound("3a premio con tre tipi", ub3a, lb3a, zlp3a, zlp3ar, z3a_val, senso="max")
+    salva_dati(pd.DataFrame([riga_3a]), "fam09_3a_bound")
+    assert lb3a <= z3a_val <= zlp3a + 1e-9 <= ub3a + 1e-9
     ```
 
 <!-- script-incorporato: fine -->

@@ -194,9 +194,9 @@ tabella la colonna si chiama «bound certificato» proprio per questo.
     società. Come cambia il modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ??? question "10.7.2 — Min-sum invece di min-max"
     Si vuole minimizzare la *somma* delle differenze su tutti i prodotti invece
@@ -204,9 +204,29 @@ tabella la colonna si chiama «bound certificato» proprio per questo.
     stessa?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
+
+## Il sandwich sulla variante 7a
+
+L'uguaglianza $x_1 - x_2 = 0$ aggiunge al duale una $\sigma$ libera con termine
+noto zero, quindi l'obiettivo non cambia e il rilassamento vale $0$ come nel
+problema base. Il bound utile è di nuovo combinatorio: con $1$ e $2$ legate il
+miglior squilibrio possibile sui tre prodotti vale $4$, $0$ e $2$, quindi
+$z(\mathit{MILP}) \ge 4$. Con le filiali libere era $2$.
+
+<!-- tabella-variante: fam10_7a_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\mathit{UB}$ | $6$ | soluzione euristica |
+| $\mathit{LB}$ | $4$ | certificato duale costruito a mano |
+| $z(\mathit{LP})$ | $0$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $0$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $6$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
 
 ## Codice
 
@@ -219,7 +239,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_7_antitrust.py` (220 righe)"
+??? example "Mostra lo script completo — `python/fam10_7_antitrust.py` (304 righe)"
 
     ```python
     """Problema 11.2 -- Suddivisione antitrust: due societa' il piu' simili possibile.
@@ -442,6 +462,90 @@ Script completo —
     ax.legend(fontsize=8)
     salva_figura(fig, "cap10_antitrust_ottimo")
     print("Fine.")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 2a ----------
+    intestazione("10.7a Il sandwich sulla variante: le filiali 1 e 2 restano insieme")
+
+
+    def modello_2a(v):
+        mm, xx, zz = modello_2(v)
+        mm.addConstr(xx[0] - xx[1] == 0, name="insieme")
+        return mm, xx, zz
+
+
+    def duale_2a(v):
+        """Al duale di 10.7 si aggiunge sigma libera per l'uguaglianza x_1 - x_2 = 0:
+        compare nella colonna della filiale 1 con segno piu' e in quella della
+        filiale 2 con segno meno. Il termine noto e' zero: l'obiettivo non cambia."""
+        ss, rr = len(v), len(v[0])
+        dl = nuovo_modello("duale_antitrust_2a")
+        lam = dl.addVars(rr, name="lam")
+        mu = dl.addVars(rr, name="mu")
+        sg = dl.addVar(lb=-GRB.INFINITY, name="sigma")
+        tot = [sum(v[i][j] for i in R(ss)) for j in R(rr)]
+        dl.setObjective(gp.quicksum(tot[j] * (mu[j] - lam[j]) for j in R(rr)), GRB.MAXIMIZE)
+        dl.addConstr(gp.quicksum(lam[j] + mu[j] for j in R(rr)) == 1, name="rcz")
+        for i in R(ss):
+            extra = sg if i == 0 else (-sg if i == 1 else 0)
+            dl.addConstr(2 * gp.quicksum(v[i][j] * (mu[j] - lam[j]) for j in R(rr)) + extra <= 0,
+                         name=f"rcx[{i}]")
+        return dl
+
+
+    m2a, x2a, z2a = modello_2a(v2)
+    salva_modello(m2a, "fam10_7a_primale")
+
+    # -- euristica ammissibile: le filiali sono poche, si provano tutte le partizioni --
+    print("Euristica costruttiva: le filiali sono poche, quindi si enumerano le partizioni che")
+    print("tengono insieme la 1 e la 2 e si tiene quella di squilibrio massimo piu' basso. Con")
+    print("un vincolo che lega due filiali, la regola greedy del problema base non basta piu':")
+    print("metterebbe le due filiali in gruppi diversi.")
+    migliore_2a = None
+    for k in R(s2 + 1):
+        for sotto in itertools.combinations(R(s2), k):
+            if (0 in sotto) != (1 in sotto):
+                continue
+            squilibrio = max(abs(2 * sum(v2[i][j] for i in sotto) - tot2[j]) for j in R(r2))
+            if migliore_2a is None or squilibrio < migliore_2a[0]:
+                migliore_2a = (squilibrio, sotto)
+    ub2a, gruppo_A = migliore_2a
+    print(f"  partizione migliore: societa' A = filiali {[i + 1 for i in gruppo_A]}, "
+          f"B = {[i + 1 for i in R(s2) if i not in gruppo_A]}")
+    sol_2a = {f"x[{i}]": (1 if i in gruppo_A else 0) for i in R(s2)} | {"z": ub2a}
+    assert ammissibile(m2a, sol_2a), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  ub = {frazione(ub2a)}")
+
+    # -- certificato duale: il rilassamento resta muto, il bound viene dall'interezza --
+    dl2a = duale_2a(v2)
+    salva_modello(dl2a, "fam10_7a_duale")
+    mano_2a = {"lam[0]": 0.5, "mu[0]": 0.5, "sigma": 0.0}
+    lb_lp_2a, viol_2a = valuta(dl2a, mano_2a)
+    assert viol_2a <= 1e-9, viol_2a
+    print("Soluzione duale a mano: lam_1 = mu_1 = 1/2, sigma = 0 e tutto il resto zero. Come nel")
+    print("  problema base il valore e' zero, e per la stessa ragione: nell'obiettivo compare la")
+    print("  differenza mu_j - lam_j, che i vincoli sulle colonne costringono a essere non")
+    print("  positiva. La sigma nuova non la cambia, perche' il suo termine noto e' zero.")
+    print(f"  ->  rilassamento: {frazione(lb_lp_2a)}")
+    zlp2a, zlp2ar, _ = due_rilassamenti(m2a, dl2a)
+    # il bound vero viene dallo stesso argomento combinatorio del problema base,
+    # ristretto alle partizioni che tengono insieme le filiali 1 e 2
+    def minimo_squilibrio_legato(colonna, tot):
+        ss = len(colonna)
+        return min(abs(2 * sum(colonna[i] for i in sotto) - tot)
+                   for k in R(ss + 1) for sotto in itertools.combinations(R(ss), k)
+                   if (0 in sotto) == (1 in sotto))
+
+
+    gj_2a = [minimo_squilibrio_legato([v2[i][j] for i in R(s2)], tot2[j]) for j in R(r2)]
+    lb2a = max(gj_2a)
+    for j in R(r2):
+        print(f"  prodotto {j + 1}: con 1 e 2 legate il miglior squilibrio possibile e' {gj_2a[j]}")
+    print(f"  Ogni partizione ammissibile deve rispettarli tutti: z >= max_j g_j = {frazione(lb2a)}")
+    print("  (con le filiali libere era " + frazione(lb2) + ": legare due filiali alza il bound)")
+    z2a_val = risolvi(m2a)
+    riga_2a = registra_bound("2a filiali 1 e 2 insieme", ub2a, lb2a, zlp2a, zlp2ar, z2a_val)
+    salva_dati(pd.DataFrame([riga_2a]), "fam10_7a_bound")
+    assert lb2a <= z2a_val <= ub2a + 1e-9
     ```
 
 <!-- script-incorporato: fine -->

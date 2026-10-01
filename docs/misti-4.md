@@ -208,9 +208,9 @@ Il bound duale sbaglia di **una** unità su $2141$, e il rilassamento con i boun
     modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ??? question "10.4.2 — Lotto minimo per configurazione"
     Ogni configurazione usata deve decorare almeno tre alberi (sotto quella
@@ -218,9 +218,29 @@ Il bound duale sbaglia di **una** unità su $2141$, e il rilassamento con i boun
     è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
+
+## Il sandwich sulla variante 4a
+
+Chiedere tutte e tre le configurazioni cambia il termine noto del vincolo di
+varietà, ma quel vincolo non si valuta: la ricetta tiene $\gamma = \delta = 0$ e
+il bound resta $2140$ mentre l'ottimo sale da $2141$ a $2239$. L'euristica monta
+le due configurazioni mancanti su un albero ciascuna e costa $3023$: il gap
+certificato resta largo, e qui il MILP serve davvero.
+
+<!-- tabella-variante: fam10_4a_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\mathit{UB}$ | $3023$ | soluzione euristica |
+| $\mathit{LB}$ | $2140$ | certificato duale costruito a mano |
+| $z(\mathit{LP})$ | $2140$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $2190$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $2239$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
 
 ## Codice
 
@@ -233,7 +253,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_4_luci.py` (214 righe)"
+??? example "Mostra lo script completo — `python/fam10_4_luci.py` (260 righe)"
 
     ```python
     """Problema 12.1 -- Alberi di Natale: configurazioni e scatole di luci.
@@ -450,6 +470,52 @@ Notebook —
     ax.invert_yaxis()
     salva_figura(fig, "cap10_luci_ottimo")
     print("Fine.")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 1a ----------
+    intestazione("10.4a Il sandwich sulla variante: tutte e tre le configurazioni")
+    F1A = 3
+
+    # La variante cambia un dato --- la varieta' richiesta passa da f a 3 --- non la
+    # struttura: modello, duale, euristica e ricetta sono gli stessi, e il
+    # certificato segue i dati da solo.
+    m1a, x1a, y1a, z1a = modello_1(q1, i1, u1, p1, v1, F1A)
+    salva_modello(m1a, "fam10_4a_primale")
+    dl1a = duale_1(q1, i1, u1, p1, v1, F1A)
+    salva_modello(dl1a, "fam10_4a_duale")
+
+    # -- euristica ammissibile: la stessa regola, con la varieta' nuova --
+    x_1a, y_1a, passi_1a = euristica(q1, i1, u1, p1, v1, F1A)
+    for k, s in enumerate(passi_1a[:4], 1):
+        print(f"  Passo {k}. {s}")
+    print(f"  ... ({len(passi_1a) - 5} acquisti successivi dello stesso tipo)")
+    print(f"  Passo {len(passi_1a)}. {passi_1a[-1]}")
+    ub1a = sum(i1[c] * x_1a[c] for c in R(nc)) + sum(p1[b] * y_1a[b] for b in R(nb))
+    sol_1a = ({f"x[{c}]": x_1a[c] for c in R(nc)} | {f"y[{b}]": y_1a[b] for b in R(nb)}
+              | {f"z[{c}]": (1 if x_1a[c] > 0 else 0) for c in R(nc)})
+    assert ammissibile(m1a, sol_1a), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  ub = {frazione(ub1a)}")
+
+    # -- certificato duale: la stessa ricetta, sul dato nuovo --
+    migliore_1a, mano_1a, scelto_1a = float("-inf"), None, None
+    for l in R(nl):
+        prezzo = min(p1[b] / v1[b][l] for b in R(nb) if v1[b][l] > 0)
+        prova = {f"beta[{l}]": prezzo}
+        prova["alpha"] = min(i1[c] + u1[c][l] * prezzo for c in R(nc))
+        val, viol = valuta(dl1a, prova)
+        if viol <= 1e-9 and val > migliore_1a:
+            migliore_1a, mano_1a, scelto_1a = val, prova, l
+    lb1a, viol_1a = valuta(dl1a, mano_1a)
+    assert viol_1a <= 1e-9, viol_1a
+    print("Soluzione duale a mano: la stessa ricetta del problema base --- gamma = delta = 0, un")
+    print(f"  solo colore valutato (il {scelto_1a + 1}) al prezzo per luce piu' basso, e alpha =")
+    print("  min_c (i_c + prezzo delle sue luci). Il termine noto della varieta' e' cambiato, ma")
+    print("  gamma resta a zero: la varieta' non si valuta, quindi il bound non si muove.")
+    print(f"  ->  lb = {frazione(lb1a)}")
+    zlp1a, zlp1ar, _ = due_rilassamenti(m1a, dl1a)
+    z1a_val = risolvi(m1a)
+    riga_1a = registra_bound("1a tutte e tre le configurazioni", ub1a, lb1a, zlp1a, zlp1ar, z1a_val)
+    salva_dati(pd.DataFrame([riga_1a]), "fam10_4a_bound")
+    assert lb1a <= zlp1a <= z1a_val <= ub1a + 1e-9
     ```
 
 <!-- script-incorporato: fine -->

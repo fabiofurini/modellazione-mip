@@ -205,18 +205,38 @@ costa solo $5$ euro di contributo.
     Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ??? question "10.1.2 — Almeno quattro premi"
     Oltre alla soglia di preferenza, il cliente vuole almeno quattro premi
     diversi. Come cambia il modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
+
+## Il sandwich sulla variante 1b
+
+Il vincolo $\sum_i (x_i + y_i) \ge 4$ aggiunge al duale una $\kappa \ge 0$ con
+termine noto $4$, che compare in **tutte e due** le colonne di ogni premio.
+Cercando anche $\kappa$ sulla griglia dei quarti si trova $\pi = \varrho = 3/2$,
+$\kappa = 9/2$. L'euristica enumera i $3^5 = 243$ stati possibili e trova $13$,
+che è l'ottimo.
+
+<!-- tabella-variante: fam10_1b_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\mathit{UB}$ | $13$ | soluzione euristica |
+| $\mathit{LB}$ | $6$ | certificato duale costruito a mano |
+| $z(\mathit{LP})$ | $\frac{25}{2}$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $\frac{25}{2}$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $13$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
 
 ## Codice
 
@@ -229,7 +249,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_1_premi.py` (177 righe)"
+??? example "Mostra lo script completo — `python/fam10_1_premi.py` (276 righe)"
 
     ```python
     """Problema 10.1 -- Premi acquistabili con due modalita'.
@@ -239,6 +259,8 @@ Notebook —
     legame e' quello del capitolo 2: x_i + y_i <= 1 e' un set packing, e le converse
     vanno confutate esplicitamente con x_i = y_i = 0.
     """
+    from itertools import product
+
     import gurobipy as gp
     import pandas as pd
     from gurobipy import GRB
@@ -409,6 +431,103 @@ Notebook —
     ax.legend(fontsize=8)
     salva_figura(fig, "cap10_premi_ottimo")
     print("Fine.")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 1b ----------
+    intestazione("10.1b Il sandwich sulla variante: almeno quattro premi")
+    MIN_PREMI = 4
+
+
+    def modello_1b(a, b, c, d, p, ell, minimo=MIN_PREMI):
+        mm, xx, yy = modello_1(a, b, c, d, p, ell)
+        mm.addConstr(gp.quicksum(xx[i] + yy[i] for i in R(len(a))) >= minimo, name="almeno_quattro")
+        return mm, xx, yy
+
+
+    def duale_1b(a, b, c, d, p, ell, minimo=MIN_PREMI):
+        """Al duale di 10.1 si aggiunge kappa >= 0 per il vincolo
+        sum_i (x_i + y_i) >= minimo: il termine noto e' `minimo`, quindi kappa entra
+        nell'obiettivo, e compare in tutte e due le colonne di ogni premio."""
+        ss = len(a)
+        dl = nuovo_modello("duale_premi_1b")
+        sigma = dl.addVars(ss, name="sigma")
+        pi = dl.addVar(name="pi")
+        rho = dl.addVar(name="rho")
+        kap = dl.addVar(name="kappa")
+        dl.setObjective(-gp.quicksum(sigma[i] for i in R(ss)) - p * pi + ell * rho + minimo * kap,
+                        GRB.MAXIMIZE)
+        dl.addConstrs((-sigma[i] - a[i] * pi + d[i] * rho + kap <= 0 for i in R(ss)), name="rc_x")
+        dl.addConstrs((-sigma[i] - b[i] * pi + d[i] * rho + kap <= c[i] for i in R(ss)), name="rc_y")
+        return dl
+
+
+    m1b, x1b, y1b = modello_1b(a1, b1, c1, d1, p1, ell1)
+    salva_modello(m1b, "fam10_1b_primale")
+
+    # -- euristica ammissibile: la base, poi si aggiungono premi fino a quattro --
+    print("Euristica costruttiva: i premi sono cinque e ciascuno ha tre stati (non preso, a")
+    print("punti, con contributo), quindi le combinazioni sono 3^5 = 243: si provano tutte e si")
+    print("tiene la piu' economica fra quelle ammissibili. Con pochi oggetti e' la regola piu'")
+    print("onesta --- e si vede subito quanto costa il vincolo nuovo.")
+    migliore_eur = None
+    for stati in product(("no", "punti", "contributo"), repeat=s1):
+        presi = [i for i in R(s1) if stati[i] != "no"]
+        if len(presi) < MIN_PREMI:
+            continue
+        punti_usati = sum(a1[i] if stati[i] == "punti" else b1[i] for i in presi)
+        if punti_usati > p1:
+            continue
+        if sum(d1[i] for i in presi) < ell1:
+            continue
+        costo = sum(c1[i] for i in presi if stati[i] == "contributo")
+        if migliore_eur is None or costo < migliore_eur[0]:
+            migliore_eur = (costo, stati, presi, punti_usati)
+    assert migliore_eur is not None, "nessuna combinazione ammissibile: la variante sarebbe vuota"
+    ub1b, stati_1b, presi_1b, punti_1b = migliore_eur
+    print(f"  combinazione migliore: " + ", ".join(
+        f"premio {i + 1} {stati_1b[i]}" for i in presi_1b))
+    print(f"  punti usati {punti_1b} su {p1}, preferenza {sum(d1[i] for i in presi_1b)} "
+          f"(richiesta {ell1})")
+    sol_1b = ({f"x[{i}]": 1 for i in presi_1b if stati_1b[i] == "punti"}
+              | {f"y[{i}]": 1 for i in presi_1b if stati_1b[i] == "contributo"})
+    assert ammissibile(m1b, sol_1b), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  ub = {frazione(ub1b)}")
+
+    # -- certificato duale: kappa paga ogni premio e incassa quattro volte --
+    dl1b = duale_1b(a1, b1, c1, d1, p1, ell1)
+    salva_modello(dl1b, "fam10_1b_duale")
+
+
+    def valore_duale_1b(pi_v, rho_v, kap_v):
+        sig = [max(0.0, d1[i] * rho_v - a1[i] * pi_v + kap_v) for i in R(s1)]
+        ok = all(-sig[i] - b1[i] * pi_v + d1[i] * rho_v + kap_v <= c1[i] + 1e-9 for i in R(s1))
+        val = -sum(sig) - p1 * pi_v + ell1 * rho_v + MIN_PREMI * kap_v
+        return (val if ok else None), sig
+
+
+    migliore_1b = (None, None, None, None)
+    for pi_v in [k / 4 for k in R(0, 21)]:
+        for rho_v in [k / 4 for k in R(0, 21)]:
+            for kap_v in [k / 4 for k in R(0, 21)]:
+                val, sig = valore_duale_1b(pi_v, rho_v, kap_v)
+                if val is not None and (migliore_1b[0] is None or val > migliore_1b[0]):
+                    migliore_1b = (val, pi_v, rho_v, kap_v)
+    lb1b, pi_1b, rho_1b, kap_1b = migliore_1b
+    _, sig_1b = valore_duale_1b(pi_1b, rho_1b, kap_1b)
+    mano_1b = ({"pi": pi_1b, "rho": rho_1b, "kappa": kap_1b}
+               | {f"sigma[{i}]": sig_1b[i] for i in R(s1)})
+    lb1b_val, viol_1b = valuta(dl1b, mano_1b)
+    assert viol_1b <= 1e-9, (viol_1b, mano_1b)
+    print("Soluzione duale a mano: la ricetta del problema base --- prezzo pi di un punto, prezzo")
+    print("  rho di una unita' di preferenza, sigma_i il minimo che rende ammissibile la colonna")
+    print("  della modalita' a punti --- piu' kappa, il prezzo di «un premio in piu'». Si cerca la")
+    print("  terna sulla griglia dei quarti e si tiene la migliore:")
+    print(f"  pi = {frazione(pi_1b)}, rho = {frazione(rho_1b)}, kappa = {frazione(kap_1b)}")
+    print(f"  ->  lb = {frazione(lb1b_val)}")
+    zlp1b, zlp1br, _ = due_rilassamenti(m1b, dl1b)
+    z1b = risolvi(m1b)
+    riga_1b = registra_bound("1b almeno quattro premi", ub1b, lb1b_val, zlp1b, zlp1br, z1b)
+    salva_dati(pd.DataFrame([riga_1b]), "fam10_1b_bound")
+    assert lb1b_val <= zlp1b <= z1b <= ub1b + 1e-9
     ```
 
 <!-- script-incorporato: fine -->

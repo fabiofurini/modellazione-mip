@@ -1,2 +1,2 @@
-problema,ub,lb,z_lp,z_lp_rafforzato,z_milp
-5a al piu' una classe,31.4,17,17.0,17.0,17.0
+problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso
+5a al piu' una classe,31.4,17,17.0,17.0,17.0,max

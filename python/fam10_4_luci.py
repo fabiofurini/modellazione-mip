@@ -212,3 +212,50 @@ ax.legend(fontsize=8, loc="lower right")
 ax.invert_yaxis()
 salva_figura(fig, "cap10_luci_ottimo")
 print("Fine.")
+
+# ---------- 5bis. IL SANDWICH SULLA VARIANTE 1a ----------
+intestazione("10.4a Il sandwich sulla variante: tutte e tre le configurazioni")
+F1A = 3
+
+# La variante cambia un dato --- la varieta' richiesta passa da f a 3 --- non la
+# struttura: modello, duale, euristica e ricetta sono gli stessi, e il
+# certificato segue i dati da solo.
+m1a, x1a, y1a, z1a = modello_1(q1, i1, u1, p1, v1, F1A)
+salva_modello(m1a, "fam10_4a_primale")
+dl1a = duale_1(q1, i1, u1, p1, v1, F1A)
+salva_modello(dl1a, "fam10_4a_duale")
+
+# -- euristica ammissibile: la stessa regola, con la varieta' nuova --
+x_1a, y_1a, passi_1a = euristica(q1, i1, u1, p1, v1, F1A)
+for k, s in enumerate(passi_1a[:4], 1):
+    print(f"  Passo {k}. {s}")
+print(f"  ... ({len(passi_1a) - 5} acquisti successivi dello stesso tipo)")
+print(f"  Passo {len(passi_1a)}. {passi_1a[-1]}")
+ub1a = sum(i1[c] * x_1a[c] for c in R(nc)) + sum(p1[b] * y_1a[b] for b in R(nb))
+sol_1a = ({f"x[{c}]": x_1a[c] for c in R(nc)} | {f"y[{b}]": y_1a[b] for b in R(nb)}
+          | {f"z[{c}]": (1 if x_1a[c] > 0 else 0) for c in R(nc)})
+assert ammissibile(m1a, sol_1a), "la soluzione euristica della variante deve essere ammissibile"
+print(f"  ub = {frazione(ub1a)}")
+
+# -- certificato duale: la stessa ricetta, sul dato nuovo --
+migliore_1a, mano_1a, scelto_1a = float("-inf"), None, None
+for l in R(nl):
+    prezzo = min(p1[b] / v1[b][l] for b in R(nb) if v1[b][l] > 0)
+    prova = {f"beta[{l}]": prezzo}
+    prova["alpha"] = min(i1[c] + u1[c][l] * prezzo for c in R(nc))
+    val, viol = valuta(dl1a, prova)
+    if viol <= 1e-9 and val > migliore_1a:
+        migliore_1a, mano_1a, scelto_1a = val, prova, l
+lb1a, viol_1a = valuta(dl1a, mano_1a)
+assert viol_1a <= 1e-9, viol_1a
+print("Soluzione duale a mano: la stessa ricetta del problema base --- gamma = delta = 0, un")
+print(f"  solo colore valutato (il {scelto_1a + 1}) al prezzo per luce piu' basso, e alpha =")
+print("  min_c (i_c + prezzo delle sue luci). Il termine noto della varieta' e' cambiato, ma")
+print("  gamma resta a zero: la varieta' non si valuta, quindi il bound non si muove.")
+print(f"  ->  lb = {frazione(lb1a)}")
+zlp1a, zlp1ar, _ = due_rilassamenti(m1a, dl1a)
+z1a_val = risolvi(m1a)
+riga_1a = registra_bound("1a tutte e tre le configurazioni", ub1a, lb1a, zlp1a, zlp1ar, z1a_val)
+salva_dati(pd.DataFrame([riga_1a]), "fam10_4a_bound")
+assert lb1a <= zlp1a <= z1a_val <= ub1a + 1e-9
+

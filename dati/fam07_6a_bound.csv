@@ -1,2 +1,2 @@
-problema,ub,lb,z_lp,z_lp_rafforzato,z_milp
-6a almeno un lavoro per classe,107.0,32,44.14285714285714,44.14285714285714,40.0
+problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso
+6a almeno un lavoro per classe,107.0,32,44.14285714285714,44.14285714285714,40.0,max

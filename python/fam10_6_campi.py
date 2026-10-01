@@ -218,3 +218,39 @@ ax.set_title(f"11.1: euristica {frazione(lb1)} contro ottimo {frazione(z1)}")
 ax.legend(fontsize=7, ncol=2)
 salva_figura(fig, "cap10_campi_ottimo")
 print("Fine.")
+
+# ---------- 5bis. IL SANDWICH SULLA VARIANTE 1a ----------
+intestazione("10.6a Il sandwich sulla variante: il campo 1 arriva a 20 posti")
+d1a = [20] + list(d1[1:])
+
+# Cambia una capacita', non la struttura: stesso modello, stesso duale, stessa
+# ricetta. Il bound «ogni bambino occupa un posto» segue i posti disponibili.
+m1a, x1a, y1a = modello_1(f1, g1, d1a, c1)
+salva_modello(m1a, "fam10_6a_primale")
+dl1a = duale_1(f1, g1, d1a, c1)
+salva_modello(dl1a, "fam10_6a_duale")
+
+# -- euristica ammissibile: la stessa regola, con i posti nuovi --
+x_1a, y_1a, passi_1a = euristica(f1, g1, d1a, c1)
+for k, s in enumerate(passi_1a, 1):
+    print(f"  Passo {k}. {s}")
+lb1a = sum(x_1a[i, j] + y_1a[i, j] for i in R(s1) for j in R(r1))
+sol_1a = ({f"x[{i},{j}]": x_1a[i, j] for i in R(s1) for j in R(r1)}
+          | {f"y[{i},{j}]": y_1a[i, j] for i in R(s1) for j in R(r1)})
+assert ammissibile(m1a, sol_1a), "la soluzione euristica della variante deve essere ammissibile"
+print(f"  lb = {frazione(lb1a)}")
+
+# -- certificato duale: la stessa ricetta, sui posti nuovi --
+mano_1a = {f"gamma[{j}]": 1.0 for j in R(r1)}
+ub1a, viol_1a = valuta(dl1a, mano_1a)
+assert viol_1a <= 1e-9, viol_1a
+print("Soluzione duale a mano: alpha = beta = delta = eps = 0 e gamma_j = 1, come nel")
+print("  problema base: ogni bambino accettato occupa un posto, quindi non se ne possono")
+print(f"  accettare piu' di sum_j d_j = {' + '.join(map(str, d1a))} = {frazione(ub1a)}.")
+print("  Il certificato non cambia forma: cambia il dato che somma.")
+zlp1a, zlp1ar, _ = due_rilassamenti(m1a, dl1a)
+z1a_val = risolvi(m1a)
+riga_1a = registra_bound("1a campo 1 a 20 posti", ub1a, lb1a, zlp1a, zlp1ar, z1a_val, senso="max")
+salva_dati(pd.DataFrame([riga_1a]), "fam10_6a_bound")
+assert lb1a <= z1a_val <= zlp1a + 1e-9 <= ub1a + 1e-9
+

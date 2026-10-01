@@ -183,3 +183,40 @@ ax.set_title(f"11.3: la differenza scende da {frazione(diff_nat)} a {frazione(z3
 ax.invert_yaxis()
 salva_figura(fig, "cap10_cd_ottimo")
 print("Fine.")
+
+# ---------- 5bis. IL SANDWICH SULLA VARIANTE 3b ----------
+intestazione("10.8b Il sandwich sulla variante: la raccolta su tre CD")
+M3B = 3
+w3b = [1] * M3B
+
+# Cambia il numero di CD, non la struttura: modello, duale, euristica e ricetta
+# sono gli stessi con m = 3.
+m3b, x3b, y3b, z3b = modello_3(d3, w3b)
+salva_modello(m3b, "fam10_8b_primale")
+dl3b = duale_3(d3, w3b)
+salva_modello(dl3b, "fam10_8b_duale")
+
+# -- euristica ammissibile: LPT sui tre CD --
+ordine_3b = sorted(R(n3), key=lambda i: (-d3[i], i))
+dove_3b, carichi_3b, ub3b = riempi(d3, M3B, ordine_3b,
+                                   "Euristica LPT sui tre CD: brani in ordine decrescente.")
+sol_3b = ({f"x[{i},{dove_3b[i]}]": 1 for i in R(n3)}
+          | {"y": max(carichi_3b), "z": min(carichi_3b)})
+assert ammissibile(m3b, sol_3b), "la soluzione euristica della variante deve essere ammissibile"
+print(f"  ub = {frazione(ub3b)}")
+
+# -- certificato duale: la stessa ricetta, su tre CD --
+mano_3b = ({f"gamma[{j}]": 1 / M3B for j in R(M3B)}
+           | {f"delta[{j}]": 1 / M3B for j in R(M3B)})
+lb3b, viol_3b = valuta(dl3b, mano_3b)
+assert viol_3b <= 1e-9, viol_3b
+print(f"Soluzione duale a mano: gamma_j = delta_j = 1/{M3B}, come nel problema base: le due")
+print("  colonne di y e z chiedono che le gamma e le delta sommino a uno, e spalmarle in")
+print("  parti uguali e' la scelta che non privilegia nessun CD. alpha = beta = 0.")
+print(f"  ->  lb = {frazione(lb3b)}")
+zlp3b, zlp3br, _ = due_rilassamenti(m3b, dl3b)
+z3b_val = risolvi(m3b)
+riga_3b = registra_bound("3b raccolta su tre CD", ub3b, lb3b, zlp3b, zlp3br, z3b_val)
+salva_dati(pd.DataFrame([riga_3b]), "fam10_8b_bound")
+assert lb3b <= zlp3b <= z3b_val <= ub3b + 1e-9
+

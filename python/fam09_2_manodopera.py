@@ -213,3 +213,58 @@ ax.legend(fontsize=8, loc="upper left")
 ax2.legend(fontsize=8, loc="lower right")
 salva_figura(fig, "cap09_manodopera_ottimo")
 print("Fine.")
+
+# ---------- 5bis. IL SANDWICH SULLA VARIANTE 2a ----------
+intestazione("9.2a Il sandwich sulla variante: l'assunzione costa 3000 euro")
+U2A = 3000
+
+# La variante non aggiunge vincoli: cambia un dato. Modello e duale sono gli
+# stessi, con u = 3000, e anche la ricetta duale e' la stessa --- cambia il
+# valore che restituisce, ed e' proprio questo il punto: il certificato segue i
+# dati senza che il modello si tocchi.
+m2a, x2a, s2a, z2a = modello_A(d2, p2, h2, w2, r2, g2, U2A, m2, r0)
+salva_modello(m2a, "fam09_2a_primale")
+d2a_ = duale_A(d2, p2, h2, w2, r2, g2, U2A, m2, r0)
+salva_modello(d2a_, "fam09_2a_duale")
+
+# -- euristica ammissibile: la stessa regola, con il costo di assunzione nuovo --
+print("Euristica costruttiva: si produce la domanda del mese e si assume solo quando le ore")
+print("degli operai in servizio non bastano. La regola non cambia; cambia quanto costa.")
+operai = m2
+assunti = [0] * n2
+for tt in R(n2):
+    servono = -(-g2 * d2[tt] // r2)                      # arrotondamento per eccesso
+    if servono > operai:
+        assunti[tt] = servono - operai
+        operai = servono
+        print(f"  mese {tt + 1}: servono {servono} operai, se ne assumono {assunti[tt]}")
+    else:
+        print(f"  mese {tt + 1}: i {operai} operai in servizio bastano")
+ub2a = (sum(p2[tt] * d2[tt] for tt in R(n2))
+        + sum((U2A + w2 * (n2 - tt)) * assunti[tt] for tt in R(n2)) + costante_A)
+sol_2a = ({f"x[{tt}]": d2[tt] for tt in R(n2)} | {f"s[{tt}]": 0 for tt in R(n2 - 1)}
+          | {f"z[{tt}]": assunti[tt] for tt in R(n2)})
+assert ammissibile(m2a, sol_2a), "la soluzione euristica della variante deve essere ammissibile"
+print(f"  ub = {frazione(ub2a)}")
+
+# -- certificato duale: la ricetta del problema base, sui dati nuovi --
+mu_2a = []
+for tt in R(n2):
+    tetto = p2[tt]
+    mu_2a.append(tetto if tt == 0 else min(mu_2a[tt - 1] + h2[tt - 1], tetto))
+mano_2a = {f"mu[{tt}]": mu_2a[tt] for tt in R(n2)}
+lb2a_var, viol_2a = valuta(d2a_, mano_2a)
+assert viol_2a <= 1e-9, viol_2a
+lb2a = lb2a_var + costante_A                 # come nel problema base: il salario degli
+                                             # operai iniziali sta fuori dalla formulazione A
+print("Soluzione duale a mano: nu = 0 (le ore si regalano) e mu_t = il costo piu' basso per")
+print("  avere un paio disponibile al mese t, cioe' min(mu_{t-1} + h_{t-1}, p_t), come nel")
+print(f"  problema base: mu = {[frazione(v) for v in mu_2a]}")
+print(f"  ->  lb = {frazione(lb2a_var)} + {costante_A} = {frazione(lb2a)}")
+zlp2a, zlp2ar, _ = due_rilassamenti(m2a, d2a_)
+zlp2a, zlp2ar = zlp2a + costante_A, zlp2ar + costante_A
+z2a_val = risolvi(m2a) + costante_A
+riga_2a = registra_bound("2a assunzione a 3000", ub2a, lb2a, zlp2a, zlp2ar, z2a_val)
+salva_dati(pd.DataFrame([riga_2a]), "fam09_2a_bound")
+assert lb2a <= zlp2a <= z2a_val <= ub2a + 1e-9
+

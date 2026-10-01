@@ -1,4 +1,4 @@
-"""Problema 10.2 -- Dieta con conteggio dei cibi e lotto minimo.
+"""Problema 10.3 -- Dieta con conteggio dei cibi e lotto minimo.
 
 Una dieta classica (quantita' continue, vincoli nutrizionali a due versi) con
 sopra tre tecniche intere: attivazione (3.2), lotto minimo (3.3) e conteggio dei
@@ -17,7 +17,7 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("10.2 Dieta: costo minimo con almeno t cibi diversi e lotto minimo per cibo")
+intestazione("10.3 Dieta: costo minimo con almeno t cibi diversi e lotto minimo per cibo")
 CIBI = ["latte", "riso", "pane", "patate"]
 NUTRIENTI = ["ferro", "calcio"]
 w2 = [2, 3, 1, 4]                      # costo al chilo
@@ -145,7 +145,7 @@ salva_dati(pd.DataFrame([riga]), "fam10_3_bound")
 assert lb2 <= zlp2 <= z2 <= ub2 + 1e-9
 
 # ---------- 5. SENZA IL LOTTO MINIMO IL CONTEGGIO E' VUOTO ----------
-intestazione("10.2 Perche' il lotto minimo serve al conteggio")
+intestazione("10.3 Perche' il lotto minimo serve al conteggio")
 m, x, y = modello_2(w2, g2, a2, b2, [0] * s2, d2, t2)   # c_i = 0: nessun lotto minimo
 z_senza = risolvi(m)
 accesi = [CIBI[i] for i in R(s2) if y[i].X > 0.5]
@@ -167,10 +167,10 @@ def variante(nome, m):
 
 # 2a: il lotto minimo sale a 2 kg per ogni cibo scelto
 m, x, y = modello_2(w2, g2, a2, b2, [2] * s2, d2, t2)
-varianti["2a"] = variante("2a. Il lotto minimo sale a 2 kg per cibo (c_i = 2)", m)
+varianti["3a"] = variante("3a. Il lotto minimo sale a 2 kg per cibo (c_i = 2)", m)
 # 2b: si vogliono almeno quattro cibi diversi
 m, x, y = modello_2(w2, g2, a2, b2, c2, d2, 4)
-varianti["2b"] = variante("2b. Si vogliono almeno quattro cibi diversi (t = 4)", m)
+varianti["3b"] = variante("3b. Si vogliono almeno quattro cibi diversi (t = 4)", m)
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
            "fam10_3_varianti")
 
@@ -185,7 +185,53 @@ ax.plot([], [], color=ROSSO, lw=1.5, label="lotto minimo $c_i$")
 ax.set_xticks(idx)
 ax.set_xticklabels(CIBI)
 ax.set_ylabel("chili al mese")
-ax.set_title(f"10.2: dieta euristica ({frazione(ub2)} EUR) e ottima ({frazione(z2)} EUR)")
+ax.set_title(f"10.3: dieta euristica ({frazione(ub2)} EUR) e ottima ({frazione(z2)} EUR)")
 ax.legend(fontsize=8)
 salva_figura(fig, "cap10_dieta_ottimo")
 print("Fine.")
+
+# ---------- 5bis. IL SANDWICH SULLA VARIANTE 2b ----------
+intestazione("10.3b Il sandwich sulla variante: almeno quattro cibi diversi")
+T2B = 4
+
+# La variante cambia un dato, non la struttura: modello, duale ed euristica sono
+# gli stessi con t = 4. Cambia il valore del certificato --- e cambia soprattutto
+# l'euristica, che deve accendere un cibo in piu' al suo lotto minimo.
+m2b, x2b, y2b = modello_2(w2, g2, a2, b2, c2, d2, T2B)
+salva_modello(m2b, "fam10_3b_primale")
+dl2b = duale_2(w2, g2, a2, b2, c2, d2, T2B)
+salva_modello(dl2b, "fam10_3b_duale")
+
+# -- euristica ammissibile: la stessa regola, con un cibo in piu' --
+x_2b, passi_2b = euristica(w2, g2, a2, b2, c2, d2, T2B)
+assert x_2b is not None, "l'euristica deve restare ammissibile con quattro cibi"
+for i, s in enumerate(passi_2b, 1):
+    print(f"  Passo {i}. {s}")
+ub2b = sum(w2[i] * x_2b[i] for i in R(s2))
+sol_2b = ({f"x[{i}]": x_2b[i] for i in R(s2)}
+          | {f"y[{i}]": (1 if x_2b[i] > 1e-9 else 0) for i in R(s2)})
+assert ammissibile(m2b, sol_2b), "la soluzione euristica della variante deve essere ammissibile"
+print(f"  ub = {frazione(ub2b)}")
+
+# -- certificato duale: la stessa ricetta, su t = 4 --
+mano_2b, migliore_2b, scelto_2b = {}, -1.0, None
+for j in R(r2):
+    prova = {f"alpha[{jj}]": (min(w2[i] / g2[i][jj] for i in R(s2) if g2[i][jj] > 0)
+                              if jj == j else 0.0) for jj in R(r2)}
+    val, viol = valuta(dl2b, prova)
+    if viol <= 1e-9 and val > migliore_2b:
+        migliore_2b, scelto_2b, mano_2b = val, j, prova
+lb2b, viol_2b = valuta(dl2b, mano_2b)
+assert viol_2b <= 1e-9, viol_2b
+print("Soluzione duale a mano: la stessa ricetta del problema base --- beta = mu = tau = 0 e")
+print(f"  un solo alpha positivo, sul {NUTRIENTI[scelto_2b]}. La varieta' non si valuta: tau")
+print("  entra nell'obiettivo con il suo termine noto t, ma la colonna delle y_i impone")
+print("  tau <= c_i lam_i - d_i mu_i, e con lam = mu = 0 resta tau = 0. Chiedere un cibo in")
+print("  piu' non muove il rilassamento, muove l'ottimo intero.")
+print(f"  ->  lb = {frazione(lb2b)}")
+zlp2b, zlp2br, _ = due_rilassamenti(m2b, dl2b)
+z2b = risolvi(m2b)
+riga_2b = registra_bound("3b almeno quattro cibi", ub2b, lb2b, zlp2b, zlp2br, z2b)
+salva_dati(pd.DataFrame([riga_2b]), "fam10_3b_bound")
+assert lb2b <= zlp2b <= z2b <= ub2b + 1e-9
+

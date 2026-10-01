@@ -218,3 +218,40 @@ ax.axis("off")
 ax.set_title(f"12.2: piano ottimo con {frazione(z2)} scatole")
 salva_figura(fig, "cap10_spedizioni_ottimo")
 print("Fine.")
+
+# ---------- 5bis. IL SANDWICH SULLA VARIANTE 2a ----------
+intestazione("10.5a Il sandwich sulla variante: scatole da 4 unita' invece di 10")
+W2A = 4
+
+# Cambia la capacita' della scatola, non la struttura: modello, duale, euristica
+# e ricetta sono gli stessi con w = 4. Il certificato si riscala da solo, ed e'
+# il punto: il bound e' «unita' ordinate diviso capacita' della scatola».
+m2a, x2a, y2a = modello_2(d2, a2, W2A)
+salva_modello(m2a, "fam10_5a_primale")
+dl2a = duale_2(d2, a2, W2A)
+salva_modello(dl2a, "fam10_5a_duale")
+
+# -- euristica ammissibile: la stessa regola, con la scatola piu' piccola --
+x_2a, y_2a, passi_2a = euristica(d2, a2, W2A)
+ub2a = sum(y_2a.values())
+sol_2a = ({f"x[{p},{s},{c}]": x_2a[p, s, c] for p in R(nk) for s in R(nn) for c in R(nm)}
+          | {f"y[{s},{c}]": y_2a[s, c] for s in R(nn) for c in R(nm)})
+assert ammissibile(m2a, sol_2a), "la soluzione euristica della variante deve essere ammissibile"
+print(f"  Scatole usate dall'euristica: ub = {frazione(ub2a)}")
+
+# -- certificato duale: la stessa ricetta, con 1/w nuovo --
+mano_2a = ({f"gamma[{s},{c}]": 1 / W2A for s in R(nn) for c in R(nm)}
+           | {f"alpha[{p},{c}]": 1 / W2A for p in R(nk) for c in R(nm)})
+lb2a, viol_2a = valuta(dl2a, mano_2a)
+assert viol_2a <= 1e-9, viol_2a
+print(f"Soluzione duale a mano: beta = 0, gamma_sc = alpha_pc = 1/{W2A}, come nel problema")
+print("  base. I vincoli duali restano verificati per costruzione, e il bound e' sempre")
+print(f"  «unita' ordinate diviso capacita'»: {D2} / {W2A} = {frazione(lb2a)}.")
+print(f"  Con scatole da {w2} era {frazione(D2 / w2)}: il bound e' inversamente"
+      f" proporzionale alla capacita', quindi scatole piu' piccole lo alzano.")
+zlp2a, zlp2ar, _ = due_rilassamenti(m2a, dl2a)
+z2a_val = risolvi(m2a)
+riga_2a = registra_bound("2a scatole da 4", ub2a, lb2a, zlp2a, zlp2ar, z2a_val)
+salva_dati(pd.DataFrame([riga_2a]), "fam10_5a_bound")
+assert lb2a <= zlp2a <= z2a_val <= ub2a + 1e-9
+

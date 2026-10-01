@@ -178,17 +178,37 @@ l'ottimo. Il gap certificato, prima di risolvere il MILP, è $(15-12)/15 = 20\%$
     nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ??? question "10.9.2 — Scaffali più larghi"
     Gli scaffali sono larghi $12$ invece di $10$. Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
+
+## Il sandwich sulla variante 9b
+
+La larghezza non entra nel certificato: tutto il peso $\gamma$ va sul libro più
+alto (il $1$, alto $8$), e il bound resta $8$. Cambia l'euristica: con scaffali
+larghi $12$ il first-fit per larghezza decrescente incastra i quattro libri su
+due scaffali alti $5$ e $8$, e il suo costo scende da $15$ a $13$; l'ottimo da
+$15$ a $12$.
+
+<!-- tabella-variante: fam10_9b_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\mathit{UB}$ | $13$ | soluzione euristica |
+| $\mathit{LB}$ | $8$ | certificato duale costruito a mano |
+| $z(\mathit{LP})$ | $8$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $8$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $12$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
 
 ## Codice
 
@@ -201,7 +221,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_9_scaffali.py` (188 righe)"
+??? example "Mostra lo script completo — `python/fam10_9_scaffali.py` (227 righe)"
 
     ```python
     """Problema 11.4 -- Libri sugli scaffali: minimizzare la somma delle altezze.
@@ -392,6 +412,45 @@ Script completo —
     ax.set_title(f"11.4: somma delle altezze {frazione(z4)}")
     salva_figura(fig, "cap10_scaffali_ottimo")
     print("Fine.")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 4b ----------
+    intestazione("10.9b Il sandwich sulla variante: scaffali larghi 12 invece di 10")
+    C4B = 12
+
+    # Cambia la larghezza degli scaffali, non la struttura: stesso modello, stesso
+    # duale, stessa ricetta.
+    m4b, x4b, y4b = modello_4(w4, h4, C4B, m4)
+    salva_modello(m4b, "fam10_9b_primale")
+    dl4b = duale_4(w4, h4, C4B, m4)
+    salva_modello(dl4b, "fam10_9b_duale")
+
+    # -- euristica ammissibile: first-fit per larghezza decrescente, con il nuovo c --
+    ordine_4b = sorted(R(n4), key=lambda b: (-w4[b], b))
+    dove_4b, alt_4b, _ = first_fit(w4, h4, C4B, m4, ordine_4b,
+                                   f"Ordine per larghezza decrescente, scaffali da {C4B}:")
+    assert dove_4b is not None, "con scaffali piu' larghi il first-fit deve riuscire"
+    ub4b = sum(alt_4b)
+    sol_4b = ({f"x[{b},{dove_4b[b]}]": 1 for b in R(n4)}
+              | {f"y[{s}]": alt_4b[s] for s in R(m4)})
+    assert ammissibile(m4b, sol_4b), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  ub = {frazione(ub4b)}")
+
+    # -- certificato duale: la stessa ricetta, tutto il peso sul libro piu' alto --
+    alto_4b = max(R(n4), key=lambda b: h4[b])
+    mano_4b = ({f"gamma[{alto_4b},{s}]": 1.0 for s in R(m4)}
+               | {f"alpha[{alto_4b}]": float(h4[alto_4b])})
+    lb4b, viol_4b = valuta(dl4b, mano_4b)
+    assert viol_4b <= 1e-9, viol_4b
+    print(f"Soluzione duale a mano: beta = 0 e tutto il peso gamma sul libro piu' alto (il")
+    print(f"  {alto_4b + 1}, alto {h4[alto_4b]}), come nel problema base: qualunque scaffale lo")
+    print("  ospiti deve essere alto almeno quanto lui. La larghezza non entra nel certificato,")
+    print("  e infatti il bound non cambia: cambia l'euristica, che adesso riesce a incastrare.")
+    print(f"  ->  lb = {frazione(lb4b)}")
+    zlp4b, zlp4br, _ = due_rilassamenti(m4b, dl4b)
+    z4b_val = risolvi(m4b)
+    riga_4b = registra_bound("4b scaffali larghi 12", ub4b, lb4b, zlp4b, zlp4br, z4b_val)
+    salva_dati(pd.DataFrame([riga_4b]), "fam10_9b_bound")
+    assert lb4b <= zlp4b <= z4b_val <= ub4b + 1e-9
     ```
 
 <!-- script-incorporato: fine -->

@@ -189,18 +189,37 @@ maggiori di uno.
     modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ??? question "10.3.2 — Più varietà"
     Si vogliono almeno quattro cibi diversi invece di tre. Come cambia il
     modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
+
+## Il sandwich sulla variante 3b
+
+La variante cambia un dato, $t = 4$, non la struttura. Il conteggio dei cibi non
+si valuta: la colonna delle $y_i$ impone $\tau \le c_i \lambda_i - d_i \mu_i$, e
+con $\lambda = \mu = 0$ resta $\tau = 0$. Il bound duale non si muove, l'ottimo
+sì: l'euristica accende il quarto cibo al lotto minimo e raggiunge $31/3$.
+
+<!-- tabella-variante: fam10_3b_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\mathit{UB}$ | $\frac{31}{3}$ | soluzione euristica |
+| $\mathit{LB}$ | $9$ | certificato duale costruito a mano |
+| $z(\mathit{LP})$ | $\frac{28}{3}$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $\frac{31}{3}$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $\frac{31}{3}$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
 
 ## Codice
 
@@ -213,10 +232,10 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_3_dieta.py` (191 righe)"
+??? example "Mostra lo script completo — `python/fam10_3_dieta.py` (236 righe)"
 
     ```python
-    """Problema 10.2 -- Dieta con conteggio dei cibi e lotto minimo.
+    """Problema 10.3 -- Dieta con conteggio dei cibi e lotto minimo.
 
     Una dieta classica (quantita' continue, vincoli nutrizionali a due versi) con
     sopra tre tecniche intere: attivazione (3.2), lotto minimo (3.3) e conteggio dei
@@ -235,7 +254,7 @@ Notebook —
     R = range
 
     # ---------- 1. MODELLO E ISTANZA ----------
-    intestazione("10.2 Dieta: costo minimo con almeno t cibi diversi e lotto minimo per cibo")
+    intestazione("10.3 Dieta: costo minimo con almeno t cibi diversi e lotto minimo per cibo")
     CIBI = ["latte", "riso", "pane", "patate"]
     NUTRIENTI = ["ferro", "calcio"]
     w2 = [2, 3, 1, 4]                      # costo al chilo
@@ -363,7 +382,7 @@ Notebook —
     assert lb2 <= zlp2 <= z2 <= ub2 + 1e-9
 
     # ---------- 5. SENZA IL LOTTO MINIMO IL CONTEGGIO E' VUOTO ----------
-    intestazione("10.2 Perche' il lotto minimo serve al conteggio")
+    intestazione("10.3 Perche' il lotto minimo serve al conteggio")
     m, x, y = modello_2(w2, g2, a2, b2, [0] * s2, d2, t2)   # c_i = 0: nessun lotto minimo
     z_senza = risolvi(m)
     accesi = [CIBI[i] for i in R(s2) if y[i].X > 0.5]
@@ -385,10 +404,10 @@ Notebook —
 
     # 2a: il lotto minimo sale a 2 kg per ogni cibo scelto
     m, x, y = modello_2(w2, g2, a2, b2, [2] * s2, d2, t2)
-    varianti["2a"] = variante("2a. Il lotto minimo sale a 2 kg per cibo (c_i = 2)", m)
+    varianti["3a"] = variante("3a. Il lotto minimo sale a 2 kg per cibo (c_i = 2)", m)
     # 2b: si vogliono almeno quattro cibi diversi
     m, x, y = modello_2(w2, g2, a2, b2, c2, d2, 4)
-    varianti["2b"] = variante("2b. Si vogliono almeno quattro cibi diversi (t = 4)", m)
+    varianti["3b"] = variante("3b. Si vogliono almeno quattro cibi diversi (t = 4)", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
                "fam10_3_varianti")
 
@@ -403,10 +422,55 @@ Notebook —
     ax.set_xticks(idx)
     ax.set_xticklabels(CIBI)
     ax.set_ylabel("chili al mese")
-    ax.set_title(f"10.2: dieta euristica ({frazione(ub2)} EUR) e ottima ({frazione(z2)} EUR)")
+    ax.set_title(f"10.3: dieta euristica ({frazione(ub2)} EUR) e ottima ({frazione(z2)} EUR)")
     ax.legend(fontsize=8)
     salva_figura(fig, "cap10_dieta_ottimo")
     print("Fine.")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 2b ----------
+    intestazione("10.3b Il sandwich sulla variante: almeno quattro cibi diversi")
+    T2B = 4
+
+    # La variante cambia un dato, non la struttura: modello, duale ed euristica sono
+    # gli stessi con t = 4. Cambia il valore del certificato --- e cambia soprattutto
+    # l'euristica, che deve accendere un cibo in piu' al suo lotto minimo.
+    m2b, x2b, y2b = modello_2(w2, g2, a2, b2, c2, d2, T2B)
+    salva_modello(m2b, "fam10_3b_primale")
+    dl2b = duale_2(w2, g2, a2, b2, c2, d2, T2B)
+    salva_modello(dl2b, "fam10_3b_duale")
+
+    # -- euristica ammissibile: la stessa regola, con un cibo in piu' --
+    x_2b, passi_2b = euristica(w2, g2, a2, b2, c2, d2, T2B)
+    assert x_2b is not None, "l'euristica deve restare ammissibile con quattro cibi"
+    for i, s in enumerate(passi_2b, 1):
+        print(f"  Passo {i}. {s}")
+    ub2b = sum(w2[i] * x_2b[i] for i in R(s2))
+    sol_2b = ({f"x[{i}]": x_2b[i] for i in R(s2)}
+              | {f"y[{i}]": (1 if x_2b[i] > 1e-9 else 0) for i in R(s2)})
+    assert ammissibile(m2b, sol_2b), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  ub = {frazione(ub2b)}")
+
+    # -- certificato duale: la stessa ricetta, su t = 4 --
+    mano_2b, migliore_2b, scelto_2b = {}, -1.0, None
+    for j in R(r2):
+        prova = {f"alpha[{jj}]": (min(w2[i] / g2[i][jj] for i in R(s2) if g2[i][jj] > 0)
+                                  if jj == j else 0.0) for jj in R(r2)}
+        val, viol = valuta(dl2b, prova)
+        if viol <= 1e-9 and val > migliore_2b:
+            migliore_2b, scelto_2b, mano_2b = val, j, prova
+    lb2b, viol_2b = valuta(dl2b, mano_2b)
+    assert viol_2b <= 1e-9, viol_2b
+    print("Soluzione duale a mano: la stessa ricetta del problema base --- beta = mu = tau = 0 e")
+    print(f"  un solo alpha positivo, sul {NUTRIENTI[scelto_2b]}. La varieta' non si valuta: tau")
+    print("  entra nell'obiettivo con il suo termine noto t, ma la colonna delle y_i impone")
+    print("  tau <= c_i lam_i - d_i mu_i, e con lam = mu = 0 resta tau = 0. Chiedere un cibo in")
+    print("  piu' non muove il rilassamento, muove l'ottimo intero.")
+    print(f"  ->  lb = {frazione(lb2b)}")
+    zlp2b, zlp2br, _ = due_rilassamenti(m2b, dl2b)
+    z2b = risolvi(m2b)
+    riga_2b = registra_bound("3b almeno quattro cibi", ub2b, lb2b, zlp2b, zlp2br, z2b)
+    salva_dati(pd.DataFrame([riga_2b]), "fam10_3b_bound")
+    assert lb2b <= zlp2b <= z2b <= ub2b + 1e-9
     ```
 
 <!-- script-incorporato: fine -->

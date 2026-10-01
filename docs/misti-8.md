@@ -179,18 +179,39 @@ problema ha più ottimi.
     il modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 
 ??? question "10.8.2 — Tre CD"
     La raccolta si distribuisce su tre CD invece che su due. Come cambia il
     modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
-        metodo per rispondere è quello di ogni problema del corso: modello,
-        istanza, euristica per un bound, duale del rilassamento per l'altro.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
+
+## Il sandwich sulla variante 8b
+
+Con tre CD invece di due la struttura non cambia: le colonne di $y$ e $z$
+chiedono che le $\gamma$ e le $\delta$ sommino a uno, e spalmarle in parti
+uguali, $\gamma_j = \delta_j = 1/3$, non privilegia nessun CD. Il duale vale $0$
+come il rilassamento, perché una soluzione frazionaria spezza ogni brano in tre
+e pareggia le durate. L'euristica LPT lascia una differenza di $2$, che è
+l'ottimo.
+
+<!-- tabella-variante: fam10_8b_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\mathit{UB}$ | $2$ | soluzione euristica |
+| $\mathit{LB}$ | $0$ | certificato duale costruito a mano |
+| $z(\mathit{LP})$ | $0$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $0$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $2$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
 
 ## Codice
 
@@ -203,7 +224,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_8_cd.py` (185 righe)"
+??? example "Mostra lo script completo — `python/fam10_8_cd.py` (221 righe)"
 
     ```python
     """Problema 11.3 -- Brani su piu' CD: minimizzare la differenza fra il piu' lungo
@@ -391,6 +412,42 @@ Notebook —
     ax.invert_yaxis()
     salva_figura(fig, "cap10_cd_ottimo")
     print("Fine.")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 3b ----------
+    intestazione("10.8b Il sandwich sulla variante: la raccolta su tre CD")
+    M3B = 3
+    w3b = [1] * M3B
+
+    # Cambia il numero di CD, non la struttura: modello, duale, euristica e ricetta
+    # sono gli stessi con m = 3.
+    m3b, x3b, y3b, z3b = modello_3(d3, w3b)
+    salva_modello(m3b, "fam10_8b_primale")
+    dl3b = duale_3(d3, w3b)
+    salva_modello(dl3b, "fam10_8b_duale")
+
+    # -- euristica ammissibile: LPT sui tre CD --
+    ordine_3b = sorted(R(n3), key=lambda i: (-d3[i], i))
+    dove_3b, carichi_3b, ub3b = riempi(d3, M3B, ordine_3b,
+                                       "Euristica LPT sui tre CD: brani in ordine decrescente.")
+    sol_3b = ({f"x[{i},{dove_3b[i]}]": 1 for i in R(n3)}
+              | {"y": max(carichi_3b), "z": min(carichi_3b)})
+    assert ammissibile(m3b, sol_3b), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  ub = {frazione(ub3b)}")
+
+    # -- certificato duale: la stessa ricetta, su tre CD --
+    mano_3b = ({f"gamma[{j}]": 1 / M3B for j in R(M3B)}
+               | {f"delta[{j}]": 1 / M3B for j in R(M3B)})
+    lb3b, viol_3b = valuta(dl3b, mano_3b)
+    assert viol_3b <= 1e-9, viol_3b
+    print(f"Soluzione duale a mano: gamma_j = delta_j = 1/{M3B}, come nel problema base: le due")
+    print("  colonne di y e z chiedono che le gamma e le delta sommino a uno, e spalmarle in")
+    print("  parti uguali e' la scelta che non privilegia nessun CD. alpha = beta = 0.")
+    print(f"  ->  lb = {frazione(lb3b)}")
+    zlp3b, zlp3br, _ = due_rilassamenti(m3b, dl3b)
+    z3b_val = risolvi(m3b)
+    riga_3b = registra_bound("3b raccolta su tre CD", ub3b, lb3b, zlp3b, zlp3br, z3b_val)
+    salva_dati(pd.DataFrame([riga_3b]), "fam10_8b_bound")
+    assert lb3b <= zlp3b <= z3b_val <= ub3b + 1e-9
     ```
 
 <!-- script-incorporato: fine -->
