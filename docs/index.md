@@ -5,47 +5,35 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
 **Modelli di programmazione lineare intera per l'Ingegneria Gestionale.**
 
-> Un furgone da otto posti. Quattro gruppi di turisti, di $2$, $3$, $4$ e $5$
-> persone, che offrono $30$, $50$, $80$ e $70$ euro e non vogliono essere
-> separati. Se ne possono accettare al più due, e se accetti il secondo devi
-> accettare anche il quarto. Quanto incassi, al massimo?
+Il corso insegna tre cose, in quest'ordine: **tradurre** il testo di un problema
+in un modello con variabili binarie e intere, **risolverlo** con Gurobi da
+Python, e **certificare** la soluzione quando all'ottimo non ci si arriva.
 
-Tre righe di testo, e dentro c'è un problema che a occhio non si risolve e per
-tentativi nemmeno. Questo corso insegna a scriverlo come modello, a risolverlo
-con Gurobi in dieci righe di Python, e — la parte che di solito manca — a
-**sapere quanto vale la soluzione che hai in mano** anche quando il solver non
-arriva in fondo.
+L'ultima è la parte che di solito manca. Appena l'istanza cresce, il solver si
+ferma prima di aver dimostrato l'ottimalità, e quello che resta in mano sono due
+numeri. Una soluzione ammissibile, costruita a mano con un'euristica, dà il
+bound da un lato; una soluzione ammissibile del duale del rilassamento lineare
+dà il bound dall'altro. L'ottimo sta in mezzo, e la distanza fra i due dice
+quanto ci si può ancora guadagnare: se è piccola, la soluzione che si ha in mano
+si può usare senza aspettare oltre.
 
-Sono $38$ problemi risolti per intero, $44$ notebook che girano nel browser
-senza installare niente, e ogni numero che leggi è prodotto da uno script e
-verificato da un `assert`: se cambi un dato, cambiano le pagine.
+**Che cosa c'è dentro**
 
-<div class="grid cards" markdown>
+- sei capitoli di modellazione: logica e variabili binarie, i quattordici legami
+  fra variabili con le loro dimostrazioni, rilassamenti e bound, euristiche
+  costruttive, e il passaggio a Python/Gurobi;
+- quindici modelli numerici, uno per tecnica, con i dati scritti per esteso;
+- ventitré problemi risolti per intero — assegnamento e scheduling,
+  localizzazione e copertura, pianificazione della produzione, problemi misti —
+  ciascuno con euristica, duale, ottimo e una variante svolta;
+- due problemi dati come arrivano davvero, senza il modello già scritto;
+- quarantaquattro [notebook](notebook.md) che girano in Colab, senza
+  installare niente.
 
--   :material-text-box-outline: **Si parte da un testo**
+Nessun risultato è trascritto a mano: ogni numero che si legge viene da uno
+script che si può rilanciare, e un controllo automatico verifica che il testo e
+il codice dicano la stessa cosa.
 
-    Quattro righe di enunciato, dei dati, una domanda.
-
--   :material-function-variant: **Si scrive il modello**
-
-    Variabili con il loro dominio, obiettivo, vincoli — e il legame fra le
-    variabili spiegato, non solo scritto.
-
--   :material-arrow-collapse-vertical: **Si racchiude l'ottimo**
-
-    $\mathit{LB} \le z(\mathit{MILP}) \le \mathit{UB}$: un'euristica da
-    sopra, un certificato duale da sotto.
-
--   :material-language-python: **Si risolve**
-
-    Gurobi da Python, con lo script completo in pagina e un notebook che si
-    apre in Colab.
-
-</div>
-
-Tutti i modelli si possono eseguire **subito nel browser**: ogni script del
-corso ha il suo [notebook che si apre in Colab](notebook.md), senza installare
-niente.
 
 !!! tip "Il metodo del corso"
     Per ogni problema: modello → legami fra le variabili → istanza →
