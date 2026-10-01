@@ -54,7 +54,7 @@ Python sotto licenza
     il percorso, i criteri di valutazione, le domande tipiche di discussione,
     gli errori più comuni e la riproducibilità dei numeri.
 
-    [:octicons-download-24: dispensa-4-organizzazione.pdf](pdf/dispensa-4-organizzazione.pdf)
+    [:octicons-download-24: organizzazione-del-corso.pdf](pdf/organizzazione-del-corso.pdf)
 
 -   :material-help-circle-outline: **Problemi da modellare**
 
@@ -64,7 +64,7 @@ Python sotto licenza
     venti con i dati numerici espliciti e venti in forma simbolica. Le soluzioni
     sono riservate ai docenti.
 
-    [:octicons-download-24: dispensa-5-damodellare.pdf](pdf/dispensa-5-damodellare.pdf)
+    [:octicons-download-24: esercizi.pdf](pdf/esercizi.pdf)
 
 -   :material-presentation: **Le slide del corso**
 
