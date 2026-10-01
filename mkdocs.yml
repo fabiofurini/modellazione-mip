@@ -1,6 +1,6 @@
 site_name: Modellazione MIP · Fabio Furini
 site_description: >-
-  Modelli di programmazione lineare intera per l'Ingegneria Gestionale:
+  Modelli di programmazione lineare intera per prendere decisioni ottime:
   costruirli, dimostrarli, stringerli con bound e risolverli con Gurobi.
 site_author: Fabio Furini
 repo_url: https://github.com/fabiofurini/modellazione-mip

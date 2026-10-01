@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "Se usi questo materiale, per favore citalo come segue."
-title: "Modellazione MIP: modelli di programmazione lineare intera per l'Ingegneria Gestionale"
+title: "Modellazione MIP: modelli di programmazione lineare intera per prendere decisioni ottime"
 abstract: >-
   Corso di modellazione con variabili intere e binarie: tecniche generali
   (logica e variabili binarie, legami fra variabili, big-M, bound duali del
