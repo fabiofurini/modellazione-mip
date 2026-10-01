@@ -41,8 +41,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 !!! abstract "N3 — Antenne su cinque quartieri"
 
     Una città ha cinque quartieri e quattro possibili siti per le antenne. Il
-    sito~1 copre i quartieri $\{1,2\}$, il sito~2 copre $\{2,3,4\}$, il sito~3 copre
-    $\{1,4,5\}$ e il sito~4 copre $\{3,5\}$. Ogni antenna costa lo stesso. Si vuole
+    sito 1 copre i quartieri $\{1,2\}$, il sito 2 copre $\{2,3,4\}$, il sito 3 copre
+    $\{1,4,5\}$ e il sito 4 copre $\{3,5\}$. Ogni antenna costa lo stesso. Si vuole
     coprire tutti i quartieri con il minimo numero di antenne.
 
 !!! abstract "N4 — Sette pacchi in scatole da dieci chili"
@@ -54,7 +54,7 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 !!! abstract "N5 — Due prodotti, tre reparti"
 
     Un'officina produce due articoli. Un pezzo del primo richiede $2$ ore nel
-    reparto~A, $1$ nel~B e $3$ nel~C; un pezzo del secondo richiede $1$, $3$ e $2$.
+    reparto A, $1$ nel B e $3$ nel C; un pezzo del secondo richiede $1$, $3$ e $2$.
     I reparti hanno $20$, $24$ e $30$ ore disponibili. I margini unitari sono $7$ e
     $6$ euro, e i pezzi si vendono solo interi. Si vuole il margine massimo.
 
