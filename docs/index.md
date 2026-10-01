@@ -135,5 +135,8 @@ nella pagina del [materiale scaricabile](materiale.md#rigenerare-tutto).
 
 ---
 
+Dello stesso autore: **[Laboratorio di Ricerca Operativa](https://fabiofurini.github.io/laboratorio-ricerca-operativa/)** —
+il modulo di laboratorio, con gli stessi strumenti e lo stesso stile.
+
 Materiale didattico di **[Fabio Furini](https://sites.google.com/view/fabiofurini/home-page)** —
 [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma.

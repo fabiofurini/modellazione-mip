@@ -23,17 +23,16 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     laboratorio e non possono essere finanziati insieme; il progetto $6$ ha senso
     solo se si finanzia anche il $1$. Si vuole il beneficio massimo.
 
-!!! abstract "N2 — Quattro corrieri, cinque consegne"
+!!! abstract "N2 — Tre corrieri, quattro consegne"
 
-    Cinque consegne vanno affidate a quattro corrieri. Il tempo che il corriere $i$
+    Quattro consegne vanno affidate a tre corrieri. Il tempo che il corriere $i$
     impiega per la consegna $j$, in minuti, è
 
-    |  | C1 | C2 | C3 | C4 | C5 |
-    |---|---|---|---|---|---|
-    | corriere 1 | 20 | 35 | 25 | 40 | 30 |
-    | corriere 2 | 25 | 20 | 30 | 35 | 45 |
-    | corriere 3 | 30 | 25 | 20 | 30 | 25 |
-    | corriere 4 | 40 | 30 | 35 | 20 | 35 |
+    |  | C1 | C2 | C3 | C4 |
+    |---|---|---|---|---|
+    | corriere 1 | 20 | 35 | 25 | 40 |
+    | corriere 2 | 25 | 20 | 30 | 35 |
+    | corriere 3 | 30 | 25 | 20 | 30 |
 
     Ogni consegna va a un corriere solo; ogni corriere lavora al più $60$ minuti. Si
     vuole il tempo totale minimo.
@@ -45,11 +44,11 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     $\{1,4,5\}$ e il sito 4 copre $\{3,5\}$. Ogni antenna costa lo stesso. Si vuole
     coprire tutti i quartieri con il minimo numero di antenne.
 
-!!! abstract "N4 — Sette pacchi in scatole da dieci chili"
+!!! abstract "N4 — Quattro pacchi in scatole da dieci chili"
 
-    Sette pacchi pesano $6$, $5$, $4$, $4$, $3$, $2$ e $2$ chili. Ogni scatola porta
-    al più $10$ chili e un pacco non si divide. Si vuole il minimo numero di
-    scatole.
+    Quattro pacchi pesano $6$, $5$, $4$ e $3$ chili. Ogni scatola porta al più $10$
+    chili e un pacco non si divide. Sono disponibili due scatole. Si vuole il minimo
+    numero di scatole.
 
 !!! abstract "N5 — Due prodotti, tre reparti"
 
@@ -72,35 +71,33 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     e $90$ euro. Il primo fornitore non può superare $40$ unità, il secondo $70$, il
     terzo $60$. Si vuole la spesa minima.
 
-!!! abstract "N8 — Cinque lavori su una macchina"
+!!! abstract "N8 — Quattro lavori su una macchina"
 
-    Cinque lavori vanno eseguiti uno dopo l'altro su una sola macchina. Le durate
-    sono $4$, $2$, $6$, $3$ e $5$ ore; le scadenze sono $8$, $5$, $14$, $10$ e $18$
-    ore dall'inizio. La macchina parte all'istante $0$ e non si ferma. Si vuole
+    Quattro lavori vanno eseguiti uno dopo l'altro su una sola macchina. Le durate
+    sono $4$, $2$, $6$ e $3$ ore; le scadenze sono $8$, $5$, $14$ e $10$ ore
+    dall'inizio. La macchina parte all'istante $0$ e non si ferma. Si vuole
     minimizzare il ritardo peggiore, cioè il massimo fra zero e la differenza fra il
     completamento e la scadenza.
 
-!!! abstract "N9 — Quattro magazzini e sei clienti"
+!!! abstract "N9 — Tre magazzini e tre clienti"
 
-    Sei clienti chiedono $12$, $8$, $15$, $10$, $6$ e $9$ pallet. Quattro magazzini
-    possono essere aperti, con capacità $30$, $25$, $20$ e $35$ pallet e costo fisso
-    di apertura $100$, $90$, $80$ e $120$. Il costo di trasporto per pallet dal
-    magazzino $l$ al cliente $c$ è
+    Tre clienti chiedono $12$, $8$ e $15$ pallet. Tre magazzini possono essere
+    aperti, con capacità $20$, $25$ e $18$ pallet e costo fisso di apertura $100$,
+    $90$ e $80$. Il costo di trasporto per pallet dal magazzino $l$ al cliente $c$ è
 
-    |  | c1 | c2 | c3 | c4 | c5 | c6 |
-    |---|---|---|---|---|---|---|
-    | magazzino 1 | 2 | 4 | 5 | 7 | 6 | 3 |
-    | magazzino 2 | 3 | 2 | 4 | 6 | 5 | 4 |
-    | magazzino 3 | 5 | 3 | 2 | 4 | 3 | 6 |
-    | magazzino 4 | 6 | 5 | 3 | 2 | 2 | 5 |
+    |  | c1 | c2 | c3 |
+    |---|---|---|---|
+    | magazzino 1 | 2 | 4 | 5 |
+    | magazzino 2 | 3 | 2 | 4 |
+    | magazzino 3 | 5 | 3 | 2 |
 
     Si vuole il costo totale minimo.
 
-!!! abstract "N10 — Sei studenti in tre gruppi"
+!!! abstract "N10 — Quattro studenti in due gruppi"
 
-    Sei studenti hanno voti medi $28$, $24$, $30$, $22$, $26$ e $25$. Vanno divisi in
-    tre gruppi da due. Si vuole che il gruppo con la media più alta e quello con la
-    media più bassa siano il più vicini possibile.
+    Quattro studenti hanno voti medi $28$, $24$, $30$ e $23$. Vanno divisi in due
+    gruppi da due. Si vuole che il gruppo con la media più alta e quello con la media
+    più bassa siano il più vicini possibile.
 
 !!! abstract "N11 — Cinque film in due sale"
 
@@ -121,8 +118,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     | ferro (mg) | 3 | 2 | 5 | 4 |
 
     Servono almeno $120$ grammi di proteine e $25$ milligrammi di ferro. Un alimento,
-    se entra nella razione, ci entra per almeno mezzo chilo. Si vuole la spesa
-    minima.
+    se entra nella razione, ci entra per almeno tre chili, e comunque mai per più
+    di dieci. Si vuole la spesa minima.
 
 !!! abstract "N13 — Acquisti a scaglioni"
 
@@ -144,31 +141,31 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     Una linea produce un articolo per tre mesi. Le domande sono $100$, $140$ e $80$
     pezzi. Produrre un pezzo costa $5$ euro; lanciare la produzione in un mese costa
     $300$ euro, indipendentemente dalla quantità; tenere un pezzo in magazzino a
-    fine mese costa $1$ euro. La linea produce al più $150$ pezzi al mese. Si parte e
+    fine mese costa $1$ euro. La linea produce al più $200$ pezzi al mese. Si parte e
     si finisce con magazzino vuoto. Si vuole il costo minimo.
 
-!!! abstract "N16 — Quattro container"
+!!! abstract "N16 — Due container"
 
-    Quattro container portano $20$, $15$, $25$ e $18$ tonnellate. Sei carichi pesano
-    $10$, $8$, $12$, $6$, $9$ e $14$ tonnellate. I carichi $1$ e $3$ sono
-    incompatibili e non viaggiano nello stesso container; il carico $6$ richiede un
-    container refrigerato, e lo sono solo il $2$ e il $4$. Ogni carico va imbarcato.
-    Usare un container costa $100$ euro. Si vuole il costo minimo.
+    Due container portano $20$ e $25$ tonnellate. Cinque carichi pesano $10$, $8$,
+    $12$, $6$ e $9$ tonnellate. I carichi $1$ e $3$ sono incompatibili e non
+    viaggiano nello stesso container; il carico $5$ richiede un container
+    refrigerato, e lo è solo il secondo. Ogni carico va imbarcato. Usare un
+    container costa $100$ euro. Si vuole il costo minimo.
 
-!!! abstract "N17 — Sei attività con precedenze"
+!!! abstract "N17 — Sei attività e due squadre"
 
-    Sei attività durano $3$, $2$, $4$, $1$, $5$ e $2$ giorni. L'attività $3$ comincia
-    solo dopo la $1$ e la $2$; la $5$ dopo la $3$; la $6$ dopo la $4$ e la $5$. Due
-    squadre lavorano in parallelo, e un'attività occupa una squadra per tutta la sua
-    durata. Si vuole finire il prima possibile.
+    Sei attività durano $3$, $2$, $4$, $1$, $5$ e $2$ giorni. Due squadre lavorano in
+    parallelo, e un'attività occupa una sola squadra per tutta la sua durata, senza
+    interruzioni. Ogni squadra svolge le sue attività una dopo l'altra. Si vuole
+    finire il prima possibile.
 
-!!! abstract "N18 — Cinque squadre di pronto intervento"
+!!! abstract "N18 — Due squadre di pronto intervento"
 
-    Cinque squadre vanno formate da un insieme di dieci tecnici. Ogni tecnico ha una
-    fra tre competenze: i tecnici $1$--$4$ hanno la prima, i $5$--$7$ la seconda, gli
-    $8$--$10$ la terza. Ogni squadra ha due tecnici e deve avere due competenze
-    diverse. Ogni tecnico sta in una squadra sola. I tecnici $3$ e $9$ non lavorano
-    insieme. Si vuole sapere se una formazione esiste.
+    Due squadre vanno formate da quattro tecnici. Ogni tecnico ha una fra tre
+    competenze: i tecnici $1$ e $2$ hanno la prima, il $3$ la seconda, il $4$ la
+    terza. Ogni squadra ha due tecnici e deve avere due competenze diverse. Ogni
+    tecnico sta in una squadra sola. I tecnici $1$ e $3$ non lavorano insieme. Si
+    vuole sapere se una formazione esiste.
 
 !!! abstract "N19 — Tre periodi con arretrati"
 
@@ -178,12 +175,11 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     periodo di ritardo. Tutto va consegnato entro la fine del terzo periodo. Si
     vuole il costo minimo.
 
-!!! abstract "N20 — Otto quadri su due pareti"
+!!! abstract "N20 — Cinque quadri su due pareti"
 
-    Otto quadri sono larghi $60$, $45$, $80$, $50$, $70$, $40$, $55$ e $65$
-    centimetri. Due pareti sono lunghe $240$ centimetri ciascuna. Ogni quadro va
-    appeso, e su una parete sola. Si vuole che lo spazio libero sulle due pareti sia
-    il più possibile uguale.
+    Cinque quadri sono larghi $60$, $45$, $80$, $50$ e $70$ centimetri. Due pareti
+    sono lunghe $180$ centimetri ciascuna. Ogni quadro va appeso, e su una parete
+    sola. Si vuole che lo spazio libero sulle due pareti sia il più possibile uguale.
 
 
 ## Venti problemi simbolici
