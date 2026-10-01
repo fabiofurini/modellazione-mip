@@ -200,6 +200,25 @@ accese, $\tilde x_{12} = \tilde x_{23} = \tilde x_{33} = 1$.
 
     !!! tip "Soluzione"
         La soluzione è nel documento delle soluzioni, riservato ai docenti.
+## Il sandwich sulla variante 2b
+
+Il legame fra attivazioni aggiunge $\rho \le 0$, ma qui non conviene muoverlo: la
+macchina 3 è il minimo per tutti i lavori. Il certificato resta quello del
+problema base — un legame fra attivazioni non tocca il rilassamento, che può
+accendere mezza macchina. A crescere è l'ottimo intero.
+
+<!-- tabella-variante: fam07_2b_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\ub$ | $12$ | soluzione euristica |
+| $\lb$ | $\frac{25}{4}$ | certificato duale costruito a mano |
+| $\zlp$ | $\frac{25}{4}$ | rilassamento senza i bound |
+| $\zlpp$ | $\frac{1273}{200}$ | rilassamento con i bound |
+| $\zmilp$ | $12$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
+
 ## Codice
 
 Script completo: [`python/fam07_2_costofisso.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_2_costofisso.py);
@@ -207,7 +226,7 @@ notebook: [`notebooks/fam07_2_costofisso.ipynb`](https://github.com/fabiofurini/
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam07_2_costofisso.py` (150 righe)"
+??? example "Mostra lo script completo — `python/fam07_2_costofisso.py` (215 righe)"
 
     ```python
     """Problema 7.2 -- Macchine con costo fisso di utilizzo.
@@ -333,6 +352,71 @@ notebook: [`notebooks/fam07_2_costofisso.ipynb`](https://github.com/fabiofurini/
     m.addConstr(y[0] <= y[2], name="1_implica_3")
     varianti["2b"] = variante("2b. Se si usa la macchina 1 si usa anche la 3 (y_1 <= y_3)", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_2_varianti")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 2b ----------
+    intestazione("2b. Il sandwich sulla variante: se si usa la macchina 1 si usa anche la 3")
+
+
+    def modello_2b(t, c, a):
+        mm_, xx, yy = modello_2(t, c, a)
+        mm_.addConstr(yy[0] - yy[2] <= 0, name="1_implica_3")
+        return mm_, xx, yy
+
+
+    def duale_2b(t, c, a):
+        """Al duale di 7.2 si aggiunge rho <= 0 per il vincolo y_1 - y_3 <= 0:
+        compare nella colonna di y_1 con segno piu' e in quella di y_3 con segno
+        meno. Il termine noto del vincolo e' zero, quindi l'obiettivo non cambia."""
+        nn, kk = len(t), len(a)
+        d = nuovo_modello("duale_costo_fisso_2b")
+        mu = d.addVars(nn, lb=-GRB.INFINITY, name="mu")
+        pi = d.addVars(kk, name="pi")
+        rho = d.addVar(lb=-GRB.INFINITY, ub=0.0, name="rho")
+        d.setObjective(mu.sum(), GRB.MAXIMIZE)
+        d.addConstrs((mu[j] - t[j][mz] * pi[mz] <= 0 for j in R(nn) for mz in R(kk)), name="rc_x")
+        d.addConstr(a[0] * pi[0] + rho <= c[0], name="rc_y0")
+        d.addConstr(a[1] * pi[1] <= c[1], name="rc_y1")
+        d.addConstr(a[2] * pi[2] - rho <= c[2], name="rc_y2")
+        return d
+
+
+    m2b, x2b, y2b = modello_2b(t2, c2, a2)
+    salva_modello(m2b, "fam07_2b_primale")
+
+    # -- euristica ammissibile: la stessa del problema base, riparata --
+    print("Euristica costruttiva: si parte dalla soluzione del problema base e, se usa la")
+    print("macchina 1 senza la 3, si accende anche la 3 (riparazione a costo noto).")
+    e_base2 = min((e for _, e in eur2), key=lambda e: valore_2(e, c2))
+    usate = sorted({mz for (_, mz) in e_base2.x})
+    print(f"  soluzione base: macchine usate {[mz + 1 for mz in usate]}, costo "
+          f"{frazione(sum(c2[mz] for mz in usate))}")
+    usate_b = sorted(set(usate) | ({2} if 0 in usate else set()))
+    ub2b = sum(c2[mz] for mz in usate_b)
+    sol_2b = {f"x[{j},{mz}]": 1 for (j, mz) in e_base2.x} | {f"y[{mz}]": 1 for mz in usate_b}
+    assert ammissibile(m2b, sol_2b), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  dopo la riparazione: macchine {[mz + 1 for mz in usate_b]}  ->  ub = {frazione(ub2b)}")
+
+    # -- certificato duale --
+    d2b = duale_2b(t2, c2, a2)
+    salva_modello(d2b, "fam07_2b_duale")
+    mano_2b = {f"pi[{mz}]": c2[mz] / a2[mz] for mz in R(3)}
+    mano_2b.update({f"mu[{j}]": min(t2[j][mz] * mano_2b[f"pi[{mz}]"] for mz in R(3)) for j in R(3)})
+    mano_2b["rho"] = 0.0
+    lb2b, viol_2b = valuta(d2b, mano_2b)
+    assert viol_2b <= 1e-9, viol_2b
+    print("Soluzione duale a mano: rho = 0 e la ricetta del problema base, pi_m = c_m / a_m,")
+    print("  mu_j = min_m t_jm pi_m. Alzare pi_1 a spese di pi_3 non conviene: la macchina 3")
+    print("  e' il minimo per tutti e tre i lavori, quindi abbassare pi_3 abbassa ogni mu_j.")
+    print(f"  ->  lb = {frazione(lb2b)}")
+    zlp2b, zlp2br, _ = due_rilassamenti(m2b, d2b)
+    z2b = risolvi(m2b)
+    riga_2b = registra_bound("2b macchina 1 implica macchina 3", ub2b, lb2b, zlp2b, zlp2br, z2b)
+    salva_dati(pd.DataFrame([riga_2b]), "fam07_2b_bound")
+    assert lb2b <= zlp2b <= z2b <= ub2b + 1e-9
+    print("Il certificato non si muove rispetto al problema base: un legame fra attivazioni")
+    print("non tocca il rilassamento, perche' il rilassamento puo' accendere mezza macchina.")
+    print("Quello che cresce e' l'ottimo intero, quindi il divario.")
+
 
     # ---------- 6. FIGURE ----------
 

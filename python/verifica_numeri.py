@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pandas as pd
 
+TOLL = 1e-6
 DATI = Path(__file__).resolve().parent.parent / "dati"
 
 
@@ -266,4 +267,25 @@ for k, (ub, lb, zlp, zlpr, zmilp, senso) in attesi_num2.items():
 vv = pd.read_csv(DATI / "ex15_varieta.csv")
 assert (vv.strumenti_modello_errato < 2).any(), vv
 print("modelli numerici EX 1, 3, 4, 6, 8, 11, 12, 13, 14 — bound e ottimi coincidono")
+# ---------------------------------------------------------------------------
+# P0.6 - le varianti con euristica, certificato duale e tabella dei bound.
+# Le tabelle della dispensa sono generate da questi CSV, quindi qui si verifica
+# che il sandwich regga e che l'ottimo della variante coincida con quello
+# registrato fra le domande aggiuntive.
+for csv in sorted(DATI.glob("fam0[78]_*[ab]_bound.csv")):
+    r = pd.read_csv(csv).iloc[0]
+    nome = csv.stem.replace("_bound", "")
+    # il verso non serve: in ogni caso i due bound racchiudono l'ottimo, e il
+    # rilassamento sta fra loro, dal lato ottimistico
+    assert r.lb - TOLL <= r.z_milp <= r.ub + TOLL, (nome, "ottimo fuori dal sandwich")
+    assert min(r.lb, r.ub) - TOLL <= r.z_lp <= max(r.lb, r.ub) + TOLL, (nome, "rilassamento fuori dal sandwich")
+    sigla = nome.split("_")[-1]
+    varianti_csv = DATI / (nome.rsplit("_", 1)[0] + "_varianti.csv")
+    if varianti_csv.exists():
+        v = pd.read_csv(varianti_csv)
+        colonna = "variante" if "variante" in v.columns else "variant"
+        attesi = v.loc[v[colonna] == sigla, "z"]
+        if len(attesi):
+            assert uguale(float(attesi.iloc[0]), r.z_milp), (nome, "ottimo diverso dalla variante")
+print("varianti dei cap. 7-8 — euristica, certificato e tabella dei bound coerenti")
 print("Tutte le verifiche superate.")

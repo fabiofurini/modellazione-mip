@@ -116,6 +116,86 @@ m.setObjective(m.getObjective() + gp.quicksum(g1[mm] * y[mm] for mm in R(3)), GR
 varianti["1b"] = variante("1b. Costo fisso g_m = 3 per macchina usata (x_jm <= y_m)", m)
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_1_varianti")
 
+# ---------- 5bis. IL SANDWICH SULLA VARIANTE 1a ----------
+# Una variante non si limita a cambiare l'ottimo: cambia anche i due bound, e il
+# bound duale si costruisce con la stessa ricetta del problema base, arricchita
+# dalla famiglia duale nuova.
+intestazione("1a. Il sandwich sulla variante: lavori 1 e 3 sulla stessa macchina")
+
+
+def modello_1a(t, c, a):
+    """Il modello 7.1 con il vincolo x_1m = x_3m per ogni macchina."""
+    mm_, xx = modello_1(t, c, a)
+    mm_.addConstrs((xx[0, mz] - xx[2, mz] == 0 for mz in R(len(a))), name="insieme")
+    return mm_, xx
+
+
+def duale_1a(t, c, a):
+    """Il duale del rilassamento: al duale di 7.1 si aggiunge una variabile
+    libera sigma_m per ciascuna uguaglianza x_1m - x_3m = 0. Le colonne dei
+    lavori 1 e 3 la vedono con segno opposto."""
+    nn, kk = len(t), len(a)
+    d = nuovo_modello("duale_assegnamento_1a")
+    mu = d.addVars(nn, lb=-GRB.INFINITY, name="mu")
+    pi = d.addVars(kk, lb=-GRB.INFINITY, ub=0.0, name="pi")
+    sg = d.addVars(kk, lb=-GRB.INFINITY, name="sigma")
+    d.setObjective(mu.sum() + gp.quicksum(a[mz] * pi[mz] for mz in R(kk)), GRB.MAXIMIZE)
+    for mz in R(kk):
+        d.addConstr(mu[0] + t[0][mz] * pi[mz] + sg[mz] <= c[0][mz], name=f"rc0{mz}")
+        d.addConstr(mu[1] + t[1][mz] * pi[mz] <= c[1][mz], name=f"rc1{mz}")
+        d.addConstr(mu[2] + t[2][mz] * pi[mz] - sg[mz] <= c[2][mz], name=f"rc2{mz}")
+    return d
+
+
+m1a, x1a = modello_1a(t1, c1, a1)
+salva_modello(m1a, "fam07_1a_primale")
+
+# -- euristica ammissibile: si sceglie la macchina della coppia, poi il resto --
+print("Euristica costruttiva: si prova la coppia (1, 3) su ogni macchina che la")
+print("regge, poi il lavoro 2 va alla macchina piu' economica fra quelle capienti.")
+migliore = None
+for mz in R(k):
+    if t1[0][mz] + t1[2][mz] > a1[mz]:
+        print(f"  coppia sulla macchina {mz + 1}: servono "
+              f"{t1[0][mz] + t1[2][mz]} minuti su {a1[mz]} -> non ci sta")
+        continue
+    residuo = [a1[q] - (t1[0][mz] + t1[2][mz] if q == mz else 0) for q in R(k)]
+    capienti = [q for q in R(k) if t1[1][q] <= residuo[q]]
+    if not capienti:
+        print(f"  coppia sulla macchina {mz + 1}: il lavoro 2 non sta da nessuna parte")
+        continue
+    scelta = min(capienti, key=lambda q: c1[1][q])
+    valore = c1[0][mz] + c1[2][mz] + c1[1][scelta]
+    print(f"  coppia sulla macchina {mz + 1} (costo {c1[0][mz] + c1[2][mz]}), "
+          f"lavoro 2 sulla macchina {scelta + 1} (costo {c1[1][scelta]})  ->  {valore}")
+    if migliore is None or valore < migliore[0]:
+        migliore = (valore, mz, scelta)
+ub1a, mz_coppia, mz_due = migliore
+sol_1a = {f"x[0,{mz_coppia}]": 1, f"x[2,{mz_coppia}]": 1, f"x[1,{mz_due}]": 1}
+assert ammissibile(m1a, sol_1a), "la soluzione euristica della variante deve essere ammissibile"
+print(f"  ub = {frazione(ub1a)}")
+
+# -- certificato duale: la coppia permette di valutare insieme i lavori 1 e 3 --
+d1a = duale_1a(t1, c1, a1)
+salva_modello(d1a, "fam07_1a_duale")
+coppia = min(c1[0][mz] + c1[2][mz] for mz in R(k))
+mano_1a = {"mu[0]": min(c1[0]), "mu[1]": min(c1[1]), "mu[2]": coppia - min(c1[0])}
+mano_1a.update({f"sigma[{mz}]": c1[0][mz] - min(c1[0]) for mz in R(k)})
+lb1a, viol_1a = valuta(d1a, mano_1a)
+assert viol_1a <= 1e-9, viol_1a
+print("Soluzione duale a mano: pi = 0; i vincoli delle colonne 1 e 3 danno")
+print(f"  mu_1 + mu_3 <= min_m (c_1m + c_3m) = {frazione(coppia)}, cioe' i due lavori")
+print("  si valutano insieme perche' vanno insieme. Si pone mu_1 = min_m c_1m,")
+print("  mu_3 = la differenza, sigma_m = c_1m - mu_1, e mu_2 = min_m c_2m.")
+print(f"  ->  lb = {frazione(lb1a)}   (la ricetta del problema base darebbe "
+      f"{frazione(sum(min(c1[j]) for j in R(n)))}: la coppia vale di piu')")
+zlp1a, zlp1ar, _ = due_rilassamenti(m1a, d1a)
+z1a = risolvi(m1a)
+riga_1a = registra_bound("1a lavori 1 e 3 insieme", ub1a, lb1a, zlp1a, zlp1ar, z1a)
+salva_dati(pd.DataFrame([riga_1a]), "fam07_1a_bound")
+assert lb1a <= zlp1a <= z1a <= ub1a + 1e-9
+
+
 # ---------- 6. FIGURE ----------
 
 

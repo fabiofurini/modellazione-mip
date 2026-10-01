@@ -149,6 +149,25 @@ viene in mente, non la migliore.
 
     !!! tip "Soluzione"
         La soluzione è nel documento delle soluzioni, riservato ai docenti.
+## Il sandwich sulla variante 4a
+
+Il min-max toglie il costo alle $y_m$ e aggiunge $\nu_m \ge 0$ con
+$\sum_m \nu_m \le 1$. Conviene valutare il lavoro più lungo: il $\nu$ che
+massimizza $\min_m t_{jm}\nu_m$ rende quel prodotto costante, e il bound è la
+media armonica dei suoi tempi. La ricetta è **ottima** per il rilassamento.
+
+<!-- tabella-variante: fam07_4a_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\ub$ | $13$ | soluzione euristica |
+| $\lb$ | $\frac{260}{59}$ | certificato duale costruito a mano |
+| $\zlp$ | $\frac{260}{59}$ | rilassamento senza i bound |
+| $\zlpp$ | $\frac{260}{59}$ | rilassamento con i bound |
+| $\zmilp$ | $10$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
+
 ## Codice
 
 Script completo: [`python/fam07_4_parallelo.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_4_parallelo.py);
@@ -156,7 +175,7 @@ notebook: [`notebooks/fam07_4_parallelo.ipynb`](https://github.com/fabiofurini/m
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam07_4_parallelo.py` (126 righe)"
+??? example "Mostra lo script completo — `python/fam07_4_parallelo.py` (196 righe)"
 
     ```python
     """Problema 7.4 -- Lavori in parallelo: il tempo di lavorazione come massimo.
@@ -283,6 +302,76 @@ notebook: [`notebooks/fam07_4_parallelo.ipynb`](https://github.com/fabiofurini/m
     m.setObjective(y.sum() + gp.quicksum(g4[mm] * vv[mm] for mm in R(3)), GRB.MINIMIZE)
     varianti["4b"] = variante("4b. Costo fisso 4 se la macchina lavora (y_m <= M_m v_m)", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_4_varianti")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 4a ----------
+    intestazione("4a. Il sandwich sulla variante: minimizzare il massimo dei tempi")
+
+
+    def modello_4a(t, p):
+        mm_, xx, yy = modello_4(t, p)
+        ww = mm_.addVar(name="w")
+        mm_.addConstrs((ww - yy[mz] >= 0 for mz in R(len(p))), name="minmax")
+        mm_.setObjective(ww, GRB.MINIMIZE)
+        return mm_, xx, yy, ww
+
+
+    def duale_4a(t, p):
+        """Rispetto al duale di 7.4 cambiano due cose: y_m non ha piu' costo, e
+        arriva nu_m >= 0 per il vincolo w - y_m >= 0. Le colonne diventano
+        x_jm: mu_j + pi_m - t_jm lam_jm <= 0;  y_m: sum_j lam_jm - nu_m <= 0;
+        w: sum_m nu_m <= 1."""
+        nn, kk = len(t), len(p)
+        d = nuovo_modello("duale_parallelo_4a")
+        mu = d.addVars(nn, lb=-GRB.INFINITY, name="mu")
+        pi = d.addVars(kk, lb=-GRB.INFINITY, ub=0.0, name="pi")
+        lam = d.addVars(nn, kk, name="lam")
+        nu = d.addVars(kk, name="nu")
+        d.setObjective(mu.sum() + gp.quicksum(p[mz] * pi[mz] for mz in R(kk)), GRB.MAXIMIZE)
+        d.addConstrs((mu[j] + pi[mz] - t[j][mz] * lam[j, mz] <= 0
+                      for j in R(nn) for mz in R(kk)), name="rc_x")
+        d.addConstrs((lam.sum("*", mz) - nu[mz] <= 0 for mz in R(kk)), name="rc_y")
+        d.addConstr(nu.sum() <= 1, name="rc_w")
+        return d
+
+
+    m4a, x4a, y4a, w4a = modello_4a(t4, p4)
+    salva_modello(m4a, "fam07_4a_primale")
+
+    # -- euristica ammissibile: la stessa assegnazione, letta col nuovo obiettivo --
+    print("Euristica costruttiva: l'assegnazione del problema base e' ammissibile anche qui;")
+    print("cambia solo come la si valuta, perche' adesso conta il massimo e non la somma.")
+    assegnazione = sorted(xe)
+    carichi = [max([t4[j][mz] for (j, q) in assegnazione if q == mz] + [0]) for mz in R(3)]
+    ub4a = max(carichi)
+    sol_4a = ({f"x[{j},{mz}]": 1 for (j, mz) in assegnazione}
+              | {f"y[{mz}]": carichi[mz] for mz in R(3)} | {"w": ub4a})
+    assert ammissibile(m4a, sol_4a), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  tempi per macchina {carichi}  ->  ub = {frazione(ub4a)}")
+
+    # -- certificato duale: tutto il peso sul lavoro piu' lungo --
+    d4a = duale_4a(t4, p4)
+    salva_modello(d4a, "fam07_4a_duale")
+    # con un solo lavoro valutato, lam_jm = nu_m e mu_j <= min_m t_jm nu_m: il nu che
+    # massimizza quel minimo rende t_jm nu_m costante, cioe' nu_m proporzionale a 1/t_jm
+    lungo = max(R(3), key=lambda j: min(t4[j]))
+    somma_inversi = sum(1 / t4[lungo][mz] for mz in R(3))
+    nu_b = {mz: (1 / t4[lungo][mz]) / somma_inversi for mz in R(3)}
+    mano_4a = {f"nu[{mz}]": nu_b[mz] for mz in R(3)}
+    mano_4a.update({f"lam[{lungo},{mz}]": nu_b[mz] for mz in R(3)})
+    mano_4a[f"mu[{lungo}]"] = 1 / somma_inversi
+    lb4a, viol_4a = valuta(d4a, mano_4a)
+    assert viol_4a <= 1e-9, viol_4a
+    print(f"Soluzione duale a mano: si valuta il solo lavoro {lungo + 1}, il piu' lungo su ogni")
+    print("  macchina. Con lam_jm = nu_m il vincolo della colonna di w da' sum_m nu_m <= 1, e")
+    print("  il nu che massimizza min_m t_jm nu_m rende quel prodotto costante: nu_m e'")
+    print("  proporzionale a 1/t_jm. Il bound e' la media armonica dei tempi di quel lavoro,")
+    print(f"  1 / sum_m (1/t_jm) = {frazione(lb4a)}.")
+    zlp4a, zlp4ar, _ = due_rilassamenti(m4a, d4a)
+    z4a = risolvi(m4a)
+    riga_4a = registra_bound("4a min-max dei tempi", ub4a, lb4a, zlp4a, zlp4ar, z4a)
+    salva_dati(pd.DataFrame([riga_4a]), "fam07_4a_bound")
+    assert lb4a <= zlp4a <= z4a <= ub4a + 1e-9
+
 
     print("Fine.")
     ```

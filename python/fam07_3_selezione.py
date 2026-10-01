@@ -110,4 +110,82 @@ m.addConstr(x.sum(2, "*") <= x.sum(1, "*"), name="3_solo_se_2")
 varianti["3b"] = variante("3b. Il lavoro 3 si esegue solo se si esegue il lavoro 2", m)
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_3_varianti")
 
+# ---------- 5bis. IL SANDWICH SULLA VARIANTE 3b ----------
+intestazione("3b. Il sandwich sulla variante: il lavoro 3 solo se anche il lavoro 2")
+
+
+def modello_3b(t, r, c, a):
+    mm_, xx, yy = modello_3(t, r, c, a)
+    mm_.addConstr(xx.sum(2, "*") - xx.sum(1, "*") <= 0, name="3_solo_se_2")
+    return mm_, xx, yy
+
+
+def duale_3b(t, r, c, a):
+    """Al duale di 7.3 si aggiunge lambda >= 0 per il vincolo
+    sum_m x_3m - sum_m x_2m <= 0: compare con segno piu' nelle colonne del
+    lavoro 3 e con segno meno in quelle del lavoro 2. Il termine noto e' zero,
+    quindi l'obiettivo resta min sum_j mu_j."""
+    nn, kk = len(t), len(a)
+    d = nuovo_modello("duale_selezione_3b")
+    mu = d.addVars(nn, name="mu")
+    pi = d.addVars(kk, name="pi")
+    lam = d.addVar(name="lambda")
+    d.setObjective(mu.sum(), GRB.MINIMIZE)
+    for mz in R(kk):
+        d.addConstr(mu[0] + t[0] * pi[mz] >= r[0], name=f"rc_x0{mz}")
+        d.addConstr(mu[1] + t[1] * pi[mz] - lam >= r[1], name=f"rc_x1{mz}")
+        d.addConstr(mu[2] + t[2] * pi[mz] + lam >= r[2], name=f"rc_x2{mz}")
+    d.addConstrs((-a[mz] * pi[mz] >= -c[mz] for mz in R(kk)), name="rc_y")
+    return d
+
+
+m3b, x3b, y3b = modello_3b(t3, r3, c3, a3)
+salva_modello(m3b, "fam07_3b_primale")
+
+# -- euristica ammissibile: la base, riparata togliendo il lavoro 3 se il 2 manca --
+print("Euristica costruttiva: si parte dalla soluzione del problema base e, se esegue il")
+print("lavoro 3 senza il 2, si toglie il lavoro 3 (la riparazione e' sempre ammissibile).")
+e_base3 = max((e for _, e in eur3), key=lambda e: valore_3(e, r3, c3))
+scelti = {j for (j, _) in e_base3.x}
+print(f"  soluzione base: lavori {sorted(j + 1 for j in scelti)}, valore "
+      f"{frazione(valore_3(e_base3, r3, c3))}")
+tenuti = [(j, mz) for (j, mz) in e_base3.x if not (j == 2 and 1 not in scelti)]
+macchine = sorted({mz for (_, mz) in tenuti})
+lb3b = sum(r3[j] for (j, _) in tenuti) - sum(c3[mz] for mz in macchine)
+sol_3b = {f"x[{j},{mz}]": 1 for (j, mz) in tenuti} | {f"y[{mz}]": 1 for mz in macchine}
+assert ammissibile(m3b, sol_3b), "la soluzione euristica della variante deve essere ammissibile"
+print(f"  dopo la riparazione: lavori {sorted(j + 1 for (j, _) in tenuti)}  ->  "
+      f"lb = {frazione(lb3b)}")
+
+# -- certificato duale: lambda sposta valore dal lavoro 3 al lavoro 2 --
+d3b = duale_3b(t3, r3, c3, a3)
+salva_modello(d3b, "fam07_3b_duale")
+pi_b = {mz: c3[mz] / a3[mz] for mz in R(3)}
+# il lambda piu' grande che non costringe mu_2 a crescere: mu_2 resta a zero
+# finche' lambda <= min_m (t_2 pi_m - r_2); oltre, quello che si guadagna su mu_3
+# si ripaga su mu_2, quindi ci si ferma li'.
+lam_b = max(0.0, min(t3[1] * pi_b[mz] - r3[1] for mz in R(3)))
+mano_3b = {f"pi[{mz}]": pi_b[mz] for mz in R(3)} | {"lambda": lam_b}
+mano_3b["mu[0]"] = max([0] + [r3[0] - t3[0] * pi_b[mz] for mz in R(3)])
+mano_3b["mu[1]"] = max([0] + [r3[1] + lam_b - t3[1] * pi_b[mz] for mz in R(3)])
+mano_3b["mu[2]"] = max([0] + [r3[2] - lam_b - t3[2] * pi_b[mz] for mz in R(3)])
+ub3b, viol_3b = valuta(d3b, mano_3b)
+assert viol_3b <= 1e-9, viol_3b
+print("Soluzione duale a mano: pi_m = c_m/a_m come nel problema base; poi si alza lambda")
+print("  fin dove il lavoro 2 lo regge a costo zero, cioe' lambda = min_m (t_2 pi_m - r_2).")
+if lam_b > 0:
+    print(f"  Qui lambda = {frazione(lam_b)}: sconta il lavoro 3 senza far crescere mu_2.")
+else:
+    print("  Qui quel minimo e' negativo, quindi lambda resta a zero: sul lavoro 2 non c'e'")
+    print("  margine da spendere, e il certificato della variante coincide con quello del")
+    print("  problema base. L'implicazione alza l'ottimo intero ma non tocca il rilassamento.")
+print(f"  ->  ub = {frazione(ub3b)}")
+zlp3b, zlp3br, _ = due_rilassamenti(m3b, d3b)
+z3b = risolvi(m3b)
+riga_3b = registra_bound("3b lavoro 3 solo con il lavoro 2", ub3b, lb3b, zlp3b, zlp3br, z3b,
+                         senso="max")
+salva_dati(pd.DataFrame([riga_3b]), "fam07_3b_bound")
+assert lb3b <= z3b <= zlp3b + 1e-9 <= ub3b + 1e-9
+
+
 print("Fine.")

@@ -148,6 +148,24 @@ economico per lui), i terminali 2 e 3 sull'hub 1. Gap euristica $5{,}3\%$.
 
     !!! tip "Soluzione"
         La soluzione è nel documento delle soluzioni, riservato ai docenti.
+## Il sandwich sulla variante 4b
+
+Vietare una connessione toglie una colonna dal primale, quindi **toglie** un
+vincolo dal duale: $\alpha_1$ può salire. È il caso in cui un vincolo in più nel
+primale *migliora* il certificato, invece di lasciarlo fermo.
+
+<!-- tabella-variante: fam08_4b_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\ub$ | $20$ | soluzione euristica |
+| $\lb$ | $\frac{21}{2}$ | certificato duale costruito a mano |
+| $\zlp$ | $\frac{25}{2}$ | rilassamento senza i bound |
+| $\zlpp$ | $\frac{79}{6}$ | rilassamento con i bound |
+| $\zmilp$ | $19$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
+
 ## Codice
 
 Script completo —
@@ -159,7 +177,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam08_4_hub.py` (164 righe)"
+??? example "Mostra lo script completo — `python/fam08_4_hub.py` (245 righe)"
 
     ```python
     """Problema 8.4 -- Localizzazione di hub con costo di connessione massimo.
@@ -174,7 +192,7 @@ Script completo —
     from gurobipy import GRB
 
     from euristiche import matrice, next_fit
-    from mip import (due_rilassamenti, frazione, nuovo_modello, registra_bound,
+    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                      rilassamento, risolvi, stampa_soluzione, valuta)
     from stile import intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
@@ -310,6 +328,87 @@ Script completo —
     mod.addConstr(x[0, 1] == 0, name="terminale1_non_hub2")
     varianti["4b"] = variante("4b. Il terminale 1 non può connettersi all'hub 2 (x_12 = 0)", mod)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam08_4_varianti")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 4b ----------
+    intestazione("4b. Il sandwich sulla variante: il terminale 1 non puo' usare l'hub 2")
+
+    VIETATA = (0, 1)      # (terminale, hub) proibito
+
+
+    def modello_4b(c, f, k, vietata=VIETATA):
+        mod_, xx, yy, zz = modello_4(c, f, k)
+        mod_.addConstr(xx[vietata] == 0, name="connessione_vietata")
+        return mod_, xx, yy, zz
+
+
+    def duale_4b(c, f, k, vietata=VIETATA):
+        """Vietare una connessione vuol dire togliere una colonna dal primale,
+        quindi togliere il vincolo corrispondente dal duale: alpha_1 non deve piu'
+        reggere il confronto con l'hub 2, e puo' salire."""
+        nn, mm = len(c), len(f)
+        dl = nuovo_modello("duale_hub_4b")
+        alpha = dl.addVars(nn, lb=-GRB.INFINITY, name="alpha")
+        beta = dl.addVars(mm, name="beta")
+        gamma = dl.addVars(nn, mm, name="gamma")
+        dl.setObjective(alpha.sum(), GRB.MAXIMIZE)
+        dl.addConstrs((alpha[i] - beta[j] - c[i][j] * gamma[i, j] <= 0
+                       for i in R(nn) for j in R(mm) if (i, j) != vietata), name="rc_x")
+        dl.addConstrs((k * beta[j] <= f[j] for j in R(mm)), name="rc_y")
+        dl.addConstrs((gp.quicksum(gamma[i, j] for i in R(nn)) <= 1 for j in R(mm)), name="rc_z")
+        return dl
+
+
+    m4b, x4b, y4b, z4b = modello_4b(c4, f4, k4)
+    salva_modello(m4b, "fam08_4b_primale")
+
+    # -- euristica ammissibile: la base, spostando il terminale vietato --
+    print("Euristica costruttiva: si parte dalla soluzione del problema base e, se il terminale")
+    print("vietato sta sull'hub proibito, lo si sposta sull'hub capiente di costo piu' basso.")
+    ass_4b = {i: j for (i, j), v in esito4.x.items() if v == 1}
+    ti, hj = VIETATA
+    if ass_4b.get(ti) == hj:
+        carichi = {j: sum(1 for q, jj in ass_4b.items() if jj == j and q != ti) for j in R(m)}
+        nuovo_hub = min((j for j in R(m) if j != hj and carichi[j] < k4), key=lambda j: c4[ti][j])
+        print(f"  il terminale {ti + 1} era sull'hub {hj + 1}: si sposta sull'hub {nuovo_hub + 1}")
+        ass_4b[ti] = nuovo_hub
+    else:
+        print(f"  il terminale {ti + 1} non era sull'hub {hj + 1}: niente da riparare")
+    y_4b = [1 if any(j == q for q in ass_4b.values()) else 0 for j in R(m)]
+    z_4b = [max([c4[i][j] for i, q in ass_4b.items() if q == j] + [0.0]) for j in R(m)]
+    ub4b = sum(f4[j] * y_4b[j] for j in R(m)) + sum(z_4b)
+    sol_4b = ({f"x[{i},{j}]": (1 if ass_4b[i] == j else 0) for i in R(n) for j in R(m)}
+              | {f"y[{j}]": y_4b[j] for j in R(m)} | {f"z[{j}]": z_4b[j] for j in R(m)})
+    assert ammissibile(m4b, sol_4b), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  ub = {frazione(ub4b)}")
+
+    # -- certificato duale: senza quella colonna, alpha_1 sale --
+    d4b = duale_4b(c4, f4, k4)
+    salva_modello(d4b, "fam08_4b_duale")
+    beta_4b = {j: f4[j] / k4 for j in R(m)}
+    # il terminale vietato puo' spendere un gamma su ogni hub che gli resta: ogni hub
+    # ha budget 1 e nessun altro terminale lo usa nella ricetta
+    mano_4b = {f"beta[{j}]": beta_4b[j] for j in R(m)}
+    mano_4b.update({f"gamma[{i},{j}]": 0.0 for i in R(n) for j in R(m)})
+    mano_4b.update({f"gamma[{ti},{j}]": 1.0 for j in R(m) if j != hj})
+    alpha_vietato = min(beta_4b[j] + c4[ti][j] for j in R(m) if j != hj)
+    alpha_altri = min(beta_4b.values())
+    mano_4b.update({f"alpha[{i}]": (alpha_vietato if i == ti else alpha_altri) for i in R(n)})
+    lb4b, viol_4b = valuta(d4b, mano_4b)
+    assert viol_4b <= 1e-9, viol_4b
+    print("Soluzione duale a mano: beta_j = f_j/k come nel problema base. Per i terminali")
+    print("  liberi alpha_i = min_j beta_j. Il terminale vietato, invece, non deve piu' reggere")
+    print("  il confronto con l'hub proibito: gli si da' un gamma su ciascuno degli hub che gli")
+    print("  restano (il budget di ogni hub e' 1 e nessun altro lo usa), e allora")
+    print(f"  alpha_{ti + 1} = min_(j != {hj + 1}) (beta_j + c_{ti + 1}j) = {frazione(alpha_vietato)}")
+    print(f"  invece di {frazione(alpha_altri)}.")
+    print(f"  ->  lb = {frazione(lb4b)}  (la ricetta del problema base darebbe "
+          f"{frazione(n * alpha_altri)})")
+    zlp4b, zlp4br, _ = due_rilassamenti(m4b, d4b)
+    z4b_val = risolvi(m4b)
+    riga_4b = registra_bound("4b connessione vietata", ub4b, lb4b, zlp4b, zlp4br, z4b_val)
+    salva_dati(pd.DataFrame([riga_4b]), "fam08_4b_bound")
+    assert lb4b <= zlp4b <= z4b_val <= ub4b + 1e-9
+
 
     # ---------- 6. FIGURE ----------
 

@@ -124,6 +124,25 @@ sedi 1 e 3 aperte (non 1 e 2 come nell'euristica): gap euristica $20{,}0\%$.
 
     !!! tip "Soluzione"
         La soluzione è nel documento delle soluzioni, riservato ai docenti.
+## Il sandwich sulla variante 2a
+
+L'algebra chiude la questione in una riga: la colonna delle $x_l$ impone
+$\varrho + \sigma \le 0$, e l'obiettivo contiene $k(\varrho + \sigma)$, mai
+positivo. Imporre **esattamente** $k$ sedi invece di **al più** $k$ non muove il
+rilassamento: muove l'ottimo intero.
+
+<!-- tabella-variante: fam08_2a_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\ub$ | $18$ | soluzione euristica |
+| $\lb$ | $13$ | certificato duale costruito a mano |
+| $\zlp$ | $15$ | rilassamento senza i bound |
+| $\zlpp$ | $15$ | rilassamento con i bound |
+| $\zmilp$ | $15$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
+
 ## Codice
 
 Script completo —
@@ -135,7 +154,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam08_2_pmediana.py` (144 righe)"
+??? example "Mostra lo script completo — `python/fam08_2_pmediana.py` (205 righe)"
 
     ```python
     """Problema 8.2 -- Localizzazione con numero massimo di sedi (p-mediana).
@@ -148,7 +167,7 @@ Script completo —
     import pandas as pd
     from gurobipy import GRB
 
-    from mip import (due_rilassamenti, frazione, nuovo_modello, registra_bound,
+    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                      risolvi, stampa_soluzione, valuta)
     from stile import CICLO, intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
@@ -262,6 +281,67 @@ Script completo —
     mod.addConstrs((y[l, 0] == 0 for l in R(3) if dist2[l][0] > 4), name="distanza_max_cliente1")
     varianti["2b"] = variante("2b. Il cliente 1 servito entro distanza 4 (y_l1 = 0 se d_l1 > 4)", mod)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam08_2_varianti")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 2a ----------
+    intestazione("2a. Il sandwich sulla variante: esattamente k sedi aperte")
+
+
+    def modello_2a(dist, k):
+        mod_, xx, yy = modello_2(dist, k)
+        mod_.addConstr(xx.sum() >= k, name="numero_sedi_esatto")
+        return mod_, xx, yy
+
+
+    def duale_2a(dist, k):
+        """Al duale di 8.2 si aggiunge sigma >= 0 per il vincolo sum_l x_l >= k
+        (verso >= in un minimo). Il termine noto e' k, quindi sigma entra
+        nell'obiettivo accanto a varrho, e nella colonna delle x_l accanto a esso."""
+        mm, nn = len(dist), len(dist[0])
+        dl = nuovo_modello("duale_p_mediana_2a")
+        mu = dl.addVars(nn, lb=-GRB.INFINITY, name="mu")
+        varrho = dl.addVar(lb=-GRB.INFINITY, ub=0.0, name="varrho")
+        sg = dl.addVar(name="sigma")
+        pi = dl.addVars(mm, nn, name="pi")
+        dl.setObjective(mu.sum() + k * varrho + k * sg, GRB.MAXIMIZE)
+        dl.addConstrs((varrho + sg + gp.quicksum(pi[l, c] for c in R(nn)) <= 0 for l in R(mm)),
+                      name="rc_x")
+        dl.addConstrs((mu[c] - pi[l, c] <= dist[l][c] for l in R(mm) for c in R(nn)), name="rc_y")
+        return dl
+
+
+    m2a, x2a, y2a = modello_2a(dist2, k2)
+    salva_modello(m2a, "fam08_2a_primale")
+
+    # -- euristica ammissibile: la stessa, che gia' apre esattamente k sedi --
+    print("Euristica costruttiva: la stessa del problema base, che apre le prime k sedi e manda")
+    print("ogni cliente alla piu' vicina fra quelle aperte. Aprendone esattamente k, e' gia'")
+    print("ammissibile per la variante.")
+    ub2a = sum(dist2[l][c] for (l, c) in ye)
+    sol_2a = ({f"x[{l}]": xe[l] for l in R(m)}
+              | {f"y[{l},{c}]": (1 if (l, c) in ye else 0) for l in R(m) for c in R(n)})
+    assert ammissibile(m2a, sol_2a), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  ub = {frazione(ub2a)}")
+
+    # -- certificato duale: sigma non puo' muoversi --
+    d2a = duale_2a(dist2, k2)
+    salva_modello(d2a, "fam08_2a_duale")
+    mano_2a = {"varrho": 0.0, "sigma": 0.0}
+    mano_2a.update({f"mu[{c}]": min(dist2[l][c] for l in R(m)) for c in R(n)})
+    lb2a, viol_2a = valuta(d2a, mano_2a)
+    assert viol_2a <= 1e-9, viol_2a
+    print("Soluzione duale a mano: pi = 0 e mu_c = min_l d_lc come nel problema base. Il nuovo")
+    print("  sigma non aiuta, e l'algebra lo dice in una riga: la colonna delle x_l impone")
+    print("  varrho + sigma <= 0, e l'obiettivo contiene k(varrho + sigma), che percio' non e'")
+    print("  mai positivo. Il massimo si ha con varrho + sigma = 0, e il valore torna sum_c mu_c.")
+    print(f"  ->  lb = {frazione(lb2a)}")
+    print("  Morale: imporre *esattamente* k sedi invece di *al piu'* k non muove il")
+    print("  rilassamento --- muove l'ottimo intero.")
+    zlp2a, zlp2ar, _ = due_rilassamenti(m2a, d2a)
+    z2a = risolvi(m2a)
+    riga_2a = registra_bound("2a esattamente k sedi", ub2a, lb2a, zlp2a, zlp2ar, z2a)
+    salva_dati(pd.DataFrame([riga_2a]), "fam08_2a_bound")
+    assert lb2a <= zlp2a <= z2a <= ub2a + 1e-9
+
 
     # ---------- 6. FIGURE ----------
 

@@ -4,11 +4,13 @@ Un «se e solo se» come nel problema 7.6: un verso (soglia+interferenza
 => coperto) è imposto da due famiglie di vincoli di link; l'altro verso
 (coperto => condizioni soddisfatte) segue dall'obiettivo.
 """
+from itertools import combinations as combinazioni
+
 import gurobipy as gp
 import pandas as pd
 from gurobipy import GRB
 
-from mip import (due_rilassamenti, frazione, nuovo_modello, registra_bound,
+from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                  risolvi, stampa_soluzione, valuta)
 from stile import intestazione, plt, salva_dati, salva_figura
 from esteso import salva_modello
@@ -130,6 +132,80 @@ mod, x, y, L = modello_3(s3, p3, t3, b3, k3)
 mod.addConstr(x[0] <= x[2], name="1_implica_3")
 varianti["3b"] = variante("3b. Se si apre la sede 1 si apre anche la 3 (x_1 <= x_3)", mod)
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam08_3_varianti")
+
+# ---------- 5bis. IL SANDWICH SULLA VARIANTE 3a ----------
+intestazione("3a. Il sandwich sulla variante: almeno 3 clienti coperti")
+
+
+def modello_3a(s, p, t, b, k, minimo=3):
+    mod_, xx, yy, LL = modello_3(s, p, t, b, k)
+    mod_.addConstr(yy.sum() >= minimo, name="copertura_minima")
+    return mod_, xx, yy, LL
+
+
+def duale_3a(s, p, t, b, k, minimo=3):
+    """Al duale di 8.3 si aggiunge omega <= 0 per il vincolo sum_c y_c >= minimo
+    (verso >= in un massimo): entra nell'obiettivo con il suo termine noto e
+    nelle colonne delle y_c."""
+    mm, nn = len(s), len(p)
+    L = [[l for l in R(mm) if s[l][c] >= b] for c in R(nn)]
+    C = [[c for c in R(nn) if l in L[c]] for l in R(mm)]
+    dl = nuovo_modello("duale_copertura_3a")
+    pi = dl.addVars(nn, name="pi")
+    lam = dl.addVars(nn, name="lam")
+    mu = dl.addVar(name="mu")
+    om = dl.addVar(lb=-GRB.INFINITY, ub=0.0, name="omega")
+    dl.setObjective(mm * lam.sum() + k * mu + minimo * om, GRB.MINIMIZE)
+    dl.addConstrs((-gp.quicksum(s[l][c] * pi[c] for c in R(nn))
+                   + gp.quicksum(lam[c] for c in C[l]) + mu >= 0 for l in R(mm)), name="rc_x")
+    dl.addConstrs((t * pi[c] + (mm - 1) * lam[c] + om >= p[c] for c in R(nn)), name="rc_y")
+    return dl
+
+
+m3a, x3a, y3a, L3a = modello_3a(s3, p3, t3, b3, k3)
+salva_modello(m3a, "fam08_3a_primale")
+
+# -- euristica ammissibile: si prova ogni scelta di k sedi e si tiene la migliore --
+print("Euristica costruttiva: le sedi sono poche, quindi si prova ogni scelta di k sedi e")
+print("si tiene quella che copre almeno 3 clienti con il profitto piu' alto.")
+migliore_3a = None
+for scelta in combinazioni(R(m), k3):
+    cop = []
+    for c in R(n):
+        segnale = sum(s3[l][c] for l in scelta)
+        forti = sum(1 for l in scelta if s3[l][c] >= b3)
+        if segnale >= t3 and forti <= 1:
+            cop.append(c)
+    valore = sum(p3[c] for c in cop)
+    print(f"  sedi {[l + 1 for l in scelta]}: clienti coperti {[c + 1 for c in cop]}, "
+          f"profitto {valore}" + ("" if len(cop) >= 3 else "  (meno di 3: non ammissibile)"))
+    if len(cop) >= 3 and (migliore_3a is None or valore > migliore_3a[0]):
+        migliore_3a = (valore, scelta, cop)
+lb3a, sedi_3a, cop_3a = migliore_3a
+sol_3a = ({f"x[{l}]": (1 if l in sedi_3a else 0) for l in R(m)}
+          | {f"y[{c}]": (1 if c in cop_3a else 0) for c in R(n)})
+assert ammissibile(m3a, sol_3a), "la soluzione euristica della variante deve essere ammissibile"
+print(f"  la migliore e' {[l + 1 for l in sedi_3a]}  ->  lb = {frazione(lb3a)}")
+
+# -- certificato duale: omega resta a zero, e si vede dal conto --
+d3a = duale_3a(s3, p3, t3, b3, k3)
+salva_modello(d3a, "fam08_3a_duale")
+mano_3a = {"mu": 0.0, "omega": 0.0}
+mano_3a.update({f"pi[{c}]": 0.0 for c in R(n)})
+mano_3a.update({f"lam[{c}]": p3[c] / (m - 1) for c in R(n)})
+ub3a, viol_3a = valuta(d3a, mano_3a)
+assert viol_3a <= 1e-9, viol_3a
+print("Soluzione duale a mano: pi = 0, mu = 0 e lam_c = p_c/(m-1) come nel problema base.")
+print("  Il nuovo omega conviene lasciarlo a zero: abbassarlo costringe lam_c a salire di")
+print("  -omega/(m-1) per ciascuno degli n clienti, e nell'obiettivo quelle m lam pesano")
+print("  m*n/(m-1) volte piu' di quanto il termine noto faccia risparmiare.")
+print(f"  ->  ub = {frazione(ub3a)}")
+zlp3a, zlp3ar, _ = due_rilassamenti(m3a, d3a)
+z3a = risolvi(m3a)
+riga_3a = registra_bound("3a almeno 3 clienti coperti", ub3a, lb3a, zlp3a, zlp3ar, z3a, senso="max")
+salva_dati(pd.DataFrame([riga_3a]), "fam08_3a_bound")
+assert lb3a <= z3a <= zlp3a + 1e-9 <= ub3a + 1e-9
+
 
 # ---------- 6. FIGURE ----------
 

@@ -150,6 +150,25 @@ L'euristica resta a $9$ (gap $57\%$): l'ordine di scansione conta.
 
     !!! tip "Soluzione"
         La soluzione è nel documento delle soluzioni, riservato ai docenti.
+## Il sandwich sulla variante 5a
+
+«Al più una classe» aggiunge $\theta \ge 0$ con termine noto $1$. Fissato il
+prezzo del tempo $\pi$, le altre duali sono forzate: la ricetta si riduce a
+cercare $\pi$ fra i rapporti $r_j/t_j$ e tenere il valore più basso. Il bound
+migliora di molto rispetto alla ricetta del problema base.
+
+<!-- tabella-variante: fam07_5a_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\ub$ | $\frac{157}{5}$ | soluzione euristica |
+| $\lb$ | $17$ | certificato duale costruito a mano |
+| $\zlp$ | $17$ | rilassamento senza i bound |
+| $\zlpp$ | $17$ | rilassamento con i bound |
+| $\zmilp$ | $17$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
+
 ## Codice
 
 Script completo: [`python/fam07_5_classisetup.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_5_classisetup.py);
@@ -157,7 +176,7 @@ notebook: [`notebooks/fam07_5_classisetup.ipynb`](https://github.com/fabiofurini
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam07_5_classisetup.py` (130 righe)"
+??? example "Mostra lo script completo — `python/fam07_5_classisetup.py` (210 righe)"
 
     ```python
     """Problema 7.5 -- Una macchina, classi di lavori con setup.
@@ -288,6 +307,86 @@ notebook: [`notebooks/fam07_5_classisetup.ipynb`](https://github.com/fabiofurini
     m.addConstr(y[2] <= y[0], name="3_solo_se_1")
     varianti["5b"] = variante("5b. La classe 3 si attiva solo se si attiva la classe 1 (y_3 <= y_1)", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_5_varianti")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 5a ----------
+    intestazione("5a. Il sandwich sulla variante: al piu' una classe attivata")
+
+
+    def modello_5a(r, t, J, f, s, a):
+        mm_, xx, yy = modello_5(r, t, J, f, s, a)
+        mm_.addConstr(yy.sum() <= 1, name="una_classe")
+        return mm_, xx, yy
+
+
+    def duale_5a(r, t, J, f, s, a):
+        """Al duale di 7.5 si aggiunge theta >= 0 per il vincolo sum_c y_c <= 1.
+        Il termine noto e' 1, quindi theta entra nell'obiettivo; e compare con
+        segno piu' nelle colonne delle y_c, che cosi' si allentano."""
+        nn, q = len(r), len(J)
+        d = nuovo_modello("duale_classi_setup_5a")
+        pi = d.addVar(name="pi")
+        lam = d.addVars(nn, name="lam")
+        th = d.addVar(name="theta")
+        d.setObjective(a * pi + th, GRB.MINIMIZE)
+        d.addConstrs((t[j] * pi + lam[j] >= r[j] for j in R(nn)), name="rc_x")
+        d.addConstrs((s[c] * pi - gp.quicksum(lam[j] for j in J[c]) + th >= -f[c] for c in R(q)),
+                     name="rc_y")
+        return d
+
+
+    m5a, x5a, y5a = modello_5a(r5, t5, J5, f5, s5, a5)
+    salva_modello(m5a, "fam07_5a_primale")
+
+    # -- euristica ammissibile: la base, ristretta alla classe migliore --
+    print("Euristica costruttiva: una classe per volta, si tiene la migliore. Dentro la classe")
+    print("i lavori entrano per rapporto r_j/t_j decrescente finche' il tempo lo permette.")
+    migliore_5a = (0.0, None, [])
+    for c in R(len(J5)):
+        residuo = a5 - s5[c]
+        presi = []
+        for j in sorted(J5[c], key=lambda j: -r5[j] / t5[j]):
+            if t5[j] <= residuo:
+                presi.append(j); residuo -= t5[j]
+        valore = sum(r5[j] for j in presi) - f5[c]
+        print(f"  classe {c + 1}: setup {s5[c]} minuti e costo {f5[c]}; lavori "
+              f"{[j + 1 for j in sorted(presi)]}  ->  {frazione(valore)}")
+        if valore > migliore_5a[0]:
+            migliore_5a = (valore, c, presi)
+    lb5a, classe_5a, presi_5a = migliore_5a
+    sol_5a = {f"x[{j}]": 1 for j in presi_5a} | {f"y[{classe_5a}]": 1}
+    assert ammissibile(m5a, sol_5a), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  la migliore e' la classe {classe_5a + 1}  ->  lb = {frazione(lb5a)}")
+
+    # -- certificato duale: il prezzo del tempo si cerca fra i rapporti r_j/t_j --
+    d5a = duale_5a(r5, t5, J5, f5, s5, a5)
+    salva_modello(d5a, "fam07_5a_duale")
+
+
+    def valore_duale_5a(pi_val):
+        """Dato il prezzo del tempo, le altre variabili duali sono forzate."""
+        lam_v = {j: max(0.0, r5[j] - t5[j] * pi_val) for j in R(len(r5))}
+        th_v = max([0.0] + [sum(lam_v[j] for j in J5[c]) - s5[c] * pi_val - f5[c]
+                            for c in R(len(J5))])
+        return a5 * pi_val + th_v, lam_v, th_v
+
+
+    candidati = sorted({r5[j] / t5[j] for j in R(len(r5))})
+    scelto = min(candidati, key=lambda p: valore_duale_5a(p)[0])
+    ub5a, lam_5a, th_5a = valore_duale_5a(scelto)
+    mano_5a = {"pi": scelto, "theta": th_5a} | {f"lam[{j}]": lam_5a[j] for j in R(len(r5))}
+    ub5a_val, viol_5a = valuta(d5a, mano_5a)
+    assert viol_5a <= 1e-9, viol_5a
+    print("Soluzione duale a mano: il prezzo del tempo pi si cerca fra i rapporti r_j/t_j;")
+    print("  fissato pi, le lam_j e theta sono forzate dai vincoli duali. Si tiene il pi che")
+    print(f"  da' il valore piu' basso: pi = {frazione(scelto)}, theta = {frazione(th_5a)}")
+    print(f"  ->  ub = {frazione(ub5a_val)}  (la ricetta del problema base, pi = max_j r_j/t_j,")
+    print(f"  darebbe {frazione(a5 * max(r5[j] / t5[j] for j in R(len(r5))))})")
+    zlp5a, zlp5ar, _ = due_rilassamenti(m5a, d5a)
+    z5a = risolvi(m5a)
+    riga_5a = registra_bound("5a al piu' una classe", ub5a_val, lb5a, zlp5a, zlp5ar, z5a, senso="max")
+    salva_dati(pd.DataFrame([riga_5a]), "fam07_5a_bound")
+    assert lb5a <= z5a <= zlp5a + 1e-9 <= ub5a_val + 1e-9
+
 
     print("Fine.")
     ```

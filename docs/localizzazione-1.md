@@ -153,6 +153,24 @@ resto del cliente 2 e tutto il cliente 3. Gap euristica $20{,}3\%$.
 
     !!! tip "Soluzione"
         La soluzione è nel documento delle soluzioni, riservato ai docenti.
+## Il sandwich sulla variante 1b
+
+$\rho \le 0$ sposta costo fisso fra le due sedi. Si prova fra i valori che fanno
+cambiare il minimo che definisce $\pi_c$; qui il migliore è $\rho = 0$, perché la
+sede 1 ha già il costo per litro più basso.
+
+<!-- tabella-variante: fam08_1b_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\ub$ | $439$ | soluzione euristica |
+| $\lb$ | $\frac{1581}{5}$ | certificato duale costruito a mano |
+| $\zlp$ | $325$ | rilassamento senza i bound |
+| $\zlpp$ | $325$ | rilassamento con i bound |
+| $\zmilp$ | $365$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
+
 ## Codice
 
 Script completo —
@@ -164,7 +182,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam08_1_capacitata.py` (163 righe)"
+??? example "Mostra lo script completo — `python/fam08_1_capacitata.py` (244 righe)"
 
     ```python
     """Problema 8.1 -- Localizzazione capacitata (costo minimo).
@@ -303,6 +321,87 @@ Script completo —
     mod.addConstr(x[1] <= x[0], name="2_solo_se_1")
     varianti["1b"] = variante("1b. La sede 2 si apre solo se si apre la sede 1 (x_2 <= x_1)", mod)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam08_1_varianti")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 1b ----------
+    intestazione("1b. Il sandwich sulla variante: la sede 2 si apre solo se si apre la sede 1")
+
+
+    def modello_1b(t, u, i, d):
+        mod_, xx, yy = modello_1(t, u, i, d)
+        mod_.addConstr(xx[1] - xx[0] <= 0, name="2_solo_se_1")
+        return mod_, xx, yy
+
+
+    def duale_1b(t, u, i, d):
+        """Al duale di 8.1 si aggiunge rho <= 0 per il vincolo x_2 - x_1 <= 0:
+        allenta la colonna della sede 1 e stringe quella della sede 2. Il termine
+        noto e' zero, quindi l'obiettivo non cambia."""
+        mm, nn = len(u), len(d)
+        dl = nuovo_modello("duale_localizzazione_1b")
+        mu = dl.addVars(mm, name="mu")
+        pi = dl.addVars(nn, lb=-GRB.INFINITY, name="pi")
+        rho = dl.addVar(lb=-GRB.INFINITY, ub=0.0, name="rho")
+        dl.setObjective(gp.quicksum(d[c] * pi[c] for c in R(nn)), GRB.MAXIMIZE)
+        dl.addConstr(u[0] * mu[0] - rho <= i[0], name="rc_x0")
+        dl.addConstr(u[1] * mu[1] + rho <= i[1], name="rc_x1")
+        dl.addConstrs((-mu[l] + pi[c] <= t[l][c] for l in R(mm) for c in R(nn)), name="rc_y")
+        return dl
+
+
+    m1b, x1b, y1b = modello_1b(t1, u1, i1, d1)
+    salva_modello(m1b, "fam08_1b_primale")
+
+    # -- euristica ammissibile: la base, riparata aprendo anche la sede 1 --
+    print("Euristica costruttiva: si parte dalla soluzione del problema base; se apre la sede 2")
+    print("senza la 1, si apre anche la 1 (la domanda resta servita, cambia solo il costo fisso).")
+    aperte = [l for l in R(m) if xe[l]]
+    print(f"  soluzione base: sedi aperte {[l + 1 for l in aperte]}, costo {frazione(ub1)}")
+    aperte_b = sorted(set(aperte) | ({0} if 1 in aperte else set()))
+    ub1b = sum(i1[l] for l in aperte_b) + sum(t1[l][c] * ye.get((l, c), 0)
+                                              for l in R(m) for c in R(n))
+    sol_1b = {f"x[{l}]": (1 if l in aperte_b else 0) for l in R(m)}
+    sol_1b.update({f"y[{l},{c}]": v for (l, c), v in ye.items()})
+    assert ammissibile(m1b, sol_1b), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  dopo la riparazione: sedi {[l + 1 for l in aperte_b]}  ->  ub = {frazione(ub1b)}")
+
+    # -- certificato duale: rho sposta costo fisso dalla sede 2 alla sede 1 --
+    d1b_ = duale_1b(t1, u1, i1, d1)
+    salva_modello(d1b_, "fam08_1b_duale")
+
+
+    def valore_duale_1b(rho_val):
+        mu_v = {0: (i1[0] + rho_val) / u1[0], 1: (i1[1] - rho_val) / u1[1]}
+        if min(mu_v.values()) < 0:
+            return None, None, None
+        pi_v = {c: min(t1[l][c] + mu_v[l] for l in R(m)) for c in R(n)}
+        return sum(d1[c] * pi_v[c] for c in R(n)), mu_v, pi_v
+
+
+    # rho e' non positivo: si prova sulla griglia dei valori che rendono tesa una
+    # colonna, cioe' dove il minimo che definisce pi_c cambia sede
+    candidati_1b = [0.0] + [-(u1[0] * (t1[1][c] + i1[1] / u1[1] - t1[0][c]) - i1[0])
+                            * u1[1] / (u1[0] + u1[1]) for c in R(n)]
+    candidati_1b = [r for r in candidati_1b if r <= 0 and valore_duale_1b(r)[0] is not None]
+    scelto_1b = max(candidati_1b, key=lambda r: valore_duale_1b(r)[0])
+    lb1b, mu_1b, pi_1b = valore_duale_1b(scelto_1b)
+    mano_1b = ({f"mu[{l}]": mu_1b[l] for l in R(m)}
+               | {f"pi[{c}]": pi_1b[c] for c in R(n)} | {"rho": scelto_1b})
+    lb1b_val, viol_1b = valuta(d1b_, mano_1b)
+    assert viol_1b <= 1e-9, viol_1b
+    print("Soluzione duale a mano: rho sposta costo fisso dalla sede 2 alla sede 1, cioe'")
+    print("  mu_1 = (i_1 + rho)/u_1 e mu_2 = (i_2 - rho)/u_2; poi pi_c = min_l (t_lc + mu_l)")
+    print(f"  come nel problema base. Si prova rho fra i valori che fanno cambiare quel minimo:")
+    print(f"  rho = {frazione(scelto_1b)}  ->  lb = {frazione(lb1b_val)}")
+    if abs(scelto_1b) < 1e-9:
+        print("  Qui il migliore e' rho = 0: la sede 1 ha gia' il costo per litro piu' basso,")
+        print("  e spostarle altro costo fisso abbasserebbe mu_2 piu' di quanto alzi mu_1.")
+        print("  Il certificato della variante coincide con quello del problema base.")
+    zlp1b, zlp1br, _ = due_rilassamenti(m1b, d1b_)
+    z1b = risolvi(m1b)
+    riga_1b = registra_bound("1b sede 2 solo con sede 1", ub1b, lb1b_val, zlp1b, zlp1br, z1b)
+    salva_dati(pd.DataFrame([riga_1b]), "fam08_1b_bound")
+    assert lb1b_val <= zlp1b <= z1b <= ub1b + 1e-9
+
 
     # ---------- 6. FIGURE ----------
 

@@ -146,6 +146,25 @@ $\tilde\tau = (6, 0, 5)$.
 
     !!! tip "Soluzione"
         La soluzione è nel documento delle soluzioni, riservato ai docenti.
+## Il sandwich sulla variante 7a
+
+Le date di rilascio aggiungono $\varepsilon_j \ge 0$ con termine noto
+$\rho_j + t_j$. Posto $\gamma_j = 1$, la colonna di $\kappa_j$ impone
+$\delta_j + \varepsilon_j \le 1$: conviene mettere tutto il peso su
+$\varepsilon_j$, cioè il rilascio sostituisce il tempo di lavorazione.
+
+<!-- tabella-variante: fam07_7a_bound -->
+
+|  | valore | che cos'è |
+|---|---:|---|
+| $\ub$ | $12$ | soluzione euristica |
+| $\lb$ | $2$ | certificato duale costruito a mano |
+| $\zlp$ | $4$ | rilassamento senza i bound |
+| $\zlpp$ | $4$ | rilassamento con i bound |
+| $\zmilp$ | $12$ | ottimo del MILP |
+
+<!-- tabella-variante: fine -->
+
 ## Codice
 
 Script completo: [`python/fam07_7_ritardo.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/fam07_7_ritardo.py);
@@ -153,7 +172,7 @@ notebook: [`notebooks/fam07_7_ritardo.ipynb`](https://github.com/fabiofurini/mod
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam07_7_ritardo.py` (147 righe)"
+??? example "Mostra lo script completo — `python/fam07_7_ritardo.py` (231 righe)"
 
     ```python
     """Problema 7.7 -- Ritardo totale su una macchina: sequenziamento con big-M.
@@ -283,6 +302,90 @@ notebook: [`notebooks/fam07_7_ritardo.ipynb`](https://github.com/fabiofurini/mod
     m.setObjective(T, GRB.MINIMIZE)
     varianti["7b"] = variante("7b. Minimizzare il ritardo massimo (min-max: T >= tau_j)", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_7_varianti")
+
+    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 7a ----------
+    intestazione("7a. Il sandwich sulla variante: date di rilascio")
+
+
+    def modello_7a(t, d, rho):
+        mm_, ss, kk, tt, MM = modello_7(t, d)
+        mm_.addConstrs((kk[j] >= rho[j] + t[j] for j in R(len(t))), name="rilascio")
+        return mm_, ss, kk, tt, MM
+
+
+    def duale_7a(t, d, rho):
+        """Al duale di 7.7 si aggiunge eps_j >= 0 per ogni vincolo di rilascio
+        kappa_j >= rho_j + t_j: entra nell'obiettivo con il suo termine noto e
+        nella colonna di kappa_j accanto a delta_j."""
+        nn = len(t)
+        MM = sum(t)
+        D = nuovo_modello("duale_ritardo_7a")
+        alpha = D.addVars([(j, i) for j in R(nn) for i in R(j + 1, nn)], lb=-GRB.INFINITY, name="alpha")
+        beta = D.addVars([(j, i) for j in R(nn) for i in R(nn) if j != i], name="beta")
+        gamma = D.addVars(nn, name="gamma")
+        delta = D.addVars(nn, name="delta")
+        eps = D.addVars(nn, name="eps")
+        D.setObjective(alpha.sum() + gp.quicksum((t[i] - MM) * beta[j, i] for (j, i) in beta)
+                       - gp.quicksum(d[j] * gamma[j] for j in R(nn))
+                       + gp.quicksum(t[j] * delta[j] for j in R(nn))
+                       + gp.quicksum((rho[j] + t[j]) * eps[j] for j in R(nn)), GRB.MAXIMIZE)
+        D.addConstrs((alpha[j, i] - MM * beta[j, i] <= 0 for (j, i) in alpha), name="rc_s_ji")
+        D.addConstrs((alpha[j, i] - MM * beta[i, j] <= 0 for (j, i) in alpha), name="rc_s_ij")
+        D.addConstrs((-gp.quicksum(beta[j, i] for i in R(nn) if i != j)
+                      + gp.quicksum(beta[i, j] for i in R(nn) if i != j)
+                      - gamma[j] + delta[j] + eps[j] <= 0 for j in R(nn)), name="rc_kappa")
+        D.addConstrs((gamma[j] <= 1 for j in R(nn)), name="rc_tau")
+        return D
+
+
+    m7a, s7a, k7a, tau7a, M7a = modello_7a(t7, d7, rho7)
+    salva_modello(m7a, "fam07_7a_primale")
+
+    # -- euristica ammissibile: la stessa regola, con le date di rilascio --
+    print("Euristica costruttiva: i lavori in ordine di scadenza (EDD), ciascuno avviato appena")
+    print("la macchina e' libera e il lavoro e' stato rilasciato.")
+    istante = 0
+    ritardi = {}
+    for j in sorted(R(3), key=lambda j: d7[j]):
+        inizio = max(istante, rho7[j])
+        fine = inizio + t7[j]
+        ritardi[j] = max(0, fine - d7[j])
+        print(f"  lavoro {j + 1}: rilasciato a {rho7[j]}, parte a {inizio}, finisce a {fine}, "
+              f"scadenza {d7[j]}  ->  ritardo {ritardi[j]}")
+        istante = fine
+    ub7a = sum(ritardi.values())
+    ordine = sorted(R(3), key=lambda j: d7[j])
+    fine_cum, kappa_e7a = 0, {}
+    for j in ordine:
+        fine_cum = max(fine_cum, rho7[j]) + t7[j]
+        kappa_e7a[j] = fine_cum
+    sol_7a = ({f"kappa[{j}]": kappa_e7a[j] for j in R(3)}
+              | {f"tau[{j}]": ritardi[j] for j in R(3)}
+              | {f"s[{j},{i}]": (1 if ordine.index(j) < ordine.index(i) else 0)
+                 for j in R(3) for i in R(3) if j != i})
+    assert ammissibile(m7a, sol_7a), "la soluzione euristica della variante deve essere ammissibile"
+    print(f"  ub = {frazione(ub7a)}")
+
+    # -- certificato duale: il rilascio sostituisce il tempo di lavorazione --
+    D7a = duale_7a(t7, d7, rho7)
+    salva_modello(D7a, "fam07_7a_duale")
+    # un lavoro per volta: gamma_j = 1 e tutto il peso su eps_j, che vale rho_j + t_j
+    # invece di t_j; si tiene il lavoro che da' il valore piu' alto
+    candidato = max(R(3), key=lambda j: rho7[j] + t7[j] - d7[j])
+    mano_7a = {f"gamma[{candidato}]": 1, f"eps[{candidato}]": 1}
+    lb7a, viol_7a = valuta(D7a, mano_7a)
+    assert viol_7a <= 1e-9, viol_7a
+    print("Soluzione duale a mano: si valuta un lavoro solo. Posto gamma_j = 1, il vincolo")
+    print("  della colonna di kappa_j da' delta_j + eps_j <= 1, e conviene mettere tutto il")
+    print("  peso su eps_j, che nell'obiettivo vale rho_j + t_j invece di t_j. Si sceglie il")
+    print(f"  lavoro con rho_j + t_j - d_j piu' grande: il {candidato + 1}, che da'")
+    print(f"  {rho7[candidato]} + {t7[candidato]} - {d7[candidato]} = {frazione(lb7a)}.")
+    zlp7a, zlp7ar, _ = due_rilassamenti(m7a, D7a)
+    z7a = risolvi(m7a)
+    riga_7a = registra_bound("7a date di rilascio", ub7a, lb7a, zlp7a, zlp7ar, z7a)
+    salva_dati(pd.DataFrame([riga_7a]), "fam07_7a_bound")
+    assert lb7a <= zlp7a <= z7a <= ub7a + 1e-9
+
 
     # ---------- 6. FIGURE ----------
     # ritardo: Gantt della sequenza naturale e di quella ottima

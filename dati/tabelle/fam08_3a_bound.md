@@ -1,0 +1,7 @@
+|  | valore | che cos'è |
+|---|---:|---|
+| $\ub$ | $\frac{225}{2}$ | soluzione euristica |
+| $\lb$ | $45$ | certificato duale costruito a mano |
+| $\zlp$ | $\frac{41925}{646}$ | rilassamento senza i bound |
+| $\zlpp$ | $\frac{125}{2}$ | rilassamento con i bound |
+| $\zmilp$ | $45$ | ottimo del MILP |
