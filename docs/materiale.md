@@ -74,8 +74,11 @@ cuore del materiale. Quello che viene dopo e' di contorno.
 
     ---
 
-    Il percorso in quarantatré slide: il metodo, i quattordici legami, il
-    sandwich dei bound, le tre famiglie e i problemi misti, il formato dell'esame.
+    Centocinquanta slide: il metodo e i quattordici legami, il sandwich dei
+    bound, e poi **tutti i modelli e tutti i problemi** --- una slide per
+    ciascuno dei quindici modelli numerici, l'enunciato e il modello di ciascuno
+    dei ventitré problemi, e i quaranta problemi da modellare. I modelli sono
+    generati dalle stesse sorgenti delle dispense.
 
     [:octicons-download-24: slide-mip.pdf](pdf/slide-mip.pdf)
 
