@@ -121,3 +121,14 @@ pareggiando tutto.
 
 </div>
 
+## Modelli numerici della famiglia
+
+Quattro modelli brevi con dati espliciti: una selezione con implicazione, un
+lotto minimo, un packing e dei conteggi interi a lotti.
+
+| Modello | Che cosa mette in gioco | $z(\mathit{MILP})$ |
+|---|---|---:|
+| [EX 1 — Il furgone da otto posti](ex-01.md) | selezione con capacità e un'implicazione fra gruppi | 120 |
+| [EX 5 — Veicoli con quantità minima](ex-05.md) | lotto minimo: una quantità minima se il tipo si produce | 25 250 |
+| [EX 9 — Le otto regine](ex-09.md) | packing su scacchiera: righe, colonne e diagonali | 8 |
+| [EX 13 — Fondi acquistabili a lotti](ex-13.md) | conteggi interi a lotti, con un vincolo di proporzione | 16 |
