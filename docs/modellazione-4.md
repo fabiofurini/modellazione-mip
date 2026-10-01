@@ -135,7 +135,8 @@ $\pi_4 + \pi_5 + \pi_6 \le 3$.
 
 $$\mathit{LB} = 3 + 0 + 1 + 0 + 0 + 3 = 7.$$
 
-**Un upper bound primale.** La [euristica costruttiva di copertura](modellazione-5.md) prende
+**Un upper bound primale.** L'euristica costruttiva di copertura — a ogni passo
+si sceglie l'elemento che costa meno per ogni nuovo requisito coperto — prende
 le squadre $1$, $2$, $4$, di costo $4+3+3 = 10$: soluzione ammissibile e
 **intera**, quindi $\mathit{UB} = 10$.
 
