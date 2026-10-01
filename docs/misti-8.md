@@ -198,15 +198,17 @@ Con tre CD invece di due la struttura non cambia: le colonne di $y$ e $z$
 chiedono che le $\gamma$ e le $\delta$ sommino a uno, e spalmarle in parti
 uguali, $\gamma_j = \delta_j = 1/3$, non privilegia nessun CD. Il duale vale $0$
 come il rilassamento, perché una soluzione frazionaria spezza ogni brano in tre
-e pareggia le durate. L'euristica LPT lascia una differenza di $2$, che è
-l'ottimo.
+e pareggia le durate. Il bound utile viene dall'interezza, come nel problema
+base: le durate sono interi che sommano a $35$, che non è multiplo di $3$,
+quindi non possono essere tutte uguali e la differenza vale almeno $1$.
+L'euristica LPT ne lascia $2$, che è l'ottimo.
 
 <!-- tabella-variante: fam10_8b_bound -->
 
 |  | valore | che cos'è |
 |---|---:|---|
 | $\mathit{UB}$ | $2$ | soluzione euristica |
-| $\mathit{LB}$ | $0$ | certificato duale costruito a mano |
+| $\mathit{LB}$ | $1$ | certificato duale costruito a mano |
 | $z(\mathit{LP})$ | $0$ | rilassamento senza i bound |
 | $z(\mathit{LP}^+)$ | $0$ | rilassamento con i bound |
 | $z(\mathit{MILP})$ | $2$ | ottimo del MILP |
@@ -224,7 +226,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_8_cd.py` (221 righe)"
+??? example "Mostra lo script completo — `python/fam10_8_cd.py` (230 righe)"
 
     ```python
     """Problema 11.3 -- Brani su piu' CD: minimizzare la differenza fra il piu' lungo
@@ -444,10 +446,19 @@ Notebook —
     print("  parti uguali e' la scelta che non privilegia nessun CD. alpha = beta = 0.")
     print(f"  ->  lb = {frazione(lb3b)}")
     zlp3b, zlp3br, _ = due_rilassamenti(m3b, dl3b)
+
+    # -- bound combinatorio: l'argomento di parita' del problema base, generalizzato --
+    resto_3b = D3 % M3B
+    comb_3b = float(1 if resto_3b else 0)
+    verso_3b = "non e'" if resto_3b else "e'"
+    print(f"  L'argomento di parita' si generalizza: le durate sono interi che sommano a {D3},")
+    print(f"  e {D3} {verso_3b} multiplo di {M3B}, quindi non possono essere tutte uguali e la")
+    print(f"  differenza fra la piu' lunga e la piu' corta vale almeno {frazione(comb_3b)}.")
+    lb3b_usato = max(lb3b, comb_3b)
     z3b_val = risolvi(m3b)
-    riga_3b = registra_bound("3b raccolta su tre CD", ub3b, lb3b, zlp3b, zlp3br, z3b_val)
+    riga_3b = registra_bound("3b raccolta su tre CD", ub3b, lb3b_usato, zlp3b, zlp3br, z3b_val)
     salva_dati(pd.DataFrame([riga_3b]), "fam10_8b_bound")
-    assert lb3b <= zlp3b <= z3b_val <= ub3b + 1e-9
+    assert lb3b_usato <= z3b_val <= ub3b + 1e-9
     ```
 
 <!-- script-incorporato: fine -->

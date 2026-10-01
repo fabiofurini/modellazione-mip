@@ -215,17 +215,20 @@ ottimo.
 ## Il sandwich sulla variante 5a
 
 Cambia la capacità della scatola, $4$ invece di $10$, non la struttura: la
-ricetta resta $\beta = 0$ e $\gamma = \alpha = 1/w$, e il bound è sempre «unità
-ordinate diviso capacità», cioè $11/4$ invece di $11/10$. È inversamente
-proporzionale alla capacità: scatole più piccole lo alzano, e con esso l'ottimo,
-che passa da $2$ a $3$.
+ricetta resta $\beta = 0$ e $\gamma = \alpha = 1/w$, e il bound del
+rilassamento è sempre «unità ordinate diviso capacità», cioè $11/4$ invece di
+$11/10$ — inversamente proporzionale alla capacità, quindi scatole più piccole
+lo alzano. Come nel problema base, però, il conteggio per cliente è più forte:
+ogni cliente riceve almeno $\lceil (\text{sue unità}) / 4 \rceil$ scatole e le
+scatole non si dividono fra clienti, quindi $\mathit{LB} = 2 + 1 = 3$.
+L'euristica ne usa $3$: il sandwich si chiude, e l'ottimo passa da $2$ a $3$.
 
 <!-- tabella-variante: fam10_5a_bound -->
 
 |  | valore | che cos'è |
 |---|---:|---|
 | $\mathit{UB}$ | $3$ | soluzione euristica |
-| $\mathit{LB}$ | $\frac{11}{4}$ | certificato duale costruito a mano |
+| $\mathit{LB}$ | $3$ | certificato duale costruito a mano |
 | $z(\mathit{LP})$ | $\frac{11}{4}$ | rilassamento senza i bound |
 | $z(\mathit{LP}^+)$ | $\frac{11}{4}$ | rilassamento con i bound |
 | $z(\mathit{MILP})$ | $3$ | ottimo del MILP |
@@ -243,7 +246,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_5_spedizioni.py` (256 righe)"
+??? example "Mostra lo script completo — `python/fam10_5_spedizioni.py` (265 righe)"
 
     ```python
     """Problema 12.2 -- Spedizioni in scatole: flusso multiprodotto e conteggio dei
@@ -498,10 +501,19 @@ Script completo —
     print(f"  Con scatole da {w2} era {frazione(D2 / w2)}: il bound e' inversamente"
           f" proporzionale alla capacita', quindi scatole piu' piccole lo alzano.")
     zlp2a, zlp2ar, _ = due_rilassamenti(m2a, dl2a)
+
+    # -- bound intero: lo stesso conteggio per cliente del problema base, con w nuovo --
+    per_cliente_2a = [-(-sum(d2[p][c] for p in R(nk)) // W2A) for c in R(nm)]
+    comb_2a = float(sum(per_cliente_2a))
+    print(f"  Ogni cliente c riceve pero' almeno ceil(sum_p d_pc / {W2A}) scatole, e le scatole non")
+    print("  si dividono fra clienti: " + ", ".join(
+        f"cliente {c + 1} almeno {scatole(per_cliente_2a[c])}" for c in R(nm)) + ".")
+    print(f"  Sommando: lb = {frazione(comb_2a)}, meglio del bound del rilassamento.")
+    lb2a_usato = max(lb2a, comb_2a)
     z2a_val = risolvi(m2a)
-    riga_2a = registra_bound("2a scatole da 4", ub2a, lb2a, zlp2a, zlp2ar, z2a_val)
+    riga_2a = registra_bound("2a scatole da 4", ub2a, lb2a_usato, zlp2a, zlp2ar, z2a_val)
     salva_dati(pd.DataFrame([riga_2a]), "fam10_5a_bound")
-    assert lb2a <= zlp2a <= z2a_val <= ub2a + 1e-9
+    assert lb2a_usato <= z2a_val <= ub2a + 1e-9
     ```
 
 <!-- script-incorporato: fine -->

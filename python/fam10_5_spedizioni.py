@@ -250,8 +250,17 @@ print(f"  «unita' ordinate diviso capacita'»: {D2} / {W2A} = {frazione(lb2a)}.
 print(f"  Con scatole da {w2} era {frazione(D2 / w2)}: il bound e' inversamente"
       f" proporzionale alla capacita', quindi scatole piu' piccole lo alzano.")
 zlp2a, zlp2ar, _ = due_rilassamenti(m2a, dl2a)
+
+# -- bound intero: lo stesso conteggio per cliente del problema base, con w nuovo --
+per_cliente_2a = [-(-sum(d2[p][c] for p in R(nk)) // W2A) for c in R(nm)]
+comb_2a = float(sum(per_cliente_2a))
+print(f"  Ogni cliente c riceve pero' almeno ceil(sum_p d_pc / {W2A}) scatole, e le scatole non")
+print("  si dividono fra clienti: " + ", ".join(
+    f"cliente {c + 1} almeno {scatole(per_cliente_2a[c])}" for c in R(nm)) + ".")
+print(f"  Sommando: lb = {frazione(comb_2a)}, meglio del bound del rilassamento.")
+lb2a_usato = max(lb2a, comb_2a)
 z2a_val = risolvi(m2a)
-riga_2a = registra_bound("2a scatole da 4", ub2a, lb2a, zlp2a, zlp2ar, z2a_val)
+riga_2a = registra_bound("2a scatole da 4", ub2a, lb2a_usato, zlp2a, zlp2ar, z2a_val)
 salva_dati(pd.DataFrame([riga_2a]), "fam10_5a_bound")
-assert lb2a <= zlp2a <= z2a_val <= ub2a + 1e-9
+assert lb2a_usato <= z2a_val <= ub2a + 1e-9
 

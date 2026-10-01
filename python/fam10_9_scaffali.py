@@ -218,11 +218,20 @@ assert viol_4b <= 1e-9, viol_4b
 print(f"Soluzione duale a mano: beta = 0 e tutto il peso gamma sul libro piu' alto (il")
 print(f"  {alto_4b + 1}, alto {h4[alto_4b]}), come nel problema base: qualunque scaffale lo")
 print("  ospiti deve essere alto almeno quanto lui. La larghezza non entra nel certificato,")
-print("  e infatti il bound non cambia: cambia l'euristica, che adesso riesce a incastrare.")
-print(f"  ->  lb = {frazione(lb4b)}")
+print(f"  e infatti il bound duale non cambia: lb = {frazione(lb4b)}.")
 zlp4b, zlp4br, _ = due_rilassamenti(m4b, dl4b)
+
+# -- bound combinatorio: lo stesso argomento del problema base, sulla larghezza nuova --
+usati_4b = -(-sum(w4) // C4B)
+altre_4b = sorted(h4[b] for b in R(n4) if b != alto_4b)
+comb_4b = h4[alto_4b] + min(altre_4b)
+print(f"  La larghezza totale e' {sum(w4)} e ogni scaffale ne regge {C4B}: servono ancora")
+print(f"  almeno ceil({sum(w4)} / {C4B}) = {usati_4b} scaffali non vuoti. Uno ospita il libro")
+print(f"  piu' alto e misura almeno {h4[alto_4b]}, l'altro almeno {min(altre_4b)}:")
+print(f"  lb = {h4[alto_4b]} + {min(altre_4b)} = {frazione(comb_4b)}, meglio del bound duale.")
+lb4b_usato = max(lb4b, comb_4b)
 z4b_val = risolvi(m4b)
-riga_4b = registra_bound("4b scaffali larghi 12", ub4b, lb4b, zlp4b, zlp4br, z4b_val)
+riga_4b = registra_bound("4b scaffali larghi 12", ub4b, lb4b_usato, zlp4b, zlp4br, z4b_val)
 salva_dati(pd.DataFrame([riga_4b]), "fam10_9b_bound")
-assert lb4b <= zlp4b <= z4b_val <= ub4b + 1e-9
+assert lb4b_usato <= z4b_val <= ub4b + 1e-9
 

@@ -192,18 +192,21 @@ l'ottimo. Il gap certificato, prima di risolvere il MILP, è $(15-12)/15 = 20\%$
 
 ## Il sandwich sulla variante 9b
 
-La larghezza non entra nel certificato: tutto il peso $\gamma$ va sul libro più
-alto (il $1$, alto $8$), e il bound resta $8$. Cambia l'euristica: con scaffali
-larghi $12$ il first-fit per larghezza decrescente incastra i quattro libri su
-due scaffali alti $5$ e $8$, e il suo costo scende da $15$ a $13$; l'ottimo da
-$15$ a $12$.
+La larghezza non entra nel certificato duale: tutto il peso $\gamma$ va sul
+libro più alto (il $1$, alto $8$), e il bound duale resta $8$. Serve anche qui
+l'argomento combinatorio del problema base: la larghezza totale è $18$ e uno
+scaffale ne regge $12$, quindi gli scaffali non vuoti restano almeno due, uno
+alto almeno $8$ e l'altro almeno $4$, cioè $\mathit{LB} = 12$. Cambia
+l'euristica: il first-fit per larghezza decrescente adesso incastra i quattro
+libri su due scaffali alti $5$ e $8$ e scende da $15$ a $13$; l'ottimo da $15$ a
+$12$, e il bound lo certifica.
 
 <!-- tabella-variante: fam10_9b_bound -->
 
 |  | valore | che cos'è |
 |---|---:|---|
 | $\mathit{UB}$ | $13$ | soluzione euristica |
-| $\mathit{LB}$ | $8$ | certificato duale costruito a mano |
+| $\mathit{LB}$ | $12$ | certificato duale costruito a mano |
 | $z(\mathit{LP})$ | $8$ | rilassamento senza i bound |
 | $z(\mathit{LP}^+)$ | $8$ | rilassamento con i bound |
 | $z(\mathit{MILP})$ | $12$ | ottimo del MILP |
@@ -221,7 +224,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_9_scaffali.py` (227 righe)"
+??? example "Mostra lo script completo — `python/fam10_9_scaffali.py` (236 righe)"
 
     ```python
     """Problema 11.4 -- Libri sugli scaffali: minimizzare la somma delle altezze.
@@ -444,13 +447,22 @@ Script completo —
     print(f"Soluzione duale a mano: beta = 0 e tutto il peso gamma sul libro piu' alto (il")
     print(f"  {alto_4b + 1}, alto {h4[alto_4b]}), come nel problema base: qualunque scaffale lo")
     print("  ospiti deve essere alto almeno quanto lui. La larghezza non entra nel certificato,")
-    print("  e infatti il bound non cambia: cambia l'euristica, che adesso riesce a incastrare.")
-    print(f"  ->  lb = {frazione(lb4b)}")
+    print(f"  e infatti il bound duale non cambia: lb = {frazione(lb4b)}.")
     zlp4b, zlp4br, _ = due_rilassamenti(m4b, dl4b)
+
+    # -- bound combinatorio: lo stesso argomento del problema base, sulla larghezza nuova --
+    usati_4b = -(-sum(w4) // C4B)
+    altre_4b = sorted(h4[b] for b in R(n4) if b != alto_4b)
+    comb_4b = h4[alto_4b] + min(altre_4b)
+    print(f"  La larghezza totale e' {sum(w4)} e ogni scaffale ne regge {C4B}: servono ancora")
+    print(f"  almeno ceil({sum(w4)} / {C4B}) = {usati_4b} scaffali non vuoti. Uno ospita il libro")
+    print(f"  piu' alto e misura almeno {h4[alto_4b]}, l'altro almeno {min(altre_4b)}:")
+    print(f"  lb = {h4[alto_4b]} + {min(altre_4b)} = {frazione(comb_4b)}, meglio del bound duale.")
+    lb4b_usato = max(lb4b, comb_4b)
     z4b_val = risolvi(m4b)
-    riga_4b = registra_bound("4b scaffali larghi 12", ub4b, lb4b, zlp4b, zlp4br, z4b_val)
+    riga_4b = registra_bound("4b scaffali larghi 12", ub4b, lb4b_usato, zlp4b, zlp4br, z4b_val)
     salva_dati(pd.DataFrame([riga_4b]), "fam10_9b_bound")
-    assert lb4b <= zlp4b <= z4b_val <= ub4b + 1e-9
+    assert lb4b_usato <= z4b_val <= ub4b + 1e-9
     ```
 
 <!-- script-incorporato: fine -->
