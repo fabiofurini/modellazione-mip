@@ -225,8 +225,9 @@ Un MILP con insieme ammissibile limitato si risolve con algoritmi dedicati. Come
 funzionano — come si esplora lo spazio delle soluzioni, come si separano i
 tagli, come si sceglie su che cosa ramificare — non è argomento di questo corso:
 le tecniche risolutive sono materia di un corso a parte. Qui interessa una cosa
-sola: i due bound che questo corso insegna a costruire a mano sono esattamente
-quelli su cui il solver lavora.
+sola: i due bound che questo corso insegna a costruire a mano sono i due lati
+dello stesso sandwich che il solver cerca di chiudere. Non glieli si passa: il
+solver se li costruisce da sé, con le sue euristiche e i suoi rilassamenti.
 
 - Il **bound primale** è una soluzione ammissibile, e dà un valore da battere:
   ogni parte dello spazio che non può fare meglio viene scartata senza
