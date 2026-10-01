@@ -1,4 +1,4 @@
-"""Capitolo 3 -- Legami fra variabili: un esempio verificato per ogni tecnica.
+"""Capitolo 6 -- Legami fra variabili: un esempio verificato per ogni tecnica.
 
 Quattordici tecniche di collegamento fra famiglie di variabili. Per ciascuna:
 un'istanza minima, il modello, l'ottimo intero, il rilassamento LP+ e --- dove

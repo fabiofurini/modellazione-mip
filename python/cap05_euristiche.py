@@ -1,4 +1,4 @@
-"""Capitolo 5 -- Euristiche costruttive: le sei famiglie, con traccia e bound.
+"""Capitolo 4 -- Euristiche costruttive sui problemi classici, con traccia e bound.
 
 Ogni euristica del corso su un'istanza minima: la traccia passo-passo (lo stesso
 testo che finisce nella dispensa), la verifica di ammissibilita' della soluzione

@@ -1,4 +1,4 @@
-"""Capitolo 6 -- Dal modello a Python/Gurobi: come si scrive e come si legge.
+"""Capitolo 3 -- Dal modello a Python/Gurobi: come si scrive e come si legge.
 
 Le quattro classi di variabili, una addConstrs per famiglia di vincoli, e
 soprattutto la lettura dei risultati: Status, SolCount, ObjVal, ObjBound,

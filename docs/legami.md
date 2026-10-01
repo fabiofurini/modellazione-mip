@@ -203,7 +203,7 @@ che salva la tavola riassuntiva in `dati/cap03_tecniche.csv`. Il notebook è
 ??? example "Mostra lo script completo — `python/cap03_legami.py` (496 righe)"
 
     ```python
-    """Capitolo 3 -- Legami fra variabili: un esempio verificato per ogni tecnica.
+    """Capitolo 6 -- Legami fra variabili: un esempio verificato per ogni tecnica.
 
     Quattordici tecniche di collegamento fra famiglie di variabili. Per ciascuna:
     un'istanza minima, il modello, l'ottimo intero, il rilassamento LP+ e --- dove

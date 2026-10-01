@@ -289,7 +289,7 @@ Lo stesso codice è disponibile come notebook —
 ??? example "Mostra lo script completo — `python/cap02_logica.py` (223 righe)"
 
     ```python
-    """Capitolo 2 -- Logica e variabili binarie: da CNF a vincoli lineari.
+    """Capitolo 5 -- Logica e variabili binarie: da CNF a vincoli lineari.
 
     Trasforma in forma normale congiuntiva e poi in vincoli lineari le implicazioni
     dei cinque esercizi del capitolo, e *dimostra per enumerazione* che la

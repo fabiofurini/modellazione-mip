@@ -196,7 +196,7 @@ il notebook è
 ??? example "Mostra lo script completo — `python/cap06_gurobi.py` (197 righe)"
 
     ```python
-    """Capitolo 6 -- Dal modello a Python/Gurobi: come si scrive e come si legge.
+    """Capitolo 3 -- Dal modello a Python/Gurobi: come si scrive e come si legge.
 
     Le quattro classi di variabili, una addConstrs per famiglia di vincoli, e
     soprattutto la lettura dei risultati: Status, SolCount, ObjVal, ObjBound,

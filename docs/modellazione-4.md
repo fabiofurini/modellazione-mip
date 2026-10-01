@@ -281,7 +281,7 @@ il notebook è
 ??? example "Mostra lo script completo — `python/cap04_bound.py` (253 righe)"
 
     ```python
-    """Capitolo 4 -- Rilassamenti, dualita' e bound: gli esempi verificati.
+    """Capitolo 2 -- Rilassamenti, dualita' e bound: gli esempi verificati.
 
     Un problema di minimo e uno di massimo, scritti con il loro duale; una soluzione
     duale costruita a mano e la verifica della dualita' debole; il confronto fra il
