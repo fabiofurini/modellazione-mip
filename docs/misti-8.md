@@ -179,14 +179,18 @@ problema ha più ottimi.
     il modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ??? question "10.8.2 — Tre CD"
     La raccolta si distribuisce su tre CD invece che su due. Come cambia il
     modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ## Codice
 

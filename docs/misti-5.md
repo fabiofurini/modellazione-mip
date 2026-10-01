@@ -199,14 +199,18 @@ ottimo.
     Le scatole contengono $4$ unità invece di $10$. Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ??? question "10.5.2 — Prodotti separati"
     Prodotti diversi non possono viaggiare nella stessa scatola. Come cambia il
     modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ## Codice
 

@@ -141,13 +141,17 @@ economico per lui), i terminali 2 e 3 sull'hub 1. Gap euristica $5{,}3\%$.
     aggiungerli, si *sostituisce* con essi il vincolo aggregato?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "8.4.2 — Connessione vietata"
     Il terminale 1 non può connettersi all'hub 2. Come si modella? Qual è
     il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ## Il sandwich sulla variante 4b
 
 Vietare una connessione toglie una colonna dal primale, quindi **toglie** un

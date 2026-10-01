@@ -146,13 +146,17 @@ resto del cliente 2 e tutto il cliente 3. Gap euristica $20{,}3\%$.
     Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "8.1.2 — Apertura condizionata"
     La sede 2 può essere installata solo se lo è anche la sede 1. Come si
     modella? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ## Il sandwich sulla variante 1b
 
 $\rho \le 0$ sposta costo fisso fra le due sedi. Si prova fra i valori che fanno

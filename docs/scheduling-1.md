@@ -216,14 +216,18 @@ chiude il gap).
     macchina. Come cambia il modello? Qual è il nuovo ottimo per l'istanza?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "7.1.2 — Costo fisso per macchina usata"
     Ogni macchina che esegue almeno un lavoro costa in più $g_m = 3$ euro di
     accensione. Modellare il costo fisso e trovare il nuovo ottimo. Quale legame
     entra in gioco?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ## Il sandwich sulla variante 1a
 
 Il vincolo «i lavori 1 e 3 sulla stessa macchina» aggiunge al duale una variabile

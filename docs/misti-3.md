@@ -189,14 +189,18 @@ maggiori di uno.
     modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ??? question "10.3.2 — Più varietà"
     Si vogliono almeno quattro cibi diversi invece di tre. Come cambia il
     modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ## Codice
 

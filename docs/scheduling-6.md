@@ -139,12 +139,16 @@ ricavo $10 + 22 + 10$. Gap dell'euristica $24\%$.
     Eseguire almeno un lavoro di ogni classe. Che succede a $z$?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "7.6.2 — Penalità per classe iniziata e non finita"
     Iniziare una classe senza completarla costa $w = 3$.
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ## Il sandwich sulla variante 6a
 
 «Almeno un lavoro per classe» aggiunge una famiglia $\omega_c \le 0$ che entra

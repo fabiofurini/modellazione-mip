@@ -208,14 +208,18 @@ sulle $1200$ disponibili.
     cambia il modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ??? question "9.3.2 — Premio nullo"
     Il contributo per la diversificazione viene abolito, cioè $\bar r = 0$. Che
     cosa succede alla variabile $z$?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ## Codice
 

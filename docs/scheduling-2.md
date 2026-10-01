@@ -193,13 +193,17 @@ accese, $\tilde x_{12} = \tilde x_{23} = \tilde x_{33} = 1$.
     trovare il nuovo ottimo.
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "7.2.2 — Legame fra due attivazioni"
     Se si usa la macchina 1 si deve usare anche la 3. Scrivere il vincolo e
     discutere che cosa impone e che cosa non impone.
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ## Il sandwich sulla variante 2b
 
 Il legame fra attivazioni aggiunge $\rho \le 0$, ma qui non conviene muoverlo: la

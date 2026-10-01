@@ -178,13 +178,17 @@ l'ottimo. Il gap certificato, prima di risolvere il MILP, è $(15-12)/15 = 20\%$
     nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ??? question "10.9.2 — Scaffali più larghi"
     Gli scaffali sono larghi $12$ invece di $10$. Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ## Codice
 

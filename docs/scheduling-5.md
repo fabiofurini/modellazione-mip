@@ -144,12 +144,16 @@ L'euristica resta a $9$ (gap $57\%$): l'ordine di scansione conta.
     Si può attivare al più una classe.
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "7.5.2 — Una classe subordinata a un'altra"
     La classe 3 si può attivare solo se si attiva anche la classe 1.
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ## Il sandwich sulla variante 5a
 
 «Al più una classe» aggiunge $\theta \ge 0$ con termine noto $1$. Fissato il

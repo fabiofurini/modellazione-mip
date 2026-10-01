@@ -142,13 +142,17 @@ viene in mente, non la migliore.
     Minimizzare il massimo dei tempi di lavorazione (makespan), non la somma.
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ??? question "7.4.2 — Costo fisso se la macchina lavora"
     Accendere una macchina costa $g_m = 4$ euro, un minuto costa $1$ euro.
     Quale legame serve e qual è il big-M più piccolo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Qui
+        sotto, però, una variante di questo problema è svolta per intero:
+        modello, euristica ammissibile, certificato duale e tabella dei bound.
 ## Il sandwich sulla variante 4a
 
 Il min-max toglie il costo alle $y_m$ e aggiunge $\nu_m \ge 0$ con

@@ -194,7 +194,9 @@ tabella la colonna si chiama «bound certificato» proprio per questo.
     società. Come cambia il modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ??? question "10.7.2 — Min-sum invece di min-max"
     Si vuole minimizzare la *somma* delle differenze su tutti i prodotti invece
@@ -202,7 +204,9 @@ tabella la colonna si chiama «bound certificato» proprio per questo.
     stessa?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ## Codice
 

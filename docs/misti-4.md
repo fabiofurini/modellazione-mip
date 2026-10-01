@@ -208,7 +208,9 @@ Il bound duale sbaglia di **una** unità su $2141$, e il rilassamento con i boun
     modello? Qual è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ??? question "10.4.2 — Lotto minimo per configurazione"
     Ogni configurazione usata deve decorare almeno tre alberi (sotto quella
@@ -216,7 +218,9 @@ Il bound duale sbaglia di **una** unità su $2141$, e il rilassamento con i boun
     è il nuovo ottimo?
 
     !!! tip "Soluzione"
-        La soluzione è nel documento delle soluzioni, riservato ai docenti.
+        Le soluzioni delle domande aggiuntive sono riservate ai docenti. Il
+        metodo per rispondere è quello di ogni problema del corso: modello,
+        istanza, euristica per un bound, duale del rilassamento per l'altro.
 
 ## Codice
 
