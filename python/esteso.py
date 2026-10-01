@@ -107,8 +107,8 @@ def _dominio(v) -> tuple[str, str]:
 
 # ---------------------------------------------------------------- il corpo
 
-def array_esteso(m: gp.Model, etichetta_vincoli: str = "soggetto a") -> str:
-    """Il `\\begin{array}...\\end{array}` del modello, una colonna per variabile."""
+def _righe_estese(m: gp.Model, etichetta_vincoli: str = "soggetto a") -> list[list[str]]:
+    """Le celle del modello esteso: una riga per vincolo, una colonna per variabile."""
     m.update()
     variabili = m.getVars()
     nomi = [nome_latex(v.VarName) for v in variabili]
@@ -149,7 +149,13 @@ def array_esteso(m: gp.Model, etichetta_vincoli: str = "soggetto a") -> str:
         for posto, k in enumerate(indici):
             celle[1 + k] = nomi[k] + ("," if posto < len(indici) - 1 else "")
         righe.append(celle)
+    return righe
 
+
+def array_esteso(m: gp.Model, etichetta_vincoli: str = "soggetto a") -> str:
+    """Il `\\begin{array}...\\end{array}` del modello, una colonna per variabile."""
+    righe = _righe_estese(m, etichetta_vincoli)
+    n = len(m.getVars())
     # oltre nove colonne lo spazio fra le colonne si azzera: il modello
     # deve stare nella larghezza della pagina senza uscire dal margine
     glue = "@{}" if n > 9 else "@{\\,}"
@@ -158,14 +164,44 @@ def array_esteso(m: gp.Model, etichetta_vincoli: str = "soggetto a") -> str:
     return f"\\begin{{array}}{{{spec}}}\n{corpo}\n\\end{{array}}"
 
 
+# ---------------------------------------------------------------- testo
+
+def _senza_latex(t: str) -> str:
+    """`x_{11}` -> `x11`, `\\le` -> `<=`, `\\frac{a}{b}` -> `a/b`: il modello in chiaro."""
+    t = re.sub(r"\\text\{([^}]*)\}", r"\1", t)
+    t = re.sub(r"\\frac\{([^}]*)\}\{([^}]*)\}", r"\1/\2", t)
+    t = t.replace("\\le", "<=").replace("\\ge", ">=").replace("\\gtreqless", "free")
+    t = t.replace("\\min", "min").replace("\\max", "max")
+    t = t.replace("\\in", "in").replace("\\{", "{").replace("\\}", "}")
+    t = t.replace("\\Z", "Z").replace("\\Q", "Q").replace("\\R", "R")
+    t = re.sub(r"_\{([^}]*)\}", r"\1", t).replace("_", "")
+    t = t.replace("\\,", "").replace("{,}", ",").replace("\\", "")
+    return t.strip()
+
+
+def testo_esteso(m: gp.Model, etichetta_vincoli: str = "soggetto a") -> str:
+    """Il modello dell'istanza in testo allineato: una colonna per variabile.
+
+    Nel notebook il carattere e' a spaziatura fissa, quindi le colonne si
+    incolonnano come nel box della dispensa --- e non dipende da MathJax.
+    """
+    righe = [[_senza_latex(c) for c in r] for r in _righe_estese(m, etichetta_vincoli)]
+    larghezze = [max(len(r[k]) for r in righe) for k in range(len(righe[0]))]
+    fuori = []
+    for r in righe:
+        celle = [r[0].ljust(larghezze[0])]
+        celle += [r[k].rjust(larghezze[k]) for k in range(1, len(r) - 2)]
+        celle += [r[-2].rjust(larghezze[-2]), r[-1]]
+        fuori.append(" ".join(celle).rstrip())
+    return "\n".join(fuori)
+
+
 def salva_modello(m: gp.Model, nome: str, etichetta_vincoli: str = "soggetto a") -> None:
     """Scrive `dati/modelli/<nome>.tex`; dentro un notebook mostra il modello."""
-    corpo = array_esteso(m, etichetta_vincoli)
-    if NOTEBOOK:                       # nel notebook il file non serve: si guarda il modello
-        from IPython.display import Math, display
-        # MathJax non conosce `@{...}` nelle colonne: senza, stamperebbe il sorgente
-        display(Math(re.sub(r"@\{[^{}]*\}", "", corpo)))
+    if NOTEBOOK:              # nel notebook si stampa il modello in chiaro, non il LaTeX
+        print(testo_esteso(m, etichetta_vincoli))
         return
+    corpo = array_esteso(m, etichetta_vincoli)
     DIR_MODELLI.mkdir(parents=True, exist_ok=True)
     percorso = DIR_MODELLI / f"{nome}.tex"
     percorso.write_text(corpo + "\n", encoding="utf-8")
