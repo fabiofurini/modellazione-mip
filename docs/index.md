@@ -7,21 +7,22 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
 ## Che cosa si impara a fare
 
-- **Tradurre** il testo di un problema in un modello MIP: riconoscere le
-  decisioni, scegliere le variabili e il loro dominio, scrivere obiettivo e
-  vincoli, e dire quanti vincoli sono in funzione dei dati.
-- **Giustificare** ogni vincolo che lega due famiglie di variabili: qual è
-  l'implicazione che impone, e se a imporla è il vincolo o l'ottimalità.
-- **Costruire a mano una soluzione ammissibile** con un'euristica, e dire che
-  bound se ne ricava.
-- **Scrivere il duale del rilassamento lineare** e costruirne a mano una
-  soluzione ammissibile, per avere il bound dall'altro lato.
-- **Certificare** una soluzione quando all'ottimo non ci si arriva: appena
-  l'istanza cresce il solver si ferma prima di aver dimostrato l'ottimalità, e
-  restano in mano i due bound. L'ottimo sta in mezzo, e la loro distanza dice
-  quanto ci si può ancora guadagnare.
-- **Risolvere** il modello con Gurobi da Python, e leggere quello che il solver
-  risponde.
+- **Leggere un problema e scriverne il modello.** Quali sono le decisioni, quali
+  variabili servono e con che dominio, e come ogni frase dell'enunciato diventa
+  un vincolo.
+- **Far vedere che il modello fa quello che deve.** Un vincolo che lega due
+  variabili impone un'implicazione: si dimostra che la impone davvero, nei due
+  versi.
+- **Trovare una buona soluzione a mano**, con un'euristica che si costruisce in
+  pochi passi e si sa giustificare.
+- **Costruire il duale del rilassamento** e ricavarne quanto, al massimo, si
+  potrebbe ancora guadagnare.
+- **Dire quanto vale la soluzione che si ha in mano.** Su un'istanza grande il
+  solver si ferma prima dell'ottimo: restano una soluzione e due numeri che la
+  racchiudono. Se distano poco, quella soluzione si usa — e lo si può
+  dimostrare.
+- **Scrivere e risolvere il modello con Gurobi**, e capire che cosa risponde il
+  solver.
 
 ## Come il corso ci arriva
 
