@@ -145,11 +145,11 @@ il termine noto faccia risparmiare.
 
 |  | valore | che cos'è |
 |---|---:|---|
-| $\ub$ | $\frac{225}{2}$ | soluzione euristica |
-| $\lb$ | $45$ | certificato duale costruito a mano |
-| $\zlp$ | $\frac{41925}{646}$ | rilassamento senza i bound |
-| $\zlpp$ | $\frac{125}{2}$ | rilassamento con i bound |
-| $\zmilp$ | $45$ | ottimo del MILP |
+| $\mathit{UB}$ | $\frac{225}{2}$ | soluzione euristica |
+| $\mathit{LB}$ | $45$ | certificato duale costruito a mano |
+| $z(\mathit{LP})$ | $\frac{41925}{646}$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $\frac{125}{2}$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $45$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

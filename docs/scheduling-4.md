@@ -160,11 +160,11 @@ media armonica dei suoi tempi. La ricetta è **ottima** per il rilassamento.
 
 |  | valore | che cos'è |
 |---|---:|---|
-| $\ub$ | $13$ | soluzione euristica |
-| $\lb$ | $\frac{260}{59}$ | certificato duale costruito a mano |
-| $\zlp$ | $\frac{260}{59}$ | rilassamento senza i bound |
-| $\zlpp$ | $\frac{260}{59}$ | rilassamento con i bound |
-| $\zmilp$ | $10$ | ottimo del MILP |
+| $\mathit{UB}$ | $13$ | soluzione euristica |
+| $\mathit{LB}$ | $\frac{260}{59}$ | certificato duale costruito a mano |
+| $z(\mathit{LP})$ | $\frac{260}{59}$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $\frac{260}{59}$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $10$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

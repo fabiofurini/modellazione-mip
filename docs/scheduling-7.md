@@ -157,11 +157,11 @@ $\varepsilon_j$, cioè il rilascio sostituisce il tempo di lavorazione.
 
 |  | valore | che cos'è |
 |---|---:|---|
-| $\ub$ | $12$ | soluzione euristica |
-| $\lb$ | $2$ | certificato duale costruito a mano |
-| $\zlp$ | $4$ | rilassamento senza i bound |
-| $\zlpp$ | $4$ | rilassamento con i bound |
-| $\zmilp$ | $12$ | ottimo del MILP |
+| $\mathit{UB}$ | $12$ | soluzione euristica |
+| $\mathit{LB}$ | $2$ | certificato duale costruito a mano |
+| $z(\mathit{LP})$ | $4$ | rilassamento senza i bound |
+| $z(\mathit{LP}^+)$ | $4$ | rilassamento con i bound |
+| $z(\mathit{MILP})$ | $12$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 
