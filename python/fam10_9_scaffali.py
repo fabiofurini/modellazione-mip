@@ -231,7 +231,8 @@ print(f"  piu' alto e misura almeno {h4[alto_4b]}, l'altro almeno {min(altre_4b)
 print(f"  lb = {h4[alto_4b]} + {min(altre_4b)} = {frazione(comb_4b)}, meglio del bound duale.")
 lb4b_usato = max(lb4b, comb_4b)
 z4b_val = risolvi(m4b)
-riga_4b = registra_bound("4b scaffali larghi 12", ub4b, lb4b_usato, zlp4b, zlp4br, z4b_val)
+riga_4b = registra_bound("4b scaffali larghi 12", ub4b, lb4b_usato, zlp4b, zlp4br, z4b_val,
+                         certificato="scaffali usati e altezze minime")
 salva_dati(pd.DataFrame([riga_4b]), "fam10_9b_bound")
 assert lb4b_usato <= z4b_val <= ub4b + 1e-9
 

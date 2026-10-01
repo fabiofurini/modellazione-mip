@@ -206,7 +206,7 @@ $12$, e il bound lo certifica.
 |  | valore | che cos'è |
 |---|---:|---|
 | $\mathit{UB}$ | $13$ | soluzione euristica |
-| $\mathit{LB}$ | $12$ | certificato duale costruito a mano |
+| $\mathit{LB}$ | $12$ | scaffali usati e altezze minime |
 | $z(\mathit{LP})$ | $8$ | rilassamento senza i bound |
 | $z(\mathit{LP}^+)$ | $8$ | rilassamento con i bound |
 | $z(\mathit{MILP})$ | $12$ | ottimo del MILP |
@@ -224,7 +224,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_9_scaffali.py` (236 righe)"
+??? example "Mostra lo script completo — `python/fam10_9_scaffali.py` (237 righe)"
 
     ```python
     """Problema 11.4 -- Libri sugli scaffali: minimizzare la somma delle altezze.
@@ -460,7 +460,8 @@ Script completo —
     print(f"  lb = {h4[alto_4b]} + {min(altre_4b)} = {frazione(comb_4b)}, meglio del bound duale.")
     lb4b_usato = max(lb4b, comb_4b)
     z4b_val = risolvi(m4b)
-    riga_4b = registra_bound("4b scaffali larghi 12", ub4b, lb4b_usato, zlp4b, zlp4br, z4b_val)
+    riga_4b = registra_bound("4b scaffali larghi 12", ub4b, lb4b_usato, zlp4b, zlp4br, z4b_val,
+                             certificato="scaffali usati e altezze minime")
     salva_dati(pd.DataFrame([riga_4b]), "fam10_9b_bound")
     assert lb4b_usato <= z4b_val <= ub4b + 1e-9
     ```

@@ -221,7 +221,7 @@ $z(\mathit{MILP}) \ge 4$. Con le filiali libere era $2$.
 |  | valore | che cos'è |
 |---|---:|---|
 | $\mathit{UB}$ | $6$ | soluzione euristica |
-| $\mathit{LB}$ | $4$ | certificato duale costruito a mano |
+| $\mathit{LB}$ | $4$ | squilibrio minimo con le filiali 1 e 2 legate |
 | $z(\mathit{LP})$ | $0$ | rilassamento senza i bound |
 | $z(\mathit{LP}^+)$ | $0$ | rilassamento con i bound |
 | $z(\mathit{MILP})$ | $6$ | ottimo del MILP |
@@ -239,7 +239,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_7_antitrust.py` (304 righe)"
+??? example "Mostra lo script completo — `python/fam10_7_antitrust.py` (305 righe)"
 
     ```python
     """Problema 11.2 -- Suddivisione antitrust: due societa' il piu' simili possibile.
@@ -543,7 +543,8 @@ Script completo —
     print(f"  Ogni partizione ammissibile deve rispettarli tutti: z >= max_j g_j = {frazione(lb2a)}")
     print("  (con le filiali libere era " + frazione(lb2) + ": legare due filiali alza il bound)")
     z2a_val = risolvi(m2a)
-    riga_2a = registra_bound("2a filiali 1 e 2 insieme", ub2a, lb2a, zlp2a, zlp2ar, z2a_val)
+    riga_2a = registra_bound("2a filiali 1 e 2 insieme", ub2a, lb2a, zlp2a, zlp2ar, z2a_val,
+                             certificato="squilibrio minimo con le filiali 1 e 2 legate")
     salva_dati(pd.DataFrame([riga_2a]), "fam10_7a_bound")
     assert lb2a <= z2a_val <= ub2a + 1e-9
     ```

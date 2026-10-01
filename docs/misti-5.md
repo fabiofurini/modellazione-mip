@@ -228,7 +228,7 @@ L'euristica ne usa $3$: il sandwich si chiude, e l'ottimo passa da $2$ a $3$.
 |  | valore | che cos'è |
 |---|---:|---|
 | $\mathit{UB}$ | $3$ | soluzione euristica |
-| $\mathit{LB}$ | $3$ | certificato duale costruito a mano |
+| $\mathit{LB}$ | $3$ | conteggio delle scatole per cliente |
 | $z(\mathit{LP})$ | $\frac{11}{4}$ | rilassamento senza i bound |
 | $z(\mathit{LP}^+)$ | $\frac{11}{4}$ | rilassamento con i bound |
 | $z(\mathit{MILP})$ | $3$ | ottimo del MILP |
@@ -246,7 +246,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_5_spedizioni.py` (265 righe)"
+??? example "Mostra lo script completo — `python/fam10_5_spedizioni.py` (266 righe)"
 
     ```python
     """Problema 12.2 -- Spedizioni in scatole: flusso multiprodotto e conteggio dei
@@ -511,7 +511,8 @@ Script completo —
     print(f"  Sommando: lb = {frazione(comb_2a)}, meglio del bound del rilassamento.")
     lb2a_usato = max(lb2a, comb_2a)
     z2a_val = risolvi(m2a)
-    riga_2a = registra_bound("2a scatole da 4", ub2a, lb2a_usato, zlp2a, zlp2ar, z2a_val)
+    riga_2a = registra_bound("2a scatole da 4", ub2a, lb2a_usato, zlp2a, zlp2ar, z2a_val,
+                             certificato="conteggio delle scatole per cliente")
     salva_dati(pd.DataFrame([riga_2a]), "fam10_5a_bound")
     assert lb2a_usato <= z2a_val <= ub2a + 1e-9
     ```

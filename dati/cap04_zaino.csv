@@ -1,2 +1,2 @@
-problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso
-zaino di massimo,18.0,16,18.0,17.75,17.0,max
+problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso,certificato
+zaino di massimo,18.0,16,18.0,17.75,17.0,max,

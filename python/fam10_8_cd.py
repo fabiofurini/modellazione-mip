@@ -225,7 +225,8 @@ print(f"  e {D3} {verso_3b} multiplo di {M3B}, quindi non possono essere tutte u
 print(f"  differenza fra la piu' lunga e la piu' corta vale almeno {frazione(comb_3b)}.")
 lb3b_usato = max(lb3b, comb_3b)
 z3b_val = risolvi(m3b)
-riga_3b = registra_bound("3b raccolta su tre CD", ub3b, lb3b_usato, zlp3b, zlp3br, z3b_val)
+riga_3b = registra_bound("3b raccolta su tre CD", ub3b, lb3b_usato, zlp3b, zlp3br, z3b_val,
+                         certificato="parita' delle durate sui tre CD")
 salva_dati(pd.DataFrame([riga_3b]), "fam10_8b_bound")
 assert lb3b_usato <= z3b_val <= ub3b + 1e-9
 

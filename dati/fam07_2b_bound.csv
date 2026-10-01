@@ -1,2 +1,2 @@
-problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso
-2b macchina 1 implica macchina 3,12,6.25,6.25,6.365,12.0,min
+problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso,certificato
+2b macchina 1 implica macchina 3,12,6.25,6.25,6.365,12.0,min,

@@ -1,2 +1,2 @@
-problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso
-EX 1 furgone,160.0,110,160.0,140.0,120.0,max
+problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso,certificato
+EX 1 furgone,160.0,110,160.0,140.0,120.0,max,

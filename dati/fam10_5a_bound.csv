@@ -1,2 +1,2 @@
-problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso
-2a scatole da 4,3,3.0,2.75,2.75,3.0,min
+problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso,certificato
+2a scatole da 4,3,3.0,2.75,2.75,3.0,min,conteggio delle scatole per cliente

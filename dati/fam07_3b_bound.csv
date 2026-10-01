@@ -1,2 +1,2 @@
-problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso
-3b lavoro 3 solo con il lavoro 2,34.0,20,34.0,32.38095238095238,20.0,max
+problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso,certificato
+3b lavoro 3 solo con il lavoro 2,34.0,20,34.0,32.38095238095238,20.0,max,

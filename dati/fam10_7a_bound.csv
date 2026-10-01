@@ -1,2 +1,2 @@
-problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso
-2a filiali 1 e 2 insieme,6,4,0.0,0.0,6.0,min
+problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso,certificato
+2a filiali 1 e 2 insieme,6,4,0.0,0.0,6.0,min,squilibrio minimo con le filiali 1 e 2 legate

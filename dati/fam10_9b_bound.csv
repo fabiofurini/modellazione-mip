@@ -1,2 +1,2 @@
-problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso
-4b scaffali larghi 12,13,12,8.0,8.0,12.0,min
+problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso,certificato
+4b scaffali larghi 12,13,12,8.0,8.0,12.0,min,scaffali usati e altezze minime

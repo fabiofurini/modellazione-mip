@@ -208,7 +208,7 @@ L'euristica LPT ne lascia $2$, che è l'ottimo.
 |  | valore | che cos'è |
 |---|---:|---|
 | $\mathit{UB}$ | $2$ | soluzione euristica |
-| $\mathit{LB}$ | $1$ | certificato duale costruito a mano |
+| $\mathit{LB}$ | $1$ | parita' delle durate sui tre CD |
 | $z(\mathit{LP})$ | $0$ | rilassamento senza i bound |
 | $z(\mathit{LP}^+)$ | $0$ | rilassamento con i bound |
 | $z(\mathit{MILP})$ | $2$ | ottimo del MILP |
@@ -226,7 +226,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_8_cd.py` (230 righe)"
+??? example "Mostra lo script completo — `python/fam10_8_cd.py` (231 righe)"
 
     ```python
     """Problema 11.3 -- Brani su piu' CD: minimizzare la differenza fra il piu' lungo
@@ -456,7 +456,8 @@ Notebook —
     print(f"  differenza fra la piu' lunga e la piu' corta vale almeno {frazione(comb_3b)}.")
     lb3b_usato = max(lb3b, comb_3b)
     z3b_val = risolvi(m3b)
-    riga_3b = registra_bound("3b raccolta su tre CD", ub3b, lb3b_usato, zlp3b, zlp3br, z3b_val)
+    riga_3b = registra_bound("3b raccolta su tre CD", ub3b, lb3b_usato, zlp3b, zlp3br, z3b_val,
+                             certificato="parita' delle durate sui tre CD")
     salva_dati(pd.DataFrame([riga_3b]), "fam10_8b_bound")
     assert lb3b_usato <= z3b_val <= ub3b + 1e-9
     ```

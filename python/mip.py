@@ -163,9 +163,9 @@ def due_rilassamenti(m, d):
     return zlp, zlp_r, pi
 
 
-def registra_bound(nome, ub, lb, zlp, zlp_r, zmilp, senso="min"):
+def registra_bound(nome, ub, lb, zlp, zlp_r, zmilp, senso="min", certificato=None):
     """Stampa la riga dei bound e restituisce il record da salvare in CSV."""
     print(tabella_bound(ub, lb, zlp, zmilp, senso, zlp_r))
     # il verso serve alle tabelle: in un massimo l'euristica da' il lb
     return {"problema": nome, "ub": ub, "lb": lb, "z_lp": zlp, "z_lp_rafforzato": zlp_r,
-            "z_milp": zmilp, "senso": senso}
+            "z_milp": zmilp, "senso": senso, "certificato": certificato or ""}

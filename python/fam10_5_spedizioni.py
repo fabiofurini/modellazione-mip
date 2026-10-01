@@ -260,7 +260,8 @@ print("  si dividono fra clienti: " + ", ".join(
 print(f"  Sommando: lb = {frazione(comb_2a)}, meglio del bound del rilassamento.")
 lb2a_usato = max(lb2a, comb_2a)
 z2a_val = risolvi(m2a)
-riga_2a = registra_bound("2a scatole da 4", ub2a, lb2a_usato, zlp2a, zlp2ar, z2a_val)
+riga_2a = registra_bound("2a scatole da 4", ub2a, lb2a_usato, zlp2a, zlp2ar, z2a_val,
+                         certificato="conteggio delle scatole per cliente")
 salva_dati(pd.DataFrame([riga_2a]), "fam10_5a_bound")
 assert lb2a_usato <= z2a_val <= ub2a + 1e-9
 

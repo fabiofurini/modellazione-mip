@@ -1,2 +1,2 @@
-problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso
-2b al piu' due oggetti,12.0,12,12.0,12.0,12.0,max
+problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso,certificato
+2b al piu' due oggetti,12.0,12,12.0,12.0,12.0,max,
