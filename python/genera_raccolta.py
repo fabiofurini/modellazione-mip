@@ -110,6 +110,11 @@ def documento() -> str:
 
 
 def main(verifica: bool = False) -> int:
+    # i sorgenti della dispensa sono privati e non stanno nel repository: in CI
+    # il controllo non ha niente da leggere, e non e' un errore
+    if not DIR_CAPITOLI.is_dir():
+        print("sorgenti della dispensa assenti: controllo della raccolta saltato")
+        return 0
     nuovo = documento()
     vecchio = USCITA.read_text(encoding="utf-8") if USCITA.exists() else ""
     if verifica:
