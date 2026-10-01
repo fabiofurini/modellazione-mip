@@ -57,4 +57,14 @@ domande di modellazione aggiuntive.
 
     [:octicons-arrow-right-24: I nove problemi](misti.md)
 
+-   :material-help-circle-outline: **Problemi da modellare**
+
+    ---
+
+    Quaranta problemi dati come arrivano davvero, senza il modello già scritto:
+    venti con i dati numerici espliciti e venti in forma simbolica. Le
+    soluzioni sono riservate ai docenti.
+
+    [:octicons-arrow-right-24: I quaranta problemi](da-modellare.md)
+
 </div>

@@ -8,7 +8,7 @@ Python sotto licenza
 
 <div class="grid cards" markdown>
 
--   :material-book-open-variant: **Dispensa I --- Modellazione**
+-   :material-book-open-variant: **Modellazione**
 
     ---
 
@@ -18,7 +18,7 @@ Python sotto licenza
 
     [:octicons-download-24: dispensa-1-modellazione.pdf](pdf/dispensa-1-modellazione.pdf)
 
--   :material-numeric: **Dispensa II --- Problemi numerici**
+-   :material-numeric: **Problemi numerici**
 
     ---
 
@@ -28,7 +28,7 @@ Python sotto licenza
 
     [:octicons-download-24: dispensa-2-numerici.pdf](pdf/dispensa-2-numerici.pdf)
 
--   :material-function-variant: **Dispensa III --- Problemi con modello simbolico**
+-   :material-function-variant: **Problemi con modello simbolico**
 
     ---
 
@@ -38,7 +38,7 @@ Python sotto licenza
 
     [:octicons-download-24: dispensa-3-simbolici.pdf](pdf/dispensa-3-simbolici.pdf)
 
--   :material-school-outline: **Dispensa IV --- Organizzazione del corso**
+-   :material-school-outline: **Organizzazione del corso**
 
     ---
 
@@ -48,7 +48,7 @@ Python sotto licenza
 
     [:octicons-download-24: dispensa-4-organizzazione.pdf](pdf/dispensa-4-organizzazione.pdf)
 
--   :material-help-circle-outline: **Dispensa V --- Problemi da modellare**
+-   :material-help-circle-outline: **Problemi da modellare**
 
     ---
 
