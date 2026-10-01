@@ -32,16 +32,20 @@ quello degli stabilimenti e $C = \{1, 2, \dots, m\}$ quello dei clienti.
 **Variabili.** $x_{psc} \in \mathbb{Z}_{\ge 0}$ unità del prodotto $p$ spedite
 da $s$ a $c$; $y_{sc} \in \mathbb{Z}_{\ge 0}$ scatole spedite da $s$ a $c$.
 
+<!-- modello: 10.5 -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{s=1}^{n} \sum_{c=1}^{m} y_{sc} &\\
-\text{soggetto a} \quad \sum_{s=1}^{n} x_{psc} &= d_{pc}, & \forall p \in P,\ \forall c \in C,\\
-\sum_{c=1}^{m} x_{psc} &\le a_{ps}, & \forall p \in P,\ \forall s \in S,\\
--\sum_{p=1}^{k} x_{psc} + w\, y_{sc} &\ge 0, & \forall s \in S,\ \forall c \in C,\\
-x_{psc} &\in \mathbb{Z}_{\ge 0}, & \forall p \in P,\ \forall s \in S,\ \forall c \in C,\\
-y_{sc} &\in \mathbb{Z}_{\ge 0}, & \forall s \in S,\ \forall c \in C.
+\min ~~ \sum_{s=1}^{n} \sum_{c=1}^{m} y_{sc} & & \\
+\text{soggetto a} \quad \sum_{s=1}^{n} x_{psc} &= d_{pc}, & \forall p \in P,\ \forall c \in C, \\
+\sum_{c=1}^{m} x_{psc} &\le a_{ps}, & \forall p \in P,\ \forall s \in S, \\
+-\sum_{p=1}^{k} x_{psc} + w\, y_{sc} &\ge 0, & \forall s \in S,\ \forall c \in C, \\
+x_{psc} &\in \Z_{\ge 0}, & \forall p \in P,\ \forall s \in S,\ \forall c \in C, \\
+y_{sc} &\in \Z_{\ge 0}, & \forall s \in S,\ \forall c \in C.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** L'obiettivo conta le scatole usate su tutte le tratte. I
 vincoli di **domanda**, uno per coppia prodotto–cliente, dicono che ogni ordine
@@ -122,14 +126,20 @@ $$z(\mathit{MILP}) \le \mathit{UB} = 2 .$$
 Si associano $\alpha_{pc}$ libera alla domanda, $\beta_{ps} \le 0$ alla
 disponibilità e $\gamma_{sc} \ge 0$ alla capacità.
 
+<!-- modello: 10.5-duale -->
+
 $$
 \begin{aligned}
-\max ~~ \sum_{p=1}^{k}\sum_{c=1}^{m} d_{pc}\, \alpha_{pc} + \sum_{p=1}^{k}\sum_{s=1}^{n} a_{ps}\, \beta_{ps} &\\
-\text{soggetto a} \quad \alpha_{pc} + \beta_{ps} - \gamma_{sc} &\le 0, & \forall p \in P,\ \forall s \in S,\ \forall c \in C,\\
-w\, \gamma_{sc} &\le 1, & \forall s \in S,\ \forall c \in C,\\
-\alpha_{pc} \gtreqless 0, \quad \beta_{ps} &\le 0, \quad \gamma_{sc} \ge 0.
+\max ~~ \sum_{p=1}^{k}\sum_{c=1}^{m} d_{pc}\, \alpha_{pc} + \sum_{p=1}^{k}\sum_{s=1}^{n} a_{ps}\, \beta_{ps} & & \\
+\text{soggetto a} \quad \alpha_{pc} + \beta_{ps} - \gamma_{sc} &\le 0, & \forall p \in P,\ \forall s \in S,\ \forall c \in C, \\
+w\, \gamma_{sc} &\le 1, & \forall s \in S,\ \forall c \in C, \\
+\alpha_{pc} &\gtreqless 0, & \forall p \in P,\ \forall c \in C, \\
+\beta_{ps} &\le 0, & \forall p \in P,\ \forall s \in S, \\
+\gamma_{sc} &\ge 0, & \forall s \in S,\ \forall c \in C.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** $\alpha_{pc}$ è il valore di una unità del prodotto $p$
 consegnata al cliente $c$, $\beta_{ps}$ il prezzo (non positivo) della

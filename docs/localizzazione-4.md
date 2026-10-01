@@ -25,15 +25,21 @@ attivato serve al più $k$.
 **Variabili decisionali.** $n\,m$ binarie $x_{ij}$, $m$ binarie $y_j$
 (hub attivato), $m$ continue non negative $z_j$ (costo massimo dell'hub $j$).
 
+<!-- modello: 8.4 -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{j=1}^{m} f_j\, y_j + \sum_{j=1}^{m} z_j & &\\
-\text{soggetto a} \quad \sum_{j=1}^{m} x_{ij} &= 1, & \forall i,\\
--\sum_{i=1}^{n} x_{ij} + k\, y_j &\ge 0, & \forall j,\\
--c_{ij}\, x_{ij} + z_j &\ge 0, & \forall i, j,\\
-x_{ij}, y_j &\in \{0, 1\},\ z_j \ge 0. & &
+\min ~~ \sum_{j=1}^{m} f_j\, y_j + \sum_{j=1}^{m} z_j & & \\
+\text{soggetto a} \quad \sum_{j=1}^{m} x_{ij} &= 1, & \forall i \in \{1, 2, \dots, n\}, \\
+-\sum_{i=1}^{n} x_{ij} + k\, y_j &\ge 0, & \forall j \in \{1, 2, \dots, m\}, \\
+-c_{ij}\, x_{ij} + z_j &\ge 0, & \forall i \in \{1, 2, \dots, n\},\ \forall j \in \{1, 2, \dots, m\}, \\
+x_{ij} &\in \{0, 1\}, & \forall i \in \{1, 2, \dots, n\},\ \forall j \in \{1, 2, \dots, m\}, \\
+y_j &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, m\}, \\
+z_j &\ge 0, & \forall j \in \{1, 2, \dots, m\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 - l'obiettivo minimizza costi di attivazione più costo massimo per hub;
 - il primo vincolo assegna ogni terminale a un hub ($n$ vincoli);
@@ -95,6 +101,24 @@ la stessa euristica generica dello scheduling, riusata da
 $z(\mathit{MILP}) \le \mathit{UB} = 20$.
 
 ## Rilassamento LP e duale: il bound duale
+
+Il duale del rilassamento lineare, una variabile per vincolo del primale:
+
+<!-- modello: 8.4-duale -->
+
+$$
+\begin{aligned}
+\max ~~ \sum_{i=1}^{n} \alpha_i & & \\
+\text{soggetto a} \quad \alpha_i - \beta_j - c_{ij}\, \gamma_{ij} &\le 0, & \forall i \in \{1, 2, \dots, n\},\ \forall j \in \{1, 2, \dots, m\}, \\
+k\, \beta_j &\le f_j, & \forall j \in \{1, 2, \dots, m\}, \\
+\sum_{i=1}^{n} \gamma_{ij} &\le 1, & \forall j \in \{1, 2, \dots, m\}, \\
+\alpha_i &\gtreqless 0, & \forall i \in \{1, 2, \dots, n\}, \\
+\beta_j &\ge 0, & \forall j \in \{1, 2, \dots, m\}, \\
+\gamma_{ij} &\ge 0, & \forall i \in \{1, 2, \dots, n\},\ \forall j \in \{1, 2, \dots, m\}.
+\end{aligned}
+$$
+
+<!-- modello: fine -->
 
 Con $\bar\gamma_{ij}=0$ e $\bar\beta_j = f_j/k$ (il massimo ammesso), il
 vincolo su $\alpha_i$ vale per **ogni** hub $j$, non solo il più

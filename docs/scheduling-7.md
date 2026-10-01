@@ -24,16 +24,22 @@ una binaria e un big-M.
 **Variabili.** $n(n-1)$ binarie di precedenza $s_{ji}$ ($j$ precede $i$) e
 $2n$ continue: completamenti $\kappa_j$ e ritardi $\tau_j$; $M = \sum_j t_j$.
 
+<!-- modello: 7.7 -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{j=1}^{n} \tau_j & &\\
-\text{soggetto a} \quad s_{ji} + s_{ij} &= 1, & \forall j < i,\\
--M\, s_{ji} - \kappa_j + \kappa_i &\ge t_i - M, & \forall j \ne i,\\
--\kappa_j + \tau_j &\ge -d_j, & \forall j,\\
-\kappa_j &\ge t_j, & \forall j,\\
-s_{ji} \in \{0, 1\},\quad \kappa_j \ge 0,\quad \tau_j &\ge 0. &
+\min ~~ \sum_{j=1}^{n} \tau_j & & \\
+\text{soggetto a} \quad s_{ji} + s_{ij} &= 1, & \forall j, i \in \{1, 2, \dots, n\},\ j < i, \\
+-M\, s_{ji} - \kappa_j + \kappa_i &\ge t_i - M, & \forall j, i \in \{1, 2, \dots, n\},\ j \ne i, \\
+-\kappa_j + \tau_j &\ge -d_j, & \forall j \in \{1, 2, \dots, n\}, \\
+\kappa_j &\ge t_j, & \forall j \in \{1, 2, \dots, n\}, \\
+s_{ji} &\in \{0, 1\}, & \forall j, i \in \{1, 2, \dots, n\},\ j \ne i, \\
+\kappa_j &\ge 0, & \forall j \in \{1, 2, \dots, n\}, \\
+\tau_j &\ge 0, & \forall j \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 - l'obiettivo minimizza il ritardo totale;
 - i vincoli di **ordine**: o $j$ precede $i$ o viceversa ($n(n-1)/2$);
@@ -102,14 +108,24 @@ Valore $12$: $z(\mathit{MILP}) \le 12$.
 Con $\alpha_{ji}$ libere (ordine), $\beta_{ji} \ge 0$ (precedenza),
 $\gamma_j \ge 0$ (ritardo), $\delta_j \ge 0$ (inizio):
 
+<!-- modello: 7.7-duale -->
+
 $$
 \begin{aligned}
-\max ~~ \sum_{j<i} \alpha_{ji} + \sum_{j \ne i} (t_i - M)\, \beta_{ji} - \sum_j d_j\, \gamma_j + \sum_j t_j\, \delta_j & &\\
-\text{soggetto a} \quad \alpha_{ji} - M\, \beta_{ji} \le 0,\quad \alpha_{ji} - M\, \beta_{ij} &\le 0, & \forall j < i,\\
--\sum_{i \ne j} \beta_{ji} + \sum_{i \ne j} \beta_{ij} - \gamma_j + \delta_j &\le 0, & \forall j,\\
-\gamma_j &\le 1, & \forall j.
+\max ~~ \sum_{j<i} \alpha_{ji} + \sum_{j \ne i} (t_i - M)\, \beta_{ji} & & \\
+\qquad\qquad - \sum_{j=1}^{n} d_j\, \gamma_j + \sum_{j=1}^{n} t_j\, \delta_j & & \\
+\text{soggetto a} \quad \alpha_{ji} - M\, \beta_{ji} &\le 0, & \forall i, j \in \{1, 2, \dots, n\},\ j < i, \\
+\alpha_{ji} - M\, \beta_{ij} &\le 0, & \forall i, j \in \{1, 2, \dots, n\},\ j < i, \\
+-\sum_{i \ne j} \beta_{ji} + \sum_{i \ne j} \beta_{ij} - \gamma_j + \delta_j &\le 0, & \forall j \in \{1, 2, \dots, n\}, \\
+\gamma_j &\le 1, & \forall j \in \{1, 2, \dots, n\}, \\
+\alpha_{ji} &\gtreqless 0, & \forall i, j \in \{1, 2, \dots, n\},\ j < i, \\
+\beta_{ji} &\ge 0, & \forall i, j \in \{1, 2, \dots, n\},\ j \ne i, \\
+\gamma_j &\ge 0, & \forall j \in \{1, 2, \dots, n\}, \\
+\delta_j &\ge 0, & \forall j \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Una soluzione duale a mano.** I $\beta$ hanno coefficiente negativo: a zero,
 e allora $\alpha = 0$; restano $\delta_j \le \gamma_j \le 1$ e ogni lavoro

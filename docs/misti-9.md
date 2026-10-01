@@ -25,15 +25,20 @@ vincoli*: ogni libro su uno scaffale solo, e nessuno scaffale più largo di $c$.
 **Variabili.** $x_{bs} \in \{0,1\}$ vale $1$ se il libro $b$ va sullo scaffale
 $s$; $y_s \ge 0$ è l'altezza dello scaffale $s$.
 
+<!-- modello: 10.9 -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{s=1}^{m} y_s &\\
-\text{soggetto a} \quad \sum_{s=1}^{m} x_{bs} &= 1, & \forall b \in \{1, 2, \dots, n\},\\
-\sum_{b=1}^{n} w_b\, x_{bs} &\le c, & \forall s \in \{1, 2, \dots, m\},\\
--h_b\, x_{bs} + y_s &\ge 0, & \forall b \in \{1, 2, \dots, n\},\ \forall s \in \{1, 2, \dots, m\},\\
-x_{bs} &\in \{0,1\}, \quad y_s \ge 0.
+\min ~~ \sum_{s=1}^{m} y_s & & \\
+\text{soggetto a} \quad \sum_{s=1}^{m} x_{bs} &= 1, & \forall b \in \{1, 2, \dots, n\}, \\
+\sum_{b=1}^{n} w_b\, x_{bs} &\le c, & \forall s \in \{1, 2, \dots, m\}, \\
+-h_b\, x_{bs} + y_s &\ge 0, & \forall b \in \{1, 2, \dots, n\},\ \forall s \in \{1, 2, \dots, m\}, \\
+x_{bs} &\in \{0,1\}, & \forall b \in \{1, 2, \dots, n\},\ \forall s \in \{1, 2, \dots, m\}, \\
+y_s &\ge 0, & \forall s \in \{1, 2, \dots, m\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** L'obiettivo è l'altezza complessiva degli scaffali. I vincoli
 di **assegnamento**, uno per libro, dicono che ogni libro sta su esattamente uno
@@ -105,14 +110,20 @@ $$z(\mathit{MILP}) \le \mathit{UB} = 15 .$$
 Si associano $\alpha_b$ libera all'assegnamento, $\beta_s \le 0$ alla larghezza
 (verso $\le$ in un minimo) e $\gamma_{bs} \ge 0$ all'altezza.
 
+<!-- modello: 10.9-duale -->
+
 $$
 \begin{aligned}
-\max ~~ \sum_{b=1}^{n} \alpha_b + c \sum_{s=1}^{m} \beta_s &\\
-\text{soggetto a} \quad \sum_{b=1}^{n} \gamma_{bs} &\le 1, & \forall s \in \{1, 2, \dots, m\},\\
-\alpha_b + w_b\, \beta_s - h_b\, \gamma_{bs} &\le 0, & \forall b \in \{1, 2, \dots, n\},\ \forall s \in \{1, 2, \dots, m\},\\
-\alpha_b \gtreqless 0, \quad \beta_s &\le 0, \quad \gamma_{bs} \ge 0.
+\max ~~ \sum_{b=1}^{n} \alpha_b + c \sum_{s=1}^{m} \beta_s & & \\
+\text{soggetto a} \quad \sum_{b=1}^{n} \gamma_{bs} &\le 1, & \forall s \in \{1, 2, \dots, m\}, \\
+\alpha_b + w_b\, \beta_s - h_b\, \gamma_{bs} &\le 0, & \forall b \in \{1, 2, \dots, n\},\ \forall s \in \{1, 2, \dots, m\}, \\
+\alpha_b &\gtreqless 0, & \forall b \in \{1, 2, \dots, n\}, \\
+\beta_s &\le 0, & \forall s \in \{1, 2, \dots, m\}, \\
+\gamma_{bs} &\ge 0, & \forall b \in \{1, 2, \dots, n\},\ \forall s \in \{1, 2, \dots, m\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** $\alpha_b$ è il valore del libro $b$, $\beta_s$ il prezzo (non
 positivo) della larghezza dello scaffale $s$ e $\gamma_{bs}$ il prezzo del

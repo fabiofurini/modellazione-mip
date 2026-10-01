@@ -29,18 +29,22 @@ diversi.
 **Variabili.** $x_i \ge 0$ chili di cibo $i$ consumati nel mese;
 $y_i \in \{0,1\}$ vale $1$ se il cibo $i$ entra nella dieta.
 
+<!-- modello: 10.3 -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{i=1}^{s} w_i\, x_i &\\
-\text{soggetto a} \quad \sum_{i=1}^{s} g_{ij}\, x_i &\ge a_j, & \forall j \in \{1, 2, \dots, r\},\\
-\sum_{i=1}^{s} g_{ij}\, x_i &\le b_j, & \forall j \in \{1, 2, \dots, r\},\\
-x_i - c_i\, y_i &\ge 0, & \forall i \in \{1, 2, \dots, s\},\\
-x_i - d_i\, y_i &\le 0, & \forall i \in \{1, 2, \dots, s\},\\
-\sum_{i=1}^{s} y_i &\ge t,\\
-x_i &\ge 0, & \forall i \in \{1, 2, \dots, s\},\\
+\min ~~ \sum_{i=1}^{s} w_i\, x_i & & \\
+\text{soggetto a} \quad \sum_{i=1}^{s} g_{ij}\, x_i &\ge a_j, & \forall j \in \{1, 2, \dots, r\}, \\
+\sum_{i=1}^{s} g_{ij}\, x_i &\le b_j, & \forall j \in \{1, 2, \dots, r\}, \\
+x_i - c_i\, y_i &\ge 0, & \forall i \in \{1, 2, \dots, s\}, \\
+x_i - d_i\, y_i &\le 0, & \forall i \in \{1, 2, \dots, s\}, \\
+\sum_{i=1}^{s} y_i &\ge t, & \\
+x_i &\ge 0, & \forall i \in \{1, 2, \dots, s\}, \\
 y_i &\in \{0,1\}, & \forall i \in \{1, 2, \dots, s\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** L'obiettivo è la spesa complessiva. I vincoli di **fabbisogno
 minimo**, uno per nutriente, impongono la soglia inferiore; quelli di **tetto**,
@@ -119,14 +123,22 @@ Si associano $\alpha_j \ge 0$ ai minimi, $\beta_j \ge 0$ ai massimi,
 $\lambda_i \ge 0$ ai lotti minimi, $\mu_i \ge 0$ ai tetti e $\tau \ge 0$ alla
 varietà.
 
+<!-- modello: 10.3-duale -->
+
 $$
 \begin{aligned}
-\max ~~ \sum_{j=1}^{r} a_j\, \alpha_j - \sum_{j=1}^{r} b_j\, \beta_j + t\, \tau &\\
-\text{soggetto a} \quad \sum_{j=1}^{r} g_{ij}\,(\alpha_j - \beta_j) + \lambda_i - \mu_i &\le w_i, & \forall i \in \{1, 2, \dots, s\},\\
--c_i\, \lambda_i + d_i\, \mu_i + \tau &\le 0, & \forall i \in \{1, 2, \dots, s\},\\
-\alpha_j &\ge 0, \quad \beta_j \ge 0, \quad \lambda_i \ge 0, \quad \mu_i \ge 0, \quad \tau \ge 0.
+\max ~~ \sum_{j=1}^{r} a_j\, \alpha_j - \sum_{j=1}^{r} b_j\, \beta_j + t\, \tau & & \\
+\text{soggetto a} \quad \sum_{j=1}^{r} g_{ij}\,(\alpha_j - \beta_j) + \lambda_i - \mu_i &\le w_i, & \forall i \in \{1, 2, \dots, s\}, \\
+-c_i\, \lambda_i + d_i\, \mu_i + \tau &\le 0, & \forall i \in \{1, 2, \dots, s\}, \\
+\alpha_j &\ge 0, & \forall j \in \{1, 2, \dots, r\}, \\
+\beta_j &\ge 0, & \forall j \in \{1, 2, \dots, r\}, \\
+\lambda_i &\ge 0, & \forall i \in \{1, 2, \dots, s\}, \\
+\mu_i &\ge 0, & \forall i \in \{1, 2, \dots, s\}, \\
+\tau &\ge 0. &
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** $\alpha_j$ è il prezzo di una unità del nutriente $j$ quando
 serve a raggiungere il fabbisogno minimo, $\beta_j$ quello che si paga per non

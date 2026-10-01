@@ -32,15 +32,19 @@ gruppo: il legame di attivazione, stavolta **disaggregato** fin dall'inizio.
 **Variabili.** $n + q$ binarie: $x_j = 1$ se il lavoro $j$ è eseguito;
 $y_c = 1$ se almeno un lavoro della classe $c$ è eseguito.
 
+<!-- modello: 7.5 -->
+
 $$
 \begin{aligned}
-\max ~~ \sum_{j=1}^{n} r_j\, x_j - \sum_{c=1}^{q} f_c\, y_c & &\\
-\text{soggetto a} \quad \sum_{j=1}^{n} t_j\, x_j + \sum_{c=1}^{q} s_c\, y_c &\le a, &\\
-x_j - y_c &\le 0, & \forall c,\ \forall j \in \mathscr{J}_c,\\
-x_j &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\},\\
+\max ~~ \sum_{j=1}^{n} r_j\, x_j - \sum_{c=1}^{q} f_c\, y_c & & \\
+\text{soggetto a} \quad \sum_{j=1}^{n} t_j\, x_j + \sum_{c=1}^{q} s_c\, y_c &\le a, & \\
+x_j - y_c &\le 0, & \forall c \in \{1, 2, \dots, q\},\ \forall j \in \mathscr{J}_c, \\
+x_j &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\}, \\
 y_c &\in \{0, 1\}, & \forall c \in \{1, 2, \dots, q\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 - l'obiettivo massimizza ricavi meno setup;
 - il vincolo di **disponibilità** ($1$ vincolo lineare);
@@ -110,14 +114,19 @@ Profitto $10 + 6 + 8 - 10 - 5 = 9$: $z(\mathit{MILP}) \ge 9$.
 
 Con $\pi \ge 0$ (disponibilità) e $\lambda_j \ge 0$ (link):
 
+<!-- modello: 7.5-duale -->
+
 $$
 \begin{aligned}
-\min ~~ a\, \pi & &\\
-\text{soggetto a} \quad t_j\, \pi + \lambda_j &\ge r_j, & \forall j,\\
-s_c\, \pi - \sum_{j \in \mathscr{J}_c} \lambda_j &\ge -f_c, & \forall c,\\
-\pi \ge 0,\quad \lambda_j &\ge 0. &
+\min ~~ a\, \pi & & \\
+\text{soggetto a} \quad t_j\, \pi + \lambda_j &\ge r_j, & \forall j \in \{1, 2, \dots, n\}, \\
+s_c\, \pi - \sum_{j \in \mathscr{J}_c} \lambda_j &\ge -f_c, & \forall c \in \{1, 2, \dots, q\}, \\
+\pi &\ge 0, & \\
+\lambda_j &\ge 0, & \forall j \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Una soluzione duale a mano.** $\bar\lambda = 0$ e
 $\bar\pi = \max_j r_j/t_j = \tfrac{10}{5} = 2$: valore $100$. Quindi

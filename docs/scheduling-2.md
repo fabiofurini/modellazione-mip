@@ -45,15 +45,19 @@ y_m = 1 \text{ se la macchina } m \text{ è usata},\ 0 \text{ altrimenti},
 \qquad \forall j \in \{1, 2, \dots, n\},\ \forall m \in \{1, 2, \dots, k\}.
 $$
 
+<!-- modello: 7.2 -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{m=1}^{k} c_m\, y_m & &\\
-\text{soggetto a} \quad \sum_{m=1}^{k} x_{jm} &= 1, & \forall j \in \{1, 2, \dots, n\},\\
--\sum_{j=1}^{n} t_{jm}\, x_{jm} + a_m\, y_m &\ge 0, & \forall m \in \{1, 2, \dots, k\},\\
-x_{jm} &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\},\ \forall m \in \{1, 2, \dots, k\},\\
+\min ~~ \sum_{m=1}^{k} c_m\, y_m & & \\
+\text{soggetto a} \quad \sum_{m=1}^{k} x_{jm} &= 1, & \forall j \in \{1, 2, \dots, n\}, \\
+-\sum_{j=1}^{n} t_{jm}\, x_{jm} + a_m\, y_m &\ge 0, & \forall m \in \{1, 2, \dots, k\}, \\
+x_{jm} &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\},\ \forall m \in \{1, 2, \dots, k\}, \\
 y_m &\in \{0, 1\}, & \forall m \in \{1, 2, \dots, k\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 Descrizione della funzione obiettivo e dei vincoli:
 
@@ -141,14 +145,19 @@ macchine già aperte» usano le macchine 1 e 2 (valore $15$).
 Con $\mu_j$ libere (assegnamento) e $\pi_m \ge 0$ (link, verso $\ge$ in un
 minimo):
 
+<!-- modello: 7.2-duale -->
+
 $$
 \begin{aligned}
-\max ~~ \sum_{j=1}^{n} \mu_j & &\\
-\text{soggetto a} \quad \mu_j - t_{jm}\, \pi_m &\le 0, & \forall j,\ \forall m,\\
-a_m\, \pi_m &\le c_m, & \forall m \in \{1, 2, \dots, k\},\\
-\mu_j \gtreqless 0,\quad \pi_m &\ge 0. &
+\max ~~ \sum_{j=1}^{n} \mu_j & & \\
+\text{soggetto a} \quad \mu_j - t_{jm}\, \pi_m &\le 0, & \forall j \in \{1, 2, \dots, n\},\ \forall m \in \{1, 2, \dots, k\}, \\
+a_m\, \pi_m &\le c_m, & \forall m \in \{1, 2, \dots, k\}, \\
+\mu_j &\gtreqless 0, & \forall j \in \{1, 2, \dots, n\}, \\
+\pi_m &\ge 0, & \forall m \in \{1, 2, \dots, k\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Una soluzione duale a mano.** $\bar\pi_m = c_m / a_m$ (il costo per minuto di
 ogni macchina): $\tfrac{8}{25}, \tfrac{7}{20}, \tfrac{5}{12}$; poi

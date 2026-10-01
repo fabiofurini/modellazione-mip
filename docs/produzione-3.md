@@ -30,18 +30,22 @@ $z \in \{0,1\}$ vale $1$ se si incassa il premio. Il dato
 $M_j = \min_i \lfloor b_i / a_{ij} \rfloor$ è il massimo producibile del solo
 tipo $j$.
 
+<!-- modello: 9.3 -->
+
 $$
 \begin{aligned}
-\max ~~ \sum_{j=1}^{s} \bar p_j\, x_j + \bar r\, z &\\
-\text{soggetto a} \quad \sum_{j=1}^{s} a_{ij}\, x_j &\le b_i, & \forall i \in \{1, 2, \dots, k\},\\
-x_j - \bar q_j\, y_j &\ge 0, & \forall j \in \{1, 2, \dots, s\},\\
-x_j - M_j\, y_j &\le 0, & \forall j \in \{1, 2, \dots, s\},\\
--\sum_{j=1}^{s} y_j + 2\, z &\le 0,\\
-x_j &\in \mathbb{Z}_{\ge 0}, & \forall j \in \{1, 2, \dots, s\},\\
-y_j &\in \{0,1\}, & \forall j \in \{1, 2, \dots, s\},\\
-z &\in \{0,1\}.
+\max ~~ \sum_{j=1}^{s} \bar p_j\, x_j + \bar r\, z & & \\
+\text{soggetto a} \quad \sum_{j=1}^{s} a_{ij}\, x_j &\le b_i, & \forall i \in \{1, 2, \dots, k\}, \\
+x_j - \bar q_j\, y_j &\ge 0, & \forall j \in \{1, 2, \dots, s\}, \\
+x_j - M_j\, y_j &\le 0, & \forall j \in \{1, 2, \dots, s\}, \\
+-\sum_{j=1}^{s} y_j + 2\, z &\le 0, & \\
+x_j &\in \Z_{\ge 0}, & \forall j \in \{1, 2, \dots, s\}, \\
+y_j &\in \{0,1\}, & \forall j \in \{1, 2, \dots, s\}, \\
+z &\in \{0,1\}. &
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** L'obiettivo somma i profitti dei veicoli prodotti e il premio
 per la varietà. I vincoli di **risorsa**, uno per risorsa, sono le
@@ -129,15 +133,22 @@ conversione, si associano $\pi_i \ge 0$ alle risorse, $\ell_j \ge 0$ al lotto
 minimo (scritto come $-\lambda_j$), $\beta_j \ge 0$ all'attivazione e
 $\gamma \ge 0$ al premio.
 
+<!-- modello: 9.3-duale -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{i=1}^{k} b_i\, \pi_i &\\
-\text{soggetto a} \quad \sum_{i=1}^{k} a_{ij}\, \pi_i - \ell_j + \beta_j &\ge \bar p_j, & \forall j \in \{1, 2, \dots, s\},\\
-\bar q_j\, \ell_j - M_j\, \beta_j - \gamma &\ge 0, & \forall j \in \{1, 2, \dots, s\},\\
-2\, \gamma &\ge \bar r,\\
-\pi_i &\ge 0, \quad \ell_j \ge 0, \quad \beta_j \ge 0, \quad \gamma \ge 0.
+\min ~~ \sum_{i=1}^{k} b_i\, \pi_i & & \\
+\text{soggetto a} \quad \sum_{i=1}^{k} a_{ij}\, \pi_i - \ell_j + \beta_j &\ge \bar p_j, & \forall j \in \{1, 2, \dots, s\}, \\
+\bar q_j\, \ell_j - M_j\, \beta_j - \gamma &\ge 0, & \forall j \in \{1, 2, \dots, s\}, \\
+2\, \gamma &\ge \bar r, & \\
+\pi_i &\ge 0, & \forall i \in \{1, 2, \dots, k\}, \\
+\ell_j &\ge 0, & \forall j \in \{1, 2, \dots, s\}, \\
+\beta_j &\ge 0, & \forall j \in \{1, 2, \dots, s\}, \\
+\gamma &\ge 0. &
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** $\pi_i$ è il prezzo di una unità della risorsa $i$; $\ell_j$ e
 $\beta_j$ sono i prezzi dei due vincoli di semicontinuità del tipo $j$, e

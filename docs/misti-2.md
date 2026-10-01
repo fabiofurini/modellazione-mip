@@ -25,13 +25,17 @@ stesso oggetto. Un'offerta è «tutto o niente»: non se ne accetta una parte.
 **Variabili.** Una sola famiglia di $r$ binarie: $x_j \in \{0,1\}$ vale $1$ se
 l'offerta $j$ viene accettata.
 
+<!-- modello: 10.2 -->
+
 $$
 \begin{aligned}
-\max ~~ \sum_{j=1}^{r} p_j\, x_j &\\
-\text{soggetto a} \quad \sum_{j :\, i \in B_j} x_j &\le 1, & \forall i \in S,\\
+\max ~~ \sum_{j=1}^{r} p_j\, x_j & & \\
+\text{soggetto a} \quad \sum_{j :\, i \in B_j} x_j &\le 1, & \forall i \in S, \\
 x_j &\in \{0,1\}, & \forall j \in \{1, 2, \dots, r\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** L'obiettivo somma i profitti delle offerte accettate. È un
 **set packing** puro: un vincolo per oggetto ($n$ vincoli lineari) e una
@@ -109,13 +113,17 @@ Si accettano le offerte $1, 2, 3$: $z(\mathit{MILP}) \ge \mathit{LB} = 21$.
 Si associa una variabile duale non negativa $\lambda_i$ a ciascun vincolo di
 oggetto.
 
+<!-- modello: 10.2-duale -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{i \in S} \lambda_i &\\
-\text{soggetto a} \quad \sum_{i \in B_j} \lambda_i &\ge p_j, & \forall j \in \{1, 2, \dots, r\},\\
+\min ~~ \sum_{i \in S} \lambda_i & & \\
+\text{soggetto a} \quad \sum_{i \in B_j} \lambda_i &\ge p_j, & \forall j \in \{1, 2, \dots, r\}, \\
 \lambda_i &\ge 0, & \forall i \in S.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** $\lambda_i$ è il prezzo che il banditore attribuisce
 all'oggetto $i$. L'obiettivo è il valore complessivo dei lotti a quei prezzi. I

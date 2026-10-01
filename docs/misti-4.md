@@ -35,18 +35,22 @@ almeno $f$ configurazioni diverse.
 configurazione $c$; $y_b \in \mathbb{Z}_{\ge 0}$ scatole comprate di tipo $b$;
 $z_c \in \{0,1\}$ vale $1$ se la configurazione $c$ viene usata.
 
+<!-- modello: 10.4 -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{c=1}^{n} i_c\, x_c + \sum_{b=1}^{k} p_b\, y_b &\\
-\text{soggetto a} \quad \sum_{c=1}^{n} x_c &= q,\\
-\sum_{b=1}^{k} v_{bl}\, y_b - \sum_{c=1}^{n} u_{cl}\, x_c &\ge 0, & \forall l \in \{1, 2, \dots, m\},\\
-\sum_{c=1}^{n} z_c &\ge f,\\
-x_c - z_c &\ge 0, & \forall c \in \{1, 2, \dots, n\},\\
-x_c &\in \mathbb{Z}_{\ge 0}, & \forall c \in \{1, 2, \dots, n\},\\
-y_b &\in \mathbb{Z}_{\ge 0}, & \forall b \in \{1, 2, \dots, k\},\\
+\min ~~ \sum_{c=1}^{n} i_c\, x_c + \sum_{b=1}^{k} p_b\, y_b & & \\
+\text{soggetto a} \quad \sum_{c=1}^{n} x_c &= q, & \\
+\sum_{b=1}^{k} v_{bl}\, y_b - \sum_{c=1}^{n} u_{cl}\, x_c &\ge 0, & \forall l \in \{1, 2, \dots, m\}, \\
+\sum_{c=1}^{n} z_c &\ge f, & \\
+x_c - z_c &\ge 0, & \forall c \in \{1, 2, \dots, n\}, \\
+x_c &\in \Z_{\ge 0}, & \forall c \in \{1, 2, \dots, n\}, \\
+y_b &\in \Z_{\ge 0}, & \forall b \in \{1, 2, \dots, k\}, \\
 z_c &\in \{0,1\}, & \forall c \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** L'obiettivo somma il costo delle installazioni e quello delle
 scatole. Il vincolo degli **alberi**, uno solo, dice che gli alberi decorati
@@ -139,15 +143,22 @@ Si associano $\alpha$ libera al vincolo degli alberi (è un'uguaglianza),
 $\beta_l \ge 0$ ai colori, $\gamma \ge 0$ alla varietà e $\delta_c \ge 0$ al
 legame.
 
+<!-- modello: 10.4-duale -->
+
 $$
 \begin{aligned}
-\max ~~ q\, \alpha + f\, \gamma &\\
-\text{soggetto a} \quad \alpha - \sum_{l=1}^{m} u_{cl}\, \beta_l + \delta_c &\le i_c, & \forall c \in \{1, 2, \dots, n\},\\
-\sum_{l=1}^{m} v_{bl}\, \beta_l &\le p_b, & \forall b \in \{1, 2, \dots, k\},\\
-\gamma - \delta_c &\le 0, & \forall c \in \{1, 2, \dots, n\},\\
-\alpha \gtreqless 0, \quad \beta_l &\ge 0, \quad \gamma \ge 0, \quad \delta_c \ge 0.
+\max ~~ q\, \alpha + f\, \gamma & & \\
+\text{soggetto a} \quad \alpha - \sum_{l=1}^{m} u_{cl}\, \beta_l + \delta_c &\le i_c, & \forall c \in \{1, 2, \dots, n\}, \\
+\sum_{l=1}^{m} v_{bl}\, \beta_l &\le p_b, & \forall b \in \{1, 2, \dots, k\}, \\
+\gamma - \delta_c &\le 0, & \forall c \in \{1, 2, \dots, n\}, \\
+\alpha &\gtreqless 0, & \\
+\beta_l &\ge 0, & \forall l \in \{1, 2, \dots, m\}, \\
+\gamma &\ge 0, & \\
+\delta_c &\ge 0, & \forall c \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** $\alpha$ è il valore di un albero decorato, $\beta_l$ il prezzo
 di una luce di colore $l$, $\gamma$ il prezzo della varietà e $\delta_c$ quello

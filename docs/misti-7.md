@@ -33,15 +33,19 @@ fatturato di $A$ è $\sum_i v_{ij}\, x_i$ e quello di $B$ è
 $T_j - \sum_i v_{ij}\, x_i$: la loro differenza è
 $2 \sum_i v_{ij}\, x_i - T_j$.
 
+<!-- modello: 10.7 -->
+
 $$
 \begin{aligned}
-\min ~~ z &\\
-\text{soggetto a} \quad z - 2 \sum_{i=1}^{s} v_{ij}\, x_i + T_j &\ge 0, & \forall j \in \{1, 2, \dots, r\},\\
-z + 2 \sum_{i=1}^{s} v_{ij}\, x_i - T_j &\ge 0, & \forall j \in \{1, 2, \dots, r\},\\
-x_i &\in \{0,1\}, & \forall i \in \{1, 2, \dots, s\},\\
-& z \gtreqless 0.
+\min ~~ z & & \\
+\text{soggetto a} \quad z - 2 \sum_{i=1}^{s} v_{ij}\, x_i + T_j &\ge 0, & \forall j \in \{1, 2, \dots, r\}, \\
+z + 2 \sum_{i=1}^{s} v_{ij}\, x_i - T_j &\ge 0, & \forall j \in \{1, 2, \dots, r\}, \\
+x_i &\in \{0,1\}, & \forall i \in \{1, 2, \dots, s\}, \\
+z &\gtreqless 0. &
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** L'obiettivo è lo squilibrio peggiore. I due gruppi di vincoli,
 uno per prodotto ciascuno, dicono che $z$ non è più piccolo dello squilibrio del
@@ -100,14 +104,19 @@ $$z(\mathit{MILP}) \le \mathit{UB} = 6 .$$
 Si associano $\lambda_j \ge 0$ ai vincoli «da sopra» e $\mu_j \ge 0$ a quelli
 «da sotto». La colonna di $z$, variabile libera, dà un vincolo di uguaglianza.
 
+<!-- modello: 10.7-duale -->
+
 $$
 \begin{aligned}
-\max ~~ \sum_{j=1}^{r} T_j\,(\mu_j - \lambda_j) &\\
-\text{soggetto a} \quad \sum_{j=1}^{r} (\lambda_j + \mu_j) &= 1,\\
-2 \sum_{j=1}^{r} v_{ij}\,(\mu_j - \lambda_j) &\le 0, & \forall i \in \{1, 2, \dots, s\},\\
-\lambda_j &\ge 0, \quad \mu_j \ge 0.
+\max ~~ \sum_{j=1}^{r} T_j\,(\mu_j - \lambda_j) & & \\
+\text{soggetto a} \quad \sum_{j=1}^{r} (\lambda_j + \mu_j) &= 1, & \\
+2 \sum_{j=1}^{r} v_{ij}\,(\mu_j - \lambda_j) &\le 0, & \forall i \in \{1, 2, \dots, s\}, \\
+\lambda_j &\ge 0, & \forall j \in \{1, 2, \dots, r\}, \\
+\mu_j &\ge 0, & \forall j \in \{1, 2, \dots, r\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Descrizione.** $\lambda_j$ e $\mu_j$ sono i prezzi dei due vincoli che
 stringono lo squilibrio del prodotto $j$, uno da sopra e uno da sotto.

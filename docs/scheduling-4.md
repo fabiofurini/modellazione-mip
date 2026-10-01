@@ -32,15 +32,20 @@ si linearizza con una variabile continua e $n$ vincoli «$\ge$» per macchina.
 **Variabili.** $n\,k$ binarie $x_{jm}$ (lavoro $j$ sulla macchina $m$) e $k$
 continue non negative $y_m$ = tempo di lavorazione della macchina $m$.
 
+<!-- modello: 7.4 -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{m=1}^{k} y_m & &\\
-\text{soggetto a} \quad \sum_{m=1}^{k} x_{jm} &= 1, & \forall j,\\
-\sum_{j=1}^{n} x_{jm} &\le p_m, & \forall m,\\
--t_{jm}\, x_{jm} + y_m &\ge 0, & \forall j,\ \forall m,\\
-x_{jm} \in \{0, 1\},\quad y_m &\ge 0. &
+\min ~~ \sum_{m=1}^{k} y_m & & \\
+\text{soggetto a} \quad \sum_{m=1}^{k} x_{jm} &= 1, & \forall j \in \{1, 2, \dots, n\}, \\
+\sum_{j=1}^{n} x_{jm} &\le p_m, & \forall m \in \{1, 2, \dots, k\}, \\
+-t_{jm}\, x_{jm} + y_m &\ge 0, & \forall j \in \{1, 2, \dots, n\},\ \forall m \in \{1, 2, \dots, k\}, \\
+x_{jm} &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\},\ \forall m \in \{1, 2, \dots, k\}, \\
+y_m &\ge 0, & \forall m \in \{1, 2, \dots, k\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 - l'obiettivo minimizza la somma dei tempi di lavorazione;
 - i vincoli di **assegnamento** ($n$) e di **cardinalità** ($k$);
@@ -106,14 +111,20 @@ $\bar y = (6, 13, 0)$, valore $19$: $z(\mathit{MILP}) \le 19$.
 Con $\mu_j$ libere (assegnamento), $\pi_m \le 0$ (cardinalità) e
 $\lambda_{jm} \ge 0$ (massimo):
 
+<!-- modello: 7.4-duale -->
+
 $$
 \begin{aligned}
-\max ~~ \sum_{j=1}^{n} \mu_j + \sum_{m=1}^{k} p_m\, \pi_m & &\\
-\text{soggetto a} \quad \mu_j + \pi_m - t_{jm}\, \lambda_{jm} &\le 0, & \forall j,\ \forall m,\\
-\sum_{j=1}^{n} \lambda_{jm} &\le 1, & \forall m,\\
-\mu_j \gtreqless 0,\quad \pi_m \le 0,\quad \lambda_{jm} &\ge 0. &
+\max ~~ \sum_{j=1}^{n} \mu_j + \sum_{m=1}^{k} p_m\, \pi_m & & \\
+\text{soggetto a} \quad \mu_j + \pi_m - t_{jm}\, \lambda_{jm} &\le 0, & \forall j \in \{1, 2, \dots, n\},\ \forall m \in \{1, 2, \dots, k\}, \\
+\sum_{j=1}^{n} \lambda_{jm} &\le 1, & \forall m \in \{1, 2, \dots, k\}, \\
+\mu_j &\gtreqless 0, & \forall j \in \{1, 2, \dots, n\}, \\
+\pi_m &\le 0, & \forall m \in \{1, 2, \dots, k\}, \\
+\lambda_{jm} &\ge 0, & \forall j \in \{1, 2, \dots, n\},\ \forall m \in \{1, 2, \dots, k\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 Il secondo vincolo è il costo ridotto di $y_m$: il coefficiente $1$
 nell'obiettivo primale limita la somma dei $\lambda_{jm}$.

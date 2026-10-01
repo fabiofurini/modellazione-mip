@@ -39,15 +39,19 @@ ruoli dei bound si scambiano.
 **Variabili decisionali.** $n\,k + k$ variabili binarie: $x_{jm} = 1$ se il
 lavoro $j$ è eseguito dalla macchina $m$; $y_m = 1$ se la macchina $m$ è usata.
 
+<!-- modello: 7.3 -->
+
 $$
 \begin{aligned}
-\max ~~ \sum_{j=1}^{n} \sum_{m=1}^{k} r_j\, x_{jm} - \sum_{m=1}^{k} c_m\, y_m & &\\
-\text{soggetto a} \quad \sum_{m=1}^{k} x_{jm} &\le 1, & \forall j \in \{1, 2, \dots, n\},\\
-\sum_{j=1}^{n} t_j\, x_{jm} - a_m\, y_m &\le 0, & \forall m \in \{1, 2, \dots, k\},\\
-x_{jm} &\in \{0, 1\}, & \forall j,\ \forall m,\\
+\max ~~ \sum_{j=1}^{n} \sum_{m=1}^{k} r_j\, x_{jm} - \sum_{m=1}^{k} c_m\, y_m & & \\
+\text{soggetto a} \quad \sum_{m=1}^{k} x_{jm} &\le 1, & \forall j \in \{1, 2, \dots, n\}, \\
+\sum_{j=1}^{n} t_j\, x_{jm} - a_m\, y_m &\le 0, & \forall m \in \{1, 2, \dots, k\}, \\
+x_{jm} &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\},\ \forall m \in \{1, 2, \dots, k\}, \\
 y_m &\in \{0, 1\}, & \forall m \in \{1, 2, \dots, k\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 - la funzione obiettivo massimizza il profitto, ricavi dei lavori eseguiti meno
   costi delle macchine usate;
@@ -110,14 +114,19 @@ first-fit riempiono prima la macchina 1 e arrivano a $5$.
 
 Con $\mu_j \ge 0$ (al più una) e $\pi_m \ge 0$ (link):
 
+<!-- modello: 7.3-duale -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{j=1}^{n} \mu_j & &\\
-\text{soggetto a} \quad \mu_j + t_j\, \pi_m &\ge r_j, & \forall j,\ \forall m,\\
--a_m\, \pi_m &\ge -c_m, & \forall m,\\
-\mu_j \ge 0,\quad \pi_m &\ge 0. &
+\min ~~ \sum_{j=1}^{n} \mu_j & & \\
+\text{soggetto a} \quad \mu_j + t_j\, \pi_m &\ge r_j, & \forall j \in \{1, 2, \dots, n\},\ \forall m \in \{1, 2, \dots, k\}, \\
+-a_m\, \pi_m &\ge -c_m, & \forall m \in \{1, 2, \dots, k\}, \\
+\mu_j &\ge 0, & \forall j \in \{1, 2, \dots, n\}, \\
+\pi_m &\ge 0, & \forall m \in \{1, 2, \dots, k\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Una soluzione duale a mano.** $\bar\pi_m = c_m/a_m$: $\tfrac{4}{21}, \tfrac{3}{11}, \tfrac{3}{20}$;
 poi $\bar\mu_j = \max\{0, \max_m (r_j - t_j \bar\pi_m)\}$:

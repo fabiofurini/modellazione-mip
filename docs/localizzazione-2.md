@@ -32,15 +32,20 @@ sedi aperte. Il classico problema della **p-mediana**.
 **Variabili decisionali.** $m$ binarie $x_l$ (sede aperta) e $m\,n$ binarie
 $y_{lc}$ (cliente $c$ servito da $l$).
 
+<!-- modello: 8.2 -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{l=1}^{m}\sum_{c=1}^{n} d_{lc}\, y_{lc} & &\\
-\text{soggetto a} \quad \sum_{l=1}^{m} y_{lc} &= 1, & \forall c,\\
-\sum_{l=1}^{m} x_l &\le k, &\\
-x_l - y_{lc} &\ge 0, & \forall l, c,\\
-x_l, y_{lc} &\in \{0, 1\}. & &
+\min ~~ \sum_{l=1}^{m}\sum_{c=1}^{n} d_{lc}\, y_{lc} & & \\
+\text{soggetto a} \quad \sum_{l=1}^{m} y_{lc} &= 1, & \forall c \in \{1, 2, \dots, n\}, \\
+\sum_{l=1}^{m} x_l &\le k, & & \\
+x_l - y_{lc} &\ge 0, & \forall l \in \{1, 2, \dots, m\},\ \forall c \in \{1, 2, \dots, n\}, \\
+x_l &\in \{0, 1\}, & \forall l \in \{1, 2, \dots, m\}, \\
+y_{lc} &\in \{0, 1\}, & \forall l \in \{1, 2, \dots, m\},\ \forall c \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 - l'obiettivo minimizza la somma delle distanze cliente-sede;
 - il primo vincolo assegna ogni cliente a una sede ($n$ vincoli);
@@ -84,6 +89,23 @@ Aperte le sedi 1 e 2: cliente 1 → sede 2 (dist. 3), cliente 2 → sede 1
 \le \mathit{UB} = 18$.
 
 ## Rilassamento LP e duale: il bound duale
+
+Il duale del rilassamento lineare, una variabile per vincolo del primale:
+
+<!-- modello: 8.2-duale -->
+
+$$
+\begin{aligned}
+\max ~~ \sum_{c=1}^{n} \mu_c + k\, \varrho & & \\
+\text{soggetto a} \quad \varrho + \sum_{c=1}^{n} \pi_{lc} &\le 0, & \forall l \in \{1, 2, \dots, m\}, \\
+\mu_c - \pi_{lc} &\le d_{lc}, & \forall l \in \{1, 2, \dots, m\},\ \forall c \in \{1, 2, \dots, n\}, \\
+\mu_c &\gtreqless 0, & \forall c \in \{1, 2, \dots, n\}, \\
+\varrho &\le 0, & & \\
+\pi_{lc} &\ge 0, & \forall l \in \{1, 2, \dots, m\},\ \forall c \in \{1, 2, \dots, n\}.
+\end{aligned}
+$$
+
+<!-- modello: fine -->
 
 Con $\bar\varrho=0$, $\bar\pi_{lc}=0$ e $\bar\mu_c = \min_l d_{lc}$ (la
 distanza dalla sede più vicina in assoluto):

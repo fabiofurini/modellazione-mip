@@ -26,16 +26,22 @@ problema di **lot sizing** con setup.
 **Variabili.** $x_t \ge 0$ unità prodotte, $s_t \ge 0$ scorta a fine periodo
 ($t \le n-1$), $y_t \in \{0,1\}$ lancio della produzione.
 
+<!-- modello: 9.1 -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{t=1}^{n} p_t\, x_t + \sum_{t=1}^{n} q_t\, y_t + \sum_{t=1}^{n-1} h_t\, s_t &\\
-\text{soggetto a} \quad x_1 - s_1 &= d_1 - r_0,\\
-x_t + s_{t-1} - s_t &= d_t, && t = 2, \dots, n-1,\\
-x_n + s_{n-1} &= d_n + r_n,\\
--x_t + M_t\, y_t &\ge 0, && t = 1, \dots, n,\\
-x_t,\ s_t &\ge 0, \qquad y_t \in \{0,1\}.
+\min ~~ \sum_{t=1}^{n} p_t\, x_t + \sum_{t=1}^{n} q_t\, y_t + \sum_{t=1}^{n-1} h_t\, s_t & & \\
+\text{soggetto a} \quad x_1 - s_1 &= d_1 - r_0, & \\
+x_t + s_{t-1} - s_t &= d_t, & \forall t \in \{2, 3, \dots, n-1\}, \\
+x_n + s_{n-1} &= d_n + r_n, & \\
+-x_t + M_t\, y_t &\ge 0, & \forall t \in \{1, 2, \dots, n\}, \\
+x_t &\ge 0, & \forall t \in \{1, 2, \dots, n\}, \\
+s_t &\ge 0, & \forall t \in \{1, 2, \dots, n-1\}, \\
+y_t &\in \{0, 1\}, & \forall t \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Il legame.** Il vincolo $x_t \le M_t\, y_t$ dice: se $y_t = 0$ allora
 $x_t = 0$ (senza lancio non si produce); se $y_t = 1$ il vincolo non è
@@ -103,13 +109,20 @@ due, $z(\mathit{MILP}) \le \mathit{UB} = 420$.
 Con $\mu_t$ **libera** su ogni bilancio e $\pi_t \ge 0$ su ogni vincolo di
 lancio:
 
+<!-- modello: 9.1-duale -->
+
 $$
 \begin{aligned}
-\max ~~ \sum_t b_t\, \mu_t &\\
-\text{soggetto a} \quad \mu_t - \pi_t &\le p_t, \qquad M_t\, \pi_t \le q_t, \qquad
--\mu_t + \mu_{t+1} \le h_t .
+\max ~~ \sum_{t=1}^{n} b_t\, \mu_t & & \\
+\text{soggetto a} \quad \mu_t - \pi_t &\le p_t, & \forall t \in \{1, 2, \dots, n\}, \\
+M_t\, \pi_t &\le q_t, & \forall t \in \{1, 2, \dots, n\}, \\
+-\mu_t + \mu_{t+1} &\le h_t, & \forall t \in \{1, 2, \dots, n-1\}, \\
+\mu_t &\gtreqless 0, & \forall t \in \{1, 2, \dots, n\}, \\
+\pi_t &\ge 0, & \forall t \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 **Ricetta.** $\bar\pi_t = 0$: i lanci si regalano. Restano $\mu_t \le p_t$ e
 $\mu_{t+1} \le \mu_t + h_t$, e il valore più grande ammissibile si costruisce in

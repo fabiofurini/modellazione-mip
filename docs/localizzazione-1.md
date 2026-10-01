@@ -44,15 +44,19 @@ $$
 
 Modello MILP:
 
+<!-- modello: 8.1 -->
+
 $$
 \begin{aligned}
-\min ~~ \sum_{l=1}^{m} i_l\, x_l + \sum_{l=1}^{m}\sum_{c=1}^{n} t_{lc}\, y_{lc} & &\\
-\text{soggetto a} \quad u_l\, x_l - \sum_{c=1}^{n} y_{lc} &\ge 0, & \forall l \in \{1, 2, \dots, m\},\\
-\sum_{l=1}^{m} y_{lc} &= d_c, & \forall c \in \{1, 2, \dots, n\},\\
-x_l &\in \{0, 1\}, & \forall l \in \{1, 2, \dots, m\},\\
-y_{lc} &\ge 0, & \forall l, c.
+\min ~~ \sum_{l=1}^{m} i_l\, x_l + \sum_{l=1}^{m}\sum_{c=1}^{n} t_{lc}\, y_{lc} & & \\
+\text{soggetto a} \quad u_l\, x_l - \sum_{c=1}^{n} y_{lc} &\ge 0, & \forall l \in \{1, 2, \dots, m\}, \\
+\sum_{l=1}^{m} y_{lc} &= d_c, & \forall c \in \{1, 2, \dots, n\}, \\
+x_l &\in \{0, 1\}, & \forall l \in \{1, 2, \dots, m\}, \\
+y_{lc} &\ge 0, & \forall l \in \{1, 2, \dots, m\},\ \forall c \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
+
+<!-- modello: fine -->
 
 - l'obiettivo minimizza il costo totale (installazione più trasporto);
 - il primo vincolo lega trasporto e installazione **e** impone la capacità
@@ -110,6 +114,22 @@ cliente 3. Valore: $60+90 + (4{\cdot}8+5{\cdot}25+6{\cdot}17+3{\cdot}10) =
 150+289 = 439$. Quindi $z(\mathit{MILP}) \le \mathit{UB} = 439$.
 
 ## Rilassamento LP e duale: il bound duale
+
+Il duale del rilassamento lineare, una variabile per vincolo del primale:
+
+<!-- modello: 8.1-duale -->
+
+$$
+\begin{aligned}
+\max ~~ \sum_{c=1}^{n} d_c\, \pi_c & & \\
+\text{soggetto a} \quad u_l\, \mu_l &\le i_l, & \forall l \in \{1, 2, \dots, m\}, \\
+-\mu_l + \pi_c &\le t_{lc}, & \forall l \in \{1, 2, \dots, m\},\ \forall c \in \{1, 2, \dots, n\}, \\
+\mu_l &\ge 0, & \forall l \in \{1, 2, \dots, m\}, \\
+\pi_c &\gtreqless 0, & \forall c \in \{1, 2, \dots, n\}.
+\end{aligned}
+$$
+
+<!-- modello: fine -->
 
 Con $\bar\mu_l = i_l/u_l$ (spalma il costo fisso sulla capacità) e
 $\bar\pi_c = \min_l(t_{lc}+\bar\mu_l)$:
