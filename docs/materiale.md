@@ -23,7 +23,7 @@ Python sotto licenza
     ---
 
     Gli stessi problemi, nello stesso ordine, con i soli testi: per esercitarsi
-    prima di leggere la soluzione. Quarantadue enunciati.
+    prima di leggere la soluzione. Quarantasette enunciati.
 
     [:octicons-download-24: raccolta-enunciati.pdf](pdf/raccolta-enunciati.pdf)
 
