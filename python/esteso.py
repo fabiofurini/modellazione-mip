@@ -18,6 +18,7 @@ Uso dentro uno script:
     from esteso import salva_modello
     salva_modello(m, "ex08_primale")     # -> dati/modelli/ex08_primale.tex
 """
+import re
 from fractions import Fraction
 from pathlib import Path
 
@@ -162,7 +163,8 @@ def salva_modello(m: gp.Model, nome: str, etichetta_vincoli: str = "soggetto a")
     corpo = array_esteso(m, etichetta_vincoli)
     if NOTEBOOK:                       # nel notebook il file non serve: si guarda il modello
         from IPython.display import Math, display
-        display(Math(corpo))
+        # MathJax non conosce `@{...}` nelle colonne: senza, stamperebbe il sorgente
+        display(Math(re.sub(r"@\{[^{}]*\}", "", corpo)))
         return
     DIR_MODELLI.mkdir(parents=True, exist_ok=True)
     percorso = DIR_MODELLI / f"{nome}.tex"

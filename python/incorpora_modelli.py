@@ -28,8 +28,17 @@ DIR_TABELLE = BASE / "dati" / "tabelle"
 FINE = "<!-- modello-esteso: fine -->"
 
 
+def per_mathjax(corpo: str) -> str:
+    """MathJax non conosce `@{...}` nelle colonne di `array`: senza, stampa il sorgente.
+
+    Nel `.tex` della dispensa gli `@{}` servono a stringere le colonne; qui si
+    tolgono, e lo spazio fra le colonne lo mette il browser.
+    """
+    return re.sub(r"@\{[^{}]*\}", "", corpo)
+
+
 def blocco(nome: str) -> str:
-    corpo = (DIR_MODELLI / f"{nome}.tex").read_text(encoding="utf-8").rstrip("\n")
+    corpo = per_mathjax((DIR_MODELLI / f"{nome}.tex").read_text(encoding="utf-8").rstrip("\n"))
     larghe = corpo.count("&") // max(corpo.count(chr(92) * 2) + 1, 1)
     classe = "modello-esteso largo" if larghe > 8 else "modello-esteso"
     return "\n".join([f"<!-- modello-esteso: {nome} -->", "",
