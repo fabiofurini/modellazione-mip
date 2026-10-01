@@ -1,6 +1,7 @@
 # Una macchina, classi di lavori con setup
 
-**Classe:** BIP · **Legami:** attivazione disaggregata, CNF · **Script:** `python/fam07_5_classisetup.py`
+**Classe:** BIP · **Legami:** attivazione disaggregata, CNF · **Script:** `python/fam07_5_classisetup.py`<br>
+**Difficoltà:** ★★☆ · **Tempo:** 30–45 min
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_5_classisetup.ipynb)
 

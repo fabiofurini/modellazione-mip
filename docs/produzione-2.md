@@ -1,6 +1,7 @@
 # Produzione e manodopera: due formulazioni equivalenti
 
-**Classe:** MILP · **Legami:** conteggi interi, bilancio dell'organico · **Script:** `python/fam09_2_manodopera.py`
+**Classe:** MILP · **Legami:** conteggi interi, bilancio dell'organico · **Script:** `python/fam09_2_manodopera.py`<br>
+**Difficoltà:** ★★★ · **Tempo:** 45–60 min
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam09_2_manodopera.ipynb)
 

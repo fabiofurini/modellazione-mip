@@ -1,6 +1,7 @@
 # Spedizioni in scatole
 
-**Classe:** MILP · **Legami:** capacità con arrotondamento per eccesso · **Script:** `python/fam10_5_spedizioni.py`
+**Classe:** MILP · **Legami:** capacità con arrotondamento per eccesso · **Script:** `python/fam10_5_spedizioni.py`<br>
+**Difficoltà:** ★★★ · **Tempo:** 45–60 min
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam10_5_spedizioni.ipynb)
 

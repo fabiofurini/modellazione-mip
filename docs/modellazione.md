@@ -1,8 +1,23 @@
 # Modellazione
 
-Sei capitoli di tecniche: che cos'è un modello MIP, la logica delle variabili
-binarie, i legami fra variabili, i bound dal lato del rilassamento (duale) e dal
-lato delle soluzioni ammissibili (euristiche costruttive), il solver.
+Qui non si imparano modelli a memoria: si imparano le **tecniche per
+costruirli**. Trenta formulazioni mandate a mente non servono davanti a un testo
+nuovo; una decina di legami fra variabili, sapendo perché funzionano, sì.
+
+!!! success "Alla fine di questa parte si sa fare"
+    - Tradurre una condizione logica in vincoli lineari, e dimostrare che li
+      impone davvero.
+    - Legare una variabile binaria a una continua o intera: attivazione, costo
+      fisso, lotto minimo, big-M scelto dai dati.
+    - Ricavare un bound dal rilassamento lineare e scriverne il duale a mano.
+    - Costruire a mano una soluzione ammissibile, e dire che bound dà.
+    - Portare il modello in Python/Gurobi e leggere quello che il solver
+      risponde.
+
+Sei capitoli, in quest'ordine: che cos'è un modello MIP, la logica delle
+variabili binarie, i quattordici legami fra variabili, i bound dal lato del
+rilassamento (il duale) e da quello delle soluzioni ammissibili (le euristiche
+costruttive), il solver.
 
 Ogni capitolo ha uno **script** che produce tutti i numeri citati e un
 **notebook** che si apre in Colab. Nessun valore compare in queste pagine se non

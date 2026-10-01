@@ -1,6 +1,7 @@
 # Dieta con conteggio dei cibi e lotto minimo
 
-**Classe:** MILP · **Legami:** lotto minimo (semicontinua), contare i tipi · **Script:** `python/fam10_3_dieta.py`
+**Classe:** MILP · **Legami:** lotto minimo (semicontinua), contare i tipi · **Script:** `python/fam10_3_dieta.py`<br>
+**Difficoltà:** ★★☆ · **Tempo:** 30–45 min
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam10_3_dieta.ipynb)
 

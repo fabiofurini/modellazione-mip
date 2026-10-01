@@ -1,6 +1,7 @@
 # Macchine con costo fisso di utilizzo
 
-**Classe:** BIP · **Legami:** attivazione (aggregata) · **Script:** `python/fam07_2_costofisso.py`
+**Classe:** BIP · **Legami:** attivazione (aggregata) · **Script:** `python/fam07_2_costofisso.py`<br>
+**Difficoltà:** ★★☆ · **Tempo:** 30–45 min
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_2_costofisso.ipynb)
 

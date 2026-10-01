@@ -5,8 +5,38 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
 **Modelli di programmazione lineare intera per l'Ingegneria Gestionale.**
 
+<div class="grid cards" markdown>
+
+-   :material-book-open-page-variant:{ .lg .middle } **Sto studiando la teoria**
+
+    ---
+
+    Che cos'è un modello MIP, logica e variabili binarie, i quattordici legami,
+    rilassamenti e bound, euristiche, Gurobi.
+
+    [:octicons-arrow-right-24: I sei capitoli](modellazione.md)
+
+-   :material-pencil-ruler:{ .lg .middle } **Voglio fare esercizi**
+
+    ---
+
+    Trentotto problemi svolti per intero e quaranta da modellare, con enunciato,
+    modello, istanza, euristica, duale e ottimo.
+
+    [:octicons-arrow-right-24: I problemi](problemi.md)
+
+-   :material-language-python:{ .lg .middle } **Voglio usare Gurobi**
+
+    ---
+
+    Quarantaquattro notebook che girano nel browser, senza installare niente:
+    lo stesso codice delle pagine, cella per cella.
+
+    [:octicons-arrow-right-24: I notebook](notebook.md)
+
+</div>
+
 [:octicons-download-24: Le tre dispense in PDF](materiale.md){ .md-button .md-button--primary }
-[:octicons-play-24: I notebook in Colab](notebook.md){ .md-button }
 
 ## Che cosa si impara a fare
 

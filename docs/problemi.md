@@ -1,9 +1,19 @@
 # I problemi
 
-Quindici modelli numerici, tre famiglie di problemi e un capitolo di modelli
-misti, ognuno con i suoi esercizi risolti: modello, dimostrazione dei legami fra le variabili, istanza,
-euristica costruttiva, duale del rilassamento LP, soluzione con Gurobi e
-domande di modellazione aggiuntive.
+**Quindici modelli numerici introduttivi, tre famiglie di problemi, nove
+problemi misti e quaranta problemi da modellare.**
+
+I trentotto problemi risolti seguono tutti lo stesso schema: modello,
+dimostrazione dei legami fra le variabili, istanza, euristica costruttiva,
+duale del rilassamento LP, soluzione con Gurobi e domande di modellazione
+aggiuntive.
+
+!!! tip "Quaranta problemi da modellare"
+    Dati come arrivano davvero — un testo, dei dati, una domanda — senza il
+    modello già scritto: venti con i dati numerici espliciti e venti in forma
+    simbolica. Le soluzioni sono riservate ai docenti.
+
+    [:octicons-arrow-right-24: Vai ai quaranta problemi da modellare](da-modellare.md)
 
 <div class="grid cards" markdown>
 
@@ -15,7 +25,7 @@ domande di modellazione aggiuntive.
     tecnica, da leggere prima delle famiglie per prendere le misure. Da EX 1 a
     EX 15.
 
-    [:octicons-arrow-right-24: I quindici modelli](numerici.md)
+    [:octicons-arrow-right-24: Vai ai quindici modelli numerici](numerici.md)
 
 -   :material-timer-sand: **Assegnamento e scheduling**
 
@@ -25,7 +35,7 @@ domande di modellazione aggiuntive.
     selezione, lavori in parallelo, classi con setup, premi «se e solo se»,
     sequenziamento con big-M. Sette problemi.
 
-    [:octicons-arrow-right-24: I sette problemi](scheduling.md)
+    [:octicons-arrow-right-24: Vai ai sette problemi di assegnamento e scheduling](scheduling.md)
 
 -   :material-map-marker-radius: **Localizzazione e copertura**
 
@@ -34,7 +44,7 @@ domande di modellazione aggiuntive.
     Dove aprire sedi e hub: attivazione aggregata e disaggregata, un «se e
     solo se» con due vincoli di link, variabile di massimo. Quattro problemi.
 
-    [:octicons-arrow-right-24: I quattro problemi](localizzazione.md)
+    [:octicons-arrow-right-24: Vai ai quattro problemi di localizzazione e copertura](localizzazione.md)
 
 -   :material-factory: **Pianificazione della produzione**
 
@@ -44,7 +54,7 @@ domande di modellazione aggiuntive.
     lancio, organico e assunzioni, lotto minimo con premio per la varietà.
     Tre problemi.
 
-    [:octicons-arrow-right-24: I tre problemi](produzione.md)
+    [:octicons-arrow-right-24: Vai ai tre problemi di produzione](produzione.md)
 
 -   :material-shape-outline: **Problemi misti**
 
@@ -55,7 +65,7 @@ domande di modellazione aggiuntive.
     smette di servire e il bound duale va cercato con argomenti combinatori.
     Nove problemi risolti.
 
-    [:octicons-arrow-right-24: I nove problemi](misti.md)
+    [:octicons-arrow-right-24: Vai ai nove problemi misti](misti.md)
 
 -   :material-help-circle-outline: **Problemi da modellare**
 
@@ -65,6 +75,6 @@ domande di modellazione aggiuntive.
     venti con i dati numerici espliciti e venti in forma simbolica. Le
     soluzioni sono riservate ai docenti.
 
-    [:octicons-arrow-right-24: I quaranta problemi](da-modellare.md)
+    [:octicons-arrow-right-24: Vai ai quaranta problemi da modellare](da-modellare.md)
 
 </div>

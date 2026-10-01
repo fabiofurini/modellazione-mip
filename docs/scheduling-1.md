@@ -1,6 +1,7 @@
 # Assegnamento a costo minimo con disponibilità
 
-**Classe:** BIP · **Legami:** nessuno (una sola famiglia di variabili) · **Script:** `python/fam07_1_assegnamento.py`
+**Classe:** BIP · **Legami:** nessuno (una sola famiglia di variabili) · **Script:** `python/fam07_1_assegnamento.py`<br>
+**Difficoltà:** ★☆☆ · **Tempo:** 20–30 min
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_1_assegnamento.ipynb)
 

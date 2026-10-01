@@ -1,6 +1,7 @@
 # Asta combinatoria
 
-**Classe:** BIP · **Legami:** set packing per righe · **Script:** `python/fam10_2_asta.py`
+**Classe:** BIP · **Legami:** set packing per righe · **Script:** `python/fam10_2_asta.py`<br>
+**Difficoltà:** ★☆☆ · **Tempo:** 20–30 min
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam10_2_asta.ipynb)
 
