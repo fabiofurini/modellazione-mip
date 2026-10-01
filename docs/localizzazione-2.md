@@ -121,7 +121,7 @@ di valore $13$. Per la dualità debole, $\mathit{LB}=13 \le z(\mathit{LP})
 rilassamento è già intero su questa istanza. $z(\mathit{MILP}) = 15$, con le
 sedi 1 e 3 aperte (non 1 e 2 come nell'euristica): gap euristica $20{,}0\%$.
 
-| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap |
+| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 18 | 13 | 15 | 15 | 15 | $20{,}0\%$ |
 
@@ -149,7 +149,11 @@ sedi 1 e 3 aperte (non 1 e 2 come nell'euristica): gap euristica $20{,}0\%$.
 L'algebra chiude la questione in una riga: la colonna delle $x_l$ impone
 $\varrho + \sigma \le 0$, e l'obiettivo contiene $k(\varrho + \sigma)$, mai
 positivo. Imporre **esattamente** $k$ sedi invece di **al più** $k$ non muove il
-rilassamento: muove l'ottimo intero.
+rilassamento --- e qui non muove nemmeno l'ottimo intero, che resta $15$. Non è
+un caso dell'istanza: senza costo di apertura una sede in più non può peggiorare
+l'assegnamento, quindi da una soluzione con meno di $k$ sedi se ne ricava sempre
+una altrettanto buona con esattamente $k$. Il vincolo di uguaglianza è
+ridondante; diventa vincolante solo se aprire costa.
 
 <!-- tabella-variante: fam08_2a_bound -->
 
@@ -174,7 +178,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam08_2_pmediana.py` (208 righe)"
+??? example "Mostra lo script completo — `python/fam08_2_pmediana.py` (210 righe)"
 
     ```python
     """Problema 8.2 -- Localizzazione con numero massimo di sedi (p-mediana).
@@ -359,7 +363,9 @@ Script completo —
     print("  mai positivo. Il massimo si ha con varrho + sigma = 0, e il valore torna sum_c mu_c.")
     print(f"  ->  lb = {frazione(lb2a)}")
     print("  Morale: imporre *esattamente* k sedi invece di *al piu'* k non muove il")
-    print("  rilassamento --- muove l'ottimo intero.")
+    print("  rilassamento, e su questa istanza nemmeno l'ottimo intero: senza costo di")
+    print("  apertura una sede in piu' non peggiora l'assegnamento, quindi il vincolo di")
+    print("  uguaglianza e' ridondante.")
     zlp2a, zlp2ar, _ = due_rilassamenti(m2a, d2a)
     z2a = risolvi(m2a)
     riga_2a = registra_bound("2a esattamente k sedi", ub2a, lb2a, zlp2a, zlp2ar, z2a)

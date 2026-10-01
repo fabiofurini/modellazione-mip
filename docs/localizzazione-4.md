@@ -63,7 +63,7 @@ sono spenti». Sull'istanza $f = (5,6,7)$ vale la versione forte. Come nel
 **Secondo legame: variabile di massimo.** Se il terminale $i$ è connesso
 a $j$, $z_j \ge c_{ij}$: imposto direttamente. All'ottimo,
 $z_j = \max_{i:x_{ij}=1} c_{ij}$ esattamente, perché l'obiettivo minimizza
-$z_j$ e nessun altro vincolo la coinvolge. Come nel problema 7.7.
+$z_j$ e nessun altro vincolo la coinvolge. Come nel problema 7.4.
 
 ## Il modello in gurobipy
 
@@ -142,7 +142,7 @@ $z(\mathit{LP}^+)=1015/78\approx13{,}0$. $z(\mathit{MILP})=19$, con gli hub
 1 e 3 attivati (non 1 e 2): il terminale 1 da solo sull'hub 3 (il più
 economico per lui), i terminali 2 e 3 sull'hub 1. Gap euristica $5{,}3\%$.
 
-| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap |
+| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 20 | $15/2$ | $25/2$ | $1015/78$ | 19 | $5{,}3\%$ |
 
@@ -199,13 +199,14 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam08_4_hub.py` (248 righe)"
+??? example "Mostra lo script completo — `python/fam08_4_hub.py` (249 righe)"
 
     ```python
     """Problema 8.4 -- Localizzazione di hub con costo di connessione massimo.
 
     Due link: attivazione (aggregata, come nello scheduling 7.2) e variabile di
-    massimo z_j = max_i {c_ij : x_ij = 1} (stesso schema del ritardo 7.7). L'euristica
+    massimo z_j = max_i {c_ij : x_ij = 1} (stesso schema del tempo di lavorazione 7.4).
+    L'euristica
     next-fit è quella generica di euristiche.py: gli hub sono le "macchine" (capacità
     k) e i terminali i "lavori" (tempo unitario, indipendente dalla macchina).
     """

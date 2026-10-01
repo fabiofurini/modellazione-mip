@@ -1,6 +1,6 @@
 """Problema 9.3 -- Veicoli: lotto minimo e premio per la varieta'.
 
-Tre tecniche insieme: la variabile semicontinua del lotto minimo (3.3), il
+Tre tecniche insieme: la variabile semi-intera del lotto minimo (3.3), il
 conteggio dei tipi attivi (3.11) e un premio «se e solo se» si producono almeno
 due tipi (3.10). Il premio si incassa solo se il conteggio arriva a due: il
 verso mancante segue dall'ottimalita' perche' il premio e' positivo.
@@ -73,7 +73,7 @@ salva_modello(m3m, "fam09_3_primale")
 # ---------- 2. IL RILASSAMENTO LP ----------
 zlp3, zlp3r, _ = rilassamenti(m3m)
 
-# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+# ---------- 3. IL DUALE DEL RILASSAMENTO (UPPER BOUND: E' UN MASSIMO) ----------
 dl3 = duale_3(a3, b3, p3, q3, r3)
 salva_modello(dl3, "fam09_3_duale")
 # ricetta: gamma = r/2 (il minimo ammesso dal vincolo 2 gamma >= r), beta = 0, e
@@ -103,7 +103,7 @@ for i in R(m3):
 print(f"  Il minimo e' la risorsa {critica + 1}:  ub = {frazione(ub3)}")
 dualita_forte(dl3, zlp3)
 
-# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+# ---------- 4. EURISTICA COSTRUTTIVA (LOWER BOUND: E' UN MASSIMO) ----------
 # euristica costruttiva: si attivano due tipi (per incassare il premio) partendo dai profitti per
 # unita' di risorsa piu' scarsa, poi si riempie con il tipo migliore
 def euristica(a, b, p, q, r):

@@ -28,6 +28,13 @@ filiale a una sola società.
 se la filiale $i$ va alla società $A$ e $0$ se va alla $B$; più una variabile
 libera $z$ per il min-max.
 
+Si potrebbe anche dichiarare $z \ge 0$: i due vincoli la tengono sopra un valore
+assoluto, quindi non negativa, e la soluzione non cambierebbe. La si lascia
+libera perché è la scelta che si vede nel duale --- la colonna di una variabile
+libera dà un vincolo di *uguaglianza*, ed è da lì che viene la condizione
+$\sum_j (\lambda_j + \mu_j) = 1$ --- e perché così la non negatività resta una
+conseguenza del modello, non un'ipotesi aggiunta a mano.
+
 Con $T_j = \sum_{i=1}^{s} v_{ij}$ il fatturato totale sul prodotto $j$, il
 fatturato di $A$ è $\sum_i v_{ij}\, x_i$ e quello di $B$ è
 $T_j - \sum_i v_{ij}\, x_i$: la loro differenza è
@@ -176,7 +183,7 @@ vede, perché nasce dall'interezza e non dai vincoli.
 La partizione ottima è $A = \{2, 3\}$ e $B = \{1, 4\}$, con differenze $4$, $2$
 e $2$ sui tre prodotti.
 
-| $LB$ (combinatorio) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap |
+| $LB$ (combinatorio) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 2 | 0 | 0 | 4 | 6 | $50{,}0\%$ |
 

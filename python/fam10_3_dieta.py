@@ -215,7 +215,7 @@ print("Soluzione duale a mano: la stessa ricetta del problema base --- beta = mu
 print(f"  un solo alpha positivo, sul {NUTRIENTI[scelto_2b]}. La varieta' non si valuta: tau")
 print("  entra nell'obiettivo con il suo termine noto t, ma la colonna delle y_i impone")
 print("  tau <= c_i lam_i - d_i mu_i, e con lam = mu = 0 resta tau = 0. Chiedere un cibo in")
-print("  piu' non muove il rilassamento, muove l'ottimo intero.")
+print("  piu' non muove il bound duale costruito a mano, mentre muove l'ottimo intero.")
 print(f"  ->  lb = {frazione(lb2b)}")
 zlp2b, zlp2br, _ = due_rilassamenti(m2b, dl2b)
 z2b = risolvi(m2b)

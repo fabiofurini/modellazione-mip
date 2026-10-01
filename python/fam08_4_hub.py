@@ -1,7 +1,8 @@
 """Problema 8.4 -- Localizzazione di hub con costo di connessione massimo.
 
 Due link: attivazione (aggregata, come nello scheduling 7.2) e variabile di
-massimo z_j = max_i {c_ij : x_ij = 1} (stesso schema del ritardo 7.7). L'euristica
+massimo z_j = max_i {c_ij : x_ij = 1} (stesso schema del tempo di lavorazione 7.4).
+L'euristica
 next-fit è quella generica di euristiche.py: gli hub sono le "macchine" (capacità
 k) e i terminali i "lavori" (tempo unitario, indipendente dalla macchina).
 """

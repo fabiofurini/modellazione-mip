@@ -98,7 +98,7 @@ salva_modello(m6, "fam07_6_primale")
 # ---------- 2. IL RILASSAMENTO LP ----------
 zlp6, zlp6r, _ = rilassamenti(m6)
 
-# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+# ---------- 3. IL DUALE DEL RILASSAMENTO (UPPER BOUND: E' UN MASSIMO) ----------
 d6 = duale_6(r6, t6, J6, v6, a6, u6)
 salva_modello(d6, "fam07_6_duale")
 pi_mano = {f"pi[{J6[c][0]}]": -v6[c] for c in R(3)}      # il primo lavoro di ogni classe porta il premio
@@ -110,7 +110,7 @@ print(f"Soluzione duale a mano: pi_1 = -5, pi_3 = -4, pi_5 = -10, lam = 0, "
       f"mu = max_j (r_j - pi_j)/t_j = {frazione(mu_mano)}  ->  ub = {frazione(ub6)}")
 dualita_forte(d6, zlp6)
 
-# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+# ---------- 4. EURISTICA COSTRUTTIVA (LOWER BOUND: E' UN MASSIMO) ----------
 xe, ye, ze, passi = euristica_6(r6, t6, J6, v6, a6, u6)
 print("Euristica classe per classe:")
 for i, s in enumerate(passi, 1):

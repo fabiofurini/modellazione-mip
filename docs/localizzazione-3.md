@@ -86,13 +86,13 @@ $m=3$, $n=5$, $t=5$, $b=4$, $k=2$:
 |---|---:|---:|---:|---:|---:|
 | $p_c$ | 10 | 20 | 5 | 15 | 25 |
 
-Con $b=4$: $\mathscr{L}_1=\{1,2\}$, $\mathscr{L}_2=\{3\}$,
+Con $b=4$: $\mathscr{L}_1=\{1,2\}$, $\mathscr{L}_2=\{2,3\}$,
 $\mathscr{L}_3=\{1,3\}$, $\mathscr{L}_4=\{3\}$, $\mathscr{L}_5=\emptyset$.
 
 ## Euristica costruttiva: il bound primale
 
 Si aprono le prime $k$ sedi. Cliente 1: segnale $10\ge5$ ma 2 sedi forti
-($>1$): **non coperto**. Cliente 2: segnale $5\ge5$, 0 sedi forti:
+($>1$): **non coperto**. Cliente 2: segnale $5\ge5$, 1 sede forte:
 **coperto**. Cliente 3: segnale $7\ge5$, 1 sede forte: **coperto**. Clienti
 4 e 5: segnale insufficiente: **non coperti**. Valore $20+5=25$:
 $z(\mathit{MILP}) \ge \mathit{LB} = 25$.
@@ -132,7 +132,7 @@ $z(\mathit{LP}^+) = 125/2 = 62{,}5$. $z(\mathit{MILP}) = 45$, con le sedi 1
 e 3 installate e i clienti 1, 2, 4 coperti (non 3 né 5): diverso da quanto
 trovato dall'euristica. Gap euristica $44{,}4\%$.
 
-| $LB$ | $UB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap |
+| $LB$ | $UB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 25 | $225/2$ | $41925/646$ | $125/2$ | 45 | $44{,}4\%$ |
 
@@ -142,7 +142,7 @@ trovato dall'euristica. Gap euristica $44{,}4\%$.
 
 - Il cliente 5 non può mai essere coperto: segnale massimo $1+0+2=3<5$
   anche aprendo tutte le sedi.
-- Per i clienti con $|\mathscr{L}_c|\le1$ (2, 4, 5) il vincolo di
+- Per i clienti con $|\mathscr{L}_c|\le1$ (4 e 5) il vincolo di
   interferenza è ridondante.
 
 ## Domande di modellazione aggiuntive
@@ -258,7 +258,7 @@ Script completo —
     # ---------- 2. IL RILASSAMENTO LP ----------
     zlp3, zlp3r, _ = rilassamenti(m3)
 
-    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (UPPER BOUND: E' UN MASSIMO) ----------
 
     d3 = duale_3(s3, p3, t3, b3, k3)
     salva_modello(d3, "fam08_3_duale")
@@ -271,7 +271,7 @@ Script completo —
           + ", ".join(frazione(p3[c] / 2) for c in R(n)) + f"  ->  ub = {frazione(ub3)}")
     dualita_forte(d3, zlp3)
 
-    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    # ---------- 4. EURISTICA COSTRUTTIVA (LOWER BOUND: E' UN MASSIMO) ----------
 
     print("Euristica: si aprono le prime k sedi; un cliente è coperto se il segnale totale")
     print("raggiunge la soglia e al più una sede forte lo raggiunge.")

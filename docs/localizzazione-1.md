@@ -149,7 +149,7 @@ $z(\mathit{LP}^+) = 317$. $z(\mathit{MILP}) = 365$, con entrambe le sedi
 aperte: la sede 1 serve il cliente 1 e parte del cliente 2, la sede 2 il
 resto del cliente 2 e tutto il cliente 3. Gap euristica $20{,}3\%$.
 
-| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap |
+| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 439 | $1581/5$ | $1581/5$ | 317 | 365 | $20{,}3\%$ |
 

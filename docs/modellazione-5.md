@@ -53,7 +53,7 @@ rompono sull'indice più piccolo, così l'esecuzione è riproducibile.
 
 Sull'istanza del [problema 7.1](scheduling-1.md) (un **minimo**):
 
-| Euristica | $UB$ | $z(\mathit{MILP})$ | gap |
+| Euristica | $UB$ | $z(\mathit{MILP})$ | gap dell'euristica |
 |---|---:|---:|---:|
 | next-fit | 14 | 11 | $27{,}3\%$ |
 | first-fit | 14 | 11 | $27{,}3\%$ |
@@ -198,7 +198,7 @@ $9$: per arrivarci serve una mossa di **scambio** fra due macchine.
 
 ## Il quadro delle euristiche
 
-| Euristica | Verso | valore | $z(\mathit{MILP})$ | gap |
+| Euristica | Verso | valore | $z(\mathit{MILP})$ | gap dell'euristica |
 |---|---|---:|---:|---:|
 | next-fit / first-fit (assegnamento) | min ($UB$) | 14 | 11 | $27{,}3\%$ |
 | best-fit sul costo (assegnamento) | min ($UB$) | 11 | 11 | $0{,}0\%$ |

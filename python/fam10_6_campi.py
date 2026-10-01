@@ -40,8 +40,10 @@ def modello_1(f, g, d, c):
                  name="capacita")
     m.addConstrs((gp.quicksum(x[i, j] - y[i, j] for i in R(s)) >= 0 for j in R(r)),
                  name="parita")
-    m.addConstrs((x[c, j] + y[c, j]
-                  - gp.quicksum(x[i, j] + y[i, j] for i in R(s) if i != c) >= 0 for j in R(r)),
+    # l'enunciato chiede che la nazionalita' c non sia meno di *ciascuna* altra:
+    # una disuguaglianza per ogni coppia (i, j), non una sola somma aggregata
+    m.addConstrs((x[c, j] + y[c, j] - x[i, j] - y[i, j] >= 0
+                  for i in R(s) if i != c for j in R(r)),
                  name="maggioranza")
     return m, x, y
 
@@ -49,10 +51,11 @@ def modello_1(f, g, d, c):
 def duale_1(f, g, d, c):
     """min sum_i f_i alpha_i + sum_i g_i beta_i + sum_j d_j gamma_j
 
-    con alpha, beta, gamma >= 0 per i tre vincoli di <=, e delta_j, eps_j >= 0 per
-    i due vincoli di composizione (scritti come >= 0, quindi entrano con segno
-    meno nei vincoli duali). Il segno che moltiplica eps_j dipende da i: e' -1
-    per la nazionalita' maggioritaria c e +1 per tutte le altre.
+    con alpha, beta, gamma >= 0 per i tre vincoli di <=, delta_j >= 0 per la
+    parita' e eps_{ij} >= 0, una per ogni coppia (nazionalita' i != c, campo j),
+    per la maggioranza. Nel vincolo duale di una variabile della nazionalita' c
+    compaiono tutte le eps_{kj} con il segno meno; in quello di una nazionalita'
+    i != c compare la sola eps_{ij} con il segno piu'.
     """
     s, r = len(f), len(d)
     dl = nuovo_modello("duale_campi")
@@ -60,15 +63,16 @@ def duale_1(f, g, d, c):
     beta = dl.addVars(s, name="beta")
     gamma = dl.addVars(r, name="gamma")
     delta = dl.addVars(r, name="delta")
-    eps = dl.addVars(r, name="eps")
+    eps = dl.addVars([(i, j) for i in R(s) if i != c for j in R(r)], name="eps")
     dl.setObjective(gp.quicksum(f[i] * alpha[i] for i in R(s))
                     + gp.quicksum(g[i] * beta[i] for i in R(s))
                     + gp.quicksum(d[j] * gamma[j] for j in R(r)), GRB.MINIMIZE)
     for i in R(s):
-        segno = -1 if i == c else 1
         for j in R(r):
-            dl.addConstr(alpha[i] + gamma[j] - delta[j] + segno * eps[j] >= 1, name=f"rcx[{i},{j}]")
-            dl.addConstr(beta[i] + gamma[j] + delta[j] + segno * eps[j] >= 1, name=f"rcy[{i},{j}]")
+            magg = (-gp.quicksum(eps[k, j] for k in R(s) if k != c) if i == c
+                    else eps[i, j])
+            dl.addConstr(alpha[i] + gamma[j] - delta[j] + magg >= 1, name=f"rcx[{i},{j}]")
+            dl.addConstr(beta[i] + gamma[j] + delta[j] + magg >= 1, name=f"rcy[{i},{j}]")
     return dl
 
 

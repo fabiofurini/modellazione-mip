@@ -155,7 +155,7 @@ $z(\mathit{MILP}) \le \mathit{UB} = 23$.
 All'ottimo si accettano le offerte $4$ ($\{1,3\}$, profitto $12$) e $5$
 ($\{2,4\}$, profitto $10$): tutti e quattro gli oggetti vengono venduti.
 
-| $LB$ (euristica) | $z(\mathit{MILP})$ | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $UB$ (duale) | gap |
+| $LB$ (euristica) | $z(\mathit{MILP})$ | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $UB$ (duale) | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 21 | 22 | 22 | 22 | 23 | $4{,}5\%$ |
 
@@ -290,7 +290,7 @@ Notebook —
     # ---------- 2. IL RILASSAMENTO LP ----------
     zlp3, zlp3r, _ = rilassamenti(m3)
 
-    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (UPPER BOUND: E' UN MASSIMO) ----------
     dl3, lam3 = duale_3(n3, B3, p3)
     salva_modello(dl3, "fam10_2_duale")
     # Ricetta a mano: si spalma ogni offerta sui suoi oggetti e si prende il massimo,
@@ -313,7 +313,7 @@ Notebook —
           f"{frazione(ub_grezzo)})")
     dualita_forte(dl3, zlp3)
 
-    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    # ---------- 4. EURISTICA COSTRUTTIVA (LOWER BOUND: E' UN MASSIMO) ----------
     # euristica costruttiva sul profitto per oggetto: si accettano le offerte piu' redditizie fra
     # quelle i cui oggetti sono ancora liberi. Costo O(r log r + r n).
     def euristica(n, B, p):

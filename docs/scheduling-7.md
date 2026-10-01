@@ -55,9 +55,14 @@ $$
     contronominale $\kappa_i < \kappa_j + t_i \Rightarrow s_{ji} = 0$. Il
     vincolo $\kappa_i \ge \kappa_j + t_i - M(1 - s_{ji})$: con $s_{ji} = 1$
     impone la precedenza; con $s_{ji} = 0$ diventa
-    $\kappa_i \ge \kappa_j + t_i - M$, sempre vero perché il membro destro è
-    $\le t_i \le \kappa_i$ quando i completamenti stanno entro $M$. Il big-M
-    «spegne» il vincolo.
+    $\kappa_i \ge \kappa_j + t_i - M$. Il modello non impone
+    $\kappa_j \le M$, quindi il vincolo non è vero per *ogni* punto ammissibile;
+    lo è però su quelli che interessano. Con $M = \sum_j t_j$ esiste sempre una
+    soluzione ottima senza tempi morti --- se la macchina si ferma, si anticipano
+    i lavori successivi e nessun completamento, quindi nessun ritardo, peggiora
+    --- e su una soluzione così ogni $\kappa_j \le \sum_j t_j = M$. Allora
+    $\kappa_j + t_i - M \le t_i \le \kappa_i$ e il vincolo è soddisfatto: il
+    big-M «spegne» il vincolo su tutte le soluzioni fra cui si cerca l'ottimo.
 
     **Ritardo (massimo).** $\tau_j \ge \max\{0, \kappa_j - d_j\}$ è imposto
     direttamente dai due vincoli (nessuna implicazione: il legame *è* la

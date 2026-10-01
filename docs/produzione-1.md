@@ -47,7 +47,9 @@ $$
 $x_t = 0$ (senza lancio non si produce); se $y_t = 1$ il vincolo non è
 restrittivo. Il verso opposto — se $x_t = 0$ allora $y_t = 0$ — non è imposto da
 alcun vincolo ma segue dall'**ottimalità**, perché porre $y_t = 0$ resta
-ammissibile e fa risparmiare $q_t \ge 0$.
+ammissibile e fa risparmiare $q_t$. Se $q_t > 0$ ogni soluzione ottima ha
+$y_t = 0$; se $q_t = 0$ il risparmio è nullo e si può dire soltanto che
+*esiste* una soluzione ottima con $y_t = 0$.
 
 !!! warning "Il big-M si legge dai dati"
     Un $M_t$ valido deve essere almeno la massima quantità che conviene produrre
@@ -55,6 +57,11 @@ ammissibile e fa risparmiare $q_t \ge 0$.
     che resta da coprire:
 
     $$M_t = \sum_{\tau = t}^{n} d_\tau + r_n .$$
+
+    Nel primo periodo si può togliere la scorta iniziale, che è un dato:
+    $M_1 = \sum_{\tau = 1}^{n} d_\tau + r_n - r_0$. Dal secondo in poi la
+    scorta che entra non è nota a priori, e il bound resta quello scritto
+    sopra. Sull'istanza $r_0 = 0$, quindi i due valori coincidono.
 
     Ogni valore più grande è ancora valido ma **indebolisce** il rilassamento LP;
     ogni valore più piccolo può tagliare soluzioni ottime. Sull'istanza
@@ -149,7 +156,7 @@ ottimista.
 | produzione $x_t$ | 30 | 0 | 80 | 0 | 0 |
 | scorta $s_t$ | 10 | 0 | 50 | 10 | — |
 
-| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap |
+| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 420 | 270 | $3890/11$ | $3890/11$ | 390 | $7{,}7\%$ |
 

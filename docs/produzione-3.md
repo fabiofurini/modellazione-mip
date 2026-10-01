@@ -1,6 +1,6 @@
 # Veicoli: lotto minimo e premio per la varietà
 
-**Classe:** MILP · **Legami:** lotto minimo (semicontinua), contare i tipi, se e solo se · **Script:** `python/fam09_3_veicoli.py`<br>
+**Classe:** MILP · **Legami:** lotto minimo (semi-intera), contare i tipi, se e solo se · **Script:** `python/fam09_3_veicoli.py`<br>
 **Difficoltà:** ★★★ · **Tempo:** 45–60 min
 { .scheda }
 
@@ -27,8 +27,9 @@ superano; e di un tipo si producono zero unità oppure almeno $\bar q_j$.
 **Variabili.** $x_j \in \mathbb{Z}_{\ge 0}$ unità prodotte del tipo $j$;
 $y_j \in \{0,1\}$ vale $1$ se il tipo $j$ viene prodotto;
 $z \in \{0,1\}$ vale $1$ se si incassa il premio. Il dato
-$M_j = \min_i \lfloor b_i / a_{ij} \rfloor$ è il massimo producibile del solo
-tipo $j$.
+$M_j = \min \{ \lfloor b_i / a_{ij} \rfloor : a_{ij} > 0 \}$ è il massimo
+producibile del solo tipo $j$: il minimo si prende sulle sole risorse che il
+tipo consuma, perché una risorsa con $a_{ij} = 0$ non lo limita.
 
 <!-- modello: 9.3 -->
 
@@ -50,11 +51,11 @@ $$
 **Descrizione.** L'obiettivo somma i profitti dei veicoli prodotti e il premio
 per la varietà. I vincoli di **risorsa**, uno per risorsa, sono le
 disponibilità. I due vincoli di **lotto minimo** e di **attivazione**, uno per
-tipo ciascuno, rendono $x_j$ semicontinua: o zero, o almeno $\bar q_j$ e al più
+tipo ciascuno, rendono $x_j$ semi-intera: o zero, o almeno $\bar q_j$ e al più
 $M_j$. Il vincolo di **premio**, uno solo, dice che il premio si incassa solo se
 i tipi attivi sono almeno due.
 
-!!! note "Il legame fra le variabili: la semicontinuità"
+!!! note "Il legame fra le variabili: la semi-interezza"
     I due vincoli insieme dicono
 
     $$\bar q_j\, y_j \;\le\; x_j \;\le\; M_j\, y_j .$$
@@ -71,7 +72,7 @@ i tipi attivi sono almeno due.
 
 !!! note "Il premio si incassa solo con almeno due tipi"
     Il vincolo si legge $2 z \le \sum_{j=1}^{s} y_j$. Se $z = 1$ allora
-    $\sum_j y_j \ge 2$: almeno due tipi sono attivati e, per la semicontinuità,
+    $\sum_j y_j \ge 2$: almeno due tipi sono attivati e, per la semi-interezza,
     effettivamente prodotti. Il verso opposto — se ci sono due tipi attivi
     allora $z = 1$ — non è imposto da alcun vincolo, ma segue
     dall'**ottimalità**: porre $z = 1$ resta ammissibile e aumenta l'obiettivo
@@ -151,10 +152,10 @@ $$
 <!-- modello: fine -->
 
 **Descrizione.** $\pi_i$ è il prezzo di una unità della risorsa $i$; $\ell_j$ e
-$\beta_j$ sono i prezzi dei due vincoli di semicontinuità del tipo $j$, e
+$\beta_j$ sono i prezzi dei due vincoli di semi-interezza del tipo $j$, e
 $\gamma$ quello del premio. L'obiettivo valuta a quei prezzi tutte le risorse
 disponibili. Il primo gruppo sono le colonne delle $x_j$: le risorse che una
-unità del tipo $j$ consuma, corrette dai due vincoli di semicontinuità, devono
+unità del tipo $j$ consuma, corrette dai due vincoli di semi-interezza, devono
 coprire il profitto $\bar p_j$. Il secondo sono le colonne delle $y_j$:
 accendere il tipo $j$ obbliga a produrne almeno $\bar q_j$ e ne concede al più
 $M_j$, e il saldo deve coprire il premio $\gamma$. L'ultimo è la colonna di $z$:
@@ -190,7 +191,7 @@ La produzione ottima è $(26, 16, 0)$: si attivano i tipi $1$ e $2$, si incassa
 il premio, si consumano tutte e $100$ le tonnellate di acciaio e $1180$ ore
 sulle $1200$ disponibili.
 
-| $LB$ (euristica) | $z(\mathit{MILP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{LP})$ | $UB$ (duale) | gap |
+| $LB$ (euristica) | $z(\mathit{MILP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{LP})$ | $UB$ (duale) | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 9200 | 9700 | 9750 | $20625/2$ | 11250 | $5{,}2\%$ |
 
@@ -262,7 +263,7 @@ Script completo —
     ```python
     """Problema 9.3 -- Veicoli: lotto minimo e premio per la varieta'.
 
-    Tre tecniche insieme: la variabile semicontinua del lotto minimo (3.3), il
+    Tre tecniche insieme: la variabile semi-intera del lotto minimo (3.3), il
     conteggio dei tipi attivi (3.11) e un premio «se e solo se» si producono almeno
     due tipi (3.10). Il premio si incassa solo se il conteggio arriva a due: il
     verso mancante segue dall'ottimalita' perche' il premio e' positivo.
@@ -335,7 +336,7 @@ Script completo —
     # ---------- 2. IL RILASSAMENTO LP ----------
     zlp3, zlp3r, _ = rilassamenti(m3m)
 
-    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (UPPER BOUND: E' UN MASSIMO) ----------
     dl3 = duale_3(a3, b3, p3, q3, r3)
     salva_modello(dl3, "fam09_3_duale")
     # ricetta: gamma = r/2 (il minimo ammesso dal vincolo 2 gamma >= r), beta = 0, e
@@ -365,7 +366,7 @@ Script completo —
     print(f"  Il minimo e' la risorsa {critica + 1}:  ub = {frazione(ub3)}")
     dualita_forte(dl3, zlp3)
 
-    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    # ---------- 4. EURISTICA COSTRUTTIVA (LOWER BOUND: E' UN MASSIMO) ----------
     # euristica costruttiva: si attivano due tipi (per incassare il premio) partendo dai profitti per
     # unita' di risorsa piu' scarsa, poi si riempie con il tipo migliore
     def euristica(a, b, p, q, r):

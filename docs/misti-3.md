@@ -171,7 +171,7 @@ La dieta ottima è riso $1{,}4$ kg, pane $1{,}4$ kg, patate $1$ kg: tre cibi
 diversi, come richiesto, con $60$ grammi di ferro (il minimo esatto) e $40$ di
 calcio (di nuovo il minimo esatto).
 
-| $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap |
+| $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 9 | $46/5$ | $48/5$ | $48/5$ | $39/4$ | $1{,}6\%$ |
 
@@ -457,7 +457,7 @@ Notebook —
     print(f"  un solo alpha positivo, sul {NUTRIENTI[scelto_2b]}. La varieta' non si valuta: tau")
     print("  entra nell'obiettivo con il suo termine noto t, ma la colonna delle y_i impone")
     print("  tau <= c_i lam_i - d_i mu_i, e con lam = mu = 0 resta tau = 0. Chiedere un cibo in")
-    print("  piu' non muove il rilassamento, muove l'ottimo intero.")
+    print("  piu' non muove il bound duale costruito a mano, mentre muove l'ottimo intero.")
     print(f"  ->  lb = {frazione(lb2b)}")
     zlp2b, zlp2br, _ = due_rilassamenti(m2b, dl2b)
     z2b = risolvi(m2b)

@@ -195,7 +195,7 @@ Si decorano $19$ alberi con la configurazione 1 e uno con la 3, e si comprano
 $20$ scatole di tipo 1. Le luci servono $78$ del colore 1 (se ne comprano $200$:
 ne avanzano molte) e $40$ del colore 2 (se ne comprano esattamente $40$).
 
-| $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap |
+| $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 2140 | 2140 | 2141 | 2141 | 3121 | $45{,}8\%$ |
 

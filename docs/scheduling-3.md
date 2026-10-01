@@ -256,7 +256,7 @@ notebook: [`notebooks/fam07_3_selezione.ipynb`](https://github.com/fabiofurini/m
     # ---------- 2. IL RILASSAMENTO LP ----------
     zlp3, zlp3r, _ = rilassamenti(m3)
 
-    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (UPPER BOUND: E' UN MASSIMO) ----------
     d3 = duale_3(t3, r3, c3, a3)
     salva_modello(d3, "fam07_3_duale")
     mano = {f"pi[{mm}]": c3[mm] / a3[mm] for mm in R(3)}
@@ -267,7 +267,7 @@ notebook: [`notebooks/fam07_3_selezione.ipynb`](https://github.com/fabiofurini/m
           + ", ".join(frazione(mano[f"mu[{j}]"]) for j in R(3)) + f"  ->  ub = {frazione(ub3)}")
     dualita_forte(d3, zlp3)
 
-    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    # ---------- 4. EURISTICA COSTRUTTIVA (LOWER BOUND: E' UN MASSIMO) ----------
     T3 = matrice(t3, 3)
     eur3 = [("next-fit (salta se non ci sta)", next_fit(T3, a3, salta=True)),
             ("first-fit", first_fit(T3, a3, salta=True)),

@@ -38,7 +38,7 @@ $$
 \sum_{j=1}^{r} y_{ij} &\le g_i, & \forall i \in \{1, 2, \dots, s\}, \\
 \sum_{i=1}^{s} \bigl(x_{ij} + y_{ij}\bigr) &\le d_j, & \forall j \in \{1, 2, \dots, r\}, \\
 \sum_{i=1}^{s} \bigl(x_{ij} - y_{ij}\bigr) &\ge 0, & \forall j \in \{1, 2, \dots, r\}, \\
-x_{cj} + y_{cj} - \sum_{i \ne c} \bigl(x_{ij} + y_{ij}\bigr) &\ge 0, & \forall j \in \{1, 2, \dots, r\}, \\
+x_{cj} + y_{cj} - x_{ij} - y_{ij} &\ge 0, & \forall i \in \{1, 2, \dots, s\},\ i \ne c,\ \forall j \in \{1, 2, \dots, r\}, \\
 x_{ij} &\in \Z_{\ge 0}, & \forall i \in \{1, 2, \dots, s\},\ \forall j \in \{1, 2, \dots, r\}, \\
 y_{ij} &\in \Z_{\ge 0}, & \forall i \in \{1, 2, \dots, s\},\ \forall j \in \{1, 2, \dots, r\}.
 \end{aligned}
@@ -51,22 +51,30 @@ di **disponibilità**, uno per nazionalità ciascuno, non lasciano accettare pi�
 bambine o bambini di quanti ne abbiano fatto richiesta ($2s$ vincoli). I vincoli
 di **capacità**, uno per campo, sono i posti disponibili. I vincoli di
 **parità**, uno per campo, impongono «bambine $\ge$ bambini». I vincoli di
-**maggioranza**, sempre uno per campo, impongono che la nazionalità $c$ non sia
-in minoranza.
+**maggioranza**, uno per ogni coppia nazionalità-campo, impongono che la
+nazionalità $c$ non sia meno di ciascuna altra ($(s-1)\,r$ vincoli).
 
 !!! note "Il vincolo di maggioranza con più di due nazionalità"
-    Con $s = 2$ nazionalità il vincolo «la nazionalità $c$ non è meno di ogni
-    altra» si scrive una volta sola: c'è una sola «altra» nazionalità. Con
-    $s > 2$ il testo del problema chiede
+    Il vincolo di maggioranza traduce l'enunciato alla lettera: la nazionalità
+    $c$ non è meno di *ciascuna* altra, una disuguaglianza per ogni coppia,
+    $(s-1)\,r$ in tutto. C'è però una seconda scrittura, più breve, che è facile
+    confondere con questa:
 
-    $$x_{cj} + y_{cj} \;\ge\; x_{ij} + y_{ij}
-    \qquad \forall i \in \{1, 2, \dots, s\},\ i \ne c,\ \forall j \in \{1, 2, \dots, r\} ,$$
+    $$x_{cj} + y_{cj} \;\ge\; \sum_{i \ne c} \bigl(x_{ij} + y_{ij}\bigr)
+    \qquad \forall j \in \{1, 2, \dots, r\} ,$$
 
-    cioè $(s-1)\,r$ disuguaglianze. La forma aggregata scritta qui sopra è
-    *più forte*: impone che la nazionalità $c$ non sia meno di *tutte le altre
-    messe insieme*, cioè che occupi almeno metà dei posti di ogni campo. Le due
-    letture coincidono per $s = 2$ e divergono per $s > 2$; la scelta va fatta
-    esplicitamente, leggendo l'enunciato, non per comodità di scrittura.
+    cioè $r$ disuguaglianze invece di $(s-1)\,r$. Dice un'altra cosa, ed è
+    *più forte*: che la nazionalità $c$ non sia meno di *tutte le altre messe
+    insieme*, cioè che occupi almeno metà dei posti di ogni campo. Le due
+    letture coincidono per $s = 2$ --- con una sola «altra» nazionalità la somma
+    ha un addendo solo --- e divergono per $s > 2$, dove la forma aggregata
+    taglia soluzioni che l'enunciato permette. La scelta va fatta leggendo il
+    testo, non per comodità di scrittura: meno vincoli non vuol dire modello
+    migliore se non sono i vincoli del problema.
+
+    Su questa istanza $s = 2$, quindi le due forme danno gli stessi numeri; ed è
+    proprio per $s = 2$ che l'argomento combinatorio più avanti può leggere la
+    maggioranza come «metà dei posti».
 
 ## Il modello in gurobipy
 
@@ -82,8 +90,8 @@ m.addConstrs((gp.quicksum(x[i, j] + y[i, j] for i in range(s)) <= d[j]
               for j in range(r)), name="capacita")
 m.addConstrs((gp.quicksum(x[i, j] - y[i, j] for i in range(s)) >= 0
               for j in range(r)), name="parita")
-m.addConstrs((x[c, j] + y[c, j] - gp.quicksum(x[i, j] + y[i, j]
-              for i in range(s) if i != c) >= 0 for j in range(r)), name="maggioranza")
+m.addConstrs((x[c, j] + y[c, j] - x[i, j] - y[i, j] >= 0
+              for i in range(s) if i != c for j in range(r)), name="maggioranza")
 ```
 
 ## L'istanza
@@ -128,13 +136,15 @@ $$
 \begin{aligned}
 \min ~~ \sum_{i=1}^{s} f_i\, \alpha_i + \sum_{i=1}^{s} g_i\, \beta_i
       + \sum_{j=1}^{r} d_j\, \gamma_j & & \\
-\text{soggetto a} \quad \alpha_i + \gamma_j - \delta_j + \sigma_i\, \varepsilon_j &\ge 1, & \forall i \in \{1, 2, \dots, s\},\ \forall j \in \{1, 2, \dots, r\}, \\
-\beta_i + \gamma_j + \delta_j + \sigma_i\, \varepsilon_j &\ge 1, & \forall i \in \{1, 2, \dots, s\},\ \forall j \in \{1, 2, \dots, r\}, \\
+\text{soggetto a} \quad \alpha_c + \gamma_j - \delta_j - \sum_{k \ne c} \varepsilon_{kj} &\ge 1, & \forall j \in \{1, 2, \dots, r\}, \\
+\beta_c + \gamma_j + \delta_j - \sum_{k \ne c} \varepsilon_{kj} &\ge 1, & \forall j \in \{1, 2, \dots, r\}, \\
+\alpha_i + \gamma_j - \delta_j + \varepsilon_{ij} &\ge 1, & \forall i \ne c,\ \forall j \in \{1, 2, \dots, r\}, \\
+\beta_i + \gamma_j + \delta_j + \varepsilon_{ij} &\ge 1, & \forall i \ne c,\ \forall j \in \{1, 2, \dots, r\}, \\
 \alpha_i &\ge 0, & \forall i \in \{1, 2, \dots, s\}, \\
 \beta_i &\ge 0, & \forall i \in \{1, 2, \dots, s\}, \\
 \gamma_j &\ge 0, & \forall j \in \{1, 2, \dots, r\}, \\
 \delta_j &\ge 0, & \forall j \in \{1, 2, \dots, r\}, \\
-\varepsilon_j &\ge 0, & \forall j \in \{1, 2, \dots, r\},
+\varepsilon_{ij} &\ge 0, & \forall i \ne c,\ \forall j \in \{1, 2, \dots, r\},
 \end{aligned}
 $$
 
@@ -142,14 +152,19 @@ $$
 
 **Descrizione.** $\alpha_i$ e $\beta_i$ sono i prezzi di un posto per le bambine
 e per i bambini della nazionalità $i$; $\gamma_j$ è il prezzo di un posto nel
-campo $j$, $\delta_j$ quello del vincolo di parità e $\varepsilon_j$ quello del
-vincolo di maggioranza. L'obiettivo valuta a quei prezzi le disponibilità e le
-capacità. Il primo gruppo di vincoli sono le colonne delle $x_{ij}$: accettare
-una bambina della nazionalità $i$ nel campo $j$ consuma un posto della sua
-nazionalità e uno del campo, alza di una unità la parità e sposta di $\sigma_i$
-la maggioranza; il valore complessivo deve coprire l'unità che quella bambina
-porta all'obiettivo primale. Il secondo dice la stessa cosa per i bambini, con
-il segno della parità rovesciato.
+campo $j$, $\delta_j$ quello del vincolo di parità e $\varepsilon_{ij}$ quello
+del confronto fra la nazionalità $i$ e la maggioritaria nel campo $j$.
+L'obiettivo valuta a quei prezzi le disponibilità e le capacità.
+
+I vincoli duali sono le colonne del primale, e si dividono in due blocchi perché
+la nazionalità $c$ compare nei confronti in modo diverso dalle altre. Il primo è
+la colonna delle $x_{cj}$: accettare una bambina della nazionalità maggioritaria
+consuma un posto della sua nazionalità e uno del campo, alza di una unità la
+parità e *allenta* tutti i confronti di quel campo, uno per ogni altra
+nazionalità --- di qui la somma con il segno meno. Il terzo è la colonna delle
+$x_{ij}$ con $i \ne c$: quella bambina stringe un confronto solo, il suo. Il
+secondo e il quarto dicono la stessa cosa per i bambini, con il segno della
+parità rovesciato.
 
 **Ricetta.** La più semplice valuta la sola capacità:
 $\alpha = \beta = \delta = \varepsilon = 0$ e $\gamma_j = 1$ per ogni campo.
@@ -163,8 +178,8 @@ $z(\mathit{LP}) = 23$.
 
 ## Altri due argomenti combinatori
 
-Il bound $23$ non è l'unico che si può leggere dai dati. Il vincolo di
-maggioranza dice che in ogni campo la nazionalità $c$ occupa almeno metà dei
+Il bound $23$ non è l'unico che si può leggere dai dati. Con $s = 2$ il vincolo
+di maggioranza dice che in ogni campo la nazionalità $c$ occupa almeno metà dei
 posti; poiché di quella nazionalità ci sono in tutto $f_c + g_c = 12$ bambini,
 gli accettati sono al più $2 \cdot 12 = 24$. Analogamente il vincolo di parità
 dice che in ogni campo le bambine sono almeno la metà, e di bambine ce ne sono
@@ -189,7 +204,7 @@ allarga il campo 1 e fa passare il comando alla nazionalità maggioritaria.
 
 Entrambi i campi sono pieni.
 
-| $LB$ (euristica) | $z(\mathit{MILP})$ | $z(\mathit{LP})$ | $UB$ (duale) | gap |
+| $LB$ (euristica) | $z(\mathit{MILP})$ | $z(\mathit{LP})$ | $UB$ (duale) | gap dell'euristica |
 |---:|---:|---:|---:|---:|
 | 15 | 23 | 23 | 23 | $34{,}8\%$ |
 
@@ -251,7 +266,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_6_campi.py` (258 righe)"
+??? example "Mostra lo script completo — `python/fam10_6_campi.py` (262 righe)"
 
     ```python
     """Problema 10.6 -- Campi estivi: bambini di piu' nazionalita' in piu' campi.
@@ -296,8 +311,10 @@ Notebook —
                      name="capacita")
         m.addConstrs((gp.quicksum(x[i, j] - y[i, j] for i in R(s)) >= 0 for j in R(r)),
                      name="parita")
-        m.addConstrs((x[c, j] + y[c, j]
-                      - gp.quicksum(x[i, j] + y[i, j] for i in R(s) if i != c) >= 0 for j in R(r)),
+        # l'enunciato chiede che la nazionalita' c non sia meno di *ciascuna* altra:
+        # una disuguaglianza per ogni coppia (i, j), non una sola somma aggregata
+        m.addConstrs((x[c, j] + y[c, j] - x[i, j] - y[i, j] >= 0
+                      for i in R(s) if i != c for j in R(r)),
                      name="maggioranza")
         return m, x, y
 
@@ -305,10 +322,11 @@ Notebook —
     def duale_1(f, g, d, c):
         """min sum_i f_i alpha_i + sum_i g_i beta_i + sum_j d_j gamma_j
 
-        con alpha, beta, gamma >= 0 per i tre vincoli di <=, e delta_j, eps_j >= 0 per
-        i due vincoli di composizione (scritti come >= 0, quindi entrano con segno
-        meno nei vincoli duali). Il segno che moltiplica eps_j dipende da i: e' -1
-        per la nazionalita' maggioritaria c e +1 per tutte le altre.
+        con alpha, beta, gamma >= 0 per i tre vincoli di <=, delta_j >= 0 per la
+        parita' e eps_{ij} >= 0, una per ogni coppia (nazionalita' i != c, campo j),
+        per la maggioranza. Nel vincolo duale di una variabile della nazionalita' c
+        compaiono tutte le eps_{kj} con il segno meno; in quello di una nazionalita'
+        i != c compare la sola eps_{ij} con il segno piu'.
         """
         s, r = len(f), len(d)
         dl = nuovo_modello("duale_campi")
@@ -316,15 +334,16 @@ Notebook —
         beta = dl.addVars(s, name="beta")
         gamma = dl.addVars(r, name="gamma")
         delta = dl.addVars(r, name="delta")
-        eps = dl.addVars(r, name="eps")
+        eps = dl.addVars([(i, j) for i in R(s) if i != c for j in R(r)], name="eps")
         dl.setObjective(gp.quicksum(f[i] * alpha[i] for i in R(s))
                         + gp.quicksum(g[i] * beta[i] for i in R(s))
                         + gp.quicksum(d[j] * gamma[j] for j in R(r)), GRB.MINIMIZE)
         for i in R(s):
-            segno = -1 if i == c else 1
             for j in R(r):
-                dl.addConstr(alpha[i] + gamma[j] - delta[j] + segno * eps[j] >= 1, name=f"rcx[{i},{j}]")
-                dl.addConstr(beta[i] + gamma[j] + delta[j] + segno * eps[j] >= 1, name=f"rcy[{i},{j}]")
+                magg = (-gp.quicksum(eps[k, j] for k in R(s) if k != c) if i == c
+                        else eps[i, j])
+                dl.addConstr(alpha[i] + gamma[j] - delta[j] + magg >= 1, name=f"rcx[{i},{j}]")
+                dl.addConstr(beta[i] + gamma[j] + delta[j] + magg >= 1, name=f"rcy[{i},{j}]")
         return dl
 
 

@@ -162,7 +162,7 @@ lavoro che il rilassamento LP non riesce a fare.
 | CD 1 | 1, 2, 3 | 18 |
 | CD 2 | 4, 5, 6 | 17 |
 
-| $LB$ (parità) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap |
+| $LB$ (parità) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 1 | 0 | 0 | 1 | 1 | $0\%$ |
 

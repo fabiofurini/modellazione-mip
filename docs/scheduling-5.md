@@ -275,7 +275,7 @@ notebook: [`notebooks/fam07_5_classisetup.ipynb`](https://github.com/fabiofurini
     # ---------- 2. IL RILASSAMENTO LP ----------
     zlp5, zlp5r, _ = rilassamenti(m5)
 
-    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (UPPER BOUND: E' UN MASSIMO) ----------
     d5 = duale_5(r5, t5, J5, f5, s5, a5)
     salva_modello(d5, "fam07_5_duale")
     pi_mano = max(r5[j] / t5[j] for j in R(7))
@@ -284,7 +284,7 @@ notebook: [`notebooks/fam07_5_classisetup.ipynb`](https://github.com/fabiofurini
     print(f"Soluzione duale a mano: lam = 0, pi = max_j r_j/t_j = {frazione(pi_mano)}  ->  ub = {frazione(ub5)}")
     dualita_forte(d5, zlp5)
 
-    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    # ---------- 4. EURISTICA COSTRUTTIVA (LOWER BOUND: E' UN MASSIMO) ----------
     xe, ye, passi = euristica_5(r5, t5, J5, f5, s5, a5)
     print("Euristica classe per classe:")
     for i, s in enumerate(passi, 1):

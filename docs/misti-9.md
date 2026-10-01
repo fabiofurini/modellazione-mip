@@ -162,7 +162,7 @@ due volte, cioè in totale ancora $8$.
 | scaffale 1 | 1, 2 | 8 su 10 | 8 |
 | scaffale 2 | 3, 4 | 10 su 10 | 7 |
 
-| $LB$ (combinatorio) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap |
+| $LB$ (combinatorio) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 12 | 8 | 8 | 15 | 15 | $0\%$ |
 

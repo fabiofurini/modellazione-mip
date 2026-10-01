@@ -20,7 +20,7 @@ che ne dipendono e il modo in cui il budget sulle aperture entra nel modello.
     di vincoli (soglia di segnale e interferenza), l'altro che segue
     dall'obiettivo. **Attivazione aggregata e variabile di massimo** (8.4):
     la stessa attivazione dell'8.1 insieme al legame di massimo
-    $z_j \ge c_{ij} x_{ij}$ già visto nel problema 7.7.
+    $z_j \ge c_{ij} x_{ij}$ già visto nel problema 7.4.
 
 ## Notazione della famiglia
 
@@ -73,7 +73,7 @@ che ne dipendono e il modo in cui il budget sulle aperture entra nel modello.
     ---
 
     Attivazione degli hub più il costo di connessione più alto per hub: la
-    stessa variabile di massimo del problema 7.7, euristica riusata dal
+    stessa variabile di massimo del problema 7.4, euristica riusata dal
     bin packing.
 
     [:octicons-arrow-right-24: MILP · attivazione, massimo](localizzazione-4.md)

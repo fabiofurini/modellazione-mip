@@ -248,7 +248,7 @@ la manodopera aggiuntiva è regalata.
 | assunzioni $z_t$ | 0 | 1 | 0 |
 | scorta $s_t$ | 0 | 20 | — |
 
-| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap |
+| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 18200 | 13500 | 15960 | 15960 | 16660 | $9{,}2\%$ |
 
@@ -260,13 +260,20 @@ euro contro i $1600$ di un'assunzione al terzo mese.
 
 ## Considerazioni aggiuntive
 
-- Il vincolo di monotonia è ciò che rende il problema non banale: se si potesse
-  licenziare a costo zero, la formulazione $B$ si spezzerebbe in $n$ problemi
-  indipendenti, uno per mese.
+- Il vincolo di monotonia è ciò che lega i mesi *dal lato dell'organico*: se si
+  potesse licenziare a costo zero, ogni mese sceglierebbe da solo il più piccolo
+  organico che basta a produrre $x_t$, e quella famiglia sparirebbe. Il problema
+  non si spezzerebbe però in $n$ problemi indipendenti: restano le scorte $s_t$ a
+  legare un mese al successivo.
 - Le variabili $x_t$ e $s_t$ sono dichiarate intere perché le paia di scarpe non
-  si spezzano. Qui si potrebbero lasciare continue senza cambiare l'ottimo (i
-  dati sono interi e la matrice dei bilanci è totalmente unimodulare), ma la
-  dichiarazione corretta dal punto di vista del modello è quella intera.
+  si spezzano. Qui si potrebbero lasciare continue senza cambiare l'ottimo --- ma
+  non perché la matrice sia totalmente unimodulare: non lo è, e si vede dal
+  rilassamento, che vale $15\,960$ contro un ottimo intero di $16\,660$. La
+  ragione è più locale: fissato l'organico $y$ a valori interi, quello che resta
+  in $(x, s)$ è un problema di bilancio con matrice d'intervallo, totalmente
+  unimodulare, e termini noti interi (le domande, e le capacità
+  $r\, y_t / g = 40\, y_t$); un suo vertice ottimo è quindi intero. È un
+  argomento sul sottoproblema, non sul modello intero.
 - Il termine costante $m_0\, w\, n$ va ricordato in ogni confronto: dimenticarlo
   fa apparire la formulazione $A$ molto più economica della $B$.
 

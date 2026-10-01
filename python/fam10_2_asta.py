@@ -62,7 +62,7 @@ stampa_lp(m3)
 # ---------- 2. IL RILASSAMENTO LP ----------
 zlp3, zlp3r, _ = rilassamenti(m3)
 
-# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+# ---------- 3. IL DUALE DEL RILASSAMENTO (UPPER BOUND: E' UN MASSIMO) ----------
 dl3, lam3 = duale_3(n3, B3, p3)
 salva_modello(dl3, "fam10_2_duale")
 # Ricetta a mano: si spalma ogni offerta sui suoi oggetti e si prende il massimo,
@@ -85,7 +85,7 @@ print(f"  (con la ricetta piu' grossolana lam_i = max_j p_j si otterrebbe soltan
       f"{frazione(ub_grezzo)})")
 dualita_forte(dl3, zlp3)
 
-# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+# ---------- 4. EURISTICA COSTRUTTIVA (LOWER BOUND: E' UN MASSIMO) ----------
 # euristica costruttiva sul profitto per oggetto: si accettano le offerte piu' redditizie fra
 # quelle i cui oggetti sono ancora liberi. Costo O(r log r + r n).
 def euristica(n, B, p):

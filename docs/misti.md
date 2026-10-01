@@ -12,8 +12,8 @@ modellazione consiste proprio nel riconoscere quali.
 - **Selezione con modalità alternative** (10.1 e 10.2): si sceglie un
   sottoinsieme, ma ogni oggetto ha più di un modo di essere scelto, e i modi si
   escludono a vicenda.
-- **Conteggi con lotto minimo** (10.3): le variabili non sono binarie ma
-  quantità intere, e una quantità può stare a zero oppure sopra una soglia.
+- **Quantità con lotto minimo** (10.3): accanto alle binarie ci sono quantità
+  continue, e una quantità può stare a zero oppure fra una soglia e un tetto.
 - **Copertura con contenitori** (10.4 e 10.5): un fabbisogno va coperto
   acquistando confezioni di composizione fissa, e la quantità in eccesso si
   paga o si spreca.

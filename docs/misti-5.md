@@ -183,7 +183,7 @@ Lo stabilimento 2 serve entrambi i clienti: al cliente 1 con una scatola
 contenente $5$ unità del prodotto 1 e $2$ del 2, al cliente 2 con una scatola
 contenente $4$ unità del prodotto 2.
 
-| $LB$ (combinatorio) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap |
+| $LB$ (combinatorio) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 2 | $11/10$ | $11/10$ | 2 | 2 | $0\%$ |
 

@@ -7,7 +7,8 @@
 «Se si produce, si produce almeno $\ell$»: la quantità $q_j$ vale zero oppure
 sta fra una soglia $\ell$ e la capacità $c_j$. Non è un intervallo: è l'unione
 di un punto e di un intervallo. Una variabile con questo dominio si chiama
-**semicontinua**.
+**semicontinua**; se la quantità è per di più intera --- pezzi, unità,
+persone --- si chiama **semi-intera**, e i due vincoli sono gli stessi.
 
 ## I vincoli
 

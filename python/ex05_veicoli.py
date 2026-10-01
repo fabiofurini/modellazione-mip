@@ -3,7 +3,7 @@
 Due risorse (acciaio e ore di lavoro) e cinque tipi di veicolo, ciascuno con una
 quantita' minima se lo si produce. E' la stessa struttura del problema 9.3 senza
 il premio per la varieta': lotto minimo (3.3) piu' attivazione (3.1), cioe' le
-variabili semicontinue.
+variabili semi-intere (le unita' sono numeri interi).
 """
 import gurobipy as gp
 import pandas as pd

@@ -169,9 +169,17 @@ Questa soluzione è **ottima** per il rilassamento senza i bound: infatti
 $z(\mathit{LP}) = z(\mathit{LP}^+) = 3$.
 
 !!! warning "Un bound onesto può essere molto lontano"
-    Qui $\mathit{LB} = 3$ e $z(\mathit{MILP}) = 5$: il gap fra il bound duale e
-    l'ottimo intero è del $40\%$, e il gap certificato fra euristica e duale è
-    del $100\%$. Non c'è nulla di sbagliato: il rilassamento LP può
+    Qui $\mathit{LB} = 3$, $\mathit{UB} = 8$ e $z(\mathit{MILP}) = 5$. Conviene
+    guardare le distanze, prima delle percentuali:
+    $\mathit{UB} - \mathit{LB} = 5$ è quello che si sa senza risolvere, e
+    $z(\mathit{MILP}) - \mathit{LB} = 2$ è quanto il bound duale sbaglia
+    davvero. In percentuale, il gap certificato nella convenzione del solver è
+    $(\mathit{UB} - \mathit{LB}) / \mathit{UB} = 5/8 = 62{,}5\%$ --- è quello
+    che Gurobi chiamerebbe `MIPGap` fermandosi qui --- mentre il gap
+    dell'euristica nella tabella qui sotto è
+    $(\mathit{UB} - z(\mathit{MILP})) / z(\mathit{MILP}) = 3/5 = 60\%$: due
+    numeri vicini che misurano cose diverse, ed è il denominatore a dirlo. Non
+    c'è nulla di sbagliato: il rilassamento LP può
     prendere «mezzo premio» a metà preferenza, e questa libertà vale molto. È il
     caso più estremo del corso, e serve a ricordare che un bound valido non è
     automaticamente un bound utile.
@@ -187,7 +195,7 @@ Si prendono i premi $3$ e $5$ con i soli punti ($10 + 7 = 17$) e il premio $4$
 con il contributo ($2$ punti e $5$ euro): i punti usati sono $19$ su $20$, la
 preferenza è $7 + 6 + 3 = 16$, esattamente la soglia.
 
-| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap |
+| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 8 | 3 | 3 | 3 | 5 | $60{,}0\%$ |
 
