@@ -46,7 +46,7 @@ domande di modellazione aggiuntive.
 
     [:octicons-arrow-right-24: I tre problemi](produzione.md)
 
--   :material-shape-outline: **Modelli misti**
+-   :material-shape-outline: **Problemi misti**
 
     ---
 

@@ -35,12 +35,14 @@ $z_c \in \{0,1\}$ vale $1$ se la configurazione $c$ viene usata.
 
 $$
 \begin{aligned}
-\min ~~ & \sum_{c=1}^{n} i_c\, x_c + \sum_{b=1}^{k} p_b\, y_b\\
-\text{s.a.} \quad & \sum_{c=1}^{n} x_c = q,\\
-& \sum_{b=1}^{k} v_{bl}\, y_b - \sum_{c=1}^{n} u_{cl}\, x_c \ge 0, && \forall l \in \{1, 2, \dots, m\},\\
-& \sum_{c=1}^{n} z_c \ge f,\\
-& x_c - z_c \ge 0, && \forall c \in \{1, 2, \dots, n\},\\
-& x_c \in \mathbb{Z}_{\ge 0}, \quad y_b \in \mathbb{Z}_{\ge 0}, \quad z_c \in \{0,1\}.
+\min ~~ \sum_{c=1}^{n} i_c\, x_c + \sum_{b=1}^{k} p_b\, y_b &\\
+\text{soggetto a} \quad \sum_{c=1}^{n} x_c &= q,\\
+\sum_{b=1}^{k} v_{bl}\, y_b - \sum_{c=1}^{n} u_{cl}\, x_c &\ge 0, & \forall l \in \{1, 2, \dots, m\},\\
+\sum_{c=1}^{n} z_c &\ge f,\\
+x_c - z_c &\ge 0, & \forall c \in \{1, 2, \dots, n\},\\
+x_c &\in \mathbb{Z}_{\ge 0}, & \forall c \in \{1, 2, \dots, n\},\\
+y_b &\in \mathbb{Z}_{\ge 0}, & \forall b \in \{1, 2, \dots, k\},\\
+z_c &\in \{0,1\}, & \forall c \in \{1, 2, \dots, n\}.
 \end{aligned}
 $$
 
@@ -137,11 +139,11 @@ legame.
 
 $$
 \begin{aligned}
-\max ~~ & q\, \alpha + f\, \gamma\\
-\text{s.a.} \quad & \alpha - \sum_{l=1}^{m} u_{cl}\, \beta_l + \delta_c \le i_c, && \forall c \in \{1, 2, \dots, n\},\\
-& \sum_{l=1}^{m} v_{bl}\, \beta_l \le p_b, && \forall b \in \{1, 2, \dots, k\},\\
-& \gamma - \delta_c \le 0, && \forall c \in \{1, 2, \dots, n\},\\
-& \alpha \gtreqless 0, \quad \beta_l \ge 0, \quad \gamma \ge 0, \quad \delta_c \ge 0.
+\max ~~ q\, \alpha + f\, \gamma &\\
+\text{soggetto a} \quad \alpha - \sum_{l=1}^{m} u_{cl}\, \beta_l + \delta_c &\le i_c, & \forall c \in \{1, 2, \dots, n\},\\
+\sum_{l=1}^{m} v_{bl}\, \beta_l &\le p_b, & \forall b \in \{1, 2, \dots, k\},\\
+\gamma - \delta_c &\le 0, & \forall c \in \{1, 2, \dots, n\},\\
+\alpha \gtreqless 0, \quad \beta_l &\ge 0, \quad \gamma \ge 0, \quad \delta_c \ge 0.
 \end{aligned}
 $$
 

@@ -23,10 +23,10 @@ completa), $z$ (lavori di almeno due classi).
 
 $$
 \begin{aligned}
-\max ~~ \sum_{j=1}^{n} r_j\, x_j + \sum_{c=1}^{q} v_c\, y_c & & \\
-\text{soggetto a} \quad x_j - y_c &\ge 0, & \forall c,\ \forall j \in \mathscr{J}_c, \\
-x_j + x_i - z &\le 1, & \forall c < g,\ \forall j \in \mathscr{J}_c,\ \forall i \in \mathscr{J}_g, \\
-\sum_{j=1}^{n} t_j\, x_j + u\, z &\le a, & \\
+\max ~~ \sum_{j=1}^{n} r_j\, x_j + \sum_{c=1}^{q} v_c\, y_c & &\\
+\text{soggetto a} \quad x_j - y_c &\ge 0, & \forall c,\ \forall j \in \mathscr{J}_c,\\
+x_j + x_i - z &\le 1, & \forall c < g,\ \forall j \in \mathscr{J}_c,\ \forall i \in \mathscr{J}_g,\\
+\sum_{j=1}^{n} t_j\, x_j + u\, z &\le a, &\\
 x_j,\ y_c,\ z &\in \{0, 1\}. &
 \end{aligned}
 $$
@@ -102,9 +102,9 @@ Con $\pi_j \le 0$ (tutti), $\lambda_{ji} \ge 0$ (miste), $\mu \ge 0$
 
 $$
 \begin{aligned}
-\min ~~ \sum_{\text{coppie miste}} \lambda_{ji} + a\, \mu & & \\
-\text{soggetto a} \quad \pi_j + \sum_{i \notin \mathscr{J}_c} \lambda_{ji} + t_j\, \mu &\ge r_j, & \forall c,\ \forall j \in \mathscr{J}_c, \\
--\sum_{j \in \mathscr{J}_c} \pi_j &\ge v_c, & \forall c, \\
+\min ~~ \sum_{\text{coppie miste}} \lambda_{ji} + a\, \mu & &\\
+\text{soggetto a} \quad \pi_j + \sum_{i \notin \mathscr{J}_c} \lambda_{ji} + t_j\, \mu &\ge r_j, & \forall c,\ \forall j \in \mathscr{J}_c,\\
+-\sum_{j \in \mathscr{J}_c} \pi_j &\ge v_c, & \forall c,\\
 -\sum_{\text{coppie miste}} \lambda_{ji} + u\, \mu &\ge 0. &
 \end{aligned}
 $$

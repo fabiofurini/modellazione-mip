@@ -1,0 +1,111 @@
+\chapter{Organizzazione del corso}
+\label{cap:organizzazione}
+
+\section{Percorso in tre parti}
+
+\begin{center}\small
+\begin{tabular}{lp{4cm}p{7cm}}
+\toprule
+& Contenuto & Obiettivi di apprendimento \\
+\midrule
+Parte I & Modellazione & riconoscere un legame fra variabili (attivazione, massimo,
+big-M, se e solo se\ldots) e dimostrare che il modello lo impone davvero \\
+Parte II & I problemi & applicare i legami a tre famiglie di problemi reali e ai problemi misti,
+dal modello al codice Gurobi \\
+Parte III & Il corso & mettere alla prova quanto imparato con le domande di
+modellazione aggiuntive \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Il formato di ogni esercizio (e dell'esame)}
+
+Ogni problema del corso --- e ogni domanda d'esame --- segue lo stesso schema
+in quattro quesiti:
+\begin{enumerate}
+\item \textbf{Modello.} Scrivere il MILP: variabili (con il conteggio),
+      obiettivo, vincoli con la loro descrizione, e --- se ci sono due
+      famiglie di variabili collegate --- spiegare il legame: qual è
+      l'implicazione, e come il vincolo (o l'ottimo) la impone, nei due versi.
+\item \textbf{Istanza.} Scrivere il modello per un'istanza numerica piccola.
+\item \textbf{Euristica.} Progettare un algoritmo costruttivo che trovi una
+      soluzione ammissibile dell'istanza, ed eseguirlo passo per passo per
+      ottenere un upper bound (lower bound se il problema è di massimo).
+\item \textbf{Duale.} Scrivere il duale del rilassamento LP\index{rilassamento lineare}, per il modello
+      generale e per l'istanza, e costruire a mano una soluzione duale
+      ammissibile per ottenere il bound dal lato opposto.
+\end{enumerate}
+Il $\lb \le \zmilp \le \ub$ che ne risulta è il filo conduttore del corso: un
+modello non si limita a scriverlo, lo si stringe da entrambi i lati prima di
+affidarlo al solver.
+
+\section{Le domande aggiuntive e le loro soluzioni}
+Ogni problema si chiude con due o tre \emph{domande di modellazione aggiuntive}:
+variano un dato o aggiungono un vincolo, e chiedono come cambia il modello e
+quanto vale il nuovo ottimo. Sono la parte su cui conviene esercitarsi, perché
+il modello base lo si legge, la variante la si scrive.
+
+\textbf{Le soluzioni delle domande aggiuntive sono riservate ai docenti}: stanno
+in un fascicolo a parte, che non viene pubblicato. Quello che resta a
+disposizione di tutti --- ed è quanto serve per sapere che cosa ci si aspetta ---
+è il \emph{sandwich svolto per intero} su una variante di ciascun esercizio dei
+capitoli «Assegnamento e scheduling» e «Localizzazione e copertura»: il modello della
+variante, un'euristica costruttiva ammissibile eseguita passo per passo, un
+certificato duale costruito a mano e la tabella dei bound. È il modello di
+risposta che l'esame si aspetta.
+
+\section{Criteri di valutazione}
+
+\begin{center}\small
+\begin{tabular}{lr}
+\toprule
+Dimensione & Peso \\
+\midrule
+Correttezza del modello (variabili, obiettivo, vincoli) & 35\% \\
+Dimostrazione del legame fra le variabili (nei due versi) & 25\% \\
+Euristica costruttiva ed esecuzione corretta & 20\% \\
+Duale del rilassamento e soluzione duale ammissibile & 20\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Domande tipiche di discussione}
+\begin{itemize}
+\item Il vincolo di link è aggregato o disaggregato? Che differenza fa sul
+      rilassamento LP\index{rilassamento lineare}?
+\item Il verso opposto dell'implicazione è imposto dal vincolo o segue
+      dall'ottimo? Come lo si dimostra?
+\item Qual è il big-M\index{big-M} più piccolo che si può giustificare dai dati?
+\item L'euristica trova l'ottimo? Come si fa a saperlo senza il solver?
+\item Il duale a mano è ottimo per il rilassamento, o solo ammissibile?
+\end{itemize}
+
+\section{Gli errori più comuni}
+\begin{enumerate}
+\item Scrivere un'implicazione la cui tesi è vera comunque (controinversa
+      vacua): prima di scriverla, verificare che antecedente e conseguente
+      siano entrambi genuini.
+\item Dimostrare un solo verso di un'implicazione «imposta dal vincolo» ---
+      servono sempre entrambi gli ``if''.
+\item Confondere una relazione «imposta dal vincolo» con una che «segue
+      dall'ottimo»: la seconda richiede l'argomento di scambio\index{argomento di scambio} in sei passi,
+      non basta dire «si vede che conviene».
+\item Concludere «in ogni soluzione ottima» quando il coefficiente è solo
+      $\ge 0$ (non $>0$): la conclusione corretta è più debole, «esiste un
+      ottimo in cui\ldots».
+\item Usare un big-M\index{big-M} enorme «per sicurezza»: peggiora il rilassamento LP\index{rilassamento lineare}
+      senza bisogno.
+\item Dimenticare che un vincolo di mutua esclusione ($A+B\le 1$) non implica
+      che almeno uno dei due valga 1.
+\item Scrivere il duale del rilassamento sbagliando il verso o il segno di
+      una variabile duale rispetto al verso del vincolo primale.
+\item Costruire una soluzione duale ammissibile ma non verificarne
+      l'ammissibilità su tutti i vincoli.
+\end{enumerate}
+
+\section{Riproducibilità}
+\begin{lstlisting}[style=output]
+python3 -m pip install gurobipy matplotlib pandas
+python3 python/esegui_tutti.py       # rigenera dati, risultati, figure e notebook
+python3 python/verifica_numeri.py    # verifica ogni numero citato nella dispensa
+\end{lstlisting}

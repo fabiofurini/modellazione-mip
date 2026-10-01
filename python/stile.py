@@ -1,8 +1,9 @@
 """Stile grafico comune e utilità per gli script del laboratorio.
 
 Tutti gli script importano da qui: palette coerente con la dispensa,
-salvataggio figure in dispensa/figure/, salvataggio dati in dati/.
+salvataggio figure nella cartella del volume a cui appartengono, dati in dati/.
 """
+import re
 import sys
 from pathlib import Path
 
@@ -27,7 +28,19 @@ if not NOTEBOOK:
 import matplotlib.pyplot as plt
 
 BASE = Path(__file__).resolve().parent.parent
-DIR_FIGURE = BASE / "dispensa" / "figure"
+# le tre dispense sono indipendenti: ognuna tiene le sue figure
+VOLUMI = {1: BASE / "dispensa_1" / "figure", 2: BASE / "dispensa_2" / "figure",
+          3: BASE / "dispensa_3" / "figure"}
+
+
+def dir_figure(nome: str) -> Path:
+    """La cartella del volume a cui la figura appartiene, dal suo nome."""
+    m = re.match(r"cap(\d\d)", nome)
+    if m:
+        return VOLUMI[1 if int(m.group(1)) <= 6 else 3]
+    if nome.startswith("ex"):
+        return VOLUMI[2]
+    raise ValueError(f"non so a quale dispensa appartiene la figura {nome}")
 DIR_DATI = BASE / "dati"
 
 # Palette istituzionale della dispensa
@@ -115,8 +128,9 @@ def salva_figura(fig, nome: str) -> None:
         plt.show()
         return
     _legenda_fuori(fig)
-    DIR_FIGURE.mkdir(parents=True, exist_ok=True)
-    percorso = DIR_FIGURE / f"{nome}.pdf"
+    cartella = dir_figure(nome)
+    cartella.mkdir(parents=True, exist_ok=True)
+    percorso = cartella / f"{nome}.pdf"
     fig.savefig(percorso, bbox_inches="tight")
     img = BASE / "docs" / "img"
     img.mkdir(parents=True, exist_ok=True)
@@ -137,13 +151,13 @@ def salva_dati(df, nome: str) -> None:
 
 
 def salva_dat(df, nome: str) -> None:
-    """Salva un CSV pronto per pgfplots in dispensa/figure/dat/<nome>.csv.
+    """Salva un CSV pronto per pgfplots in <volume>/figure/dat/<nome>.csv.
 
     Serve solo alla dispensa stampata: nel notebook non fa niente.
     """
     if NOTEBOOK:
         return
-    d = DIR_FIGURE / "dat"
+    d = dir_figure(nome) / "dat"
     d.mkdir(parents=True, exist_ok=True)
     percorso = d / f"{nome}.csv"
     df.to_csv(percorso, index=False)
@@ -151,14 +165,15 @@ def salva_dat(df, nome: str) -> None:
 
 
 def salva_tikz(codice: str, nome: str) -> None:
-    """Salva codice TikZ generato in dispensa/figure/<nome>.tex.
+    """Salva codice TikZ generato in <volume>/figure/<nome>.tex.
 
     Serve solo alla dispensa stampata: nel notebook non fa niente.
     """
     if NOTEBOOK:
         return
-    DIR_FIGURE.mkdir(parents=True, exist_ok=True)
-    percorso = DIR_FIGURE / f"{nome}.tex"
+    cartella = dir_figure(nome)
+    cartella.mkdir(parents=True, exist_ok=True)
+    percorso = cartella / f"{nome}.tex"
     percorso.write_text(codice)
     print(f"  [tikz]   {percorso.relative_to(BASE)}")
 

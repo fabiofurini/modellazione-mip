@@ -276,7 +276,7 @@ for csv in sorted(DATI.glob("fam[01][0-9]_*[ab]_bound.csv")):
     r = pd.read_csv(csv).iloc[0]
     nome = csv.stem.replace("_bound", "")
     # il verso non serve: in ogni caso i due bound racchiudono l'ottimo. Il
-    # rilassamento invece puo' stare fuori dal sandwich: nei modelli misti vale
+    # rilassamento invece puo' stare fuori dal sandwich: nei problemi misti vale
     # spesso zero, e il bound dal basso viene da un argomento combinatorio piu'
     # forte di lui (e' il caso di 10.7a).
     assert r.lb - TOLL <= r.z_milp <= r.ub + TOLL, (nome, "ottimo fuori dal sandwich")

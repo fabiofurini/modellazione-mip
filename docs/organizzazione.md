@@ -5,7 +5,7 @@
 | | Contenuto | Obiettivi di apprendimento |
 |---|---|---|
 | **Parte I** | Modellazione | riconoscere un legame fra variabili (attivazione, massimo, big-M, se e solo se…) e dimostrare che il modello lo impone davvero |
-| **Parte II** | I problemi | applicare i legami a tre famiglie di problemi reali e ai modelli misti, dal modello al codice Gurobi |
+| **Parte II** | I problemi | applicare i legami a tre famiglie di problemi reali e ai problemi misti, dal modello al codice Gurobi |
 | **Parte III** | Il corso | mettere alla prova quanto imparato con le domande di modellazione aggiuntive |
 
 ## Il formato di ogni esercizio (e dell'esame)

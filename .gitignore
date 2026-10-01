@@ -9,7 +9,6 @@
 *.nav
 *.snm
 *.vrb
-dispensa/main.pdf
 # Python
 __pycache__/
 *.pyc
@@ -20,7 +19,9 @@ site/
 
 # materiale interno, non pubblicato
 STILE_E_FORMATO.md
-dispensa/
+dispensa_1/
+dispensa_2/
+dispensa_3/
 soluzioni/
 slides/
 

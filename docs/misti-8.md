@@ -25,12 +25,12 @@ $y \ge 0$ è la durata del CD più lungo e $z \ge 0$ quella del più corto.
 
 $$
 \begin{aligned}
-\min ~~ & y - z\\
-\text{s.a.} \quad & \sum_{j=1}^{m} x_{ij} = 1, && \forall i \in \{1, 2, \dots, n\},\\
-& \sum_{i=1}^{n} x_{ij} \ge w_j, && \forall j \in \{1, 2, \dots, m\},\\
-& -\sum_{i=1}^{n} d_i\, x_{ij} + y \ge 0, && \forall j \in \{1, 2, \dots, m\},\\
-& \sum_{i=1}^{n} d_i\, x_{ij} - z \ge 0, && \forall j \in \{1, 2, \dots, m\},\\
-& x_{ij} \in \{0,1\}, \quad y \ge 0, \quad z \ge 0.
+\min ~~ y - z &\\
+\text{soggetto a} \quad \sum_{j=1}^{m} x_{ij} &= 1, & \forall i \in \{1, 2, \dots, n\},\\
+\sum_{i=1}^{n} x_{ij} &\ge w_j, & \forall j \in \{1, 2, \dots, m\},\\
+-\sum_{i=1}^{n} d_i\, x_{ij} + y &\ge 0, & \forall j \in \{1, 2, \dots, m\},\\
+\sum_{i=1}^{n} d_i\, x_{ij} - z &\ge 0, & \forall j \in \{1, 2, \dots, m\},\\
+x_{ij} &\in \{0,1\}, \quad y \ge 0, \quad z \ge 0.
 \end{aligned}
 $$
 
@@ -96,11 +96,11 @@ minimo, $\gamma_j \ge 0$ al massimo e $\delta_j \ge 0$ al minimo.
 
 $$
 \begin{aligned}
-\max ~~ & \sum_{i=1}^{n} \alpha_i + \sum_{j=1}^{m} w_j\, \beta_j\\
-\text{s.a.} \quad & \sum_{j=1}^{m} \gamma_j = 1,\\
-& \sum_{j=1}^{m} \delta_j = 1,\\
-& \alpha_i + \beta_j - d_i\, \gamma_j + d_i\, \delta_j \le 0, && \forall i \in \{1, 2, \dots, n\},\ \forall j \in \{1, 2, \dots, m\},\\
-& \alpha_i \gtreqless 0, \quad \beta_j \ge 0, \quad \gamma_j \ge 0, \quad \delta_j \ge 0.
+\max ~~ \sum_{i=1}^{n} \alpha_i + \sum_{j=1}^{m} w_j\, \beta_j &\\
+\text{soggetto a} \quad \sum_{j=1}^{m} \gamma_j &= 1,\\
+\sum_{j=1}^{m} \delta_j &= 1,\\
+\alpha_i + \beta_j - d_i\, \gamma_j + d_i\, \delta_j &\le 0, & \forall i \in \{1, 2, \dots, n\},\ \forall j \in \{1, 2, \dots, m\},\\
+\alpha_i \gtreqless 0, \quad \beta_j &\ge 0, \quad \gamma_j \ge 0, \quad \delta_j \ge 0.
 \end{aligned}
 $$
 

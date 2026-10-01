@@ -1,4 +1,4 @@
-# Modelli misti
+# Problemi misti
 
 **Classe:** BIP / MILP · **Script:** uno script e un notebook per problema
 (`python/fam10_1_premi.py` … `fam10_9_scaffali.py`).

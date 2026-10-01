@@ -27,7 +27,7 @@ l'ottimo provato), come lo si risolve con Gurobi.
 
 **▶️ Notebook eseguibili in Colab: [l'elenco dei capitoli](https://fabiofurini.github.io/modellazione-mip/notebook/)** — girano nel browser, senza installare niente.
 
-**⬇️ Materiale scaricabile: [la pagina dei PDF](https://fabiofurini.github.io/modellazione-mip/materiale/)** — la dispensa, la raccolta dei 47 enunciati per esercitarsi e le 43 slide del corso.
+**⬇️ Materiale scaricabile: [la pagina dei PDF](https://fabiofurini.github.io/modellazione-mip/materiale/)** — le tre dispense (modellazione, problemi numerici, problemi con modello simbolico) e le 43 slide del corso.
 
 ## Eseguire i modelli
 

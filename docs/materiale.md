@@ -8,24 +8,45 @@ Python sotto licenza
 
 <div class="grid cards" markdown>
 
--   :material-book-open-variant: **La dispensa**
+-   :material-book-open-variant: **Dispensa I --- Modellazione**
 
     ---
 
-    Il corso per intero: i sei capitoli di modellazione, i quindici modelli
-    numerici, le quattro famiglie di problemi con euristiche, duali e domande
-    aggiuntive, e l'organizzazione del corso.
+    La parte metodologica: che cos'è un modello MIP, logica e variabili binarie,
+    i quattordici legami fra variabili con le loro dimostrazioni, rilassamenti,
+    dualità e bound, euristiche costruttive, e il passaggio a Python/Gurobi.
 
-    [:octicons-download-24: dispensa-mip.pdf](pdf/dispensa-mip.pdf)
+    [:octicons-download-24: dispensa-1-modellazione.pdf](pdf/dispensa-1-modellazione.pdf)
 
--   :material-file-document-edit: **La raccolta degli enunciati**
+-   :material-numeric: **Dispensa II --- Problemi numerici**
 
     ---
 
-    Gli stessi problemi, nello stesso ordine, con i soli testi: per esercitarsi
-    prima di leggere la soluzione. Quarantasette enunciati.
+    I quindici modelli numerici, dall'EX 1 all'EX 15: dati espliciti, poche
+    variabili, un solo passaggio per tecnica. Si leggono per prendere le misure
+    prima dei problemi generali.
 
-    [:octicons-download-24: raccolta-enunciati.pdf](pdf/raccolta-enunciati.pdf)
+    [:octicons-download-24: dispensa-2-numerici.pdf](pdf/dispensa-2-numerici.pdf)
+
+-   :material-function-variant: **Dispensa III --- Problemi con modello simbolico**
+
+    ---
+
+    I ventitré problemi delle quattro famiglie: enunciato, modello simbolico,
+    istanza, euristica, duale del rilassamento, ottimo, domande aggiuntive e una
+    variante svolta per intero.
+
+    [:octicons-download-24: dispensa-3-simbolici.pdf](pdf/dispensa-3-simbolici.pdf)
+
+-   :material-school-outline: **Dispensa IV --- Organizzazione del corso**
+
+    ---
+
+    Come è fatto il corso, come è fatto ogni esercizio e come è fatto l'esame:
+    il percorso, i criteri di valutazione, le domande tipiche di discussione,
+    gli errori più comuni e la riproducibilità dei numeri.
+
+    [:octicons-download-24: dispensa-4-organizzazione.pdf](pdf/dispensa-4-organizzazione.pdf)
 
 -   :material-presentation: **Le slide del corso**
 

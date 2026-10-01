@@ -29,13 +29,14 @@ i bambini.
 
 $$
 \begin{aligned}
-\max ~~ & \sum_{i=1}^{s} \sum_{j=1}^{r} \bigl(x_{ij} + y_{ij}\bigr)\\
-\text{s.a.} \quad & \sum_{j=1}^{r} x_{ij} \le f_i, && \forall i \in \{1, 2, \dots, s\},\\
-& \sum_{j=1}^{r} y_{ij} \le g_i, && \forall i \in \{1, 2, \dots, s\},\\
-& \sum_{i=1}^{s} \bigl(x_{ij} + y_{ij}\bigr) \le d_j, && \forall j \in \{1, 2, \dots, r\},\\
-& \sum_{i=1}^{s} \bigl(x_{ij} - y_{ij}\bigr) \ge 0, && \forall j \in \{1, 2, \dots, r\},\\
-& x_{cj} + y_{cj} - \sum_{i \ne c} \bigl(x_{ij} + y_{ij}\bigr) \ge 0, && \forall j \in \{1, 2, \dots, r\},\\
-& x_{ij} \in \mathbb{Z}_{\ge 0}, \quad y_{ij} \in \mathbb{Z}_{\ge 0}.
+\max ~~ \sum_{i=1}^{s} \sum_{j=1}^{r} \bigl(x_{ij} + y_{ij}\bigr) &\\
+\text{soggetto a} \quad \sum_{j=1}^{r} x_{ij} &\le f_i, & \forall i \in \{1, 2, \dots, s\},\\
+\sum_{j=1}^{r} y_{ij} &\le g_i, & \forall i \in \{1, 2, \dots, s\},\\
+\sum_{i=1}^{s} \bigl(x_{ij} + y_{ij}\bigr) &\le d_j, & \forall j \in \{1, 2, \dots, r\},\\
+\sum_{i=1}^{s} \bigl(x_{ij} - y_{ij}\bigr) &\ge 0, & \forall j \in \{1, 2, \dots, r\},\\
+x_{cj} + y_{cj} - \sum_{i \ne c} \bigl(x_{ij} + y_{ij}\bigr) &\ge 0, & \forall j \in \{1, 2, \dots, r\},\\
+x_{ij} &\in \mathbb{Z}_{\ge 0}, & \forall i \in \{1, 2, \dots, s\},\ \forall j \in \{1, 2, \dots, r\},\\
+y_{ij} &\in \mathbb{Z}_{\ge 0}, & \forall i \in \{1, 2, \dots, s\},\ \forall j \in \{1, 2, \dots, r\}.
 \end{aligned}
 $$
 
@@ -117,11 +118,11 @@ $\sigma_i = -1$ per $i = c$ e $\sigma_i = +1$ altrimenti.
 
 $$
 \begin{aligned}
-\min ~~ & \sum_{i=1}^{s} f_i\, \alpha_i + \sum_{i=1}^{s} g_i\, \beta_i
-      + \sum_{j=1}^{r} d_j\, \gamma_j\\
-\text{s.a.} \quad & \alpha_i + \gamma_j - \delta_j + \sigma_i\, \varepsilon_j \ge 1, && \forall i \in \{1, 2, \dots, s\},\ \forall j \in \{1, 2, \dots, r\},\\
-& \beta_i + \gamma_j + \delta_j + \sigma_i\, \varepsilon_j \ge 1, && \forall i \in \{1, 2, \dots, s\},\ \forall j \in \{1, 2, \dots, r\},\\
-& \alpha_i \ge 0, \quad \beta_i \ge 0, \quad \gamma_j \ge 0, \quad \delta_j \ge 0, \quad \varepsilon_j \ge 0.
+\min ~~ \sum_{i=1}^{s} f_i\, \alpha_i + \sum_{i=1}^{s} g_i\, \beta_i
+      + \sum_{j=1}^{r} d_j\, \gamma_j &\\
+\text{soggetto a} \quad \alpha_i + \gamma_j - \delta_j + \sigma_i\, \varepsilon_j &\ge 1, & \forall i \in \{1, 2, \dots, s\},\ \forall j \in \{1, 2, \dots, r\},\\
+\beta_i + \gamma_j + \delta_j + \sigma_i\, \varepsilon_j &\ge 1, & \forall i \in \{1, 2, \dots, s\},\ \forall j \in \{1, 2, \dots, r\},\\
+\alpha_i &\ge 0, \quad \beta_i \ge 0, \quad \gamma_j \ge 0, \quad \delta_j \ge 0, \quad \varepsilon_j \ge 0.
 \end{aligned}
 $$
 

@@ -45,7 +45,7 @@ suo [notebook che si apre in Colab](notebook.md), senza installare niente.
     ---
 
     Tre famiglie — assegnamento e scheduling, localizzazione e copertura,
-    pianificazione della produzione — più un capitolo di modelli misti, per i
+    pianificazione della produzione — più un capitolo di problemi misti, per i
     problemi che una famiglia non ce l'hanno. Esercizi risolti e domande
     aggiuntive.
 
@@ -55,8 +55,7 @@ suo [notebook che si apre in Colab](notebook.md), senza installare niente.
 
     ---
 
-    Organizzazione, il formato dell'esame, la raccolta degli enunciati per
-    esercitarsi, i notebook.
+    Organizzazione, il formato dell'esame, le tre dispense in PDF, i notebook.
 
     [:octicons-arrow-right-24: Organizzazione](organizzazione.md)
 
@@ -113,7 +112,7 @@ EX 11 [Bilanciamento](ex-11.md)
 9.2 [Produzione e manodopera](produzione-2.md) ·
 9.3 [Veicoli con lotto minimo](produzione-3.md)
 
-*[Modelli misti](misti.md)*
+*[Problemi misti](misti.md)*
 
 10.1 [Premi con due modalità](misti-1.md) ·
 10.2 [Asta combinatoria](misti-2.md) ·

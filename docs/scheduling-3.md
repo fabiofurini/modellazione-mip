@@ -39,10 +39,10 @@ lavoro $j$ è eseguito dalla macchina $m$; $y_m = 1$ se la macchina $m$ è usata
 
 $$
 \begin{aligned}
-\max ~~ \sum_{j=1}^{n} \sum_{m=1}^{k} r_j\, x_{jm} - \sum_{m=1}^{k} c_m\, y_m & & \\
-\text{soggetto a} \quad \sum_{m=1}^{k} x_{jm} &\le 1, & \forall j \in \{1, 2, \dots, n\}, \\
-\sum_{j=1}^{n} t_j\, x_{jm} - a_m\, y_m &\le 0, & \forall m \in \{1, 2, \dots, k\}, \\
-x_{jm} &\in \{0, 1\}, & \forall j,\ \forall m, \\
+\max ~~ \sum_{j=1}^{n} \sum_{m=1}^{k} r_j\, x_{jm} - \sum_{m=1}^{k} c_m\, y_m & &\\
+\text{soggetto a} \quad \sum_{m=1}^{k} x_{jm} &\le 1, & \forall j \in \{1, 2, \dots, n\},\\
+\sum_{j=1}^{n} t_j\, x_{jm} - a_m\, y_m &\le 0, & \forall m \in \{1, 2, \dots, k\},\\
+x_{jm} &\in \{0, 1\}, & \forall j,\ \forall m,\\
 y_m &\in \{0, 1\}, & \forall m \in \{1, 2, \dots, k\}.
 \end{aligned}
 $$
@@ -110,9 +110,9 @@ Con $\mu_j \ge 0$ (al più una) e $\pi_m \ge 0$ (link):
 
 $$
 \begin{aligned}
-\min ~~ \sum_{j=1}^{n} \mu_j & & \\
-\text{soggetto a} \quad \mu_j + t_j\, \pi_m &\ge r_j, & \forall j,\ \forall m, \\
--a_m\, \pi_m &\ge -c_m, & \forall m, \\
+\min ~~ \sum_{j=1}^{n} \mu_j & &\\
+\text{soggetto a} \quad \mu_j + t_j\, \pi_m &\ge r_j, & \forall j,\ \forall m,\\
+-a_m\, \pi_m &\ge -c_m, & \forall m,\\
 \mu_j \ge 0,\quad \pi_m &\ge 0. &
 \end{aligned}
 $$
