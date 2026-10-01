@@ -9,8 +9,9 @@ import pandas as pd
 from gurobipy import GRB
 
 from euristiche import best_fit, first_fit, matrice, next_fit
-from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
-                 registra_bound, risolvi, stampa_soluzione, valuta)
+from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                 nuovo_modello, registra_bound, rilassamenti, risolvi,
+                 stampa_soluzione, valuta)
 from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
 from esteso import salva_modello
 
@@ -82,7 +83,19 @@ def euristica_5(r, t, J, f, s, a):
 m5, x5, y5 = modello_5(r5, t5, J5, f5, s5, a5)
 salva_modello(m5, "fam07_5_primale")
 
-# ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
+# ---------- 2. IL RILASSAMENTO LP ----------
+zlp5, zlp5r, _ = rilassamenti(m5)
+
+# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+d5 = duale_5(r5, t5, J5, f5, s5, a5)
+salva_modello(d5, "fam07_5_duale")
+pi_mano = max(r5[j] / t5[j] for j in R(7))
+ub5, viol = valuta(d5, {"pi": pi_mano})
+assert viol <= 1e-9
+print(f"Soluzione duale a mano: lam = 0, pi = max_j r_j/t_j = {frazione(pi_mano)}  ->  ub = {frazione(ub5)}")
+dualita_forte(d5, zlp5)
+
+# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 xe, ye, passi = euristica_5(r5, t5, J5, f5, s5, a5)
 print("Euristica classe per classe:")
 for i, s in enumerate(passi, 1):
@@ -90,23 +103,14 @@ for i, s in enumerate(passi, 1):
 lb5 = sum(r5[j] * xe[j] for j in R(7)) - sum(f5[c] * ye[c] for c in R(3))
 print(f"  lb = {lb5}  (x = {xe}, y = {ye})")
 
-# ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
-d5 = duale_5(r5, t5, J5, f5, s5, a5)
-salva_modello(d5, "fam07_5_duale")
-pi_mano = max(r5[j] / t5[j] for j in R(7))
-ub5, viol = valuta(d5, {"pi": pi_mano})
-assert viol <= 1e-9
-print(f"Soluzione duale a mano: lam = 0, pi = max_j r_j/t_j = {frazione(pi_mano)}  ->  ub = {frazione(ub5)}")
-zlp5, zlp5r, _ = due_rilassamenti(m5, d5)
-
-# ---------- 4. SOLUZIONE OTTIMA DEL MILP ----------
+# ---------- 5. SOLUZIONE OTTIMA DEL MILP ----------
 z5 = risolvi(m5)
 print("Soluzione ottima del MILP:")
 stampa_soluzione(m5, solo_non_nulle=True)
 riga = registra_bound("5 classi setup", ub5, lb5, zlp5, zlp5r, z5, senso="max")
 salva_dati(pd.DataFrame([riga]), "fam07_5_bound")
 
-# ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+# ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
 
 varianti = {}
@@ -127,7 +131,7 @@ m.addConstr(y[2] <= y[0], name="3_solo_se_1")
 varianti["5b"] = variante("5b. La classe 3 si attiva solo se si attiva la classe 1 (y_3 <= y_1)", m)
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_5_varianti")
 
-# ---------- 5bis. IL SANDWICH SULLA VARIANTE 5a ----------
+# ---------- 7. IL SANDWICH SULLA VARIANTE 5a ----------
 intestazione("5a. Il sandwich sulla variante: al piu' una classe attivata")
 
 

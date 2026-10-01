@@ -166,7 +166,7 @@ notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurin
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam07_6_classipremio.py` (234 righe)"
+??? example "Mostra lo script completo — `python/fam07_6_classipremio.py` (238 righe)"
 
     ```python
     """Problema 7.6 -- Classi con premio di completamento e riduzione se e solo se.
@@ -180,8 +180,9 @@ notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurin
     from gurobipy import GRB
 
     from euristiche import best_fit, first_fit, matrice, next_fit
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
-                     registra_bound, risolvi, stampa_soluzione, valuta)
+    from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                     nuovo_modello, registra_bound, rilassamenti, risolvi,
+                     stampa_soluzione, valuta)
     from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
 
@@ -265,15 +266,10 @@ notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurin
     m6, x6, y6, z6 = modello_6(r6, t6, J6, v6, a6, u6)
     salva_modello(m6, "fam07_6_primale")
 
-    # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
-    xe, ye, ze, passi = euristica_6(r6, t6, J6, v6, a6, u6)
-    print("Euristica classe per classe:")
-    for i, s in enumerate(passi, 1):
-        print(f"  Passo {i}. {s}")
-    lb6 = sum(r6[j] * xe[j] for j in R(6)) + sum(v6[c] * ye[c] for c in R(3))
-    print(f"  lb = {lb6}  (x = {xe}, y = {ye}, z = {ze})")
+    # ---------- 2. IL RILASSAMENTO LP ----------
+    zlp6, zlp6r, _ = rilassamenti(m6)
 
-    # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
     d6 = duale_6(r6, t6, J6, v6, a6, u6)
     salva_modello(d6, "fam07_6_duale")
     pi_mano = {f"pi[{J6[c][0]}]": -v6[c] for c in R(3)}      # il primo lavoro di ogni classe porta il premio
@@ -283,16 +279,24 @@ notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurin
     assert viol <= 1e-9
     print(f"Soluzione duale a mano: pi_1 = -5, pi_3 = -4, pi_5 = -10, lam = 0, "
           f"mu = max_j (r_j - pi_j)/t_j = {frazione(mu_mano)}  ->  ub = {frazione(ub6)}")
-    zlp6, zlp6r, _ = due_rilassamenti(m6, d6)
+    dualita_forte(d6, zlp6)
 
-    # ---------- 4. SOLUZIONE OTTIMA DEL MILP ----------
+    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    xe, ye, ze, passi = euristica_6(r6, t6, J6, v6, a6, u6)
+    print("Euristica classe per classe:")
+    for i, s in enumerate(passi, 1):
+        print(f"  Passo {i}. {s}")
+    lb6 = sum(r6[j] * xe[j] for j in R(6)) + sum(v6[c] * ye[c] for c in R(3))
+    print(f"  lb = {lb6}  (x = {xe}, y = {ye}, z = {ze})")
+
+    # ---------- 5. SOLUZIONE OTTIMA DEL MILP ----------
     z6v = risolvi(m6)
     print("Soluzione ottima del MILP:")
     stampa_soluzione(m6, solo_non_nulle=True)
     riga = registra_bound("6 classi premio", ub6, lb6, zlp6, zlp6r, z6v, senso="max")
     salva_dati(pd.DataFrame([riga]), "fam07_6_bound")
 
-    # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+    # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
 
     varianti = {}
@@ -317,7 +321,7 @@ notebook: [`notebooks/fam07_6_classipremio.ipynb`](https://github.com/fabiofurin
     varianti["6b"] = variante("6b. Penalità 3 per classe iniziata e non completata (s_c >= x_j)", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_6_varianti")
 
-    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 6a ----------
+    # ---------- 7. IL SANDWICH SULLA VARIANTE 6a ----------
     intestazione("6a. Il sandwich sulla variante: almeno un lavoro per classe")
 
 

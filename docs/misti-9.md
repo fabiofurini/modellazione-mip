@@ -214,7 +214,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_9_scaffali.py` (237 righe)"
+??? example "Mostra lo script completo — `python/fam10_9_scaffali.py` (240 righe)"
 
     ```python
     """Problema 10.9 -- Libri sugli scaffali: minimizzare la somma delle altezze.
@@ -228,8 +228,8 @@ Script completo —
     import pandas as pd
     from gurobipy import GRB
 
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                     risolvi, valuta)
+    from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                     nuovo_modello, registra_bound, rilassamenti, risolvi, valuta)
     from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
 
@@ -279,7 +279,26 @@ Script completo —
     m4mod, x4, y4 = modello_4(w4, h4, c4, m4)
     salva_modello(m4mod, "fam10_9_primale")
 
-    # ---------- 2. DUE ORDINI PER LA STESSA EURISTICA ----------
+    # ---------- 2. IL RILASSAMENTO LP ----------
+    zlp4, zlp4r, _ = rilassamenti(m4mod)
+
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    dl4 = duale_4(w4, h4, c4, m4)
+    salva_modello(dl4, "fam10_9_duale")
+    # ricetta: beta = 0, e si concentra tutto il "peso" gamma sul libro piu' alto
+    alto = max(R(n4), key=lambda b: h4[b])
+    mano = ({f"gamma[{alto},{s}]": 1.0 for s in R(m4)}
+            | {f"alpha[{alto}]": float(h4[alto])})
+    lb_lp, viol = valuta(dl4, mano)
+    assert viol <= 1e-9, viol
+    print(f"  Duale a mano: beta = 0, gamma_bs = 1 solo per il libro piu' alto (il {alto + 1}, alto")
+    print(f"  {h4[alto]}) e alpha uguale a {h4[alto]} su quel libro, zero sugli altri. I vincoli")
+    print(f"  duali diventano {h4[alto]} <= {h4[alto]} e 0 <= 0  ->  lb = {frazione(lb_lp)}.")
+    print("  E' l'osservazione ovvia: lo scaffale che ospita il libro piu' alto e' alto almeno")
+    print(f"  quanto lui, quindi la somma delle altezze e' almeno {h4[alto]}.")
+    dualita_forte(dl4, zlp4)
+
+    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
     def first_fit(w, h, c, m, ordine, etichetta):
         """Ogni libro sul primo scaffale in cui entra; se non entra da nessuna parte
         l'euristica fallisce, e restituisce None."""
@@ -321,23 +340,7 @@ Script completo —
     assert ammissibile(m4mod, sol_eur), sol_eur
     print(f"  ub = {frazione(ub4)}")
 
-    # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
-    dl4 = duale_4(w4, h4, c4, m4)
-    salva_modello(dl4, "fam10_9_duale")
-    # ricetta: beta = 0, e si concentra tutto il "peso" gamma sul libro piu' alto
-    alto = max(R(n4), key=lambda b: h4[b])
-    mano = ({f"gamma[{alto},{s}]": 1.0 for s in R(m4)}
-            | {f"alpha[{alto}]": float(h4[alto])})
-    lb_lp, viol = valuta(dl4, mano)
-    assert viol <= 1e-9, viol
-    print(f"  Duale a mano: beta = 0, gamma_bs = 1 solo per il libro piu' alto (il {alto + 1}, alto")
-    print(f"  {h4[alto]}) e alpha uguale a {h4[alto]} su quel libro, zero sugli altri. I vincoli")
-    print(f"  duali diventano {h4[alto]} <= {h4[alto]} e 0 <= 0  ->  lb = {frazione(lb_lp)}.")
-    print("  E' l'osservazione ovvia: lo scaffale che ospita il libro piu' alto e' alto almeno")
-    print(f"  quanto lui, quindi la somma delle altezze e' almeno {h4[alto]}.")
-    zlp4, zlp4r, _ = due_rilassamenti(m4mod, dl4)
-
-    # ---------- 4. UN BOUND COMBINATORIO PIU' FORTE ----------
+    # ---------- 5. UN BOUND COMBINATORIO PIU' FORTE ----------
     intestazione("10.9 Il bound combinatorio: gli scaffali usati sono almeno due")
     usati = -(-sum(w4) // c4)     # divisione intera per eccesso
     print(f"  La larghezza totale e' {sum(w4)} e ogni scaffale ne regge {c4}: servono almeno")
@@ -352,7 +355,7 @@ Script completo —
                              {"argomento": "scaffali usati e altezze minime", "bound": lb4}]),
                "fam10_9_argomento")
 
-    # ---------- 5. OTTIMO DEL MILP ----------
+    # ---------- 6. OTTIMO DEL MILP ----------
     z4 = risolvi(m4mod)
     for s in R(m4):
         libri = [b + 1 for b in R(n4) if x4[b, s].X > 0.5]
@@ -363,7 +366,7 @@ Script completo —
     salva_dati(pd.DataFrame([riga]), "fam10_9_bound")
     assert lb4 <= z4 <= ub4 + 1e-9
 
-    # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+    # ---------- 7. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
     varianti = {}
 
 
@@ -384,29 +387,7 @@ Script completo —
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
                "fam10_9_varianti")
 
-    # ---------- 7. FIGURA ----------
-    fig, ax = plt.subplots(figsize=(6.4, 3.2))
-    for s in R(m4):
-        sx = 0.0
-        for b in R(n4):
-            if x4[b, s].X > 0.5:
-                ax.bar(sx + w4[b] / 2, h4[b], w4[b] * 0.92, bottom=s * 10, color=TEAL)
-                ax.annotate(str(b + 1), (sx + w4[b] / 2, s * 10 + 1), ha="center", fontsize=8,
-                            color="white")
-                sx += w4[b]
-        ax.plot([0, c4], [s * 10 + y4[s].X, s * 10 + y4[s].X], color=ARANCIO, lw=1.6)
-        ax.annotate(f"altezza {frazione(y4[s].X)}", (c4 + 0.2, s * 10 + y4[s].X), fontsize=8,
-                    va="center", color=ARANCIO)
-        ax.plot([c4, c4], [s * 10, s * 10 + 9], color=GRIGIO, ls="--", lw=1.2)
-    ax.set_xlim(0, c4 + 3.6)
-    ax.set_yticks([1, 11])
-    ax.set_yticklabels(["scaffale 1", "scaffale 2"])
-    ax.set_xlabel("larghezza")
-    ax.set_title(f"10.9: somma delle altezze {frazione(z4)}")
-    salva_figura(fig, "cap10_scaffali_ottimo")
-    print("Fine.")
-
-    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 4b ----------
+    # ---------- 8. IL SANDWICH SULLA VARIANTE 4b ----------
     intestazione("10.9b Il sandwich sulla variante: scaffali larghi 12 invece di 10")
     C4B = 12
 
@@ -454,6 +435,28 @@ Script completo —
                              certificato="scaffali usati e altezze minime")
     salva_dati(pd.DataFrame([riga_4b]), "fam10_9b_bound")
     assert lb4b_usato <= z4b_val <= ub4b + 1e-9
+
+    # ---------- 9. FIGURA ----------
+    fig, ax = plt.subplots(figsize=(6.4, 3.2))
+    for s in R(m4):
+        sx = 0.0
+        for b in R(n4):
+            if x4[b, s].X > 0.5:
+                ax.bar(sx + w4[b] / 2, h4[b], w4[b] * 0.92, bottom=s * 10, color=TEAL)
+                ax.annotate(str(b + 1), (sx + w4[b] / 2, s * 10 + 1), ha="center", fontsize=8,
+                            color="white")
+                sx += w4[b]
+        ax.plot([0, c4], [s * 10 + y4[s].X, s * 10 + y4[s].X], color=ARANCIO, lw=1.6)
+        ax.annotate(f"altezza {frazione(y4[s].X)}", (c4 + 0.2, s * 10 + y4[s].X), fontsize=8,
+                    va="center", color=ARANCIO)
+        ax.plot([c4, c4], [s * 10, s * 10 + 9], color=GRIGIO, ls="--", lw=1.2)
+    ax.set_xlim(0, c4 + 3.6)
+    ax.set_yticks([1, 11])
+    ax.set_yticklabels(["scaffale 1", "scaffale 2"])
+    ax.set_xlabel("larghezza")
+    ax.set_title(f"10.9: somma delle altezze {frazione(z4)}")
+    salva_figura(fig, "cap10_scaffali_ottimo")
+    print("Fine.")
     ```
 
 <!-- script-incorporato: fine -->

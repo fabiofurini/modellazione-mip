@@ -11,8 +11,8 @@ import gurobipy as gp
 import pandas as pd
 from gurobipy import GRB
 
-from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                 risolvi, valuta)
+from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                 nuovo_modello, registra_bound, rilassamenti, risolvi, valuta)
 from stile import ARANCIO, BLU, ROSSO, TEAL, intestazione, plt, salva_dati, salva_figura
 from esteso import salva_modello
 
@@ -62,35 +62,10 @@ def duale_1(a, b, c, d, p, ell):
 m1, x1, y1 = modello_1(a1, b1, c1, d1, p1, ell1)
 salva_modello(m1, "fam10_1_primale")
 
-# ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
-# euristica costruttiva: si scorrono i premi per preferenza decrescente; ciascuno si prende con i soli
-# punti se bastano, altrimenti con il contributo se bastano i punti ridotti, e ci si ferma
-# appena la preferenza richiesta e' raggiunta
-punti, pref = p1, 0
-scelta = {}
-for i in sorted(R(s1), key=lambda i: (-d1[i], i)):
-    if pref >= ell1:
-        break
-    if punti >= a1[i]:
-        scelta[i], punti, pref = "punti", punti - a1[i], pref + d1[i]
-        print(f"  Premio {i + 1} (preferenza {d1[i]}): bastano i soli punti ({a1[i]} <= "
-              f"{punti + a1[i]}): si prende; preferenza {pref}, punti residui {punti}")
-    elif punti >= b1[i]:
-        scelta[i], punti, pref = "contributo", punti - b1[i], pref + d1[i]
-        print(f"  Premio {i + 1} (preferenza {d1[i]}): i punti non bastano per la modalita' a "
-              f"({a1[i]} > {punti + b1[i]}), si usa la b: {b1[i]} punti e {c1[i]} euro; "
-              f"preferenza {pref}, punti residui {punti}")
-    else:
-        print(f"  Premio {i + 1} (preferenza {d1[i]}): i punti residui {punti} non bastano "
-              f"per nessuna delle due modalita': si salta")
-assert pref >= ell1, "la euristica costruttiva non raggiunge la preferenza richiesta"
-ub1 = sum(c1[i] for i, mod in scelta.items() if mod == "contributo")
-sol_eur = {f"x[{i}]": 1 for i, mod in scelta.items() if mod == "punti"} \
-    | {f"y[{i}]": 1 for i, mod in scelta.items() if mod == "contributo"}
-assert ammissibile(m1, sol_eur)
-print(f"  Soluzione euristica: preferenza {pref} >= {ell1}, contributo totale ub = {frazione(ub1)}")
+# ---------- 2. IL RILASSAMENTO LP ----------
+zlp1, zlp1r, _ = rilassamenti(m1)
 
-# ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
+# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
 dl1 = duale_1(a1, b1, c1, d1, p1, ell1)
 salva_modello(dl1, "fam10_1_duale")
 # ricetta: si scelgono il prezzo pi di un punto e il prezzo rho di una unita' di
@@ -119,9 +94,37 @@ print("  sulla modalita' a. Restano da controllare i vincoli sulla modalita' b."
 print(f"    pi = {frazione(pi_star)} euro per punto, rho = {frazione(rho_star)} euro per unita'")
 print(f"    di preferenza, sigma = " + ", ".join(frazione(v) for v in sigma_star))
 print(f"  ->  lb = -sum(sigma) - p pi + l rho = {frazione(lb1)}")
-zlp1, zlp1r, _ = due_rilassamenti(m1, dl1)
+dualita_forte(dl1, zlp1)
 
-# ---------- 4. OTTIMO DEL MILP ----------
+# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+# euristica costruttiva: si scorrono i premi per preferenza decrescente; ciascuno si prende con i soli
+# punti se bastano, altrimenti con il contributo se bastano i punti ridotti, e ci si ferma
+# appena la preferenza richiesta e' raggiunta
+punti, pref = p1, 0
+scelta = {}
+for i in sorted(R(s1), key=lambda i: (-d1[i], i)):
+    if pref >= ell1:
+        break
+    if punti >= a1[i]:
+        scelta[i], punti, pref = "punti", punti - a1[i], pref + d1[i]
+        print(f"  Premio {i + 1} (preferenza {d1[i]}): bastano i soli punti ({a1[i]} <= "
+              f"{punti + a1[i]}): si prende; preferenza {pref}, punti residui {punti}")
+    elif punti >= b1[i]:
+        scelta[i], punti, pref = "contributo", punti - b1[i], pref + d1[i]
+        print(f"  Premio {i + 1} (preferenza {d1[i]}): i punti non bastano per la modalita' a "
+              f"({a1[i]} > {punti + b1[i]}), si usa la b: {b1[i]} punti e {c1[i]} euro; "
+              f"preferenza {pref}, punti residui {punti}")
+    else:
+        print(f"  Premio {i + 1} (preferenza {d1[i]}): i punti residui {punti} non bastano "
+              f"per nessuna delle due modalita': si salta")
+assert pref >= ell1, "la euristica costruttiva non raggiunge la preferenza richiesta"
+ub1 = sum(c1[i] for i, mod in scelta.items() if mod == "contributo")
+sol_eur = {f"x[{i}]": 1 for i, mod in scelta.items() if mod == "punti"} \
+    | {f"y[{i}]": 1 for i, mod in scelta.items() if mod == "contributo"}
+assert ammissibile(m1, sol_eur)
+print(f"  Soluzione euristica: preferenza {pref} >= {ell1}, contributo totale ub = {frazione(ub1)}")
+
+# ---------- 5. OTTIMO DEL MILP ----------
 z1 = risolvi(m1)
 soli_punti = [i + 1 for i in R(s1) if x1[i].X > 0.5]
 con_contributo = [i + 1 for i in R(s1) if y1[i].X > 0.5]
@@ -134,7 +137,7 @@ riga = registra_bound("1 premi", ub1, lb1, zlp1, zlp1r, z1)
 salva_dati(pd.DataFrame([riga]), "fam10_1_bound")
 assert lb1 <= zlp1 <= z1 <= ub1 + 1e-9
 
-# ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+# ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 varianti = {}
 
 
@@ -155,30 +158,7 @@ varianti["1b"] = variante("1b. Si vogliono almeno quattro premi (sum_i (x_i+y_i)
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
            "fam10_1_varianti")
 
-# ---------- 6. FIGURA ----------
-fig, ax = plt.subplots(figsize=(6.8, 3.0))
-premi = list(R(1, s1 + 1))
-larghezza = 0.38
-ax.bar([i - larghezza / 2 for i in premi], a1, larghezza, color=TEAL, label="punti (modalita' a)")
-ax.bar([i + larghezza / 2 for i in premi], b1, larghezza, color=ARANCIO,
-       label="punti (modalita' b, + contributo)")
-for i in R(s1):
-    if x1[i].X > 0.5:
-        ax.annotate("scelto", (i + 1 - larghezza / 2, a1[i]), ha="center", va="bottom",
-                    fontsize=8, color=BLU)
-    if y1[i].X > 0.5:
-        ax.annotate(f"scelto\n{c1[i]} EUR", (i + 1 + larghezza / 2, b1[i]), ha="center",
-                    va="bottom", fontsize=8, color=ROSSO)
-ax.set_xticks(premi)
-ax.set_xticklabels([f"premio {i}\n(pref. {d1[i - 1]})" for i in premi], fontsize=8)
-ax.set_ylabel("punti richiesti")
-ax.set_ylim(0, max(a1) + 3)
-ax.set_title(f"10.1: le modalita' scelte (contributo totale {frazione(z1)} EUR)")
-ax.legend(fontsize=8)
-salva_figura(fig, "cap10_premi_ottimo")
-print("Fine.")
-
-# ---------- 5bis. IL SANDWICH SULLA VARIANTE 1b ----------
+# ---------- 7. IL SANDWICH SULLA VARIANTE 1b ----------
 intestazione("10.1b Il sandwich sulla variante: almeno quattro premi")
 MIN_PREMI = 4
 
@@ -275,3 +255,25 @@ riga_1b = registra_bound("1b almeno quattro premi", ub1b, lb1b_val, zlp1b, zlp1b
 salva_dati(pd.DataFrame([riga_1b]), "fam10_1b_bound")
 assert lb1b_val <= zlp1b <= z1b <= ub1b + 1e-9
 
+# ---------- 8. FIGURA ----------
+fig, ax = plt.subplots(figsize=(6.8, 3.0))
+premi = list(R(1, s1 + 1))
+larghezza = 0.38
+ax.bar([i - larghezza / 2 for i in premi], a1, larghezza, color=TEAL, label="punti (modalita' a)")
+ax.bar([i + larghezza / 2 for i in premi], b1, larghezza, color=ARANCIO,
+       label="punti (modalita' b, + contributo)")
+for i in R(s1):
+    if x1[i].X > 0.5:
+        ax.annotate("scelto", (i + 1 - larghezza / 2, a1[i]), ha="center", va="bottom",
+                    fontsize=8, color=BLU)
+    if y1[i].X > 0.5:
+        ax.annotate(f"scelto\n{c1[i]} EUR", (i + 1 + larghezza / 2, b1[i]), ha="center",
+                    va="bottom", fontsize=8, color=ROSSO)
+ax.set_xticks(premi)
+ax.set_xticklabels([f"premio {i}\n(pref. {d1[i - 1]})" for i in premi], fontsize=8)
+ax.set_ylabel("punti richiesti")
+ax.set_ylim(0, max(a1) + 3)
+ax.set_title(f"10.1: le modalita' scelte (contributo totale {frazione(z1)} EUR)")
+ax.legend(fontsize=8)
+salva_figura(fig, "cap10_premi_ottimo")
+print("Fine.")

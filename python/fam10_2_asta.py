@@ -10,8 +10,9 @@ import gurobipy as gp
 import pandas as pd
 from gurobipy import GRB
 
-from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                 risolvi, stampa_lp, valuta)
+from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                 nuovo_modello, registra_bound, rilassamenti, risolvi, stampa_lp,
+                 valuta)
 from stile import ARANCIO, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
 from esteso import salva_modello
 
@@ -58,7 +59,33 @@ salva_modello(m3, "fam10_2_primale")
 print("  Il modello dell'istanza:")
 stampa_lp(m3)
 
-# ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
+# ---------- 2. IL RILASSAMENTO LP ----------
+zlp3, zlp3r, _ = rilassamenti(m3)
+
+# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+dl3, lam3 = duale_3(n3, B3, p3)
+salva_modello(dl3, "fam10_2_duale")
+# Ricetta a mano: si spalma ogni offerta sui suoi oggetti e si prende il massimo,
+# lam_i = max_{j : i in B_j} p_j / |B_j|. E' sempre ammissibile perche' per ogni
+# offerta j vale sum_{i in B_j} lam_i >= |B_j| * p_j / |B_j| = p_j.
+mano = {f"lam[{i}]": max(p3[j] / len(B3[j]) for j in R(r3) if i in B3[j]) for i in R(n3)}
+ub3, viol = valuta(dl3, mano)
+assert viol <= 1e-9, viol
+print("  Duale a mano: lam_i = max_{j : i in B_j} p_j / |B_j| (il profitto di ogni offerta")
+print("  spalmato sui suoi oggetti; la somma su B_j vale allora almeno p_j):")
+for i in R(n3):
+    quote = ", ".join(f"{p3[j]}/{len(B3[j])}" for j in R(r3) if i in B3[j])
+    print(f"    oggetto {i + 1}: max({quote}) = {frazione(mano[f'lam[{i}]'])}")
+print(f"  ub = somma dei prezzi = {frazione(ub3)}")
+# per confronto: la ricetta della dispensa di partenza, lam_i = max p_j sulle offerte
+grezza = {f"lam[{i}]": max(p3[j] for j in R(r3) if i in B3[j]) for i in R(n3)}
+ub_grezzo, viol_g = valuta(dl3, grezza)
+assert viol_g <= 1e-9
+print(f"  (con la ricetta piu' grossolana lam_i = max_j p_j si otterrebbe soltanto "
+      f"{frazione(ub_grezzo)})")
+dualita_forte(dl3, zlp3)
+
+# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 # euristica costruttiva sul profitto per oggetto: si accettano le offerte piu' redditizie fra
 # quelle i cui oggetti sono ancora liberi. Costo O(r log r + r n).
 def euristica(n, B, p):
@@ -90,30 +117,7 @@ assert ammissibile(m3, sol_eur), sol_eur
 accettate = [j + 1 for j in R(r3) if x_eur[j]]
 print(f"  Soluzione euristica: offerte {accettate}   lb = {frazione(lb3)}")
 
-# ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
-dl3, lam3 = duale_3(n3, B3, p3)
-salva_modello(dl3, "fam10_2_duale")
-# Ricetta a mano: si spalma ogni offerta sui suoi oggetti e si prende il massimo,
-# lam_i = max_{j : i in B_j} p_j / |B_j|. E' sempre ammissibile perche' per ogni
-# offerta j vale sum_{i in B_j} lam_i >= |B_j| * p_j / |B_j| = p_j.
-mano = {f"lam[{i}]": max(p3[j] / len(B3[j]) for j in R(r3) if i in B3[j]) for i in R(n3)}
-ub3, viol = valuta(dl3, mano)
-assert viol <= 1e-9, viol
-print("  Duale a mano: lam_i = max_{j : i in B_j} p_j / |B_j| (il profitto di ogni offerta")
-print("  spalmato sui suoi oggetti; la somma su B_j vale allora almeno p_j):")
-for i in R(n3):
-    quote = ", ".join(f"{p3[j]}/{len(B3[j])}" for j in R(r3) if i in B3[j])
-    print(f"    oggetto {i + 1}: max({quote}) = {frazione(mano[f'lam[{i}]'])}")
-print(f"  ub = somma dei prezzi = {frazione(ub3)}")
-# per confronto: la ricetta della dispensa di partenza, lam_i = max p_j sulle offerte
-grezza = {f"lam[{i}]": max(p3[j] for j in R(r3) if i in B3[j]) for i in R(n3)}
-ub_grezzo, viol_g = valuta(dl3, grezza)
-assert viol_g <= 1e-9
-print(f"  (con la ricetta piu' grossolana lam_i = max_j p_j si otterrebbe soltanto "
-      f"{frazione(ub_grezzo)})")
-zlp3, zlp3r, _ = due_rilassamenti(m3, dl3)
-
-# ---------- 4. OTTIMO DEL MILP ----------
+# ---------- 5. OTTIMO DEL MILP ----------
 z3 = risolvi(m3)
 ottime = [j + 1 for j in R(r3) if x3[j].X > 0.5]
 venduti = sorted({i + 1 for j in R(r3) if x3[j].X > 0.5 for i in B3[j]})
@@ -127,7 +131,7 @@ riga = registra_bound("3 asta", ub3, lb3, zlp3, zlp3r, z3, senso="max")
 salva_dati(pd.DataFrame([riga]), "fam10_2_bound")
 assert lb3 <= z3 <= zlp3r <= zlp3 <= ub3 + 1e-9
 
-# ---------- 5. I DUE RILASSAMENTI E L'INTEREZZA ----------
+# ---------- 6. I DUE RILASSAMENTI E L'INTEREZZA ----------
 intestazione("10.2 I due rilassamenti e l'interezza del rilassamento")
 print(f"  z(LP) = {frazione(zlp3)} e z(LP+) = {frazione(zlp3r)} coincidono: i vincoli")
 print("  sum_{j : i in B_j} x_j <= 1 implicano gia' x_j <= 1 per ogni offerta con B_j non")
@@ -148,7 +152,7 @@ salva_dati(pd.DataFrame([{"istanza": "asta 10.2", "z_lp": zlp3, "z_milp": z3},
                          {"istanza": "triangolo", "z_lp": zlp_tri, "z_milp": z_tri}]),
            "fam10_2_triangolo")
 
-# ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+# ---------- 7. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 varianti = {}
 
 
@@ -169,27 +173,7 @@ varianti["2b"] = variante("2b. Si consegnano al piu' due oggetti (sum_j |B_j| x_
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
            "fam10_2_varianti")
 
-# ---------- 7. FIGURA ----------
-fig, ax = plt.subplots(figsize=(6.8, 3.2))
-idx = list(R(r3))
-colori = [TEAL if x3[j].X > 0.5 else GRIGIO for j in idx]
-ax.bar(idx, p3, 0.55, color=colori)
-for j in idx:
-    if x_eur[j]:
-        ax.plot(j, p3[j] + 0.6, marker="v", color=ARANCIO, ms=8)
-ax.plot([], [], marker="v", ls="", color=ARANCIO, label="scelta dall'euristica")
-ax.bar([], [], color=TEAL, label="accettata all'ottimo")
-ax.bar([], [], color=GRIGIO, label="rifiutata all'ottimo")
-ax.set_xticks(idx)
-ax.set_xticklabels(["{" + ",".join(str(i + 1) for i in B3[j]) + "}" for j in idx])
-ax.set_xlabel("oggetti chiesti dall'offerta")
-ax.set_ylabel("profitto")
-ax.set_title(f"10.2: euristica {frazione(lb3)} <= ottimo {frazione(z3)} <= duale {frazione(ub3)}")
-ax.legend(fontsize=8, loc="upper left")
-salva_figura(fig, "cap10_asta_offerte")
-print("Fine.")
-
-# ---------- 5bis. IL SANDWICH SULLA VARIANTE 3b ----------
+# ---------- 8. IL SANDWICH SULLA VARIANTE 3b ----------
 intestazione("10.2b Il sandwich sulla variante: al piu' due oggetti consegnati")
 MAX_OGG = 2
 
@@ -270,3 +254,22 @@ riga_3b = registra_bound("2b al piu' due oggetti", ub3b_val, lb3b, zlp3b, zlp3br
 salva_dati(pd.DataFrame([riga_3b]), "fam10_2b_bound")
 assert lb3b <= z3b <= zlp3b + 1e-9 <= ub3b_val + 1e-9
 
+# ---------- 9. FIGURA ----------
+fig, ax = plt.subplots(figsize=(6.8, 3.2))
+idx = list(R(r3))
+colori = [TEAL if x3[j].X > 0.5 else GRIGIO for j in idx]
+ax.bar(idx, p3, 0.55, color=colori)
+for j in idx:
+    if x_eur[j]:
+        ax.plot(j, p3[j] + 0.6, marker="v", color=ARANCIO, ms=8)
+ax.plot([], [], marker="v", ls="", color=ARANCIO, label="scelta dall'euristica")
+ax.bar([], [], color=TEAL, label="accettata all'ottimo")
+ax.bar([], [], color=GRIGIO, label="rifiutata all'ottimo")
+ax.set_xticks(idx)
+ax.set_xticklabels(["{" + ",".join(str(i + 1) for i in B3[j]) + "}" for j in idx])
+ax.set_xlabel("oggetti chiesti dall'offerta")
+ax.set_ylabel("profitto")
+ax.set_title(f"10.2: euristica {frazione(lb3)} <= ottimo {frazione(z3)} <= duale {frazione(ub3)}")
+ax.legend(fontsize=8, loc="upper left")
+salva_figura(fig, "cap10_asta_offerte")
+print("Fine.")

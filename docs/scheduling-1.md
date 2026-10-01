@@ -252,7 +252,7 @@ Lo stesso codice è disponibile come notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam07_1_assegnamento.py` (224 righe)"
+??? example "Mostra lo script completo — `python/fam07_1_assegnamento.py` (227 righe)"
 
     ```python
     """Problema 7.1 -- Assegnamento a costo minimo con disponibilita' (GAP).
@@ -268,8 +268,9 @@ Lo stesso codice è disponibile come notebook —
     from gurobipy import GRB
 
     from euristiche import best_fit, first_fit, matrice, next_fit
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
-                     registra_bound, risolvi, stampa_soluzione, valuta)
+    from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                     nuovo_modello, registra_bound, rilassamenti, risolvi,
+                     stampa_soluzione, valuta)
     from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
 
@@ -315,7 +316,21 @@ Lo stesso codice è disponibile come notebook —
     m1, x1 = modello_1(t1, c1, a1)
     salva_modello(m1, "fam07_1_primale")
 
-    # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    # ---------- 2. IL RILASSAMENTO LP ----------
+    zlp1, zlp1r, pi_lp = rilassamenti(m1)
+    print("Duali del rilassamento letti da Gurobi:", {kk: round(v, 4) for kk, v in pi_lp.items()})
+
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    d1 = duale_1(t1, c1, a1)
+    salva_modello(d1, "fam07_1_duale")
+    mano = {f"mu[{j}]": min(c1[j]) for j in R(n)}
+    lb1, viol = valuta(d1, mano)
+    assert viol <= 1e-9, viol
+    print(f"Soluzione duale a mano: pi = 0, mu_j = min_m c_jm = "
+          + ", ".join(frazione(mano[f"mu[{j}]"]) for j in R(n)) + f"  ->  lb = {frazione(lb1)}")
+    dualita_forte(d1, zlp1)
+
+    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
     print("Euristiche costruttive:")
     e_next = next_fit(t1, a1)
     e_first = first_fit(t1, a1)
@@ -329,18 +344,7 @@ Lo stesso codice è disponibile come notebook —
     sol_eur = {f"x[{j},{mm}]": 1 for (j, mm) in e_best.x}
     assert ammissibile(m1, sol_eur)
 
-    # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
-    d1 = duale_1(t1, c1, a1)
-    salva_modello(d1, "fam07_1_duale")
-    mano = {f"mu[{j}]": min(c1[j]) for j in R(n)}
-    lb1, viol = valuta(d1, mano)
-    assert viol <= 1e-9, viol
-    print(f"Soluzione duale a mano: pi = 0, mu_j = min_m c_jm = "
-          + ", ".join(frazione(mano[f"mu[{j}]"]) for j in R(n)) + f"  ->  lb = {frazione(lb1)}")
-    zlp1, zlp1r, pi_lp = due_rilassamenti(m1, d1)
-    print("Duali del rilassamento letti da Gurobi:", {kk: round(v, 4) for kk, v in pi_lp.items()})
-
-    # ---------- 4. SOLUZIONE OTTIMA DEL MILP ----------
+    # ---------- 5. SOLUZIONE OTTIMA DEL MILP ----------
     z1 = risolvi(m1)
     print("Soluzione ottima del MILP:")
     stampa_soluzione(m1, solo_non_nulle=True)
@@ -348,7 +352,7 @@ Lo stesso codice è disponibile come notebook —
     salva_dati(pd.DataFrame([riga]), "fam07_1_bound")
     ott1 = {(j, mm) for j in R(n) for mm in R(k) if x1[j, mm].X > 0.5}
 
-    # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+    # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
 
     varianti = {}
@@ -373,7 +377,7 @@ Lo stesso codice è disponibile come notebook —
     varianti["1b"] = variante("1b. Costo fisso g_m = 3 per macchina usata (x_jm <= y_m)", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_1_varianti")
 
-    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 1a ----------
+    # ---------- 7. IL SANDWICH SULLA VARIANTE 1a ----------
     # Una variante non si limita a cambiare l'ottimo: cambia anche i due bound, e il
     # bound duale si costruisce con la stessa ricetta del problema base, arricchita
     # dalla famiglia duale nuova.
@@ -452,8 +456,7 @@ Lo stesso codice è disponibile come notebook —
     salva_dati(pd.DataFrame([riga_1a]), "fam07_1a_bound")
     assert lb1a <= zlp1a <= z1a <= ub1a + 1e-9
 
-
-    # ---------- 6. FIGURE ----------
+    # ---------- 8. FIGURE ----------
 
 
     def barre_macchine(assegn, t, a, titolo, nome):

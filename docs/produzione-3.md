@@ -244,7 +244,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam09_3_veicoli.py` (284 righe)"
+??? example "Mostra lo script completo — `python/fam09_3_veicoli.py` (287 righe)"
 
     ```python
     """Problema 9.3 -- Veicoli: lotto minimo e premio per la varieta'.
@@ -258,8 +258,8 @@ Script completo —
     import pandas as pd
     from gurobipy import GRB
 
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                     risolvi, valuta)
+    from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                     nuovo_modello, registra_bound, rilassamenti, risolvi, valuta)
     from stile import ARANCIO, BLU, ROSSO, TEAL, VERDE, intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
 
@@ -319,7 +319,40 @@ Script completo —
     m3m, x3, y3, z3 = modello_3(a3, b3, p3, q3, r3)
     salva_modello(m3m, "fam09_3_primale")
 
-    # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND: E' UN MASSIMO) ----------
+    # ---------- 2. IL RILASSAMENTO LP ----------
+    zlp3, zlp3r, _ = rilassamenti(m3m)
+
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    dl3 = duale_3(a3, b3, p3, q3, r3)
+    salva_modello(dl3, "fam09_3_duale")
+    # ricetta: gamma = r/2 (il minimo ammesso dal vincolo 2 gamma >= r), beta = 0, e
+    # lambda_j = gamma / q_j (ogni tipo attivato "porta" la sua quota di premio); poi si
+    # valuta una sola risorsa al prezzo che copre tutti i tipi, e si sceglie la migliore
+    gamma = r3 / 2
+    lam = [gamma / q3[j] for j in R(n3)]
+    bound = {}
+    for i in R(m3):
+        prezzo = max((p3[j] + lam[j]) / a3[i][j] for j in R(n3))
+        bound[i] = b3[i] * prezzo
+    critica = min(bound, key=bound.get)
+    prezzo = max((p3[j] + lam[j]) / a3[critica][j] for j in R(n3))
+    mano = {"gamma": gamma} | {f"pi[{i}]": 0.0 for i in R(m3)} \
+        | {f"alpha[{j}]": -lam[j] for j in R(n3)} | {f"beta[{j}]": 0.0 for j in R(n3)}
+    mano[f"pi[{critica}]"] = prezzo
+    ub3, viol = valuta(dl3, mano)
+    assert viol <= 1e-9, (viol, mano)
+    print(f"  Duale a mano: gamma = r/2 = {frazione(gamma)} (il minimo che soddisfa 2 gamma >= r),")
+    print(f"  beta = 0 e lambda_j = gamma / q_j = " + ", ".join(frazione(v) for v in lam)
+          + ": ogni tipo")
+    print("  attivato porta la sua quota di premio. Poi si valuta una sola risorsa al prezzo")
+    print("  che copre tutti i tipi, max_j (p_j + lambda_j) / a_ij, e si tiene la piu' stretta:")
+    for i in R(m3):
+        print(f"    risorsa {i + 1}: prezzo {frazione(max((p3[j] + lam[j]) / a3[i][j] for j in R(n3)))}"
+              f"  ->  b_i * prezzo = {frazione(bound[i])}")
+    print(f"  Il minimo e' la risorsa {critica + 1}:  ub = {frazione(ub3)}")
+    dualita_forte(dl3, zlp3)
+
+    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
     # euristica costruttiva: si attivano due tipi (per incassare il premio) partendo dai profitti per
     # unita' di risorsa piu' scarsa, poi si riempie con il tipo migliore
     def euristica(a, b, p, q, r):
@@ -354,37 +387,7 @@ Script completo —
     print(f"  riempie col piu' redditizio; produzione {x_eur}, risorse residue {res}")
     print(f"  lb = {sum(p3[j] * x_eur[j] for j in R(n3))} + {r3} di premio = {frazione(lb3)}")
 
-    # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
-    dl3 = duale_3(a3, b3, p3, q3, r3)
-    salva_modello(dl3, "fam09_3_duale")
-    # ricetta: gamma = r/2 (il minimo ammesso dal vincolo 2 gamma >= r), beta = 0, e
-    # lambda_j = gamma / q_j (ogni tipo attivato "porta" la sua quota di premio); poi si
-    # valuta una sola risorsa al prezzo che copre tutti i tipi, e si sceglie la migliore
-    gamma = r3 / 2
-    lam = [gamma / q3[j] for j in R(n3)]
-    bound = {}
-    for i in R(m3):
-        prezzo = max((p3[j] + lam[j]) / a3[i][j] for j in R(n3))
-        bound[i] = b3[i] * prezzo
-    critica = min(bound, key=bound.get)
-    prezzo = max((p3[j] + lam[j]) / a3[critica][j] for j in R(n3))
-    mano = {"gamma": gamma} | {f"pi[{i}]": 0.0 for i in R(m3)} \
-        | {f"alpha[{j}]": -lam[j] for j in R(n3)} | {f"beta[{j}]": 0.0 for j in R(n3)}
-    mano[f"pi[{critica}]"] = prezzo
-    ub3, viol = valuta(dl3, mano)
-    assert viol <= 1e-9, (viol, mano)
-    print(f"  Duale a mano: gamma = r/2 = {frazione(gamma)} (il minimo che soddisfa 2 gamma >= r),")
-    print(f"  beta = 0 e lambda_j = gamma / q_j = " + ", ".join(frazione(v) for v in lam)
-          + ": ogni tipo")
-    print("  attivato porta la sua quota di premio. Poi si valuta una sola risorsa al prezzo")
-    print("  che copre tutti i tipi, max_j (p_j + lambda_j) / a_ij, e si tiene la piu' stretta:")
-    for i in R(m3):
-        print(f"    risorsa {i + 1}: prezzo {frazione(max((p3[j] + lam[j]) / a3[i][j] for j in R(n3)))}"
-              f"  ->  b_i * prezzo = {frazione(bound[i])}")
-    print(f"  Il minimo e' la risorsa {critica + 1}:  ub = {frazione(ub3)}")
-    zlp3, zlp3r, _ = due_rilassamenti(m3m, dl3)
-
-    # ---------- 4. OTTIMO DEL MILP ----------
+    # ---------- 5. OTTIMO DEL MILP ----------
     z3v = risolvi(m3m)
     print("  Soluzione ottima: produzione " + ", ".join(str(round(x3[j].X)) for j in R(n3))
           + f"; tipi attivi {[j + 1 for j in R(n3) if y3[j].X > 0.5]}; premio incassato: "
@@ -395,7 +398,7 @@ Script completo —
     salva_dati(pd.DataFrame([riga]), "fam09_3_bound")
     assert lb3 <= z3v <= zlp3 + 1e-6 <= ub3 + 1e-6
 
-    # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+    # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
     varianti = {}
 
 
@@ -422,25 +425,7 @@ Script completo —
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
                "fam09_3_varianti")
 
-    # ---------- 6. FIGURA ----------
-    fig, ax = plt.subplots(figsize=(6.8, 3.0))
-    tipi = list(R(1, n3 + 1))
-    colori = [TEAL if y3[j].X > 0.5 else "#F4F6F7" for j in R(n3)]
-    ax.bar(tipi, [x3[j].X for j in R(n3)], color=colori, edgecolor="#7F8C8D", width=0.55)
-    for j in R(n3):
-        ax.plot([j + 0.72, j + 1.28], [q3[j], q3[j]], color=ROSSO, lw=2)
-    ax.plot([], [], color=ROSSO, lw=2, label="lotto minimo $q_j$")
-    for j in R(n3):
-        ax.annotate(str(round(x3[j].X)), (j + 1, x3[j].X), ha="center", va="bottom", fontsize=9)
-    ax.set_xticks(tipi)
-    ax.set_xticklabels([f"tipo {j}" for j in tipi])
-    ax.set_ylabel("unita' prodotte")
-    ax.set_title(f"9.3: piano ottimo (z = {frazione(z3v)}, premio incassato)")
-    ax.legend(fontsize=8)
-    salva_figura(fig, "cap09_veicoli_ottimo")
-    print("Fine.")
-
-    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 3a ----------
+    # ---------- 7. IL SANDWICH SULLA VARIANTE 3a ----------
     intestazione("9.3a Il sandwich sulla variante: il premio richiede almeno tre tipi")
     SOGLIA = 3
 
@@ -531,6 +516,24 @@ Script completo —
     riga_3a = registra_bound("3a premio con tre tipi", ub3a, lb3a, zlp3a, zlp3ar, z3a_val, senso="max")
     salva_dati(pd.DataFrame([riga_3a]), "fam09_3a_bound")
     assert lb3a <= z3a_val <= zlp3a + 1e-9 <= ub3a + 1e-9
+
+    # ---------- 8. FIGURA ----------
+    fig, ax = plt.subplots(figsize=(6.8, 3.0))
+    tipi = list(R(1, n3 + 1))
+    colori = [TEAL if y3[j].X > 0.5 else "#F4F6F7" for j in R(n3)]
+    ax.bar(tipi, [x3[j].X for j in R(n3)], color=colori, edgecolor="#7F8C8D", width=0.55)
+    for j in R(n3):
+        ax.plot([j + 0.72, j + 1.28], [q3[j], q3[j]], color=ROSSO, lw=2)
+    ax.plot([], [], color=ROSSO, lw=2, label="lotto minimo $q_j$")
+    for j in R(n3):
+        ax.annotate(str(round(x3[j].X)), (j + 1, x3[j].X), ha="center", va="bottom", fontsize=9)
+    ax.set_xticks(tipi)
+    ax.set_xticklabels([f"tipo {j}" for j in tipi])
+    ax.set_ylabel("unita' prodotte")
+    ax.set_title(f"9.3: piano ottimo (z = {frazione(z3v)}, premio incassato)")
+    ax.legend(fontsize=8)
+    salva_figura(fig, "cap09_veicoli_ottimo")
+    print("Fine.")
     ```
 
 <!-- script-incorporato: fine -->

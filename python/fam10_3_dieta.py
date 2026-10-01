@@ -9,8 +9,9 @@ import gurobipy as gp
 import pandas as pd
 from gurobipy import GRB
 
-from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                 rilassamento, risolvi, valuta)
+from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                 nuovo_modello, registra_bound, rilassamenti, rilassamento, risolvi,
+                 valuta)
 from stile import ARANCIO, BLU, ROSSO, TEAL, VERDE, intestazione, plt, salva_dati, salva_figura
 from esteso import salva_modello
 
@@ -70,7 +71,34 @@ def duale_2(w, g, a, b, c, d, t):
 m2, x2, y2 = modello_2(w2, g2, a2, b2, c2, d2, t2)
 salva_modello(m2, "fam10_3_primale")
 
-# ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+# ---------- 2. IL RILASSAMENTO LP ----------
+zlp2, zlp2r, _ = rilassamenti(m2)
+
+# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+dl2 = duale_2(w2, g2, a2, b2, c2, d2, t2)
+salva_modello(dl2, "fam10_3_duale")
+# ricetta: beta = mu = tau = 0 (i massimi, i tetti e la varieta' non si valutano);
+# alpha_j = il piu' grande prezzo del nutriente j che nessun cibo riesce a battere
+# si tiene un solo nutriente per volta e si sceglie quello che da' il bound migliore
+mano, migliore, scelto = {}, -1.0, None
+for j in R(r2):
+    prova = {f"alpha[{jj}]": (min(w2[i] / g2[i][jj] for i in R(s2) if g2[i][jj] > 0)
+                              if jj == j else 0.0) for jj in R(r2)}
+    val, viol = valuta(dl2, prova)
+    if viol <= 1e-9 and val > migliore:
+        migliore, scelto, mano = val, j, prova
+lb2, viol = valuta(dl2, mano)
+assert viol <= 1e-9, viol
+print("  Duale a mano: beta = mu = tau = 0 (massimi, tetti e varieta' non si valutano) e")
+print("  un solo alpha_j positivo, pari al costo per grammo piu' basso fra i cibi:")
+for j in R(r2):
+    prezzo = min(w2[i] / g2[i][j] for i in R(s2) if g2[i][j] > 0)
+    print(f"    {NUTRIENTI[j]}: prezzo {frazione(prezzo)} EUR/g  ->  a_j * prezzo = "
+          f"{frazione(a2[j] * prezzo)}")
+print(f"  Il migliore e' il {NUTRIENTI[scelto]}:  lb = {frazione(lb2)}")
+dualita_forte(dl2, zlp2)
+
+# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 # euristica costruttiva: si parte dal lotto minimo di tutti i cibi piu' economici fino a raggiungere t,
 # poi si copre il fabbisogno residuo col cibo di costo per grammo piu' basso
 def euristica(w, g, a, b, c, d, t):
@@ -108,42 +136,6 @@ print("  Soluzione euristica: " + ", ".join(f"{CIBI[i]} {x_eur[i]:.4g} kg" for i
                                             if x_eur[i] > 1e-9)
       + f"   ub = {frazione(ub2)}")
 
-# ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
-dl2 = duale_2(w2, g2, a2, b2, c2, d2, t2)
-salva_modello(dl2, "fam10_3_duale")
-# ricetta: beta = mu = tau = 0 (i massimi, i tetti e la varieta' non si valutano);
-# alpha_j = il piu' grande prezzo del nutriente j che nessun cibo riesce a battere
-# si tiene un solo nutriente per volta e si sceglie quello che da' il bound migliore
-mano, migliore, scelto = {}, -1.0, None
-for j in R(r2):
-    prova = {f"alpha[{jj}]": (min(w2[i] / g2[i][jj] for i in R(s2) if g2[i][jj] > 0)
-                              if jj == j else 0.0) for jj in R(r2)}
-    val, viol = valuta(dl2, prova)
-    if viol <= 1e-9 and val > migliore:
-        migliore, scelto, mano = val, j, prova
-lb2, viol = valuta(dl2, mano)
-assert viol <= 1e-9, viol
-print("  Duale a mano: beta = mu = tau = 0 (massimi, tetti e varieta' non si valutano) e")
-print("  un solo alpha_j positivo, pari al costo per grammo piu' basso fra i cibi:")
-for j in R(r2):
-    prezzo = min(w2[i] / g2[i][j] for i in R(s2) if g2[i][j] > 0)
-    print(f"    {NUTRIENTI[j]}: prezzo {frazione(prezzo)} EUR/g  ->  a_j * prezzo = "
-          f"{frazione(a2[j] * prezzo)}")
-print(f"  Il migliore e' il {NUTRIENTI[scelto]}:  lb = {frazione(lb2)}")
-zlp2, zlp2r, _ = due_rilassamenti(m2, dl2)
-
-# ---------- 4. OTTIMO DEL MILP ----------
-z2 = risolvi(m2)
-print("  Soluzione ottima: " + ", ".join(f"{CIBI[i]} {x2[i].X:.4g} kg" for i in R(s2)
-                                         if x2[i].X > 1e-9)
-      + f"   ({int(sum(y2[i].X for i in R(s2)))} cibi diversi, richiesti {t2})")
-for j in R(r2):
-    print(f"    {NUTRIENTI[j]}: {sum(g2[i][j] * x2[i].X for i in R(s2)):.4g} g "
-          f"(fra {a2[j]} e {b2[j]})")
-riga = registra_bound("2 dieta", ub2, lb2, zlp2, zlp2r, z2)
-salva_dati(pd.DataFrame([riga]), "fam10_3_bound")
-assert lb2 <= zlp2 <= z2 <= ub2 + 1e-9
-
 # ---------- 5. SENZA IL LOTTO MINIMO IL CONTEGGIO E' VUOTO ----------
 intestazione("10.3 Perche' il lotto minimo serve al conteggio")
 m, x, y = modello_2(w2, g2, a2, b2, [0] * s2, d2, t2)   # c_i = 0: nessun lotto minimo
@@ -155,7 +147,19 @@ print(f"  ma di questi hanno quantita' nulla: {vuoti}. Il vincolo di varieta' e'
 print("  da indicatori vuoti: senza lotto minimo il conteggio non dice niente.")
 assert vuoti, "con c = 0 devono comparire indicatori vuoti"
 
-# ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+# ---------- 6. OTTIMO DEL MILP ----------
+z2 = risolvi(m2)
+print("  Soluzione ottima: " + ", ".join(f"{CIBI[i]} {x2[i].X:.4g} kg" for i in R(s2)
+                                         if x2[i].X > 1e-9)
+      + f"   ({int(sum(y2[i].X for i in R(s2)))} cibi diversi, richiesti {t2})")
+for j in R(r2):
+    print(f"    {NUTRIENTI[j]}: {sum(g2[i][j] * x2[i].X for i in R(s2)):.4g} g "
+          f"(fra {a2[j]} e {b2[j]})")
+riga = registra_bound("2 dieta", ub2, lb2, zlp2, zlp2r, z2)
+salva_dati(pd.DataFrame([riga]), "fam10_3_bound")
+assert lb2 <= zlp2 <= z2 <= ub2 + 1e-9
+
+# ---------- 7. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 varianti = {}
 
 
@@ -174,23 +178,7 @@ varianti["3b"] = variante("3b. Si vogliono almeno quattro cibi diversi (t = 4)",
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
            "fam10_3_varianti")
 
-# ---------- 7. FIGURA ----------
-fig, ax = plt.subplots(figsize=(6.8, 3.0))
-idx = list(R(s2))
-ax.bar([i - 0.2 for i in idx], [x_eur[i] for i in idx], 0.4, color=ARANCIO, label="euristica")
-ax.bar([i + 0.2 for i in idx], [x2[i].X for i in idx], 0.4, color=TEAL, label="ottimo")
-for i in idx:
-    ax.plot([i - 0.42, i + 0.42], [c2[i], c2[i]], color=ROSSO, lw=1.5)
-ax.plot([], [], color=ROSSO, lw=1.5, label="lotto minimo $c_i$")
-ax.set_xticks(idx)
-ax.set_xticklabels(CIBI)
-ax.set_ylabel("chili al mese")
-ax.set_title(f"10.3: dieta euristica ({frazione(ub2)} EUR) e ottima ({frazione(z2)} EUR)")
-ax.legend(fontsize=8)
-salva_figura(fig, "cap10_dieta_ottimo")
-print("Fine.")
-
-# ---------- 5bis. IL SANDWICH SULLA VARIANTE 2b ----------
+# ---------- 8. IL SANDWICH SULLA VARIANTE 2b ----------
 intestazione("10.3b Il sandwich sulla variante: almeno quattro cibi diversi")
 T2B = 4
 
@@ -235,3 +223,18 @@ riga_2b = registra_bound("3b almeno quattro cibi", ub2b, lb2b, zlp2b, zlp2br, z2
 salva_dati(pd.DataFrame([riga_2b]), "fam10_3b_bound")
 assert lb2b <= zlp2b <= z2b <= ub2b + 1e-9
 
+# ---------- 9. FIGURA ----------
+fig, ax = plt.subplots(figsize=(6.8, 3.0))
+idx = list(R(s2))
+ax.bar([i - 0.2 for i in idx], [x_eur[i] for i in idx], 0.4, color=ARANCIO, label="euristica")
+ax.bar([i + 0.2 for i in idx], [x2[i].X for i in idx], 0.4, color=TEAL, label="ottimo")
+for i in idx:
+    ax.plot([i - 0.42, i + 0.42], [c2[i], c2[i]], color=ROSSO, lw=1.5)
+ax.plot([], [], color=ROSSO, lw=1.5, label="lotto minimo $c_i$")
+ax.set_xticks(idx)
+ax.set_xticklabels(CIBI)
+ax.set_ylabel("chili al mese")
+ax.set_title(f"10.3: dieta euristica ({frazione(ub2)} EUR) e ottima ({frazione(z2)} EUR)")
+ax.legend(fontsize=8)
+salva_figura(fig, "cap10_dieta_ottimo")
+print("Fine.")

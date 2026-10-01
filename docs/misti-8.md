@@ -216,7 +216,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_8_cd.py` (231 righe)"
+??? example "Mostra lo script completo — `python/fam10_8_cd.py` (235 righe)"
 
     ```python
     """Problema 10.8 -- Brani su piu' CD: minimizzare la differenza fra il piu' lungo
@@ -230,8 +230,8 @@ Notebook —
     import pandas as pd
     from gurobipy import GRB
 
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                     risolvi, valuta)
+    from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                     nuovo_modello, registra_bound, rilassamenti, risolvi, valuta)
     from stile import ARANCIO, BLU, TEAL, intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
 
@@ -287,7 +287,29 @@ Notebook —
     m3mod, x3, y3, z3v = modello_3(d3, w3)
     salva_modello(m3mod, "fam10_8_primale")
 
-    # ---------- 2. DUE EURISTICHE A CONFRONTO (UPPER BOUND) ----------
+    # ---------- 2. IL RILASSAMENTO LP ----------
+    zlp3, zlp3r, _ = rilassamenti(m3mod)
+
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    dl3 = duale_3(d3, w3)
+    salva_modello(dl3, "fam10_8_duale")
+    mano = {f"gamma[{j}]": 1 / m3 for j in R(m3)} | {f"delta[{j}]": 1 / m3 for j in R(m3)}
+    lb_lp, viol = valuta(dl3, mano)
+    assert viol <= 1e-9, viol
+    print(f"  Duale a mano: gamma_j = delta_j = 1/{m3}, alpha = beta = 0 -> valore "
+          f"{frazione(lb_lp)}.")
+    dualita_forte(dl3, zlp3)
+
+    meta = ({f"x[{i},{j}]": 1 / m3 for i in R(n3) for j in R(m3)}
+            | {"y": D3 / m3, "z": D3 / m3})
+    val_meta, viol_meta = valuta(m3mod, meta)
+    assert viol_meta <= 1e-9 and abs(val_meta) <= 1e-9
+    print(f"  E infatti z(LP) = {frazione(zlp3)}: mettendo 1/{m3} di ogni brano su ogni CD tutti i")
+    print(f"  CD durano {frazione(D3 / m3)} minuti e la differenza e' nulla. Un brano pero' non si")
+    print("  spezza.")
+    assert abs(zlp3) <= 1e-9
+
+    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
     def riempi(d, m, ordine, etichetta):
         """Si scorrono i brani nell'ordine dato e si mette ognuno sul CD piu' corto."""
         carichi = [0] * m
@@ -319,25 +341,7 @@ Notebook —
     print(f"  Si tiene il migliore dei due:  ub = {frazione(ub3)}")
     assert diff_nat >= ub3
 
-    # ---------- 3. IL RILASSAMENTO LP NON DICE NIENTE ----------
-    dl3 = duale_3(d3, w3)
-    salva_modello(dl3, "fam10_8_duale")
-    mano = {f"gamma[{j}]": 1 / m3 for j in R(m3)} | {f"delta[{j}]": 1 / m3 for j in R(m3)}
-    lb_lp, viol = valuta(dl3, mano)
-    assert viol <= 1e-9, viol
-    print(f"  Duale a mano: gamma_j = delta_j = 1/{m3}, alpha = beta = 0 -> valore "
-          f"{frazione(lb_lp)}.")
-    zlp3, zlp3r, _ = due_rilassamenti(m3mod, dl3)
-    meta = ({f"x[{i},{j}]": 1 / m3 for i in R(n3) for j in R(m3)}
-            | {"y": D3 / m3, "z": D3 / m3})
-    val_meta, viol_meta = valuta(m3mod, meta)
-    assert viol_meta <= 1e-9 and abs(val_meta) <= 1e-9
-    print(f"  E infatti z(LP) = {frazione(zlp3)}: mettendo 1/{m3} di ogni brano su ogni CD tutti i")
-    print(f"  CD durano {frazione(D3 / m3)} minuti e la differenza e' nulla. Un brano pero' non si")
-    print("  spezza.")
-    assert abs(zlp3) <= 1e-9
-
-    # ---------- 4. IL BOUND DI PARITA' ----------
+    # ---------- 5. IL BOUND DI PARITA' ----------
     intestazione("10.8 Un argomento di parita' che chiude il problema")
     print(f"  Le durate sono numeri interi e i CD sono {m3}: le due durate sommano a {D3}, che e'")
     print(f"  {'dispari' if D3 % 2 else 'pari'}. Due interi che sommano a un numero dispari non")
@@ -351,7 +355,7 @@ Notebook —
                              {"argomento": "duale del rilassamento LP", "bound": lb_lp}]),
                "fam10_8_argomento")
 
-    # ---------- 5. OTTIMO DEL MILP ----------
+    # ---------- 6. OTTIMO DEL MILP ----------
     z3 = risolvi(m3mod)
     carichi_ott = [sum(d3[i] * x3[i, j].X for i in R(n3)) for j in R(m3)]
     for j in R(m3):
@@ -361,7 +365,7 @@ Notebook —
     salva_dati(pd.DataFrame([riga]), "fam10_8_bound")
     assert lb3 <= z3 <= ub3 + 1e-9 and abs(z3 - lb3) <= 1e-9
 
-    # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+    # ---------- 7. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
     varianti = {}
 
 
@@ -385,27 +389,7 @@ Notebook —
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
                "fam10_8_varianti")
 
-    # ---------- 7. FIGURA ----------
-    fig, ax = plt.subplots(figsize=(6.8, 2.9))
-    for k, (nome, car, colore) in enumerate([("euristica ingenua", carichi_nat, ARANCIO),
-                                             ("euristica LPT", carichi, TEAL),
-                                             ("ottimo", carichi_ott, BLU)]):
-        for j in R(m3):
-            ax.barh(k + (j - 0.5) * 0.34, car[j], 0.3, color=colore)
-            ax.annotate(f"CD {j + 1}: {frazione(car[j])}", (0.6, k + (j - 0.5) * 0.34),
-                        va="center", fontsize=8, color="white")
-        ax.annotate(f"differenza {frazione(max(car) - min(car))}", (max(car) + 0.6, k),
-                    va="center", fontsize=8)
-    ax.set_yticks(R(3))
-    ax.set_yticklabels(["ingenua", "LPT", "ottimo"])
-    ax.set_xlim(0, max(carichi_nat) + 9)
-    ax.set_xlabel("durata del CD (minuti)")
-    ax.set_title(f"10.8: la differenza scende da {frazione(diff_nat)} a {frazione(z3)}")
-    ax.invert_yaxis()
-    salva_figura(fig, "cap10_cd_ottimo")
-    print("Fine.")
-
-    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 3b ----------
+    # ---------- 8. IL SANDWICH SULLA VARIANTE 3b ----------
     intestazione("10.8b Il sandwich sulla variante: la raccolta su tre CD")
     M3B = 3
     w3b = [1] * M3B
@@ -450,6 +434,26 @@ Notebook —
                              certificato="parita' delle durate sui tre CD")
     salva_dati(pd.DataFrame([riga_3b]), "fam10_8b_bound")
     assert lb3b_usato <= z3b_val <= ub3b + 1e-9
+
+    # ---------- 9. FIGURA ----------
+    fig, ax = plt.subplots(figsize=(6.8, 2.9))
+    for k, (nome, car, colore) in enumerate([("euristica ingenua", carichi_nat, ARANCIO),
+                                             ("euristica LPT", carichi, TEAL),
+                                             ("ottimo", carichi_ott, BLU)]):
+        for j in R(m3):
+            ax.barh(k + (j - 0.5) * 0.34, car[j], 0.3, color=colore)
+            ax.annotate(f"CD {j + 1}: {frazione(car[j])}", (0.6, k + (j - 0.5) * 0.34),
+                        va="center", fontsize=8, color="white")
+        ax.annotate(f"differenza {frazione(max(car) - min(car))}", (max(car) + 0.6, k),
+                    va="center", fontsize=8)
+    ax.set_yticks(R(3))
+    ax.set_yticklabels(["ingenua", "LPT", "ottimo"])
+    ax.set_xlim(0, max(carichi_nat) + 9)
+    ax.set_xlabel("durata del CD (minuti)")
+    ax.set_title(f"10.8: la differenza scende da {frazione(diff_nat)} a {frazione(z3)}")
+    ax.invert_yaxis()
+    salva_figura(fig, "cap10_cd_ottimo")
+    print("Fine.")
     ```
 
 <!-- script-incorporato: fine -->

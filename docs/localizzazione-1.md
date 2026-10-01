@@ -178,7 +178,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam08_1_capacitata.py` (244 righe)"
+??? example "Mostra lo script completo — `python/fam08_1_capacitata.py` (247 righe)"
 
     ```python
     """Problema 8.1 -- Localizzazione capacitata (costo minimo).
@@ -192,8 +192,9 @@ Script completo —
     import pandas as pd
     from gurobipy import GRB
 
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
-                     registra_bound, risolvi, stampa_soluzione, valuta)
+    from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                     nuovo_modello, registra_bound, rilassamenti, risolvi,
+                     stampa_soluzione, valuta)
     from stile import CICLO, intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
 
@@ -241,7 +242,23 @@ Script completo —
     m1, x1, y1 = modello_1(t1, u1, i1, d1)
     salva_modello(m1, "fam08_1_primale")
 
-    # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    # ---------- 2. IL RILASSAMENTO LP ----------
+    zlp1, zlp1r, _ = rilassamenti(m1)
+
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+
+    d1_ = duale_1(t1, u1, i1, d1)
+    salva_modello(d1_, "fam08_1_duale")
+    mano = {f"mu[{l}]": i1[l] / u1[l] for l in R(m)}
+    mano.update({f"pi[{c}]": min(t1[l][c] + mano[f"mu[{l}]"] for l in R(m)) for c in R(n)})
+    lb1, viol = valuta(d1_, mano)
+    assert viol <= 1e-9, viol
+    print("Soluzione duale a mano: mu_l = i_l/u_l = " + ", ".join(frazione(i1[l] / u1[l]) for l in R(m))
+          + ";  pi_c = min_l (t_lc + mu_l) = " + ", ".join(frazione(mano[f"pi[{c}]"]) for c in R(n))
+          + f"  ->  lb = {frazione(lb1)}")
+    dualita_forte(d1_, zlp1)
+
+    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 
     print("Euristica: si scandiscono le sedi in ordine, riempendo la domanda residua dei clienti")
     print("con la capacita' residua di ciascuna sede, senza superare né l'una né l'altra.")
@@ -276,20 +293,7 @@ Script completo —
     assert ammissibile(m1, sol_eur)
     print(f"  ub = {ub1}")
 
-    # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
-
-    d1_ = duale_1(t1, u1, i1, d1)
-    salva_modello(d1_, "fam08_1_duale")
-    mano = {f"mu[{l}]": i1[l] / u1[l] for l in R(m)}
-    mano.update({f"pi[{c}]": min(t1[l][c] + mano[f"mu[{l}]"] for l in R(m)) for c in R(n)})
-    lb1, viol = valuta(d1_, mano)
-    assert viol <= 1e-9, viol
-    print("Soluzione duale a mano: mu_l = i_l/u_l = " + ", ".join(frazione(i1[l] / u1[l]) for l in R(m))
-          + ";  pi_c = min_l (t_lc + mu_l) = " + ", ".join(frazione(mano[f"pi[{c}]"]) for c in R(n))
-          + f"  ->  lb = {frazione(lb1)}")
-    zlp1, zlp1r, _ = due_rilassamenti(m1, d1_)
-
-    # ---------- 4. SOLUZIONE OTTIMA DEL MILP ----------
+    # ---------- 5. SOLUZIONE OTTIMA DEL MILP ----------
 
     z1 = risolvi(m1)
     print("Soluzione ottima del MILP:")
@@ -297,7 +301,7 @@ Script completo —
     riga = registra_bound("1 localizzazione capacitata", ub1, lb1, zlp1, zlp1r, z1)
     salva_dati(pd.DataFrame([riga]), "fam08_1_bound")
 
-    # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+    # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
     varianti = {}
 
@@ -318,7 +322,7 @@ Script completo —
     varianti["1b"] = variante("1b. La sede 2 si apre solo se si apre la sede 1 (x_2 <= x_1)", mod)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam08_1_varianti")
 
-    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 1b ----------
+    # ---------- 7. IL SANDWICH SULLA VARIANTE 1b ----------
     intestazione("1b. Il sandwich sulla variante: la sede 2 si apre solo se si apre la sede 1")
 
 
@@ -398,8 +402,7 @@ Script completo —
     salva_dati(pd.DataFrame([riga_1b]), "fam08_1b_bound")
     assert lb1b_val <= zlp1b <= z1b <= ub1b + 1e-9
 
-
-    # ---------- 6. FIGURE ----------
+    # ---------- 8. FIGURE ----------
 
 
     def barre_flusso(y, m, n, titolo, nome):

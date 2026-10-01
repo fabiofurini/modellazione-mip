@@ -168,7 +168,7 @@ notebook: [`notebooks/fam07_7_ritardo.ipynb`](https://github.com/fabiofurini/mod
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam07_7_ritardo.py` (231 righe)"
+??? example "Mostra lo script completo — `python/fam07_7_ritardo.py` (234 righe)"
 
     ```python
     """Problema 7.7 -- Ritardo totale su una macchina: sequenziamento con big-M.
@@ -182,8 +182,9 @@ notebook: [`notebooks/fam07_7_ritardo.ipynb`](https://github.com/fabiofurini/mod
     from gurobipy import GRB
 
     from euristiche import best_fit, first_fit, matrice, next_fit
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
-                     registra_bound, risolvi, stampa_soluzione, valuta)
+    from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                     nuovo_modello, registra_bound, rilassamenti, risolvi,
+                     stampa_soluzione, valuta)
     from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
 
@@ -247,7 +248,18 @@ notebook: [`notebooks/fam07_7_ritardo.ipynb`](https://github.com/fabiofurini/mod
     m7, s7, k7, tau7, M7 = modello_7(t7, d7)
     salva_modello(m7, "fam07_7_primale")
 
-    # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    # ---------- 2. IL RILASSAMENTO LP ----------
+    zlp7, zlp7r, _ = rilassamenti(m7)
+
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    D7 = duale_7(t7, d7)
+    salva_modello(D7, "fam07_7_duale")
+    lb7, viol = valuta(D7, {"gamma[0]": 1, "delta[0]": 1})
+    assert viol <= 1e-9
+    print(f"Soluzione duale a mano: gamma_1 = 1, delta_1 = 1, il resto 0  ->  lb = {frazione(lb7)}")
+    dualita_forte(D7, zlp7)
+
+    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
     print(f"Big-M = somma dei tempi = {M7}")
     kappa_e, tau_e, passi = euristica_7(t7, d7)
     print("Euristica: ordine naturale 1 -> 2 -> 3")
@@ -256,15 +268,7 @@ notebook: [`notebooks/fam07_7_ritardo.ipynb`](https://github.com/fabiofurini/mod
     ub7 = sum(tau_e)
     print(f"  ub = {ub7}")
 
-    # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
-    D7 = duale_7(t7, d7)
-    salva_modello(D7, "fam07_7_duale")
-    lb7, viol = valuta(D7, {"gamma[0]": 1, "delta[0]": 1})
-    assert viol <= 1e-9
-    print(f"Soluzione duale a mano: gamma_1 = 1, delta_1 = 1, il resto 0  ->  lb = {frazione(lb7)}")
-    zlp7, zlp7r, _ = due_rilassamenti(m7, D7)
-
-    # ---------- 4. SOLUZIONE OTTIMA DEL MILP ----------
+    # ---------- 5. SOLUZIONE OTTIMA DEL MILP ----------
     z7 = risolvi(m7)
     print("Soluzione ottima del MILP:")
     stampa_soluzione(m7, solo_non_nulle=True)
@@ -275,7 +279,7 @@ notebook: [`notebooks/fam07_7_ritardo.ipynb`](https://github.com/fabiofurini/mod
     riga = registra_bound("7 ritardo", ub7, lb7, zlp7, zlp7r, z7)
     salva_dati(pd.DataFrame([riga]), "fam07_7_bound")
 
-    # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+    # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
 
     varianti = {}
@@ -299,7 +303,7 @@ notebook: [`notebooks/fam07_7_ritardo.ipynb`](https://github.com/fabiofurini/mod
     varianti["7b"] = variante("7b. Minimizzare il ritardo massimo (min-max: T >= tau_j)", m)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_7_varianti")
 
-    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 7a ----------
+    # ---------- 7. IL SANDWICH SULLA VARIANTE 7a ----------
     intestazione("7a. Il sandwich sulla variante: date di rilascio")
 
 
@@ -382,8 +386,7 @@ notebook: [`notebooks/fam07_7_ritardo.ipynb`](https://github.com/fabiofurini/mod
     salva_dati(pd.DataFrame([riga_7a]), "fam07_7a_bound")
     assert lb7a <= zlp7a <= z7a <= ub7a + 1e-9
 
-
-    # ---------- 6. FIGURE ----------
+    # ---------- 8. FIGURE ----------
     # ritardo: Gantt della sequenza naturale e di quella ottima
     fig, ax = plt.subplots(figsize=(7.2, 3.0))
     for riga, (etichetta, ordine) in enumerate([("ordine naturale (ub = 12)", list(R(3))),

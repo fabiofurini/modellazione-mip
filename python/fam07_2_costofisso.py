@@ -11,8 +11,9 @@ import pandas as pd
 from gurobipy import GRB
 
 from euristiche import best_fit, first_fit, matrice, next_fit
-from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
-                 registra_bound, rilassamento, risolvi, stampa_soluzione, valuta)
+from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                 nuovo_modello, registra_bound, rilassamenti, rilassamento, risolvi,
+                 stampa_soluzione, valuta)
 from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
 from esteso import salva_modello
 
@@ -59,7 +60,22 @@ def valore_2(e, c):
 m2, x2, y2 = modello_2(t2, c2, a2)
 salva_modello(m2, "fam07_2_primale")
 
-# ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+# ---------- 2. IL RILASSAMENTO LP ----------
+zlp2, zlp2r, _ = rilassamenti(m2)
+
+# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+d2 = duale_2(t2, c2, a2)
+salva_modello(d2, "fam07_2_duale")
+mano = {f"pi[{mm}]": c2[mm] / a2[mm] for mm in R(3)}
+mano.update({f"mu[{j}]": min(t2[j][mm] * c2[mm] / a2[mm] for mm in R(3)) for j in R(3)})
+lb2, viol = valuta(d2, mano)
+assert viol <= 1e-9
+print("Soluzione duale a mano: pi_m = c_m/a_m = " + ", ".join(frazione(c2[mm] / a2[mm]) for mm in R(3))
+      + ";  mu_j = min_m t_jm pi_m = " + ", ".join(frazione(mano[f"mu[{j}]"]) for j in R(3))
+      + f"  ->  lb = {frazione(lb2)}")
+dualita_forte(d2, zlp2)
+
+# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 print("Euristiche costruttive:")
 eur2 = [("next-fit", next_fit(t2, a2)),
         ("first-fit", first_fit(t2, a2)),
@@ -74,26 +90,14 @@ print("Esecuzione passo-passo del best-fit a tempo minimo:")
 eur2[2][1].traccia.stampa()
 ub2 = min(valore_2(e, c2) for _, e in eur2)
 
-# ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
-d2 = duale_2(t2, c2, a2)
-salva_modello(d2, "fam07_2_duale")
-mano = {f"pi[{mm}]": c2[mm] / a2[mm] for mm in R(3)}
-mano.update({f"mu[{j}]": min(t2[j][mm] * c2[mm] / a2[mm] for mm in R(3)) for j in R(3)})
-lb2, viol = valuta(d2, mano)
-assert viol <= 1e-9
-print("Soluzione duale a mano: pi_m = c_m/a_m = " + ", ".join(frazione(c2[mm] / a2[mm]) for mm in R(3))
-      + ";  mu_j = min_m t_jm pi_m = " + ", ".join(frazione(mano[f"mu[{j}]"]) for j in R(3))
-      + f"  ->  lb = {frazione(lb2)}")
-zlp2, zlp2r, _ = due_rilassamenti(m2, d2)
-
-# ---------- 4. SOLUZIONE OTTIMA DEL MILP ----------
+# ---------- 5. SOLUZIONE OTTIMA DEL MILP ----------
 z2 = risolvi(m2)
 print("Soluzione ottima del MILP:")
 stampa_soluzione(m2, solo_non_nulle=True)
 riga = registra_bound("2 costo fisso", ub2, lb2, zlp2, zlp2r, z2)
 salva_dati(pd.DataFrame([riga]), "fam07_2_bound")
 
-# ---------- 4bis. RILASSAMENTO CON I LINK DISAGGREGATI ----------
+# ---------- 6. RILASSAMENTO CON I LINK DISAGGREGATI ----------
 # la stessa istanza con i vincoli di link disaggregati x_jm <= y_m: rilassamento più forte
 m2d, x2d, y2d = modello_2(t2, c2, a2)
 m2d.addConstrs((x2d[j, mm] <= y2d[mm] for j in R(3) for mm in R(3)), name="disaggregato")
@@ -101,7 +105,7 @@ zlp2d, _, _ = rilassamento(m2d, rafforzato=True)
 print(f"Rilassamento con i bound con i link disaggregati x_jm <= y_m: z(LP+) = {frazione(zlp2d)} "
       f"(con il solo link aggregato: {frazione(zlp2r)}) — la formulazione disaggregata è più forte")
 
-# ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+# ---------- 7. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
 
 varianti = {}
@@ -122,7 +126,7 @@ m.addConstr(y[0] <= y[2], name="1_implica_3")
 varianti["2b"] = variante("2b. Se si usa la macchina 1 si usa anche la 3 (y_1 <= y_3)", m)
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_2_varianti")
 
-# ---------- 5bis. IL SANDWICH SULLA VARIANTE 2b ----------
+# ---------- 8. IL SANDWICH SULLA VARIANTE 2b ----------
 intestazione("2b. Il sandwich sulla variante: se si usa la macchina 1 si usa anche la 3")
 
 
@@ -186,8 +190,7 @@ print("Il certificato non si muove rispetto al problema base: un legame fra atti
 print("non tocca il rilassamento, perche' il rilassamento puo' accendere mezza macchina.")
 print("Quello che cresce e' l'ottimo intero, quindi il divario.")
 
-
-# ---------- 6. FIGURE ----------
+# ---------- 9. FIGURE ----------
 
 
 def barre_macchine(assegn, t, a, titolo, nome):

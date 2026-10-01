@@ -160,7 +160,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam08_3_copertura.py` (224 righe)"
+??? example "Mostra lo script completo — `python/fam08_3_copertura.py` (227 righe)"
 
     ```python
     """Problema 8.3 -- Copertura del segnale con interferenza (massimo profitto).
@@ -175,8 +175,9 @@ Script completo —
     import pandas as pd
     from gurobipy import GRB
 
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                     risolvi, stampa_soluzione, valuta)
+    from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                     nuovo_modello, registra_bound, rilassamenti, risolvi,
+                     stampa_soluzione, valuta)
     from stile import intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
 
@@ -230,7 +231,23 @@ Script completo —
     m3, x3, y3, L3m = modello_3(s3, p3, t3, b3, k3)
     salva_modello(m3, "fam08_3_primale")
 
-    # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
+    # ---------- 2. IL RILASSAMENTO LP ----------
+    zlp3, zlp3r, _ = rilassamenti(m3)
+
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+
+    d3 = duale_3(s3, p3, t3, b3, k3)
+    salva_modello(d3, "fam08_3_duale")
+    mano = {"mu": 0.0}
+    mano.update({f"pi[{c}]": 0.0 for c in R(n)})
+    mano.update({f"lam[{c}]": p3[c] / 2 for c in R(n)})
+    ub3, viol = valuta(d3, mano)
+    assert viol <= 1e-9, viol
+    print("Soluzione duale a mano: pi = 0, mu = 0, lam_c = p_c/2 = "
+          + ", ".join(frazione(p3[c] / 2) for c in R(n)) + f"  ->  ub = {frazione(ub3)}")
+    dualita_forte(d3, zlp3)
+
+    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 
     print("Euristica: si aprono le prime k sedi; un cliente è coperto se il segnale totale")
     print("raggiunge la soglia e al più una sede forte lo raggiunge.")
@@ -256,20 +273,7 @@ Script completo —
     lb3 = sum(p3[c] * ye[c] for c in R(n))
     print(f"  lb = {lb3}")
 
-    # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
-
-    d3 = duale_3(s3, p3, t3, b3, k3)
-    salva_modello(d3, "fam08_3_duale")
-    mano = {"mu": 0.0}
-    mano.update({f"pi[{c}]": 0.0 for c in R(n)})
-    mano.update({f"lam[{c}]": p3[c] / 2 for c in R(n)})
-    ub3, viol = valuta(d3, mano)
-    assert viol <= 1e-9, viol
-    print("Soluzione duale a mano: pi = 0, mu = 0, lam_c = p_c/2 = "
-          + ", ".join(frazione(p3[c] / 2) for c in R(n)) + f"  ->  ub = {frazione(ub3)}")
-    zlp3, zlp3r, _ = due_rilassamenti(m3, d3)
-
-    # ---------- 4. SOLUZIONE OTTIMA DEL MILP ----------
+    # ---------- 5. SOLUZIONE OTTIMA DEL MILP ----------
 
     z3 = risolvi(m3)
     print("Soluzione ottima del MILP:")
@@ -277,7 +281,7 @@ Script completo —
     riga = registra_bound("3 copertura", ub3, lb3, zlp3, zlp3r, z3, senso="max")
     salva_dati(pd.DataFrame([riga]), "fam08_3_bound")
 
-    # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+    # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
     varianti = {}
 
@@ -298,7 +302,7 @@ Script completo —
     varianti["3b"] = variante("3b. Se si apre la sede 1 si apre anche la 3 (x_1 <= x_3)", mod)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam08_3_varianti")
 
-    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 3a ----------
+    # ---------- 7. IL SANDWICH SULLA VARIANTE 3a ----------
     intestazione("3a. Il sandwich sulla variante: almeno 3 clienti coperti")
 
 
@@ -371,8 +375,7 @@ Script completo —
     salva_dati(pd.DataFrame([riga_3a]), "fam08_3a_bound")
     assert lb3a <= z3a <= zlp3a + 1e-9 <= ub3a + 1e-9
 
-
-    # ---------- 6. FIGURE ----------
+    # ---------- 8. FIGURE ----------
 
     fig, ax = plt.subplots(figsize=(7.2, 3.2))
     ott_x = [l for l in R(m) if x3[l].X > 0.5]

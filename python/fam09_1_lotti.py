@@ -9,8 +9,8 @@ import pandas as pd
 from gurobipy import GRB
 
 from euristiche import euristica_lotti
-from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                 risolvi, valuta)
+from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                 nuovo_modello, registra_bound, rilassamenti, risolvi, valuta)
 from stile import ARANCIO, BLU, ROSSO, TEAL, VERDE, intestazione, plt, salva_dati, salva_figura
 from esteso import salva_modello
 
@@ -67,7 +67,26 @@ m1, x1, s1, y1 = modello_1(d1, p1, q1, h1, r0, rn)
 salva_modello(m1, "fam09_1_primale")
 print(f"  Domanda totale {sum(d1)}; big-M per giorno (domanda residua): {M1}")
 
-# ---------- 2. EURISTICHE COSTRUTTIVE (UPPER BOUND) ----------
+# ---------- 2. IL RILASSAMENTO LP ----------
+zlp1, zlp1r, pi1 = rilassamenti(m1)
+
+# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+dl1 = duale_1(d1, p1, q1, h1, r0, rn)
+salva_modello(dl1, "fam09_1_duale")
+# ricetta: pi = 0 (i lanci si regalano) e mu_t = costo minimo per avere una unita' al giorno t
+mu = []
+for t in R(n1):
+    mu.append(p1[t] if t == 0 else min(mu[t - 1] + h1[t - 1], p1[t]))
+mano = {f"mu[{t}]": mu[t] for t in R(n1)}
+lb1, viol = valuta(dl1, mano)
+assert viol <= 1e-9, viol
+print("  Duale a mano: pi = 0 (i lanci non si pagano) e mu_t = il costo unitario piu' basso")
+print("  per avere una unita' disponibile il giorno t, cioe' min(mu_{t-1} + h_{t-1}, p_t):")
+print("    mu = " + ", ".join(frazione(v) for v in mu))
+print(f"  ->  lb = {frazione(lb1)}: e' il costo di produzione se i lanci fossero gratis.")
+dualita_forte(dl1, zlp1)
+
+# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 # (a) lot-for-lot: si produce ogni giorno esattamente la domanda, niente scorte
 lot_per_lot = sum(p1[t] * d1[t] for t in R(n1)) + sum(q1)
 sol_llf = {f"x[{t}]": d1[t] for t in R(n1)} | {f"y[{t}]": 1 for t in R(n1)} \
@@ -91,23 +110,7 @@ print(f"  (b) least unit cost: lanci nei giorni {[t + 1 for t in sorted(e.lanci)
 ub1 = min(lot_per_lot, luc)
 print(f"  La migliore delle due: ub = {frazione(ub1)}")
 
-# ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
-dl1 = duale_1(d1, p1, q1, h1, r0, rn)
-salva_modello(dl1, "fam09_1_duale")
-# ricetta: pi = 0 (i lanci si regalano) e mu_t = costo minimo per avere una unita' al giorno t
-mu = []
-for t in R(n1):
-    mu.append(p1[t] if t == 0 else min(mu[t - 1] + h1[t - 1], p1[t]))
-mano = {f"mu[{t}]": mu[t] for t in R(n1)}
-lb1, viol = valuta(dl1, mano)
-assert viol <= 1e-9, viol
-print("  Duale a mano: pi = 0 (i lanci non si pagano) e mu_t = il costo unitario piu' basso")
-print("  per avere una unita' disponibile il giorno t, cioe' min(mu_{t-1} + h_{t-1}, p_t):")
-print("    mu = " + ", ".join(frazione(v) for v in mu))
-print(f"  ->  lb = {frazione(lb1)}: e' il costo di produzione se i lanci fossero gratis.")
-zlp1, zlp1r, pi1 = due_rilassamenti(m1, dl1)
-
-# ---------- 4. OTTIMO DEL MILP ----------
+# ---------- 5. OTTIMO DEL MILP ----------
 z1 = risolvi(m1)
 lanci_ott = [t + 1 for t in R(n1) if y1[t].X > 0.5]
 print(f"  Soluzione ottima: lanci nei giorni {lanci_ott}; quantita' "
@@ -117,7 +120,7 @@ riga = registra_bound("1 lotti con setup", ub1, lb1, zlp1, zlp1r, z1)
 salva_dati(pd.DataFrame([riga]), "fam09_1_bound")
 assert lb1 <= zlp1 <= z1 <= ub1 + 1e-9
 
-# ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+# ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 varianti = {}
 
 
@@ -138,7 +141,7 @@ varianti["1b"] = variante("1b. Lotto minimo di 25 litri se si produce (x_t >= 25
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
            "fam09_1_varianti")
 
-# ---------- 5bis. IL SANDWICH SULLA VARIANTE 1a ----------
+# ---------- 7. IL SANDWICH SULLA VARIANTE 1a ----------
 intestazione("9.1a Il sandwich sulla variante: capacita' giornaliera di 35 litri")
 CAP = 35
 
@@ -237,8 +240,7 @@ riga_1a = registra_bound("1a capacita' giornaliera", ub1a, lb1a_val, zlp1a, zlp1
 salva_dati(pd.DataFrame([riga_1a]), "fam09_1a_bound")
 assert lb1a_val <= zlp1a <= z1a <= ub1a + 1e-9
 
-
-# ---------- 6. FIGURA ----------
+# ---------- 8. FIGURA ----------
 fig, ax = plt.subplots(figsize=(7.0, 3.4))
 giorni = list(R(1, n1 + 1))
 ax.bar(giorni, [x1[t].X for t in R(n1)], color=TEAL, label="produzione $x_t$", width=0.55)
@@ -255,4 +257,3 @@ ax.set_title(f"9.1: piano ottimo (z = {frazione(z1)})")
 ax.legend(fontsize=8, ncols=3, loc="upper left")
 salva_figura(fig, "cap09_lotti_ottimo")
 print("Fine.")
-

@@ -296,7 +296,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam09_2_manodopera.py` (269 righe)"
+??? example "Mostra lo script completo — `python/fam09_2_manodopera.py` (273 righe)"
 
     ```python
     """Problema 9.2 -- Produzione e manodopera: due formulazioni equivalenti.
@@ -311,8 +311,9 @@ Script completo —
     import pandas as pd
     from gurobipy import GRB
 
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                     rilassamento, risolvi, valuta)
+    from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione, nuovo_modello,
+                     rilassamenti,
+                     registra_bound, rilassamenti, rilassamento, risolvi, valuta)
     from stile import ARANCIO, BLU, ROSSO, TEAL, intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
 
@@ -403,21 +404,27 @@ Script completo —
     print("  Piano B: produzione " + ", ".join(frazione(xB[t].X) for t in R(n2))
           + "; organico " + ", ".join(frazione(yB[t].X) for t in R(n2)))
 
-    # ---------- 2. L'EQUIVALENZA, VERIFICATA ----------
-    intestazione("9.2 L'equivalenza fra le due formulazioni, verificata")
-    print("  La corrispondenza e' y_t = m0 + sum_{j <= t} z_j, cioe' z_t = y_t - y_{t-1}")
-    print("  (con y_0 = m0). Sui piani ottimi:")
-    yA = [m2 + sum(round(zA[j].X) for j in R(t + 1)) for t in R(n2)]
-    print("    da A: organico implicito = " + ", ".join(str(v) for v in yA))
-    print("    da B: organico           = " + ", ".join(str(round(yB[t].X)) for t in R(n2)))
-    zB_implicite = [round(yB[0].X) - m2] + [round(yB[t].X) - round(yB[t - 1].X) for t in R(1, n2)]
-    print("    da B: assunzioni implicite = " + ", ".join(str(v) for v in zB_implicite))
-    assert sum(v * (u2 + w2 * (n2 - t)) for t, v in enumerate(zB_implicite)) + costante_A \
-        == sum(round(zA[t].X) * (u2 + w2 * (n2 - t)) for t in R(n2)) + costante_A
-    print("  Il costo del personale coincide: A paga ogni assunzione una volta per tutti i mesi")
-    print("  che restano, B paga l'organico mese per mese. Stessa somma, contata in due modi.")
+    # ---------- 2. IL RILASSAMENTO LP ----------
+    zlp2, zlp2r, _ = rilassamenti(mA)
 
-    # ---------- 3. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    dl2 = duale_A(d2, p2, h2, w2, r2, g2, u2, m2, r0)
+    salva_modello(dl2, "fam09_2_duale")
+    # ricetta: nu = 0 (le ore non si pagano) e mu_t = costo minimo per avere un paio al mese t
+    mu = []
+    for t in R(n2):
+        mu.append(p2[t] if t == 0 else min(mu[t - 1] + h2[t - 1], p2[t]))
+    mano = {f"mu[{t}]": mu[t] for t in R(n2)}
+    lb2_var, viol = valuta(dl2, mano)
+    assert viol <= 1e-9, viol
+    lb2 = lb2_var + costante_A
+    print("  Duale a mano: nu = 0 (le ore di lavoro non si pagano) e mu_t = min(mu_{t-1}+h, p_t)")
+    print(f"    mu = " + ", ".join(frazione(v) for v in mu)
+          + f"  ->  lb = {frazione(lb2_var)} + {costante_A} = {frazione(lb2)}")
+    dualita_forte(dl2, zlp2)
+    zlp2, zlp2r = zlp2 + costante_A, zlp2r + costante_A
+
+    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
     intestazione("9.2 Euristica, duale e bound")
     # euristica costruttiva: si produce la domanda del mese, e si assume solo quando le ore non bastano
     organico, assunzioni, prod = m2, [0] * n2, []
@@ -436,28 +443,25 @@ Script completo —
         | {f"s[{t}]": 0 for t in R(n2 - 1)}
     assert ammissibile(mA, sol_eur)
     print(f"  Costo dell'euristica: ub = {frazione(ub2)}")
-
-    # ---------- 4. DUALE E LOWER BOUND ----------
-    dl2 = duale_A(d2, p2, h2, w2, r2, g2, u2, m2, r0)
-    salva_modello(dl2, "fam09_2_duale")
-    # ricetta: nu = 0 (le ore non si pagano) e mu_t = costo minimo per avere un paio al mese t
-    mu = []
-    for t in R(n2):
-        mu.append(p2[t] if t == 0 else min(mu[t - 1] + h2[t - 1], p2[t]))
-    mano = {f"mu[{t}]": mu[t] for t in R(n2)}
-    lb2_var, viol = valuta(dl2, mano)
-    assert viol <= 1e-9, viol
-    lb2 = lb2_var + costante_A
-    print("  Duale a mano: nu = 0 (le ore di lavoro non si pagano) e mu_t = min(mu_{t-1}+h, p_t)")
-    print(f"    mu = " + ", ".join(frazione(v) for v in mu)
-          + f"  ->  lb = {frazione(lb2_var)} + {costante_A} = {frazione(lb2)}")
-    zlp2, zlp2r, _ = due_rilassamenti(mA, dl2)
-    zlp2, zlp2r = zlp2 + costante_A, zlp2r + costante_A
     riga = registra_bound("2 manodopera", ub2, lb2, zlp2, zlp2r, zA_val)
     salva_dati(pd.DataFrame([riga]), "fam09_2_bound")
     assert lb2 <= zlp2 <= zA_val <= ub2 + 1e-9
 
-    # ---------- 5. CONFRONTO DEI RILASSAMENTI DELLE DUE FORMULAZIONI ----------
+    # ---------- 5. L'EQUIVALENZA, VERIFICATA ----------
+    intestazione("9.2 L'equivalenza fra le due formulazioni, verificata")
+    print("  La corrispondenza e' y_t = m0 + sum_{j <= t} z_j, cioe' z_t = y_t - y_{t-1}")
+    print("  (con y_0 = m0). Sui piani ottimi:")
+    yA = [m2 + sum(round(zA[j].X) for j in R(t + 1)) for t in R(n2)]
+    print("    da A: organico implicito = " + ", ".join(str(v) for v in yA))
+    print("    da B: organico           = " + ", ".join(str(round(yB[t].X)) for t in R(n2)))
+    zB_implicite = [round(yB[0].X) - m2] + [round(yB[t].X) - round(yB[t - 1].X) for t in R(1, n2)]
+    print("    da B: assunzioni implicite = " + ", ".join(str(v) for v in zB_implicite))
+    assert sum(v * (u2 + w2 * (n2 - t)) for t, v in enumerate(zB_implicite)) + costante_A \
+        == sum(round(zA[t].X) * (u2 + w2 * (n2 - t)) for t in R(n2)) + costante_A
+    print("  Il costo del personale coincide: A paga ogni assunzione una volta per tutti i mesi")
+    print("  che restano, B paga l'organico mese per mese. Stessa somma, contata in due modi.")
+
+    # ---------- 6. CONFRONTO DEI RILASSAMENTI DELLE DUE FORMULAZIONI ----------
     zlpA, _, _ = rilassamento(mA, rafforzato=True)
     zlpB, _, _ = rilassamento(mB, rafforzato=True)
     print(f"  Rilassamenti: A -> {frazione(zlpA + costante_A)}   B -> {frazione(zlpB)}   "
@@ -467,7 +471,7 @@ Script completo —
                              {"formulazione": "B (organico)", "z_lp": zlpB, "z_milp": zB_val}]),
                "fam09_2_formulazioni")
 
-    # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+    # ---------- 7. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
     varianti = {}
 
 
@@ -496,26 +500,7 @@ Script completo —
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
                "fam09_2_varianti")
 
-    # ---------- 7. FIGURA ----------
-    fig, ax = plt.subplots(figsize=(7.0, 3.2))
-    mesi = list(R(1, n2 + 1))
-    ax.bar(mesi, [xB[t].X for t in R(n2)], color=TEAL, width=0.55, label="produzione $x_t$")
-    ax.plot(mesi, d2, "o--", color=ROSSO, label="domanda $d_t$")
-    ax2 = ax.twinx()
-    ax2.step(mesi, [yB[t].X for t in R(n2)], where="mid", color=BLU, lw=2, label="organico $y_t$")
-    ax2.set_ylabel("operai", color=BLU)
-    ax2.set_ylim(0, max(yB[t].X for t in R(n2)) + 1.5)
-    ax2.grid(False)
-    ax.set_xticks(mesi)
-    ax.set_xlabel("mese")
-    ax.set_ylabel("paia")
-    ax.set_title(f"9.2: piano ottimo (z = {frazione(zB_val)})")
-    ax.legend(fontsize=8, loc="upper left")
-    ax2.legend(fontsize=8, loc="lower right")
-    salva_figura(fig, "cap09_manodopera_ottimo")
-    print("Fine.")
-
-    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 2a ----------
+    # ---------- 8. IL SANDWICH SULLA VARIANTE 2a ----------
     intestazione("9.2a Il sandwich sulla variante: l'assunzione costa 3000 euro")
     U2A = 3000
 
@@ -568,6 +553,25 @@ Script completo —
     riga_2a = registra_bound("2a assunzione a 3000", ub2a, lb2a, zlp2a, zlp2ar, z2a_val)
     salva_dati(pd.DataFrame([riga_2a]), "fam09_2a_bound")
     assert lb2a <= zlp2a <= z2a_val <= ub2a + 1e-9
+
+    # ---------- 9. FIGURA ----------
+    fig, ax = plt.subplots(figsize=(7.0, 3.2))
+    mesi = list(R(1, n2 + 1))
+    ax.bar(mesi, [xB[t].X for t in R(n2)], color=TEAL, width=0.55, label="produzione $x_t$")
+    ax.plot(mesi, d2, "o--", color=ROSSO, label="domanda $d_t$")
+    ax2 = ax.twinx()
+    ax2.step(mesi, [yB[t].X for t in R(n2)], where="mid", color=BLU, lw=2, label="organico $y_t$")
+    ax2.set_ylabel("operai", color=BLU)
+    ax2.set_ylim(0, max(yB[t].X for t in R(n2)) + 1.5)
+    ax2.grid(False)
+    ax.set_xticks(mesi)
+    ax.set_xlabel("mese")
+    ax.set_ylabel("paia")
+    ax.set_title(f"9.2: piano ottimo (z = {frazione(zB_val)})")
+    ax.legend(fontsize=8, loc="upper left")
+    ax2.legend(fontsize=8, loc="lower right")
+    salva_figura(fig, "cap09_manodopera_ottimo")
+    print("Fine.")
     ```
 
 <!-- script-incorporato: fine -->

@@ -11,8 +11,8 @@ import gurobipy as gp
 import pandas as pd
 from gurobipy import GRB
 
-from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                 risolvi, valuta)
+from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                 nuovo_modello, registra_bound, rilassamenti, risolvi, valuta)
 from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
 from esteso import salva_modello
 
@@ -78,7 +78,24 @@ def duale_2(d, a, w):
 m2, x2, y2 = modello_2(d2, a2, w2)
 salva_modello(m2, "fam10_5_primale")
 
-# ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+# ---------- 2. IL RILASSAMENTO LP ----------
+zlp2, zlp2r, _ = rilassamenti(m2)
+
+# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+dl2 = duale_2(d2, a2, w2)
+salva_modello(dl2, "fam10_5_duale")
+# ricetta: beta = 0, gamma_sc = 1/w (il massimo consentito da w gamma <= 1) e
+# alpha_pc = 1/w: ogni unita' ordinata occupa 1/w di scatola
+mano = ({f"gamma[{s},{c}]": 1 / w2 for s in R(nn) for c in R(nm)}
+        | {f"alpha[{p},{c}]": 1 / w2 for p in R(nk) for c in R(nm)})
+lb_lp, viol = valuta(dl2, mano)
+assert viol <= 1e-9, viol
+print(f"  Duale a mano: beta = 0, gamma_sc = alpha_pc = 1/{w2}. I vincoli duali diventano")
+print(f"  1/{w2} + 0 - 1/{w2} = 0 <= 0 e {w2} * 1/{w2} = 1 <= 1: tutto verificato.")
+print(f"  lb = (unita' ordinate) / {w2} = {D2} / {w2} = {frazione(lb_lp)}")
+dualita_forte(dl2, zlp2)
+
+# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 # cliente per cliente: si cerca di servirlo da un solo stabilimento, quello che
 # ha tutto quello che serve; se nessuno basta si spezza l'ordine.
 def euristica(d, a, w):
@@ -125,21 +142,7 @@ sol_eur = ({f"x[{p},{s},{c}]": x_eur[p, s, c] for p in R(nk) for s in R(nn) for 
 assert ammissibile(m2, sol_eur), sol_eur
 print(f"  Scatole usate dall'euristica: {ub2}  ->  ub = {frazione(ub2)}")
 
-# ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
-dl2 = duale_2(d2, a2, w2)
-salva_modello(dl2, "fam10_5_duale")
-# ricetta: beta = 0, gamma_sc = 1/w (il massimo consentito da w gamma <= 1) e
-# alpha_pc = 1/w: ogni unita' ordinata occupa 1/w di scatola
-mano = ({f"gamma[{s},{c}]": 1 / w2 for s in R(nn) for c in R(nm)}
-        | {f"alpha[{p},{c}]": 1 / w2 for p in R(nk) for c in R(nm)})
-lb_lp, viol = valuta(dl2, mano)
-assert viol <= 1e-9, viol
-print(f"  Duale a mano: beta = 0, gamma_sc = alpha_pc = 1/{w2}. I vincoli duali diventano")
-print(f"  1/{w2} + 0 - 1/{w2} = 0 <= 0 e {w2} * 1/{w2} = 1 <= 1: tutto verificato.")
-print(f"  lb = (unita' ordinate) / {w2} = {D2} / {w2} = {frazione(lb_lp)}")
-zlp2, zlp2r, _ = due_rilassamenti(m2, dl2)
-
-# ---------- 4. UN BOUND INTERO PIU' FORTE ----------
+# ---------- 5. UN BOUND INTERO PIU' FORTE ----------
 intestazione("10.5 Il conteggio delle scatole per cliente")
 clienti_attivi = [c for c in R(nm) if any(d2[p][c] > 0 for p in R(nk))]
 lb2 = float(len(clienti_attivi))
@@ -157,7 +160,7 @@ salva_dati(pd.DataFrame([{"argomento": "duale del rilassamento LP", "bound": lb_
                          {"argomento": "scatole per cliente", "bound": lb2}]),
            "fam10_5_argomento")
 
-# ---------- 5. OTTIMO DEL MILP ----------
+# ---------- 6. OTTIMO DEL MILP ----------
 z2 = risolvi(m2)
 for s in R(nn):
     for c in R(nm):
@@ -170,7 +173,7 @@ riga = registra_bound("2 spedizioni", ub2, lb2, zlp2, zlp2r, z2)
 salva_dati(pd.DataFrame([riga]), "fam10_5_bound")
 assert lb2 <= z2 <= ub2 + 1e-9
 
-# ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+# ---------- 7. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 varianti = {}
 
 
@@ -196,30 +199,7 @@ varianti["2b"] = variante("2b. Prodotti diversi non possono viaggiare nella stes
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
            "fam10_5_varianti")
 
-# ---------- 7. FIGURA ----------
-fig, ax = plt.subplots(figsize=(6.4, 3.0))
-for s in R(nn):
-    for c in R(nm):
-        n = int(y2[s, c].X)
-        if n:
-            ax.plot([0, 1], [nn - 1 - s, nm - 1 - c], color=TEAL, lw=1 + 2 * n)
-            ax.annotate(scatole(n), (0.5, (nn - 1 - s + nm - 1 - c) / 2 + 0.06),
-                        ha="center", fontsize=8, color=TEAL)
-for s in R(nn):
-    ax.plot(0, nn - 1 - s, marker="s", color=BLU, ms=14)
-    ax.annotate(f"stab. {s + 1}", (-0.06, nn - 1 - s), ha="right", va="center", fontsize=9)
-for c in R(nm):
-    ax.plot(1, nm - 1 - c, marker="o", color=ARANCIO, ms=14)
-    ax.annotate(f"cliente {c + 1}\n({sum(d2[p][c] for p in R(nk))} unita')",
-                (1.06, nm - 1 - c), ha="left", va="center", fontsize=9)
-ax.set_xlim(-0.45, 1.5)
-ax.set_ylim(-0.6, max(nn, nm) - 0.4)
-ax.axis("off")
-ax.set_title(f"10.5: piano ottimo con {frazione(z2)} scatole")
-salva_figura(fig, "cap10_spedizioni_ottimo")
-print("Fine.")
-
-# ---------- 5bis. IL SANDWICH SULLA VARIANTE 2a ----------
+# ---------- 8. IL SANDWICH SULLA VARIANTE 2a ----------
 intestazione("10.5a Il sandwich sulla variante: scatole da 4 unita' invece di 10")
 W2A = 4
 
@@ -265,3 +245,25 @@ riga_2a = registra_bound("2a scatole da 4", ub2a, lb2a_usato, zlp2a, zlp2ar, z2a
 salva_dati(pd.DataFrame([riga_2a]), "fam10_5a_bound")
 assert lb2a_usato <= z2a_val <= ub2a + 1e-9
 
+# ---------- 9. FIGURA ----------
+fig, ax = plt.subplots(figsize=(6.4, 3.0))
+for s in R(nn):
+    for c in R(nm):
+        n = int(y2[s, c].X)
+        if n:
+            ax.plot([0, 1], [nn - 1 - s, nm - 1 - c], color=TEAL, lw=1 + 2 * n)
+            ax.annotate(scatole(n), (0.5, (nn - 1 - s + nm - 1 - c) / 2 + 0.06),
+                        ha="center", fontsize=8, color=TEAL)
+for s in R(nn):
+    ax.plot(0, nn - 1 - s, marker="s", color=BLU, ms=14)
+    ax.annotate(f"stab. {s + 1}", (-0.06, nn - 1 - s), ha="right", va="center", fontsize=9)
+for c in R(nm):
+    ax.plot(1, nm - 1 - c, marker="o", color=ARANCIO, ms=14)
+    ax.annotate(f"cliente {c + 1}\n({sum(d2[p][c] for p in R(nk))} unita')",
+                (1.06, nm - 1 - c), ha="left", va="center", fontsize=9)
+ax.set_xlim(-0.45, 1.5)
+ax.set_ylim(-0.6, max(nn, nm) - 0.4)
+ax.axis("off")
+ax.set_title(f"10.5: piano ottimo con {frazione(z2)} scatole")
+salva_figura(fig, "cap10_spedizioni_ottimo")
+print("Fine.")

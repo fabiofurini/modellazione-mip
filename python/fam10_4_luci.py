@@ -9,8 +9,8 @@ import gurobipy as gp
 import pandas as pd
 from gurobipy import GRB
 
-from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                 risolvi, valuta)
+from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                 nuovo_modello, registra_bound, rilassamenti, risolvi, valuta)
 from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
 from esteso import salva_modello
 
@@ -81,7 +81,37 @@ for b in R(nb):
     print(f"    scatola {b + 1}: " + ", ".join(
         f"colore {l + 1} a {frazione(p1[b] / v1[b][l])}" for l in R(nl) if v1[b][l] > 0))
 
-# ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+# ---------- 2. IL RILASSAMENTO LP ----------
+zlp1, zlp1r, _ = rilassamenti(m1)
+
+# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+dl1 = duale_1(q1, i1, u1, p1, v1, f1)
+salva_modello(dl1, "fam10_4_duale")
+# ricetta: gamma = delta = 0; si valuta un solo colore, al prezzo per luce piu'
+# basso che nessuna scatola riesce a battere; poi ogni albero costa almeno
+# alpha = min_c (i_c + prezzo delle sue luci)
+migliore, mano, scelto = float("-inf"), None, None
+for l in R(nl):
+    prezzo = min(p1[b] / v1[b][l] for b in R(nb) if v1[b][l] > 0)
+    prova = {f"beta[{l}]": prezzo}
+    prova["alpha"] = min(i1[c] + u1[c][l] * prezzo for c in R(nc))
+    val, viol = valuta(dl1, prova)
+    if viol <= 1e-9 and val > migliore:
+        migliore, mano, scelto = val, prova, l
+lb1, viol = valuta(dl1, mano)
+assert viol <= 1e-9, viol
+prezzo = mano[f"beta[{scelto}]"]
+print(f"  Duale a mano: gamma = delta = 0 e un solo colore valutato. Sul colore {scelto + 1}")
+print(f"  entrambi i tipi di scatola danno lo stesso prezzo per luce, {frazione(prezzo)}:")
+print(f"  e' il piu' alto valore di beta compatibile con sum_l v_bl beta_l <= p_b.")
+print("  Allora ogni albero costa almeno alpha = min_c (i_c + u_c" + str(scelto + 1)
+      + " * beta) = " + ", ".join(f"{i1[c]} + {u1[c][scelto]} * {frazione(prezzo)} = "
+                                  f"{frazione(i1[c] + u1[c][scelto] * prezzo)}"
+                                  for c in R(nc)))
+print(f"  alpha = {frazione(mano['alpha'])}  ->  lb = {q1} * alpha = {frazione(lb1)}")
+dualita_forte(dl1, zlp1)
+
+# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 # Due fasi. Prima le configurazioni: q - f + 1 alberi con quella di installazione
 # piu' economica e un albero per ciascuna delle altre f - 1, cosi' la varieta' e'
 # soddisfatta al minimo costo di installazione. Poi le scatole: finche' manca
@@ -127,34 +157,7 @@ print("  L'euristica sceglie la configurazione con l'installazione piu' economic
 print("  pero' e' la piu' avida di luci del colore costoso: il conto lo pagano le scatole.")
 print("  E' il tipico errore di un'euristica costruttiva che guarda una sola voce di costo.")
 
-# ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
-dl1 = duale_1(q1, i1, u1, p1, v1, f1)
-salva_modello(dl1, "fam10_4_duale")
-# ricetta: gamma = delta = 0; si valuta un solo colore, al prezzo per luce piu'
-# basso che nessuna scatola riesce a battere; poi ogni albero costa almeno
-# alpha = min_c (i_c + prezzo delle sue luci)
-migliore, mano, scelto = float("-inf"), None, None
-for l in R(nl):
-    prezzo = min(p1[b] / v1[b][l] for b in R(nb) if v1[b][l] > 0)
-    prova = {f"beta[{l}]": prezzo}
-    prova["alpha"] = min(i1[c] + u1[c][l] * prezzo for c in R(nc))
-    val, viol = valuta(dl1, prova)
-    if viol <= 1e-9 and val > migliore:
-        migliore, mano, scelto = val, prova, l
-lb1, viol = valuta(dl1, mano)
-assert viol <= 1e-9, viol
-prezzo = mano[f"beta[{scelto}]"]
-print(f"  Duale a mano: gamma = delta = 0 e un solo colore valutato. Sul colore {scelto + 1}")
-print(f"  entrambi i tipi di scatola danno lo stesso prezzo per luce, {frazione(prezzo)}:")
-print(f"  e' il piu' alto valore di beta compatibile con sum_l v_bl beta_l <= p_b.")
-print("  Allora ogni albero costa almeno alpha = min_c (i_c + u_c" + str(scelto + 1)
-      + " * beta) = " + ", ".join(f"{i1[c]} + {u1[c][scelto]} * {frazione(prezzo)} = "
-                                  f"{frazione(i1[c] + u1[c][scelto] * prezzo)}"
-                                  for c in R(nc)))
-print(f"  alpha = {frazione(mano['alpha'])}  ->  lb = {q1} * alpha = {frazione(lb1)}")
-zlp1, zlp1r, _ = due_rilassamenti(m1, dl1)
-
-# ---------- 4. OTTIMO DEL MILP ----------
+# ---------- 5. OTTIMO DEL MILP ----------
 z1v = risolvi(m1)
 print("  Soluzione ottima: "
       + ", ".join(f"{int(x1[c].X)} alberi con la configurazione {c + 1}" for c in R(nc)
@@ -169,7 +172,7 @@ riga = registra_bound("1 luci", ub1, lb1, zlp1, zlp1r, z1v)
 salva_dati(pd.DataFrame([riga]), "fam10_4_bound")
 assert lb1 <= zlp1 <= z1v <= ub1 + 1e-9
 
-# ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+# ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 varianti = {}
 
 
@@ -189,31 +192,7 @@ varianti["1b"] = variante("1b. Ogni configurazione usata decora almeno tre alber
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
            "fam10_4_varianti")
 
-# ---------- 6. FIGURA ----------
-fig, ax = plt.subplots(figsize=(6.8, 3.0))
-etichette = ["euristica", "ottimo"]
-inst = [sum(i1[c] * x_eur[c] for c in R(nc)),
-        sum(i1[c] * x1[c].X for c in R(nc))]
-scat = [sum(p1[b] * y_eur[b] for b in R(nb)),
-        sum(p1[b] * y1[b].X for b in R(nb))]
-ax.barh(R(2), inst, 0.5, color=TEAL, label="installazione")
-ax.barh(R(2), scat, 0.5, left=inst, color=ARANCIO, label="scatole di luci")
-for k in R(2):
-    ax.annotate(f"{frazione(inst[k] + scat[k])}", (inst[k] + scat[k] + 40, k), va="center",
-                fontsize=9)
-ax.axvline(lb1, color=BLU, ls="--", lw=1.4)
-ax.annotate(f"bound duale {frazione(lb1)}", (lb1, 1.55), ha="center", fontsize=8, color=BLU)
-ax.set_yticks(R(2))
-ax.set_yticklabels(etichette)
-ax.set_xlim(0, max(inst[k] + scat[k] for k in R(2)) * 1.18)
-ax.set_xlabel("costo (euro)")
-ax.set_title("10.4: dove va il costo")
-ax.legend(fontsize=8, loc="lower right")
-ax.invert_yaxis()
-salva_figura(fig, "cap10_luci_ottimo")
-print("Fine.")
-
-# ---------- 5bis. IL SANDWICH SULLA VARIANTE 1a ----------
+# ---------- 7. IL SANDWICH SULLA VARIANTE 1a ----------
 intestazione("10.4a Il sandwich sulla variante: tutte e tre le configurazioni")
 F1A = 3
 
@@ -259,3 +238,26 @@ riga_1a = registra_bound("1a tutte e tre le configurazioni", ub1a, lb1a, zlp1a, 
 salva_dati(pd.DataFrame([riga_1a]), "fam10_4a_bound")
 assert lb1a <= zlp1a <= z1a_val <= ub1a + 1e-9
 
+# ---------- 8. FIGURA ----------
+fig, ax = plt.subplots(figsize=(6.8, 3.0))
+etichette = ["euristica", "ottimo"]
+inst = [sum(i1[c] * x_eur[c] for c in R(nc)),
+        sum(i1[c] * x1[c].X for c in R(nc))]
+scat = [sum(p1[b] * y_eur[b] for b in R(nb)),
+        sum(p1[b] * y1[b].X for b in R(nb))]
+ax.barh(R(2), inst, 0.5, color=TEAL, label="installazione")
+ax.barh(R(2), scat, 0.5, left=inst, color=ARANCIO, label="scatole di luci")
+for k in R(2):
+    ax.annotate(f"{frazione(inst[k] + scat[k])}", (inst[k] + scat[k] + 40, k), va="center",
+                fontsize=9)
+ax.axvline(lb1, color=BLU, ls="--", lw=1.4)
+ax.annotate(f"bound duale {frazione(lb1)}", (lb1, 1.55), ha="center", fontsize=8, color=BLU)
+ax.set_yticks(R(2))
+ax.set_yticklabels(etichette)
+ax.set_xlim(0, max(inst[k] + scat[k] for k in R(2)) * 1.18)
+ax.set_xlabel("costo (euro)")
+ax.set_title("10.4: dove va il costo")
+ax.legend(fontsize=8, loc="lower right")
+ax.invert_yaxis()
+salva_figura(fig, "cap10_luci_ottimo")
+print("Fine.")

@@ -10,8 +10,9 @@ import pandas as pd
 from gurobipy import GRB
 
 from euristiche import best_fit, first_fit, matrice, next_fit
-from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello,
-                 registra_bound, risolvi, stampa_soluzione, valuta)
+from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                 nuovo_modello, registra_bound, rilassamenti, risolvi,
+                 stampa_soluzione, valuta)
 from stile import CICLO, ROSSO, intestazione, plt, salva_dati, salva_figura
 from esteso import salva_modello
 
@@ -71,15 +72,10 @@ def euristica_4(t, p):
 m4, x4, y4 = modello_4(t4, p4)
 salva_modello(m4, "fam07_4_primale")
 
-# ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
-xe, ye, passi = euristica_4(t4, p4)
-print("Euristica next-fit sulle cardinalità:")
-for i, s in enumerate(passi, 1):
-    print(f"  Passo {i}. {s}")
-ub4 = sum(ye)
-print(f"  ub = {frazione(ub4)}")
+# ---------- 2. IL RILASSAMENTO LP ----------
+zlp4, zlp4r, _ = rilassamenti(m4)
 
-# ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
+# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
 d4 = duale_4(t4, p4)
 salva_modello(d4, "fam07_4_duale")
 mano = {f"lam[{j},{mm}]": 1 / 3 for j in R(3) for mm in R(3)}
@@ -88,16 +84,24 @@ lb4, viol = valuta(d4, mano)
 assert viol <= 1e-9
 print("Soluzione duale a mano: lam_jm = 1/3, pi = 0, mu_j = min_m t_jm/3 = "
       + ", ".join(frazione(mano[f"mu[{j}]"]) for j in R(3)) + f"  ->  lb = {frazione(lb4)}")
-zlp4, zlp4r, _ = due_rilassamenti(m4, d4)
+dualita_forte(d4, zlp4)
 
-# ---------- 4. SOLUZIONE OTTIMA DEL MILP ----------
+# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+xe, ye, passi = euristica_4(t4, p4)
+print("Euristica next-fit sulle cardinalità:")
+for i, s in enumerate(passi, 1):
+    print(f"  Passo {i}. {s}")
+ub4 = sum(ye)
+print(f"  ub = {frazione(ub4)}")
+
+# ---------- 5. SOLUZIONE OTTIMA DEL MILP ----------
 z4 = risolvi(m4)
 print("Soluzione ottima del MILP:")
 stampa_soluzione(m4, solo_non_nulle=True)
 riga = registra_bound("4 parallelo", ub4, lb4, zlp4, zlp4r, z4)
 salva_dati(pd.DataFrame([riga]), "fam07_4_bound")
 
-# ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+# ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
 
 varianti = {}
@@ -123,7 +127,7 @@ m.setObjective(y.sum() + gp.quicksum(g4[mm] * vv[mm] for mm in R(3)), GRB.MINIMI
 varianti["4b"] = variante("4b. Costo fisso 4 se la macchina lavora (y_m <= M_m v_m)", m)
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam07_4_varianti")
 
-# ---------- 5bis. IL SANDWICH SULLA VARIANTE 4a ----------
+# ---------- 7. IL SANDWICH SULLA VARIANTE 4a ----------
 intestazione("4a. Il sandwich sulla variante: minimizzare il massimo dei tempi")
 
 

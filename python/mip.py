@@ -147,6 +147,26 @@ def stampa_lp(m: gp.Model) -> None:
         print(open(percorso).read())
 
 
+def rilassamenti(m):
+    """I due rilassamenti letti dal solo primale: z(LP) senza i bound e z(LP+) con i bound.
+
+    Serve a tenere separati i tre passi del metodo: prima il rilassamento, poi
+    il duale scritto a mano, poi l'euristica.
+    """
+    zlp, _, pi = rilassamento(m, rafforzato=False)
+    zlp_r, _, _ = rilassamento(m, rafforzato=True)
+    print(f"Rilassamento senza i bound: z(LP) = {frazione(zlp)};  "
+          f"con i bound (x <= 1): z(LP+) = {frazione(zlp_r)}")
+    return zlp, zlp_r, pi
+
+
+def dualita_forte(d, zlp):
+    """L'ottimo del duale scritto a mano coincide con z(LP): lo verifica e lo stampa."""
+    zd = risolvi(d)
+    assert abs(zlp - zd) <= 1e-6, (zlp, zd)
+    print(f"Ottimo del duale = z(LP) (dualita' forte): {frazione(zd)}")
+    return zd
+
 def due_rilassamenti(m, d):
     """z(LP) puro (= ottimo del duale scritto a mano) e z(LP+) rafforzato del solver.
 

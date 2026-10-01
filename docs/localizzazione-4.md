@@ -173,7 +173,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam08_4_hub.py` (245 righe)"
+??? example "Mostra lo script completo — `python/fam08_4_hub.py` (248 righe)"
 
     ```python
     """Problema 8.4 -- Localizzazione di hub con costo di connessione massimo.
@@ -188,8 +188,9 @@ Script completo —
     from gurobipy import GRB
 
     from euristiche import matrice, next_fit
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                     rilassamento, risolvi, stampa_soluzione, valuta)
+    from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                     nuovo_modello, registra_bound, rilassamenti, rilassamento, risolvi,
+                     stampa_soluzione, valuta)
     from stile import intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
 
@@ -238,7 +239,25 @@ Script completo —
     m4, x4, y4, z4 = modello_4(c4, f4, k4)
     salva_modello(m4, "fam08_4_primale")
 
-    # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    # ---------- 2. IL RILASSAMENTO LP ----------
+    zlp4, zlp4r, _ = rilassamenti(m4)
+
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+
+    d4 = duale_4(c4, f4, k4)
+    salva_modello(d4, "fam08_4_duale")
+    beta_mano = [f4[j] / k4 for j in R(m)]     # il massimo ammesso da k*beta_j <= f_j
+    alpha_mano = min(beta_mano)                # deve reggere per OGNI hub j, non solo il più conveniente
+    mano = {f"gamma[{i},{j}]": 0.0 for i in R(n) for j in R(m)}
+    mano.update({f"beta[{j}]": beta_mano[j] for j in R(m)})
+    mano.update({f"alpha[{i}]": alpha_mano for i in R(n)})
+    lb4, viol = valuta(d4, mano)
+    assert viol <= 1e-9, viol
+    print(f"Soluzione duale a mano: gamma = 0, beta_j = f_j/k = {[frazione(b) for b in beta_mano]}, "
+          f"alpha_i = min_j beta_j = {frazione(alpha_mano)}  ->  lb = {frazione(lb4)}")
+    dualita_forte(d4, zlp4)
+
+    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 
     print("Euristica next-fit: si riempiono gli hub uno alla volta fino a k terminali,")
     print("poi si passa al successivo (stessa euristica generica dei problemi di scheduling).")
@@ -255,22 +274,7 @@ Script completo —
     ub4 = sum(f4[j] * ye[j] for j in R(m)) + sum(ze)
     print(f"  y = {ye}, z = {ze}  ->  ub = {frazione(ub4)}")
 
-    # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
-
-    d4 = duale_4(c4, f4, k4)
-    salva_modello(d4, "fam08_4_duale")
-    beta_mano = [f4[j] / k4 for j in R(m)]     # il massimo ammesso da k*beta_j <= f_j
-    alpha_mano = min(beta_mano)                # deve reggere per OGNI hub j, non solo il più conveniente
-    mano = {f"gamma[{i},{j}]": 0.0 for i in R(n) for j in R(m)}
-    mano.update({f"beta[{j}]": beta_mano[j] for j in R(m)})
-    mano.update({f"alpha[{i}]": alpha_mano for i in R(n)})
-    lb4, viol = valuta(d4, mano)
-    assert viol <= 1e-9, viol
-    print(f"Soluzione duale a mano: gamma = 0, beta_j = f_j/k = {[frazione(b) for b in beta_mano]}, "
-          f"alpha_i = min_j beta_j = {frazione(alpha_mano)}  ->  lb = {frazione(lb4)}")
-    zlp4, zlp4r, _ = due_rilassamenti(m4, d4)
-
-    # ---------- 4. SOLUZIONE OTTIMA DEL MILP ----------
+    # ---------- 5. SOLUZIONE OTTIMA DEL MILP ----------
 
     z4v = risolvi(m4)
     print("Soluzione ottima del MILP:")
@@ -278,7 +282,7 @@ Script completo —
     riga = registra_bound("4 hub", ub4, lb4, zlp4, zlp4r, z4v, senso="min")
     salva_dati(pd.DataFrame([riga]), "fam08_4_bound")
 
-    # ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+    # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
     varianti = {}
 
@@ -325,7 +329,7 @@ Script completo —
     varianti["4b"] = variante("4b. Il terminale 1 non può connettersi all'hub 2 (x_12 = 0)", mod)
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam08_4_varianti")
 
-    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 4b ----------
+    # ---------- 7. IL SANDWICH SULLA VARIANTE 4b ----------
     intestazione("4b. Il sandwich sulla variante: il terminale 1 non puo' usare l'hub 2")
 
     VIETATA = (0, 1)      # (terminale, hub) proibito
@@ -405,8 +409,7 @@ Script completo —
     salva_dati(pd.DataFrame([riga_4b]), "fam08_4b_bound")
     assert lb4b <= zlp4b <= z4b_val <= ub4b + 1e-9
 
-
-    # ---------- 6. FIGURE ----------
+    # ---------- 8. FIGURE ----------
 
     fig, ax = plt.subplots(figsize=(6.4, 3.2))
     colori = ["#16324A", "#0E7490", "#CA6F1E"]

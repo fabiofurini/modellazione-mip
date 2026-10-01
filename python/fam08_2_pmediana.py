@@ -8,8 +8,9 @@ import gurobipy as gp
 import pandas as pd
 from gurobipy import GRB
 
-from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                 risolvi, stampa_soluzione, valuta)
+from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                 nuovo_modello, registra_bound, rilassamenti, risolvi,
+                 stampa_soluzione, valuta)
 from stile import CICLO, intestazione, plt, salva_dati, salva_figura
 from esteso import salva_modello
 
@@ -54,7 +55,22 @@ def duale_2(dist, k):
 m2, x2, y2 = modello_2(dist2, k2)
 salva_modello(m2, "fam08_2_primale")
 
-# ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+# ---------- 2. IL RILASSAMENTO LP ----------
+zlp2, zlp2r, _ = rilassamenti(m2)
+
+# ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+
+d2 = duale_2(dist2, k2)
+salva_modello(d2, "fam08_2_duale")
+mano = {"varrho": 0.0}
+mano.update({f"mu[{c}]": min(dist2[l][c] for l in R(m)) for c in R(n)})
+lb2, viol = valuta(d2, mano)
+assert viol <= 1e-9, viol
+print("Soluzione duale a mano: pi = 0, varrho = 0, mu_c = min_l d_lc = "
+      + ", ".join(frazione(mano[f"mu[{c}]"]) for c in R(n)) + f"  ->  lb = {frazione(lb2)}")
+dualita_forte(d2, zlp2)
+
+# ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 
 print("Euristica: si aprono le prime k sedi nell'ordine naturale, poi ogni cliente")
 print("va servito dalla sede aperta più vicina.")
@@ -82,19 +98,7 @@ for i, s in enumerate(passi, 1):
 ub2 = sum(dist2[l][c] for (l, c) in ye)
 print(f"  ub = {ub2}")
 
-# ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
-
-d2 = duale_2(dist2, k2)
-salva_modello(d2, "fam08_2_duale")
-mano = {"varrho": 0.0}
-mano.update({f"mu[{c}]": min(dist2[l][c] for l in R(m)) for c in R(n)})
-lb2, viol = valuta(d2, mano)
-assert viol <= 1e-9, viol
-print("Soluzione duale a mano: pi = 0, varrho = 0, mu_c = min_l d_lc = "
-      + ", ".join(frazione(mano[f"mu[{c}]"]) for c in R(n)) + f"  ->  lb = {frazione(lb2)}")
-zlp2, zlp2r, _ = due_rilassamenti(m2, d2)
-
-# ---------- 4. SOLUZIONE OTTIMA DEL MILP ----------
+# ---------- 5. SOLUZIONE OTTIMA DEL MILP ----------
 
 z2 = risolvi(m2)
 print("Soluzione ottima del MILP:")
@@ -102,7 +106,7 @@ stampa_soluzione(m2, solo_non_nulle=True)
 riga = registra_bound("2 p-mediana", ub2, lb2, zlp2, zlp2r, z2)
 salva_dati(pd.DataFrame([riga]), "fam08_2_bound")
 
-# ---------- 5. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+# ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
 
 varianti = {}
 
@@ -123,7 +127,7 @@ mod.addConstrs((y[l, 0] == 0 for l in R(3) if dist2[l][0] > 4), name="distanza_m
 varianti["2b"] = variante("2b. Il cliente 1 servito entro distanza 4 (y_l1 = 0 se d_l1 > 4)", mod)
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}), "fam08_2_varianti")
 
-# ---------- 5bis. IL SANDWICH SULLA VARIANTE 2a ----------
+# ---------- 7. IL SANDWICH SULLA VARIANTE 2a ----------
 intestazione("2a. Il sandwich sulla variante: esattamente k sedi aperte")
 
 
@@ -183,8 +187,7 @@ riga_2a = registra_bound("2a esattamente k sedi", ub2a, lb2a, zlp2a, zlp2ar, z2a
 salva_dati(pd.DataFrame([riga_2a]), "fam08_2a_bound")
 assert lb2a <= zlp2a <= z2a <= ub2a + 1e-9
 
-
-# ---------- 6. FIGURE ----------
+# ---------- 8. FIGURE ----------
 
 fig, ax = plt.subplots(figsize=(5.5, 5))
 xs = {"sede": [0, 1.4, 2.8], "cliente": [0.3, 1.1, 2.4]}

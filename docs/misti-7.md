@@ -229,7 +229,7 @@ Script completo —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_7_antitrust.py` (305 righe)"
+??? example "Mostra lo script completo — `python/fam10_7_antitrust.py` (309 righe)"
 
     ```python
     """Problema 10.7 -- Suddivisione antitrust: due societa' il piu' simili possibile.
@@ -249,8 +249,8 @@ Script completo —
     import pandas as pd
     from gurobipy import GRB
 
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                     risolvi, valuta)
+    from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                     nuovo_modello, registra_bound, rilassamenti, risolvi, valuta)
     from stile import ARANCIO, BLU, TEAL, intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
 
@@ -312,7 +312,30 @@ Script completo —
     print("  Fatturato totale per prodotto: "
           + ", ".join(f"prodotto {j + 1} = {tot2[j]}" for j in R(r2)))
 
-    # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
+    # ---------- 2. IL RILASSAMENTO LP ----------
+    zlp2, zlp2r, _ = rilassamenti(m2)
+
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    dl2 = duale_2(v2)
+    salva_modello(dl2, "fam10_7_duale")
+    mano = {"lam[0]": 0.5, "mu[0]": 0.5}      # lam_1 = mu_1 = 1/2, tutto il resto zero
+    lb_lp, viol = valuta(dl2, mano)
+    assert viol <= 1e-9, viol
+    print(f"  Duale a mano: lam_1 = mu_1 = 1/2 e tutto il resto zero -> valore {frazione(lb_lp)}.")
+    print("  Qualunque soluzione duale ammissibile qui vale al piu' zero: nell'obiettivo compare")
+    print("  la differenza mu_j - lam_j, e i vincoli sulle colonne x_i la costringono a essere")
+    print("  non positiva su ogni filiale.")
+    dualita_forte(dl2, zlp2)
+
+    meta = {f"x[{i}]": 0.5 for i in R(s2)} | {"z": 0.0}
+    val_meta, viol_meta = valuta(m2, meta)
+    assert viol_meta <= 1e-9 and abs(val_meta) <= 1e-9
+    print(f"  Infatti z(LP) = {frazione(zlp2)}: basta mettere meta' di ogni filiale in ciascuna")
+    print("  societa' (x_i = 1/2, z = 0) e ogni prodotto e' pareggiato esattamente. E' ammissibile")
+    print("  per il rilassamento e inutile per il problema vero: le filiali sono indivisibili.")
+    assert abs(zlp2) <= 1e-9
+
+    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
     # euristica costruttiva: le filiali in ordine di fatturato complessivo decrescente, ciascuna
     # alla societa' che al momento fattura meno in totale
     def euristica(v):
@@ -344,26 +367,7 @@ Script completo —
           + ", societa' B = " + str([i + 1 for i in R(s2) if gruppo[i] == 1])
           + f"   ub = {frazione(ub2)}")
 
-    # ---------- 3. IL RILASSAMENTO LP NON DICE NIENTE ----------
-    dl2 = duale_2(v2)
-    salva_modello(dl2, "fam10_7_duale")
-    mano = {"lam[0]": 0.5, "mu[0]": 0.5}      # lam_1 = mu_1 = 1/2, tutto il resto zero
-    lb_lp, viol = valuta(dl2, mano)
-    assert viol <= 1e-9, viol
-    print(f"  Duale a mano: lam_1 = mu_1 = 1/2 e tutto il resto zero -> valore {frazione(lb_lp)}.")
-    print("  Qualunque soluzione duale ammissibile qui vale al piu' zero: nell'obiettivo compare")
-    print("  la differenza mu_j - lam_j, e i vincoli sulle colonne x_i la costringono a essere")
-    print("  non positiva su ogni filiale.")
-    zlp2, zlp2r, _ = due_rilassamenti(m2, dl2)
-    meta = {f"x[{i}]": 0.5 for i in R(s2)} | {"z": 0.0}
-    val_meta, viol_meta = valuta(m2, meta)
-    assert viol_meta <= 1e-9 and abs(val_meta) <= 1e-9
-    print(f"  Infatti z(LP) = {frazione(zlp2)}: basta mettere meta' di ogni filiale in ciascuna")
-    print("  societa' (x_i = 1/2, z = 0) e ogni prodotto e' pareggiato esattamente. E' ammissibile")
-    print("  per il rilassamento e inutile per il problema vero: le filiali sono indivisibili.")
-    assert abs(zlp2) <= 1e-9
-
-    # ---------- 4. UN BOUND COMBINATORIO PRODOTTO PER PRODOTTO ----------
+    # ---------- 5. UN BOUND COMBINATORIO PRODOTTO PER PRODOTTO ----------
     intestazione("10.7 Il bound inferiore viene da un argomento combinatorio")
     # per ogni prodotto, il minimo squilibrio ottenibile guardando quel solo prodotto
     def minimo_squilibrio(colonna, tot):
@@ -384,7 +388,7 @@ Script completo —
     salva_dati(pd.DataFrame({"prodotto": R(1, r2 + 1), "totale": tot2, "g_j": gj}),
                "fam10_7_argomento")
 
-    # ---------- 5. OTTIMO DEL MILP ----------
+    # ---------- 6. OTTIMO DEL MILP ----------
     z2 = risolvi(m2)
     A = [i + 1 for i in R(s2) if x2[i].X > 0.5]
     B = [i + 1 for i in R(s2) if x2[i].X <= 0.5]
@@ -399,7 +403,7 @@ Script completo —
     print(f"  Sandwich: {frazione(lb2)} <= z(MILP) = {frazione(z2)} <= {frazione(ub2)}. Attenzione:")
     print(f"  qui lb non e' il valore del duale ({frazione(lb_lp)}) ma il bound combinatorio.")
 
-    # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+    # ---------- 7. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
     varianti = {}
 
 
@@ -434,26 +438,7 @@ Script completo —
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
                "fam10_7_varianti")
 
-    # ---------- 7. FIGURA ----------
-    fig, ax = plt.subplots(figsize=(6.8, 3.0))
-    larg = 0.35
-    idx = list(R(r2))
-    ax.bar([j - larg / 2 for j in idx], [sum(v2[i - 1][j] for i in A) for j in idx], larg,
-           color=TEAL, label="societa' A")
-    ax.bar([j + larg / 2 for j in idx], [sum(v2[i - 1][j] for i in B) for j in idx], larg,
-           color=BLU, label="societa' B")
-    for j in idx:
-        ax.annotate(f"|diff| = {diff_ott[j]}", (j, max(tot2) / 2 + 1), ha="center", fontsize=8,
-                    color=ARANCIO)
-    ax.set_xticks(idx)
-    ax.set_xticklabels([f"prodotto {j + 1}" for j in idx])
-    ax.set_ylabel("fatturato (milioni)")
-    ax.set_title(f"10.7: partizione ottima, squilibrio peggiore {frazione(z2)}")
-    ax.legend(fontsize=8)
-    salva_figura(fig, "cap10_antitrust_ottimo")
-    print("Fine.")
-
-    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 2a ----------
+    # ---------- 8. IL SANDWICH SULLA VARIANTE 2a ----------
     intestazione("10.7a Il sandwich sulla variante: le filiali 1 e 2 restano insieme")
 
 
@@ -537,6 +522,25 @@ Script completo —
                              certificato="squilibrio minimo con le filiali 1 e 2 legate")
     salva_dati(pd.DataFrame([riga_2a]), "fam10_7a_bound")
     assert lb2a <= z2a_val <= ub2a + 1e-9
+
+    # ---------- 9. FIGURA ----------
+    fig, ax = plt.subplots(figsize=(6.8, 3.0))
+    larg = 0.35
+    idx = list(R(r2))
+    ax.bar([j - larg / 2 for j in idx], [sum(v2[i - 1][j] for i in A) for j in idx], larg,
+           color=TEAL, label="societa' A")
+    ax.bar([j + larg / 2 for j in idx], [sum(v2[i - 1][j] for i in B) for j in idx], larg,
+           color=BLU, label="societa' B")
+    for j in idx:
+        ax.annotate(f"|diff| = {diff_ott[j]}", (j, max(tot2) / 2 + 1), ha="center", fontsize=8,
+                    color=ARANCIO)
+    ax.set_xticks(idx)
+    ax.set_xticklabels([f"prodotto {j + 1}" for j in idx])
+    ax.set_ylabel("fatturato (milioni)")
+    ax.set_title(f"10.7: partizione ottima, squilibrio peggiore {frazione(z2)}")
+    ax.legend(fontsize=8)
+    salva_figura(fig, "cap10_antitrust_ottimo")
+    print("Fine.")
     ```
 
 <!-- script-incorporato: fine -->

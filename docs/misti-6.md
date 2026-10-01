@@ -237,7 +237,7 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_6_campi.py` (255 righe)"
+??? example "Mostra lo script completo — `python/fam10_6_campi.py` (258 righe)"
 
     ```python
     """Problema 10.6 -- Campi estivi: bambini di piu' nazionalita' in piu' campi.
@@ -251,8 +251,8 @@ Notebook —
     import pandas as pd
     from gurobipy import GRB
 
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                     risolvi, valuta)
+    from mip import (ammissibile, dualita_forte, due_rilassamenti, frazione,
+                     nuovo_modello, registra_bound, rilassamenti, risolvi, valuta)
     from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
     from esteso import salva_modello
 
@@ -317,7 +317,24 @@ Notebook —
     m1, x1, y1 = modello_1(f1, g1, d1, c1)
     salva_modello(m1, "fam10_6_primale")
 
-    # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
+    # ---------- 2. IL RILASSAMENTO LP ----------
+    zlp1, zlp1r, _ = rilassamenti(m1)
+
+    # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
+    dl1 = duale_1(f1, g1, d1, c1)
+    salva_modello(dl1, "fam10_6_duale")
+    # ricetta: alpha = beta = delta = eps = 0 e gamma_j = 1, cioe' si valuta solo la
+    # capacita': ogni bambino accettato occupa un posto, quindi non se ne possono
+    # accettare piu' di sum_j d_j
+    mano = {f"gamma[{j}]": 1.0 for j in R(r1)}
+    ub1, viol = valuta(dl1, mano)
+    assert viol <= 1e-9, viol
+    print("  Duale a mano: alpha = beta = delta = eps = 0 e gamma_j = 1 (ogni bambino occupa un")
+    print("  posto). Tutti i vincoli duali diventano gamma_j >= 1 e sono soddisfatti:")
+    print(f"  ub = sum_j d_j = {' + '.join(map(str, d1))} = {frazione(ub1)}")
+    dualita_forte(dl1, zlp1)
+
+    # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
     # euristica costruttiva campo per campo: si riempie il campo corrente prendendo prima la
     # nazionalita' maggioritaria (bambine e bambini) e poi le altre, senza mai
     # violare capacita', parita' e maggioranza.
@@ -360,34 +377,6 @@ Notebook —
     print("  L'euristica esaurisce la nazionalita' maggioritaria nel primo campo: nel secondo non")
     print("  resta nessuno che possa fare da maggioranza e il campo resta vuoto.")
 
-    # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
-    dl1 = duale_1(f1, g1, d1, c1)
-    salva_modello(dl1, "fam10_6_duale")
-    # ricetta: alpha = beta = delta = eps = 0 e gamma_j = 1, cioe' si valuta solo la
-    # capacita': ogni bambino accettato occupa un posto, quindi non se ne possono
-    # accettare piu' di sum_j d_j
-    mano = {f"gamma[{j}]": 1.0 for j in R(r1)}
-    ub1, viol = valuta(dl1, mano)
-    assert viol <= 1e-9, viol
-    print("  Duale a mano: alpha = beta = delta = eps = 0 e gamma_j = 1 (ogni bambino occupa un")
-    print("  posto). Tutti i vincoli duali diventano gamma_j >= 1 e sono soddisfatti:")
-    print(f"  ub = sum_j d_j = {' + '.join(map(str, d1))} = {frazione(ub1)}")
-    zlp1, zlp1r, _ = due_rilassamenti(m1, dl1)
-
-    # ---------- 4. OTTIMO DEL MILP ----------
-    z1 = risolvi(m1)
-    print("  Soluzione ottima:")
-    for j in R(r1):
-        tot = sum(x1[i, j].X + y1[i, j].X for i in R(s1))
-        print(f"    campo {j + 1}: " + ", ".join(
-            f"naz. {i + 1} -> {int(x1[i, j].X)} bambine e {int(y1[i, j].X)} bambini" for i in R(s1))
-            + f"; {int(tot)} posti su {d1[j]}")
-    riga = registra_bound("1 campi", ub1, lb1, zlp1, zlp1r, z1, senso="max")
-    salva_dati(pd.DataFrame([riga]), "fam10_6_bound")
-    assert lb1 <= z1 <= zlp1 <= ub1 + 1e-9
-    print(f"  Il bound duale {frazione(ub1)} coincide con l'ottimo: la capacita' e' satura e il")
-    print("  certificato chiude il gap. Il divario da colmare era tutto dal lato dell'euristica.")
-
     # ---------- 5. IL LIMITE VERO E' LA NAZIONALITA' MAGGIORITARIA ----------
     intestazione("10.6 Due argomenti combinatori sui bound")
     tot_c = f1[c1] + g1[c1]
@@ -402,7 +391,21 @@ Notebook —
                              {"argomento": "bambine disponibili", "bound": 2 * sum(f1)}]),
                "fam10_6_argomenti")
 
-    # ---------- 6. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
+    # ---------- 6. OTTIMO DEL MILP ----------
+    z1 = risolvi(m1)
+    print("  Soluzione ottima:")
+    for j in R(r1):
+        tot = sum(x1[i, j].X + y1[i, j].X for i in R(s1))
+        print(f"    campo {j + 1}: " + ", ".join(
+            f"naz. {i + 1} -> {int(x1[i, j].X)} bambine e {int(y1[i, j].X)} bambini" for i in R(s1))
+            + f"; {int(tot)} posti su {d1[j]}")
+    riga = registra_bound("1 campi", ub1, lb1, zlp1, zlp1r, z1, senso="max")
+    salva_dati(pd.DataFrame([riga]), "fam10_6_bound")
+    assert lb1 <= z1 <= zlp1 <= ub1 + 1e-9
+    print(f"  Il bound duale {frazione(ub1)} coincide con l'ottimo: la capacita' e' satura e il")
+    print("  certificato chiude il gap. Il divario da colmare era tutto dal lato dell'euristica.")
+
+    # ---------- 7. DOMANDE DI MODELLAZIONE AGGIUNTIVE ----------
     varianti = {}
 
 
@@ -429,39 +432,7 @@ Notebook —
     salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
                "fam10_6_varianti")
 
-    # ---------- 7. FIGURA ----------
-    fig, ax = plt.subplots(figsize=(6.8, 3.0))
-    etichette, base = [], []
-    for j in R(r1):
-        etichette.append(f"campo {j + 1}")
-    for k, (nome, sol) in enumerate([("euristica", (x_eur, y_eur)),
-                                     ("ottimo", ({(i, j): x1[i, j].X for i in R(s1) for j in R(r1)},
-                                                 {(i, j): y1[i, j].X for i in R(s1) for j in R(r1)}))]):
-        xs, ys = sol
-        off = -0.2 + 0.4 * k
-        for j in R(r1):
-            naz1 = xs[c1, j] + ys[c1, j]
-            altre = sum(xs[i, j] + ys[i, j] for i in R(s1) if i != c1)
-            ax.bar(j + off, naz1, 0.36, color=TEAL if k else ARANCIO)
-            ax.bar(j + off, altre, 0.36, bottom=naz1, color=BLU if k else GRIGIO)
-            ax.annotate(nome, (j + off, -1.2), ha="center", fontsize=7)
-    for j in R(r1):
-        ax.plot([j - 0.45, j + 0.45], [d1[j], d1[j]], color="black", lw=1.4, ls="--")
-    ax.plot([], [], color=ARANCIO, lw=6, label="euristica: naz. maggioritaria")
-    ax.plot([], [], color=GRIGIO, lw=6, label="euristica: altre")
-    ax.plot([], [], color=TEAL, lw=6, label="ottimo: naz. maggioritaria")
-    ax.plot([], [], color=BLU, lw=6, label="ottimo: altre")
-    ax.plot([], [], color="black", ls="--", label="capacita'")
-    ax.set_xticks(R(r1))
-    ax.set_xticklabels(etichette)
-    ax.set_ylim(-2, max(d1) + 2)
-    ax.set_ylabel("bambini accettati")
-    ax.set_title(f"10.6: euristica {frazione(lb1)} contro ottimo {frazione(z1)}")
-    ax.legend(fontsize=7, ncol=2)
-    salva_figura(fig, "cap10_campi_ottimo")
-    print("Fine.")
-
-    # ---------- 5bis. IL SANDWICH SULLA VARIANTE 1a ----------
+    # ---------- 8. IL SANDWICH SULLA VARIANTE 1a ----------
     intestazione("10.6a Il sandwich sulla variante: il campo 1 arriva a 20 posti")
     d1a = [20] + list(d1[1:])
 
@@ -495,6 +466,38 @@ Notebook —
     riga_1a = registra_bound("1a campo 1 a 20 posti", ub1a, lb1a, zlp1a, zlp1ar, z1a_val, senso="max")
     salva_dati(pd.DataFrame([riga_1a]), "fam10_6a_bound")
     assert lb1a <= z1a_val <= zlp1a + 1e-9 <= ub1a + 1e-9
+
+    # ---------- 9. FIGURA ----------
+    fig, ax = plt.subplots(figsize=(6.8, 3.0))
+    etichette, base = [], []
+    for j in R(r1):
+        etichette.append(f"campo {j + 1}")
+    for k, (nome, sol) in enumerate([("euristica", (x_eur, y_eur)),
+                                     ("ottimo", ({(i, j): x1[i, j].X for i in R(s1) for j in R(r1)},
+                                                 {(i, j): y1[i, j].X for i in R(s1) for j in R(r1)}))]):
+        xs, ys = sol
+        off = -0.2 + 0.4 * k
+        for j in R(r1):
+            naz1 = xs[c1, j] + ys[c1, j]
+            altre = sum(xs[i, j] + ys[i, j] for i in R(s1) if i != c1)
+            ax.bar(j + off, naz1, 0.36, color=TEAL if k else ARANCIO)
+            ax.bar(j + off, altre, 0.36, bottom=naz1, color=BLU if k else GRIGIO)
+            ax.annotate(nome, (j + off, -1.2), ha="center", fontsize=7)
+    for j in R(r1):
+        ax.plot([j - 0.45, j + 0.45], [d1[j], d1[j]], color="black", lw=1.4, ls="--")
+    ax.plot([], [], color=ARANCIO, lw=6, label="euristica: naz. maggioritaria")
+    ax.plot([], [], color=GRIGIO, lw=6, label="euristica: altre")
+    ax.plot([], [], color=TEAL, lw=6, label="ottimo: naz. maggioritaria")
+    ax.plot([], [], color=BLU, lw=6, label="ottimo: altre")
+    ax.plot([], [], color="black", ls="--", label="capacita'")
+    ax.set_xticks(R(r1))
+    ax.set_xticklabels(etichette)
+    ax.set_ylim(-2, max(d1) + 2)
+    ax.set_ylabel("bambini accettati")
+    ax.set_title(f"10.6: euristica {frazione(lb1)} contro ottimo {frazione(z1)}")
+    ax.legend(fontsize=7, ncol=2)
+    salva_figura(fig, "cap10_campi_ottimo")
+    print("Fine.")
     ```
 
 <!-- script-incorporato: fine -->
