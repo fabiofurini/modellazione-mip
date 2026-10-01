@@ -2,6 +2,7 @@
 
 **Classe:** BIP / MILP · **Script:** uno script e un notebook per problema
 (`python/fam08_1_capacitata.py` … `fam08_4_hub.py`).
+{ .scheda }
 
 Quattro problemi in cui si decide **dove** aprire una struttura — una sede,
 un hub — e come questo vincola le variabili che dipendono da quella

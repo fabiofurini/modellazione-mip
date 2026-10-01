@@ -1,6 +1,7 @@
 # Logica e variabili binarie
 
 **Classe:** BIP · **Legami:** clausole e implicazioni · **Script:** `python/cap02_logica.py`
+{ .scheda }
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap02_logica.ipynb)
 

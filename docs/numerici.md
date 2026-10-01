@@ -2,6 +2,7 @@
 
 **Classe:** BIP · ILP · MILP · **Script:** uno per modello,
 `python/ex01_furgone.py` … `python/ex15_orario.py`
+{ .scheda }
 
 I quindici modelli numerici del corso, da EX 1 a EX 15. Dati espliciti, poche
 variabili, una tecnica per modello: sono i più facili, e vengono prima delle

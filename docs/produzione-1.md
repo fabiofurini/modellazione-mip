@@ -2,6 +2,7 @@
 
 **Classe:** MILP · **Legami:** costo fisso (big-M letto dai dati) · **Script:** `python/fam09_1_lotti.py`<br>
 **Difficoltà:** ★★★ · **Tempo:** 45–60 min
+{ .scheda }
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam09_1_lotti.ipynb)
 

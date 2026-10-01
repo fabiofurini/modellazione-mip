@@ -2,6 +2,7 @@
 
 **Classe:** MILP · **Legami:** big-M e disgiunzioni, variabile di massimo · **Script:** `python/fam07_7_ritardo.py`<br>
 **Difficoltà:** ★★★ · **Tempo:** 45–60 min
+{ .scheda }
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_7_ritardo.ipynb)
 

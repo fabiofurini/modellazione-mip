@@ -2,6 +2,7 @@
 
 **Classe:** ILP · **Legami:** conteggi interi, vincoli di composizione · **Script:** `python/fam10_6_campi.py`<br>
 **Difficoltà:** ★★☆ · **Tempo:** 30–45 min
+{ .scheda }
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam10_6_campi.ipynb)
 

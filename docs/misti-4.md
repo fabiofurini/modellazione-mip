@@ -2,6 +2,7 @@
 
 **Classe:** MILP · **Legami:** disponibilità fra due piani, conteggio con indicatore · **Script:** `python/fam10_4_luci.py`<br>
 **Difficoltà:** ★★★ · **Tempo:** 45–60 min
+{ .scheda }
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam10_4_luci.ipynb)
 

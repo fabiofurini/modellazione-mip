@@ -2,6 +2,7 @@
 
 **Classe:** BIP / MILP · **Script:** uno script e un notebook per problema
 (`python/fam10_1_premi.py` … `fam10_9_scaffali.py`).
+{ .scheda }
 
 Le tre famiglie precedenti hanno una struttura riconoscibile: si assegna, si
 localizza, si pianifica. I nove problemi di questo capitolo non ce l'hanno, e
@@ -25,7 +26,7 @@ esattamente zero. La ragione è sempre la stessa: una soluzione frazionaria può
 spezzare a metà ogni oggetto e metterne una metà in ciascun contenitore,
 pareggiando tutto.
 
-!!! note "Dove cercare il bound duale quando il rilassamento non serve"
+!!! note "Dove cercare un bound combinatorio quando il rilassamento non basta"
     **Parità:** un conteggio che non può che essere pari.
     **Numero di contenitori:** quanti ne servono al minimo, letto dalle
     capacità.

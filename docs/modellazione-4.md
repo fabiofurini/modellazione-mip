@@ -1,6 +1,7 @@
 # Rilassamenti, dualità e bound
 
 **Classe:** LP · MILP · **Script:** `python/cap04_bound.py`
+{ .scheda }
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap04_bound.ipynb)
 

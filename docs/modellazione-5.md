@@ -1,6 +1,7 @@
 # Euristiche costruttive
 
 **Classe:** algoritmi · **Script:** `python/cap05_euristiche.py`, `python/euristiche.py`
+{ .scheda }
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap05_euristiche.ipynb)
 

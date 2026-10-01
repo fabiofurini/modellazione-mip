@@ -1,6 +1,7 @@
 # Legami fra variabili
 
 **Classe:** tecniche di modellazione · **Script:** `python/cap03_legami.py`
+{ .scheda }
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap03_legami.ipynb)
 

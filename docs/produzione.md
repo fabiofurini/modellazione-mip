@@ -2,6 +2,7 @@
 
 **Classe:** MILP · **Script:** uno script e un notebook per problema
 (`python/fam09_1_lotti.py` … `fam09_3_veicoli.py`).
+{ .scheda }
 
 Tre problemi in cui si decide **quanto** produrre, non soltanto *se* fare
 qualcosa. Le variabili di quantità sono continue o intere, e sopra di esse si

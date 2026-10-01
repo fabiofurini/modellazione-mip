@@ -2,6 +2,7 @@
 
 **Classe:** BIP / MILP · **Script:** uno script e un notebook per problema
 (`python/fam07_1_assegnamento.py` … `fam07_7_ritardo.py`).
+{ .scheda }
 
 Sette problemi con lo stesso scheletro: dei **lavori** vanno assegnati a delle
 **macchine** con disponibilità limitata. Cambia, di problema in problema, che
