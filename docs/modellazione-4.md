@@ -3,7 +3,6 @@
 **Classe:** LP · MILP · **Script:** `python/cap04_bound.py`
 { .scheda }
 
-[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap04_bound.ipynb)
 
 Questo capitolo insegna a produrre, **a mano**, un numero che sta certamente da
 una parte dell'ottimo intero. Serve a tre cose: capire quanto vale un modello,
@@ -193,7 +192,7 @@ $x_j \le 1$ morde, perché senza di esso l'LP prende $9/5$ unità dell'oggetto 1
   $z(\mathit{LP}^+)$ si chiama **taglio**.
 - Un **vincolo che preserva l'ottimalità** taglia alcune soluzioni ammissibili
   ma non tutte quelle ottime. Non è una disuguaglianza valida, e va dichiarato
-  come tale (esempio: $z_j \le M_j y_j$ nel [problema 8.4](localizzazione-4.md)).
+  come tale.
 
 **Il taglio di copertura.** Un insieme $S$ è una *copertura* se
 $\sum_{j \in S} w_j > b$; allora $\sum_{j \in S} x_j \le |S| - 1$ è valida. Sullo

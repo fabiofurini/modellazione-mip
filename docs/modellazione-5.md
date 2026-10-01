@@ -51,7 +51,7 @@ Tutte e tre scandiscono i lavori **nell'ordine dato**: cambiare l'ordine cambia
 il risultato, e questo va detto quando si riporta un valore. I pareggi si
 rompono sull'indice più piccolo, così l'esecuzione è riproducibile.
 
-Sull'istanza del [problema 7.1](scheduling-1.md) (un **minimo**):
+Su una piccola istanza di assegnamento (un **minimo**):
 
 | Euristica | $UB$ | $z(\mathit{MILP})$ | gap dell'euristica |
 |---|---:|---:|---:|
@@ -60,7 +60,7 @@ Sull'istanza del [problema 7.1](scheduling-1.md) (un **minimo**):
 | best-fit sul costo | 11 | 11 | $0{,}0\%$ |
 
 Il best-fit sul costo trova l'ottimo; ma nessun bound lo certifica — ci vuole il
-solver, o un bound duale che arrivi a $11$, e nel problema 7.1 il duale a mano
+solver, o un bound duale che arrivi a $11$, e lì il duale a mano
 si ferma a $10$.
 
 ## LPT: bilanciare su macchine identiche
@@ -227,7 +227,7 @@ il notebook è
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/cap05_euristiche.py` (204 righe)"
+??? example "Mostra lo script completo — `python/cap05_euristiche.py` (243 righe)"
 
     ```python
     """Capitolo 5 -- Euristiche costruttive: le sei famiglie, con traccia e bound.
@@ -242,7 +242,7 @@ il notebook è
     import pandas as pd
     from gurobipy import GRB
 
-    from euristiche import (best_fit, first_fit, euristica_copertura, euristica_lotti, euristica_zaino,
+    from euristiche import (vicino_piu_vicino, best_fit, first_fit, euristica_copertura, euristica_lotti, euristica_zaino,
                             lpt, matrice, next_fit)
     from mip import (ammissibile, frazione, nuovo_modello, rilassamento, risolvi,
                      stampa_soluzione, valuta, viola_interezza)
@@ -342,8 +342,47 @@ il notebook è
     confronta("5.4 euristica costruttiva per rapporto p/w", "max", e54.valore, z54,
               f"presi {[j + 1 for j in R(4) if e54.y[j]]}, residuo {e54.residuo:g}")
 
-    # ---------- 5. GREEDY DI LOT SIZING ----------
-    intestazione("5.5  Lot sizing: copertura di periodi a costo unitario minimo")
+    # ---------- 5. NEAREST NEIGHBOUR PER IL TSP ----------
+    intestazione("5.5  Nearest neighbour per il TSP: il tour dipende dal nodo di partenza")
+    # cinque citta', distanze simmetriche, nessuna coordinata: solo la matrice
+    # distanze simmetriche e metriche (rispettano la disuguaglianza triangolare)
+    D55 = [[0, 5, 2, 2, 9],
+           [5, 0, 4, 3, 4],
+           [2, 4, 0, 4, 7],
+           [2, 3, 4, 0, 7],
+           [9, 4, 7, 7, 0]]
+    n55 = len(D55)
+    e55t = vicino_piu_vicino(D55, partenza=0)
+    e55t.traccia.stampa()
+    print(f"  Tour dal nodo 1: {' -> '.join(str(v + 1) for v in e55t.tour)}, lunghezza {e55t.valore:g}")
+    tour_da = {}
+    for s in R(n55):
+        e = vicino_piu_vicino(D55, partenza=s)
+        tour_da[s] = (e.tour, e.valore)
+        if s:
+            print(f"  Tour dal nodo {s + 1}: {' -> '.join(str(v + 1) for v in e.tour)}, "
+                  f"lunghezza {e.valore:g}")
+    # l'ottimo: si enumerano le (n-1)!/2 permutazioni, con cinque nodi sono dodici
+    from itertools import permutations
+    ottimo, tour_ottimo = None, None
+    for perm in permutations(R(1, n55)):
+        if perm[0] > perm[-1]:
+            continue
+        giro = (0,) + perm + (0,)
+        lung = sum(D55[giro[i]][giro[i + 1]] for i in R(n55))
+        if ottimo is None or lung < ottimo:
+            ottimo, tour_ottimo = lung, giro
+    print(f"  Ottimo per enumerazione: {' -> '.join(str(v + 1) for v in tour_ottimo)}, "
+          f"lunghezza {ottimo:g}")
+    salva_dati(pd.DataFrame({"partenza": [s + 1 for s in R(n55)],
+                             "tour": [" - ".join(str(v + 1) for v in tour_da[s][0]) for s in R(n55)],
+                             "lunghezza": [tour_da[s][1] for s in R(n55)]}),
+               "cap05_tsp")
+    confronta("5.5 nearest neighbour (TSP)", "min", e55t.valore, ottimo,
+              f"tour {' - '.join(str(v + 1) for v in e55t.tour)}")
+
+    # ---------- 6. GREEDY DI LOT SIZING ----------
+    intestazione("5.6  Lot sizing: copertura di periodi a costo unitario minimo")
     d55 = [20, 10, 30, 40, 10]
     setup55, hold55 = 50, 1
     e55 = euristica_lotti(d55, setup55, hold55)
@@ -373,8 +412,8 @@ il notebook è
     print("  Wagner-Whitin risolve *all'ottimo* questo stesso modello con la programmazione")
     print(f"  dinamica: il suo valore e' {frazione(z55)}, non quello dell'euristica.")
 
-    # ---------- 6. UN PASSO DI RICERCA LOCALE ----------
-    intestazione("5.6  Un passo di ricerca locale sulla soluzione LPT")
+    # ---------- 7. UN PASSO DI RICERCA LOCALE ----------
+    intestazione("5.7  Un passo di ricerca locale sulla soluzione LPT")
     carichi = list(e52.carichi)
     assegn = {j: mm for (j, mm) in e52.x}
     migliorato = True
@@ -403,7 +442,7 @@ il notebook è
     print("  bound migliori di quelli della soluzione che restituisce.")
 
     # ---------- 7. QUANDO LA GREEDY FALLISCE ----------
-    intestazione("5.7  Un fallimento della euristica costruttiva non dimostra l'inammissibilita'")
+    intestazione("5.8  Un fallimento della euristica costruttiva non dimostra l'inammissibilita'")
     t57 = matrice([3, 3, 2], 2)
     a57 = [5, 3]
     e57 = next_fit(t57, a57)
@@ -418,7 +457,7 @@ il notebook è
     assert not e57.ok
 
     # ---------- 8. IL QUADRO DELLE EURISTICHE ----------
-    intestazione("5.8  Il quadro")
+    intestazione("5.9  Il quadro")
     tab = pd.DataFrame(CONFRONTO)
     salva_dati(tab, "cap05_euristiche")
     fig, ax = plt.subplots(figsize=(7.6, 3.6))

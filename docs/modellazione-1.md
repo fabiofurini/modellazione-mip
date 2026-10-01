@@ -3,7 +3,6 @@
 **Classe:** LP · ILP · BIP · MILP · **Script:** `python/cap01_modelli.py`
 { .scheda }
 
-[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap01_modelli.ipynb)
 
 ## Dati, variabili, obiettivo, vincoli
 

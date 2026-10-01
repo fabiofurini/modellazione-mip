@@ -160,25 +160,24 @@ modellazione MIP.
 ## La mappa delle tecniche
 
 Si legge dalla prima colonna («che cosa voglio dire») alla seconda («come si
-scrive»); le ultime due ricordano che cosa va dichiarato e dove la tecnica si
-rivede all'opera.
+scrive»); la terza ricorda che cosa va dichiarato ogni volta che la si usa.
 
-| Tecnica | Formulazione | Da dichiarare | Si rivede in |
-|---|---|---|---|
-| [3.1 attivazione](legami-01.md) | $x_{ij} \le y_j$ (disagg.) oppure $\sum_i x_{ij} \le k_j y_j$ (agg.) | quale forma e perché; segno di $f_j$ per il verso di ottimalità | 7.2, 7.3, 7.5, 8.4 |
-| [3.2 costo fisso](legami-02.md) | $q_j \le C_j y_j$ | che $C_j$ è la capacità, non un big-M | 8.1, cap. 9 |
-| [3.3 lotto minimo](legami-03.md) | $\ell y_j \le q_j \le C_j y_j$ | che $\ell \le C_j$; che il rilassamento non ne risente | 7.2.2, 9.1, 9.3 |
-| [3.4 conteggio intero](legami-04.md) | $\sum_i a_i x_i \le K w$, $w$ intera | che l'interezza realizza il tetto | 9.2, 10.4, 10.5 |
-| [3.5 ausiliaria di massimo](legami-05.md) | $z \ge t_j x_j$, $z \ge 0$ | che $z$ non compare altrove; segno nell'obiettivo | 7.4, 7.7, 8.4, 10.9 |
-| [3.6 min-max / max-min](legami-06.md) | $T \ge L_k$ e $\min T$; $U \le L_k$ e $\max U$ | quale dei tre obiettivi, e che non si confrontano | 7.4.1, 10.7, 10.8 |
-| [3.7 valore assoluto](legami-07.md) | $d \ge \pm(u-v)$ in obiettivo; disgiunzione se $\ge k$ | se è obiettivo o vincolo, e in quale verso | 10.7, 10.8 |
-| [3.8 big-M](legami-08.md) | $a'x \le b + M(1-y)$ | il valore di $M$ calcolato dai dati | 7.7, 3.9 |
-| [3.9 precedenze](legami-09.md) | $s_{ij}+s_{ji}=1$, $\kappa_i \ge \kappa_j + t_i - M(1-s_{ij})$ | l'orizzonte e $M = \sum_h t_h$ | 7.7 |
-| [3.10 se e solo se](legami-10.md) | $y \le x_j$ e $y \ge \sum_j x_j - (p-1)$ | se il secondo verso serve o segue dall'ottimalità | 7.6, 9.3 |
-| [3.11 conteggio dei tipi](legami-11.md) | $\ell y_j \le q_j \le C_j y_j$, $\sum_j y_j \ge p$ | che senza la soglia $\ell$ il conteggio è vuoto | 9.3, 10.3, 10.4 |
-| [3.12 alldiff / espansione](legami-12.md) | doppio partitioning; $v = \sum_k 2^k b_k$ | che l'alldiff ha rilassamento esatto | EX 9, EX 15 |
-| [3.13 vincoli violabili](legami-13.md) | $a'x + s^- - s^+ = \beta$ con penalità | i due segni delle penalità | 9.1, EX 15 |
-| [3.14 funzione a tratti](legami-14.md) | combinazione convessa $+$ adiacenza | se $g$ è convessa; altrimenti l'adiacenza è obbligatoria | 10.1 |
+| Tecnica | Formulazione | Da dichiarare |
+|---|---|---|
+| [6.1 attivazione](legami-01.md) | $x_{ij} \le y_j$ (disagg.) oppure $\sum_i x_{ij} \le k_j y_j$ (agg.) | quale forma e perché; segno di $f_j$ per il verso di ottimalità |
+| [6.2 costo fisso](legami-02.md) | $q_j \le C_j y_j$ | che $C_j$ è la capacità, non un big-M |
+| [6.3 lotto minimo](legami-03.md) | $\ell y_j \le q_j \le C_j y_j$ | che $\ell \le C_j$; che il rilassamento non ne risente |
+| [6.4 conteggio intero](legami-04.md) | $\sum_i a_i x_i \le K w$, $w$ intera | che l'interezza realizza il tetto |
+| [6.5 ausiliaria di massimo](legami-05.md) | $z \ge t_j x_j$, $z \ge 0$ | che $z$ non compare altrove; segno nell'obiettivo |
+| [6.6 min-max / max-min](legami-06.md) | $T \ge L_k$ e $\min T$; $U \le L_k$ e $\max U$ | quale dei tre obiettivi, e che non si confrontano |
+| [6.7 valore assoluto](legami-07.md) | $d \ge \pm(u-v)$ in obiettivo; disgiunzione se $\ge k$ | se è obiettivo o vincolo, e in quale verso |
+| [6.8 big-M](legami-08.md) | $a'x \le b + M(1-y)$ | il valore di $M$ calcolato dai dati |
+| [6.9 precedenze](legami-09.md) | $s_{ij}+s_{ji}=1$, $\kappa_i \ge \kappa_j + t_i - M(1-s_{ij})$ | l'orizzonte e $M = \sum_h t_h$ |
+| [6.10 se e solo se](legami-10.md) | $y \le x_j$ e $y \ge \sum_j x_j - (p-1)$ | se il secondo verso serve o segue dall'ottimalità |
+| [6.11 conteggio dei tipi](legami-11.md) | $\ell y_j \le q_j \le C_j y_j$, $\sum_j y_j \ge p$ | che senza la soglia $\ell$ il conteggio è vuoto |
+| [6.12 alldiff / espansione](legami-12.md) | doppio partitioning; $v = \sum_k 2^k b_k$ | che l'alldiff ha rilassamento esatto |
+| [6.13 vincoli violabili](legami-13.md) | $a'x + s^- - s^+ = \beta$ con penalità | i due segni delle penalità |
+| [6.14 funzione a tratti](legami-14.md) | combinazione convessa $+$ adiacenza | se $g$ è convessa; altrimenti l'adiacenza è obbligatoria |
 
 !!! tip "Le tre domande da farsi davanti a un legame nuovo"
     1. **Quale verso è imposto dai vincoli e quale no?** Si risponde guardando

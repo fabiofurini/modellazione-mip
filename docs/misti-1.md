@@ -266,7 +266,7 @@ Notebook —
 
     Ogni premio si ottiene o con soli punti oppure con meno punti piu' un contributo
     in euro: due variabili binarie per premio e un vincolo di mutua esclusione. Il
-    legame e' quello della logica binaria: x_i + y_i <= 1 e' un set packing, e le converse
+    legame e' quello del capitolo 2: x_i + y_i <= 1 e' un set packing, e le converse
     vanno confutate esplicitamente con x_i = y_i = 0.
     """
     from itertools import product

@@ -253,8 +253,8 @@ Script completo —
     """Problema 10.7 -- Suddivisione antitrust: due societa' il piu' simili possibile.
 
     Le filiali vanno divise in due gruppi minimizzando, sul prodotto peggiore, la
-    differenza di fatturato fra i due gruppi. E' la tecnica 6.6 (min-max) applicata
-    a un valore assoluto (6.7): due disuguaglianze per prodotto attorno alla stessa
+    differenza di fatturato fra i due gruppi. E' la tecnica 3.6 (min-max) applicata
+    a un valore assoluto (3.7): due disuguaglianze per prodotto attorno alla stessa
     variabile z.
 
     Il punto del problema e' che il rilassamento lineare vale zero: meta' filiale a

@@ -13,12 +13,10 @@ cella, con le figure che compaiono sotto le celle invece di finire in un file.
 
 | Capitolo | Classe | Notebook |
 |---|---|---|
-| [Che cos'è un modello MIP](modellazione-1.md) | LP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap01_modelli.ipynb) |
+| [Dal modello a Python/Gurobi](modellazione-6.md) | implementazione | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap06_gurobi.ipynb) |
+| [Euristiche costruttive](modellazione-5.md) | algoritmi | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap05_euristiche.ipynb) |
 | [Logica e variabili binarie](modellazione-2.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap02_logica.ipynb) |
 | [Legami fra variabili](legami.md) | tecniche di modellazione | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap03_legami.ipynb) |
-| [Rilassamenti, dualità e bound](modellazione-4.md) | LP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap04_bound.ipynb) |
-| [Euristiche costruttive](modellazione-5.md) | algoritmi | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap05_euristiche.ipynb) |
-| [Dal modello a Python/Gurobi](modellazione-6.md) | implementazione | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap06_gurobi.ipynb) |
 | [Assegnamento a costo minimo con disponibilità](scheduling-1.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_1_assegnamento.ipynb) |
 | [Macchine con costo fisso di utilizzo](scheduling-2.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_2_costofisso.ipynb) |
 | [Selezione di lavori con ricavo e macchine a costo fisso](scheduling-3.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_3_selezione.ipynb) |

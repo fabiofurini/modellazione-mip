@@ -30,7 +30,7 @@ cui il solver non ha finito.
 
 ```python
 def modello(t, c, a):
-    """Il problema 7.1: una addConstrs per famiglia, con il nome dell'etichetta."""
+    """Un assegnamento: una addConstrs per famiglia, con il nome dell'etichetta."""
     m = gp.Model("assegnamento");  m.Params.OutputFlag = 0
     x = m.addVars(n, k, vtype=GRB.BINARY, name="x")           # dati -> variabili
     m.setObjective(gp.quicksum(c[j][h] * x[j, h] for j in range(n)
@@ -77,7 +77,7 @@ L'ordine di lettura non si cambia: `Status`, poi `SolCount`, poi `ObjVal` e
 | `TIME_LIMIT` | 9 | $\ge 1$ | `ObjBound` $\le z(\mathit{MILP}) \le$ `ObjVal` |
 | `SOLUTION_LIMIT` | 10 | $\ge 1$ | come sopra |
 
-!!! example "I quattro casi sull'istanza del problema 7.1"
+!!! example "I quattro casi sull'istanza di assegnamento"
     - **Risoluzione normale.** `Status = 2`, `SolCount = 2`,
       `ObjVal = ObjBound = 11`, `MIPGap = 0`, `NodeCount = 0`.
     - **Inammissibile.** Con disponibilità $(1,1,1)$: `Status = 3`,
@@ -127,7 +127,7 @@ zlp = r.ObjVal
 duali = {c.ConstrName: c.Pi for c in r.getConstrs()}
 ```
 
-Sull'istanza del problema 7.1, $z(\mathit{LP}^+) = z(\mathit{LP}) = 53/5$ — i
+Su quell'istanza, $z(\mathit{LP}^+) = z(\mathit{LP}) = 53/5$ — i
 due rilassamenti coincidono perché i vincoli di assegnamento implicano già
 $x_{jm} \le 1$ — e i duali non nulli sono $\tilde\mu = (2,\ 4{,}8,\ 5)$ e
 $\tilde\pi_2 = -0{,}2$: la macchina 2 è la sola risorsa stretta.
@@ -153,7 +153,7 @@ riga = registra_bound("7.1 assegnamento", ub, lb, zlp, zlp_raff, z)   # (6) la t
 salva_dati(pd.DataFrame([riga]), "fam07_1_bound")         #     -> dati/fam07_1_bound.csv
 ```
 
-Sull'istanza del problema 7.1 il protocollo produce $\mathit{LB} = 10$,
+Sull'istanza di assegnamento il protocollo produce $\mathit{LB} = 10$,
 $z(\mathit{LP}) = 53/5$, $z(\mathit{MILP}) = 11$, $\mathit{UB} = 11$, e la riga
 finisce in `dati/fam07_1_bound.csv`. Da lì la leggono la dispensa, la pagina del
 sito e `verifica_numeri.py`: **un solo posto in cui il numero esiste**.
@@ -239,7 +239,7 @@ il notebook è
 
 
     def modello(t, co, a):
-        """Il problema 7.1: una addConstrs per famiglia, con il nome dell'etichetta."""
+        """Un assegnamento: una addConstrs per famiglia, con il nome dell'etichetta."""
         mm = nuovo_modello("assegnamento")
         x = mm.addVars(n, k, vtype=GRB.BINARY, name="x")          # dati -> variabili
         mm.setObjective(gp.quicksum(co[j][h] * x[j, h] for j in R(n) for h in R(k)), GRB.MINIMIZE)

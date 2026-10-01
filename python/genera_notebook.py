@@ -141,9 +141,20 @@ def titolo_e_classe(slug: str) -> tuple[str, str]:
 def pagina_indice() -> str:
     """La pagina del sito che elenca i notebook, con un badge per capitolo."""
     righe = []
-    for percorso in sorted(p for p in list(DIR_SCRIPT.glob("cap*.py")) + list(DIR_SCRIPT.glob("fam*.py"))
+    # i capitoli vanno nell'ordine di lettura della dispensa, non in quello dei nomi
+    # dei file; i capitoli 1 e 2 vengono prima che il corso introduca Python, e il
+    # loro notebook non si offre qui
+    ORDINE = {"cap06_gurobi": 1, "cap05_euristiche": 2, "cap02_logica": 3, "cap03_legami": 4}
+    SENZA_NOTEBOOK = {"cap01_modelli", "cap04_bound"}
+
+    def chiave(p):
+        if p.stem.startswith("cap"):
+            return (0, ORDINE.get(p.stem, 99), p.stem)
+        return (1, 0, p.stem)
+
+    for percorso in sorted((p for p in list(DIR_SCRIPT.glob("cap*.py")) + list(DIR_SCRIPT.glob("fam*.py"))
               + list(DIR_SCRIPT.glob("num*.py"))
-              if not p.stem.endswith("_riepilogo")):
+              if not p.stem.endswith("_riepilogo") and p.stem not in SENZA_NOTEBOOK), key=chiave):
         nome = percorso.stem
         slug = pagina_del_capitolo(nome)
         if not slug:
