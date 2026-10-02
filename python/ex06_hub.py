@@ -47,7 +47,7 @@ def duale(copre):
     """max sum_i u_i;  sum_{i : j copre i} u_i <= 1 per ogni j;  u >= 0."""
     n = len(copre)
     d = nuovo_modello("duale_hub_spoke")
-    u = d.addVars(n, name="u")
+    u = d.addVars(n, name="pi")   # prezzo della citta' i
     d.setObjective(u.sum(), GRB.MAXIMIZE)
     d.addConstrs((gp.quicksum(u[i] for i in R(n) if j in copre[i]) <= 1 for j in R(n)),
                  name="rc")
@@ -74,7 +74,7 @@ residuo = [1.0] * n
 mano = {}
 for i in R(n):
     incremento = min(residuo[j] for j in copre[i])
-    mano[f"u[{i}]"] = incremento
+    mano[f"pi[{i}]"] = incremento
     for j in copre[i]:
         residuo[j] -= incremento
     print(f"  Citta' {i + 1} ({CITTA[i]}): residui degli hub che la coprono "

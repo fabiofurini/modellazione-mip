@@ -60,8 +60,8 @@ def duale_minmax(d):
        max 0*pi1 - D*pi2   s.t.  d_j (pi1 - pi2) <= 0 per ogni j;  -pi1 - pi2 <= 1;  pi <= 0."""
     n, D = len(d), sum(d)
     dl = nuovo_modello("duale_bilanciamento")
-    pi1 = dl.addVar(lb=-GRB.INFINITY, ub=0.0, name="pi1")
-    pi2 = dl.addVar(lb=-GRB.INFINITY, ub=0.0, name="pi2")
+    pi1 = dl.addVar(lb=-GRB.INFINITY, ub=0.0, name="pi[0]")
+    pi2 = dl.addVar(lb=-GRB.INFINITY, ub=0.0, name="pi[1]")
     dl.setObjective(-D * pi2, GRB.MAXIMIZE)
     dl.addConstrs((d[j] * (pi1 - pi2) <= 0 for j in R(n)), name="rc_x")
     dl.addConstr(-pi1 - pi2 <= 1, name="rc_z")
@@ -93,7 +93,7 @@ dl, pi1, pi2 = duale_minmax(d)
 salva_modello(dl, "ex11_duale")
 # ricetta: i vincoli d_j (pi1 - pi2) <= 0 impongono pi1 <= pi2; con pi1 = pi2 = t il
 # vincolo -pi1 - pi2 <= 1 da' t >= -1/2, e l'obiettivo -D t cresce al calare di t
-mano = {"pi1": -0.5, "pi2": -0.5}
+mano = {"pi[0]": -0.5, "pi[1]": -0.5}
 lb, viol = valuta(dl, mano)
 assert viol <= 1e-9, viol
 print("  Duale a mano: i vincoli d_j (pi1 - pi2) <= 0 impongono pi1 <= pi2; ponendo")
