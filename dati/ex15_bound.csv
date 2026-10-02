@@ -1,2 +1,2 @@
 problema,ub,lb,z_lp,z_lp_rafforzato,z_milp
-EX 15 orario,0,0.0,0.0,0.0,0.0
+EX 15 orario,2,0.0,0.0,1.0,2.0

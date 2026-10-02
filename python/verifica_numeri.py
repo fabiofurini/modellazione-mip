@@ -246,7 +246,7 @@ attesi_num2 = {
     "12": (24000, 24000, 24000, 24000, 24000, "max"),
     "13": (F("50/3"), 16, F("50/3"), F("50/3"), 16, "max"),
     "14": (8410, 6300, F("115970/17"), F("115970/17"), 7060, "min"),
-    "15": (0, 0, 0, 0, 0, "min"),
+    "15": (2, 0, 0, 1, 2, "min"),
 }
 for k, (ub, lb, zlp, zlpr, zmilp, senso) in attesi_num2.items():
     r = pd.read_csv(DATI / f"ex{k}_bound.csv").iloc[0]

@@ -1,7 +1,7 @@
 """EX 15 -- Orario della scuola di musica (famiglia 11).
 
-Quattro pomeriggi da tre ore, dodici ore di lezione da collocare: l'orario e'
-una partizione delle dodici caselle. Il modello usa il conteggio degli strumenti
+Due pomeriggi da tre ore, sei ore di lezione da collocare: l'orario e' una
+partizione delle sei caselle. Il modello usa il conteggio degli strumenti
 per giorno (tecnica 3.11), le precedenze fra ore consecutive (3.9) e i vincoli
 violabili con penalita' (3.13).
 
@@ -28,12 +28,12 @@ R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
 intestazione("EX 15. Orario della scuola di musica: minimizzare le preferenze violate")
-GIORNI = ["lunedi", "martedi", "mercoledi", "giovedi"]
+GIORNI = ["lunedi", "martedi"]
 ORE = [1, 2, 3]
-STRUM = ["chitarra", "violino", "pianoforte", "arpa"]
-h14 = [6, 3, 2, 1]              # ore da collocare per strumento
+STRUM = ["chitarra", "violino", "pianoforte"]
+h14 = [3, 2, 1]                 # ore da collocare per strumento
 nd, nt, ni = len(GIORNI), len(ORE), len(STRUM)
-PIANO, ARPA = 2, 3
+CHITARRA, PIANO = 0, 2          # i due docenti che non vogliono ore consecutive
 print(f"  Ore da collocare: {sum(h14)}; caselle disponibili: {nd} * {nt} = {nd * nt}.")
 print("  Le due cifre coincidono: ogni casella dell'orario ospita esattamente una lezione.")
 
@@ -43,16 +43,14 @@ def costi(extra_chitarra=()):
     c = [[[0] * ni for _ in R(nt)] for _ in R(nd)]
     for d in R(nd):
         for t in R(nt):
-            if t == 0 and d in (0, 1):
-                c[d][t][0] = 1                      # chitarra: ora 1 di lunedi e martedi
+            if d == 1:
+                c[d][t][0] = 1                      # chitarra: il docente non viene di martedi
             if t in extra_chitarra:
                 c[d][t][0] = 1                      # preferenze aggiuntive della chitarra
-            if t == 1 and d in (2, 3):
-                c[d][t][1] = 1                      # violino: ora 2 di mercoledi e giovedi
+            if t == 1 and d == 1:
+                c[d][t][1] = 1                      # violino: non all'ora 2 di martedi
             if t == 2:
                 c[d][t][2] = 1                      # pianoforte: mai all'ora 3
-            if d == 1:
-                c[d][t][3] = 1                      # arpa: mai di martedi
     return c
 
 
@@ -78,9 +76,9 @@ def modello(h, c, minimo_strumenti=2, legame_doppio=True):
         # senza questo verso y_di puo' valere 1 anche se lo strumento i non compare
         mod.addConstrs((y[d, i] - x.sum(d, "*", i) <= 0 for d in R(nd) for i in R(ni)),
                        name="attiva_inversa")
-    mod.addConstrs((x[d, t, PIANO] + x[d, t + 1, ARPA] <= 1
+    mod.addConstrs((x[d, t, CHITARRA] + x[d, t + 1, PIANO] <= 1
                     for d in R(nd) for t in R(nt - 1)), name="conflitto1")
-    mod.addConstrs((x[d, t, ARPA] + x[d, t + 1, PIANO] <= 1
+    mod.addConstrs((x[d, t, PIANO] + x[d, t + 1, CHITARRA] <= 1
                     for d in R(nd) for t in R(nt - 1)), name="conflitto2")
     return mod, x, y
 
@@ -119,15 +117,12 @@ salva_dati(pd.DataFrame({"giorno": GIORNI, "strumenti_modello_errato": strumenti
            "ex15_varieta")
 
 # ---------- 3. UNA SOLUZIONE AMMISSIBILE COSTRUITA A MANO ----------
-# Regola: la chitarra riempie le ore 2 e 3 dei primi tre giorni evitando le ore 1
-# di lunedi e martedi; il pianoforte va all'ora 1 (mai all'ora 3); l'arpa il
-# giovedi (mai di martedi); il violino occupa le caselle restanti evitando l'ora 2
-# di mercoledi e giovedi.
+# Regola: il pianoforte va all'ora 1 di lunedi (mai all'ora 3); la chitarra
+# riempie le ore restanti di lunedi, cosi' evita l'ora 1; il violino prende le ore
+# 1 e 3 di martedi, cosi' evita l'ora 2 e non finisce accanto al pianoforte.
 piano_orario = {
-    (0, 0): PIANO, (0, 1): 0, (0, 2): 0,
-    (1, 0): 1, (1, 1): 0, (1, 2): 0,
-    (2, 0): PIANO, (2, 1): 0, (2, 2): 0,
-    (3, 0): 1, (3, 1): ARPA, (3, 2): 1,
+    (0, 0): 0, (0, 1): 0, (0, 2): 1,
+    (1, 0): PIANO, (1, 1): 1, (1, 2): 0,
 }
 sol_eur = {f"x[{d},{t},{i}]": 1 for (d, t), i in piano_orario.items()}
 for (d, t), i in piano_orario.items():
@@ -141,14 +136,23 @@ for i in R(ni):
 print(f"  Preferenze violate: {ub14}  ->  ub = {frazione(ub14)}")
 
 # ---------- 4. IL BOUND INFERIORE ----------
+# Il bound che si legge dai dati: la chitarra ha tre ore e il suo docente non viene
+# di martedi; lunedi pero' ne puo' ospitare al piu' due, perche' il giorno vuole
+# almeno due strumenti diversi. Almeno un'ora di chitarra cade quindi di martedi,
+# e vale una violazione.
+lb14 = 0.0
+conteggio = h14[0] - (nt - 1)
 print("  Tutti i costi c_dti sono 0 oppure 1, quindi l'obiettivo e' una somma di termini non")
-print("  negativi: z >= 0 senza bisogno di alcun duale. L'orario costruito a mano vale 0,")
-print("  quindi e' ottimo. Il duale del rilassamento non puo' fare di meglio:")
+print("  negativi: lb = 0 senza bisogno di alcun duale.")
+print(f"  Contando si dice di piu': la chitarra ha {h14[0]} ore e lunedi ne ospita al piu'")
+print(f"  {nt - 1}, perche' il giorno vuole almeno due strumenti; almeno {conteggio} ora di")
+print("  chitarra cade quindi di martedi, dove il docente non vorrebbe venire. Attenzione:")
+print("  quel conteggio vale sul problema intero, non sul rilassamento --- infatti z(LP) = 0")
+print("  --- quindi non si puo' mettere al posto di lb nella catena dei bound.")
 zlp14, _, _ = rilassamento(m14, rafforzato=False)
 zlp14r, _, _ = rilassamento(m14, rafforzato=True)
-lb14 = 0.0
-print(f"    z(LP) = {frazione(zlp14)}   z(LP+) = {frazione(zlp14r)}")
-assert abs(zlp14) <= 1e-9
+print(f"    lb = {frazione(lb14)}   z(LP) = {frazione(zlp14)}   z(LP+) = {frazione(zlp14r)}")
+assert lb14 <= zlp14 + 1e-9 <= zlp14r + 1e-9
 
 # ---------- 5. OTTIMO DEL MILP ----------
 z14 = risolvi(m14)
@@ -162,20 +166,26 @@ salva_dati(pd.DataFrame([{"problema": "EX 15 orario", "ub": ub14, "lb": lb14,
 salva_dati(pd.DataFrame([{"giorno": GIORNI[d], "ora": ORE[t], "strumento": STRUM[i]}
                          for d in R(nd) for t in R(nt) for i in R(ni)
                          if x14[d, t, i].X > 0.5]), "ex15_ottimo")
-assert abs(z14) <= 1e-9
+assert lb14 <= z14 and abs(z14 - ub14) <= 1e-9, (lb14, z14, ub14)
+print("  L'orario costruito a mano era gia' ottimo, ma nessuno dei due bound lo dimostra:")
+print(f"  fra {frazione(lb14)} e {frazione(ub14)} resta un divario che solo il branch and bound chiude.")
+assert conteggio <= z14
 
 # ---------- 6. VARIANTI ----------
 intestazione("EX 15. Che cosa succede se le preferenze si stringono")
 # 14a: la chitarra preferisce non insegnare alle ore 1 e 2 di nessun giorno
-c_a = costi(extra_chitarra=(0, 1))
+c_a = costi(extra_chitarra=(1, 2))
 libere = sum(1 for d in R(nd) for t in R(nt) if c_a[d][t][0] == 0)
-print(f"  14a. Il docente di chitarra preferisce non insegnare alle ore 1 e 2 di nessun giorno.")
+print(f"  14a. Il docente di chitarra preferisce non insegnare alle ore 2 e 3 di nessun giorno.")
 print(f"       Restano {libere} caselle senza penalita' per la chitarra, ma le ore da")
 print(f"       collocare sono {h14[0]}: almeno {h14[0] - libere} lezioni violeranno la")
 print("       preferenza. E' un bound inferiore che si legge dai soli dati.")
 m, x, y = modello(h14, c_a)
 z_a = risolvi(m)
-print(f"       z = {frazione(z_a)}, che coincide con il bound: il conteggio e' esatto.")
+minimo = h14[0] - libere
+print(f"       z = {frazione(z_a)}: il conteggio da' {minimo}, e il modello non riesce a")
+print("       fermarsi li' perche' le caselle libere della chitarra sono tutte nello stesso")
+print("       giorno, e il vincolo di varieta' ne vieta l'uso completo.")
 assert z_a >= h14[0] - libere - 1e-9
 # 14b: ogni giorno deve avere almeno tre strumenti diversi
 print("  14b. Ogni giorno deve avere almeno tre strumenti diversi.")
