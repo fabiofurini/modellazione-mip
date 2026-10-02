@@ -5,10 +5,12 @@
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap06_gurobi.ipynb)
 
-Il corso usa **un solo solver**, Gurobi da Python. Questa pagina mostra come si
-scrive un modello — una famiglia di vincoli per blocco, con i nomi del modello
-matematico — e soprattutto come si **leggono** i risultati, incluso il caso in
-cui il solver non ha finito.
+Il corso usa **un solo solver**, Gurobi da Python. La pagina ha tre parti: come
+si **scrive** un modello — una famiglia di vincoli per blocco, con i nomi del
+modello matematico; come si **leggono** i risultati, incluso il caso in cui il
+solver non ha finito; e tre **modelli completi** — bin packing, makespan e
+commesso viaggiatore — scritti dall'enunciato fino all'istanza, che il
+[capitolo delle euristiche](modellazione-4.md) riprende.
 
 ## Le otto istruzioni che bastano
 
@@ -216,40 +218,40 @@ ottimo con cui confrontarsi.
 
 !!! abstract "Bin packing"
     Ci sono $n$ oggetti, l'oggetto $j$ pesa $w_j$. I contenitori sono tutti
-    uguali, di capacità $C$. Si usi il minimo numero di contenitori.
+    uguali, di capacità $c$. Si usi il minimo numero di contenitori.
 
 Servono due famiglie di variabili binarie: $x_{jb} = 1$ se l'oggetto $j$ va nel
 contenitore $b$, e $y_b = 1$ se il contenitore $b$ viene usato.
 
 $$
 \begin{aligned}
-\min ~~ \sum_{b=1}^{K} y_b & &\\
-\text{soggetto a} \quad \sum_{b=1}^{K} x_{jb} &= 1, & \forall j \in \{1, 2, \dots, n\},\\
-\sum_{j=1}^{n} w_j\, x_{jb} - C\, y_b &\le 0, & \forall b \in \{1, 2, \dots, K\},\\
-x_{jb} &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\},\ \forall b \in \{1, 2, \dots, K\},\\
-y_b &\in \{0, 1\}, & \forall b \in \{1, 2, \dots, K\}.
+\min ~~ \sum_{b=1}^{k} y_b & &\\
+\text{soggetto a} \quad \sum_{b=1}^{k} x_{jb} &= 1, & \forall j \in \{1, 2, \dots, n\},\\
+\sum_{j=1}^{n} w_j\, x_{jb} - c\, y_b &\le 0, & \forall b \in \{1, 2, \dots, k\},\\
+x_{jb} &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\},\ \forall b \in \{1, 2, \dots, k\},\\
+y_b &\in \{0, 1\}, & \forall b \in \{1, 2, \dots, k\}.
 \end{aligned}
 $$
 
 La prima famiglia dice che ogni oggetto finisce in esattamente un contenitore.
 La seconda è la capacità scritta come **attivazione**: finché $y_b = 0$ il
-contenitore $b$ non può ricevere niente, e appena $y_b = 1$ accoglie fino a $C$.
+contenitore $b$ non può ricevere niente, e appena $y_b = 1$ accoglie fino a $c$.
 L'obiettivo conta i contenitori accesi.
 
 ```python
-def modello_bpp(w, C, K):
+def modello_bpp(w, c, k):
     n = len(w)
     m = nuovo_modello("bin_packing")
-    x = m.addVars(n, K, vtype=GRB.BINARY, name="x")
-    y = m.addVars(K, vtype=GRB.BINARY, name="y")
+    x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
+    y = m.addVars(k, vtype=GRB.BINARY, name="y")
     m.setObjective(y.sum(), GRB.MINIMIZE)
     m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="oggetto")
-    m.addConstrs((gp.quicksum(w[j] * x[j, b] for j in R(n)) <= C * y[b]
-                  for b in R(K)), name="capacita")
+    m.addConstrs((gp.quicksum(w[j] * x[j, b] for j in R(n)) <= c * y[b]
+                  for b in R(k)), name="capacita")
     return m, x, y
 ```
 
-Sull'istanza di sei oggetti di peso $w = (5, 4, 4, 3, 3, 2)$ e capacità $C = 8$:
+Sull'istanza di sei oggetti di peso $w = (5, 4, 4, 3, 3, 2)$ e capacità $c = 8$:
 
 <!-- modello-esteso: cap06_bpp -->
 
@@ -282,7 +284,7 @@ conteggio è quindi stretto.
 
 !!! warning "Il rilassamento del bin packing è debolissimo"
     Rilassando $y_b$ a $y_b \ge 0$ il modello compra frazioni di contenitore, e
-    l'ottimo dell'LP scende a $\sum_j w_j / C = 21/8 = 2{,}625$: il rilassamento
+    l'ottimo dell'LP scende a $\sum_j w_j / c = 21/8 = 2{,}625$: il rilassamento
     non sa che un contenitore si apre tutto intero. È il motivo per cui su questo
     problema il bound duale è poco utile e le euristiche contano di più.
 
@@ -709,19 +711,19 @@ il notebook è
 
     # --- bin packing: quanti contenitori bastano ---
     w_bpp = [5, 4, 4, 3, 3, 2]       # peso degli oggetti
-    C_bpp = 8                        # capacita' di un contenitore
+    c_bpp = 8                        # capacita' di un contenitore
     n_bpp = len(w_bpp)
-    K_bpp = n_bpp                    # al piu' un contenitore per oggetto
+    k_bpp = n_bpp                    # al piu' un contenitore per oggetto
 
 
-    def modello_bpp(w, C, K):
+    def modello_bpp(w, c, k):
         n = len(w)
         m = nuovo_modello("bin_packing")
-        x = m.addVars(n, K, vtype=GRB.BINARY, name="x")
-        y = m.addVars(K, vtype=GRB.BINARY, name="y")
+        x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
+        y = m.addVars(k, vtype=GRB.BINARY, name="y")
         m.setObjective(y.sum(), GRB.MINIMIZE)
         m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="oggetto")
-        m.addConstrs((gp.quicksum(w[j] * x[j, b] for j in R(n)) <= C * y[b] for b in R(K)),
+        m.addConstrs((gp.quicksum(w[j] * x[j, b] for j in R(n)) <= c * y[b] for b in R(k)),
                      name="capacita")
         return m, x, y
 
@@ -729,13 +731,13 @@ il notebook è
     # con sei contenitori possibili il modello dell'istanza avrebbe 42 colonne: per
     # scriverlo per esteso bastano i tre che servono davvero, e il conto sotto lo
     # dimostra
-    m_bpp, x_bpp, y_bpp = modello_bpp(w_bpp, C_bpp, K_bpp)
+    m_bpp, x_bpp, y_bpp = modello_bpp(w_bpp, c_bpp, k_bpp)
     z_bpp = risolvi(m_bpp)
-    minimo_teorico = -(-sum(w_bpp) // C_bpp)        # arrotondamento all'insu'
-    print(f"  Bin packing: pesi {w_bpp}, capacita' {C_bpp}.")
+    minimo_teorico = -(-sum(w_bpp) // c_bpp)        # arrotondamento all'insu'
+    print(f"  Bin packing: pesi {w_bpp}, capacita' {c_bpp}.")
     print(f"  Il peso totale e' {sum(w_bpp)}: nessuna soluzione usa meno di "
-          f"{sum(w_bpp)}/{C_bpp} = {minimo_teorico} contenitori, e l'ottimo ne usa {int(z_bpp)}.")
-    m_bpp3, x_bpp3, y_bpp3 = modello_bpp(w_bpp, C_bpp, int(z_bpp))
+          f"{sum(w_bpp)}/{c_bpp} = {minimo_teorico} contenitori, e l'ottimo ne usa {int(z_bpp)}.")
+    m_bpp3, x_bpp3, y_bpp3 = modello_bpp(w_bpp, c_bpp, int(z_bpp))
     risolvi(m_bpp3)
     salva_modello(m_bpp3, "cap06_bpp")
     assert z_bpp == minimo_teorico

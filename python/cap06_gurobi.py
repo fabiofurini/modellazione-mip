@@ -186,19 +186,19 @@ intestazione("8. Bin packing, makespan e TSP: i modelli che le euristiche useran
 
 # --- bin packing: quanti contenitori bastano ---
 w_bpp = [5, 4, 4, 3, 3, 2]       # peso degli oggetti
-C_bpp = 8                        # capacita' di un contenitore
+c_bpp = 8                        # capacita' di un contenitore
 n_bpp = len(w_bpp)
-K_bpp = n_bpp                    # al piu' un contenitore per oggetto
+k_bpp = n_bpp                    # al piu' un contenitore per oggetto
 
 
-def modello_bpp(w, C, K):
+def modello_bpp(w, c, k):
     n = len(w)
     m = nuovo_modello("bin_packing")
-    x = m.addVars(n, K, vtype=GRB.BINARY, name="x")
-    y = m.addVars(K, vtype=GRB.BINARY, name="y")
+    x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
+    y = m.addVars(k, vtype=GRB.BINARY, name="y")
     m.setObjective(y.sum(), GRB.MINIMIZE)
     m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="oggetto")
-    m.addConstrs((gp.quicksum(w[j] * x[j, b] for j in R(n)) <= C * y[b] for b in R(K)),
+    m.addConstrs((gp.quicksum(w[j] * x[j, b] for j in R(n)) <= c * y[b] for b in R(k)),
                  name="capacita")
     return m, x, y
 
@@ -206,13 +206,13 @@ def modello_bpp(w, C, K):
 # con sei contenitori possibili il modello dell'istanza avrebbe 42 colonne: per
 # scriverlo per esteso bastano i tre che servono davvero, e il conto sotto lo
 # dimostra
-m_bpp, x_bpp, y_bpp = modello_bpp(w_bpp, C_bpp, K_bpp)
+m_bpp, x_bpp, y_bpp = modello_bpp(w_bpp, c_bpp, k_bpp)
 z_bpp = risolvi(m_bpp)
-minimo_teorico = -(-sum(w_bpp) // C_bpp)        # arrotondamento all'insu'
-print(f"  Bin packing: pesi {w_bpp}, capacita' {C_bpp}.")
+minimo_teorico = -(-sum(w_bpp) // c_bpp)        # arrotondamento all'insu'
+print(f"  Bin packing: pesi {w_bpp}, capacita' {c_bpp}.")
 print(f"  Il peso totale e' {sum(w_bpp)}: nessuna soluzione usa meno di "
-      f"{sum(w_bpp)}/{C_bpp} = {minimo_teorico} contenitori, e l'ottimo ne usa {int(z_bpp)}.")
-m_bpp3, x_bpp3, y_bpp3 = modello_bpp(w_bpp, C_bpp, int(z_bpp))
+      f"{sum(w_bpp)}/{c_bpp} = {minimo_teorico} contenitori, e l'ottimo ne usa {int(z_bpp)}.")
+m_bpp3, x_bpp3, y_bpp3 = modello_bpp(w_bpp, c_bpp, int(z_bpp))
 risolvi(m_bpp3)
 salva_modello(m_bpp3, "cap06_bpp")
 assert z_bpp == minimo_teorico
