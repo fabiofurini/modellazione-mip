@@ -1,2 +1,2 @@
 problema,ub,lb,z_lp,z_lp_rafforzato,z_milp,senso,certificato
-EX 6 hub-and-spoke,3,3.0,3.0,3.0,3.0,min,
+EX 4 hub-and-spoke,3,3.0,3.0,3.0,3.0,min,
