@@ -129,7 +129,7 @@ lotto minimo, un packing e dei conteggi interi a lotti.
 
 | Modello | Che cosa mette in gioco | $z(\mathit{MILP})$ |
 |---|---|---:|
-| [EX 1 — Il furgone da otto posti](ex-01.md) | selezione con capacità e un'implicazione fra gruppi | 120 |
-| [EX 5 — Fondi acquistabili a lotti](ex-05.md) | conteggi interi a lotti, con un vincolo di proporzione | 16 |
-| [EX 6 — Veicoli con quantità minima](ex-06.md) | lotto minimo: una quantità minima se il tipo si produce | 25 250 |
-| [EX 9 — Le regine sulla scacchiera](ex-09.md) | packing su scacchiera: righe, colonne e diagonali | 4 |
+| [EX 1 — Il furgone da otto posti](ex-01-furgone.md) | selezione con capacità e un'implicazione fra gruppi | 120 |
+| [EX 5 — Fondi acquistabili a lotti](ex-05-fondi.md) | conteggi interi a lotti, con un vincolo di proporzione | 16 |
+| [EX 6 — Veicoli con quantità minima](ex-06-veicoli.md) | lotto minimo: una quantità minima se il tipo si produce | 25 250 |
+| [EX 9 — Le regine sulla scacchiera](ex-09-regine.md) | packing su scacchiera: righe, colonne e diagonali | 4 |

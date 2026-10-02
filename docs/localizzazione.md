@@ -86,5 +86,5 @@ Due modelli brevi con dati espliciti sulle tecniche di copertura e attivazione.
 
 | Modello | Che cosa mette in gioco | $z(\mathit{MILP})$ |
 |---|---|---:|
-| [EX 4 — Hub-and-spoke](ex-04.md) | set covering puro; il duale a mano chiude il problema | 3 |
-| [EX 10 — Utensili CNC](ex-10.md) | attivazione disaggregata al rovescio; una ricetta duale non ammissibile, corretta | 2500 |
+| [EX 4 — Hub-and-spoke](ex-04-hub.md) | set covering puro; il duale a mano chiude il problema | 3 |
+| [EX 10 — Utensili CNC](ex-10-utensili.md) | attivazione disaggregata al rovescio; una ricetta duale non ammissibile, corretta | 2500 |

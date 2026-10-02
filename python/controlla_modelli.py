@@ -107,8 +107,10 @@ def modelli_mancanti() -> list[str]:
     la pagina parla di un duale che il lettore non vede.
     """
     fuori = []
-    for pagina in sorted(DOCS.glob("ex-*.md")):
-        n = pagina.stem.removeprefix("ex-")
+    # «ex-04.md» e' il segnaposto del vecchio indirizzo, «ex-04-hub.md» la pagina:
+    # il numero da solo non basta piu' a riconoscere un esercizio.
+    for pagina in sorted(DOCS.glob("ex-[0-9][0-9]-*.md")):
+        n = pagina.stem[3:5]
         testo = pagina.read_text(encoding="utf-8")
         for verso in ("primale", "duale"):
             nome = f"ex{n}_{verso}"

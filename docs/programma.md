@@ -24,12 +24,12 @@ a chi vuole vedere tutto in una volta.
 
 *[Quindici modelli numerici](numerici.md)* — da EX 1 a EX 15, con la pagina online per
 
-EX 2 [Linee di autobus](ex-02.md) ·
-EX 3 [Staffetta](ex-03.md) ·
-EX 4 [Hub-and-spoke](ex-04.md) ·
-EX 8 [Seminari](ex-08.md) ·
-EX 10 [Utensili CNC](ex-10.md) ·
-EX 12 [Bilanciamento](ex-12.md)
+EX 2 [Linee di autobus](ex-02-linee.md) ·
+EX 3 [Staffetta](ex-03-staffetta.md) ·
+EX 4 [Hub-and-spoke](ex-04-hub.md) ·
+EX 8 [Seminari](ex-08-seminari.md) ·
+EX 10 [Utensili CNC](ex-10-utensili.md) ·
+EX 12 [Bilanciamento](ex-12-bilanciamento.md)
 
 *[Assegnamento e scheduling](scheduling.md)*
 

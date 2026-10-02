@@ -118,9 +118,9 @@ soluzione e tabella dei bound.
 
 | Modello | Che cosa mette in gioco | $z(\mathit{MILP})$ |
 |---|---|---:|
-| [EX 2 — Linee di autobus](ex-02.md) | assegnamento con capacità in numero di lavori | 9 |
-| [EX 3 — Staffetta](ex-03.md) | assegnamento con più risorse che compiti; matrice totalmente unimodulare | 95 |
-| [EX 8 — Seminari](ex-08.md) | cardinalità esatta, non-adiacenza, duale con variabile libera | 18 |
-| [EX 12 — Bilanciamento](ex-12.md) | min-max contro differenza: stesse soluzioni, valori diversi | 9 |
-| [EX 13 — I turni del pronto soccorso](ex-13.md) | copertura dei fabbisogni giornalieri con turni settimanali | 7 060 |
-| [EX 15 — L'orario della scuola di musica](ex-15.md) | conflitti, non-adiacenza e preferenze da evitare | 0 |
+| [EX 2 — Linee di autobus](ex-02-linee.md) | assegnamento con capacità in numero di lavori | 9 |
+| [EX 3 — Staffetta](ex-03-staffetta.md) | assegnamento con più risorse che compiti; matrice totalmente unimodulare | 95 |
+| [EX 8 — Seminari](ex-08-seminari.md) | cardinalità esatta, non-adiacenza, duale con variabile libera | 18 |
+| [EX 12 — Bilanciamento](ex-12-bilanciamento.md) | min-max contro differenza: stesse soluzioni, valori diversi | 9 |
+| [EX 13 — I turni del pronto soccorso](ex-13-turni.md) | copertura dei fabbisogni giornalieri con turni settimanali | 7 060 |
+| [EX 15 — L'orario della scuola di musica](ex-15-orario.md) | conflitti, non-adiacenza e preferenze da evitare | 0 |
