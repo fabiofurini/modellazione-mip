@@ -23,6 +23,7 @@ BASE = Path(__file__).resolve().parent.parent
 DOCS = BASE / "docs"
 PREAMBOLO = BASE / "dispensa_1" / "preambolo.tex"
 MATHJAX = DOCS / "javascripts" / "mathjax.js"
+MODELLI = BASE / "dati" / "modelli"
 
 # Le abbreviazioni definite dal preambolo delle dispense. L'elenco sta qui, e non
 # si legge dal `.tex`, perche' le dispense sono private e in CI non ci sono; se il
@@ -117,9 +118,33 @@ def modelli_mancanti() -> list[str]:
     return fuori
 
 
+def greche_in_tondo() -> list[str]:
+    """Un nome greco scritto senza la barra esce in tondo invece che in greco.
+
+    E' successo con «pi1» e con «varrho»: il generatore non li riconosceva e il
+    modello mostrava le lettere latine. Qui si controllano i modelli generati,
+    perche' e' li' che l'errore nasce.
+    """
+    greche = ("alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta",
+              "iota", "kappa", "lambda", "mu", "nu", "xi", "rho", "sigma", "tau",
+              "phi", "chi", "psi", "omega", "pi", "varepsilon", "vartheta",
+              "varpi", "varrho", "varsigma", "varphi")
+    fuori = []
+    for p in sorted(MODELLI.glob("*.tex")):
+        testo = p.read_text(encoding="utf-8")
+        for g in greche:
+            if re.search(rf"(?<![\\A-Za-z]){g}(?![A-Za-z])", testo):
+                fuori.append(f"{p.name}: «{g}» senza la barra, esce in tondo")
+                break
+    return fuori
+
+
 def main() -> int:
     trovati = 0
     for guaio in macro_non_definite():
+        print(guaio)
+        trovati += 1
+    for guaio in greche_in_tondo():
         print(guaio)
         trovati += 1
     for guaio in modelli_mancanti():
