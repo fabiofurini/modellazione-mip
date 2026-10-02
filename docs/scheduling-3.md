@@ -1,7 +1,7 @@
 # Selezione di lavori con ricavo e macchine a costo fisso
 
 **Classe:** BIP · **Legami:** attivazione (aggregata), problema di massimo · **Script:** `python/fam07_3_selezione.py`<br>
-**Difficoltà:** ★★☆ · **Tempo:** 30–45 min
+**Difficoltà:** ★★☆☆☆ · **Tempo:** 30–45 min
 { .scheda }
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_3_selezione.ipynb)

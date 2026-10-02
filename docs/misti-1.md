@@ -1,7 +1,7 @@
 # Premi acquistabili con due modalità
 
 **Classe:** BIP · **Legami:** mutua esclusione (set packing), somma come indicatore · **Script:** `python/fam10_1_premi.py`<br>
-**Difficoltà:** ★★☆ · **Tempo:** 30–45 min
+**Difficoltà:** ★★☆☆☆ · **Tempo:** 30–45 min
 { .scheda }
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam10_1_premi.ipynb)

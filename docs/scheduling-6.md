@@ -1,7 +1,7 @@
 # Classi con premio di completamento e riduzione «se e solo se»
 
 **Classe:** BIP · **Legami:** se e solo se (due), CNF · **Script:** `python/fam07_6_classipremio.py`<br>
-**Difficoltà:** ★★★ · **Tempo:** 45–60 min
+**Difficoltà:** ★★★★☆ · **Tempo:** 45–60 min
 { .scheda }
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/fam07_6_classipremio.ipynb)

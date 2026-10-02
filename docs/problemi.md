@@ -8,6 +8,15 @@ dimostrazione dei legami fra le variabili, istanza, euristica costruttiva,
 duale del rilassamento LP, soluzione con Gurobi e domande di modellazione
 aggiuntive.
 
+!!! note "Le stelle della difficoltà"
+    Ogni problema porta una difficoltà da ★☆☆☆☆ a ★★★★★. Misura quanto è
+    difficile **costruire il modello**: quante famiglie di variabili servono,
+    quali legami vanno riconosciuti, se c'è una struttura temporale, un big-M,
+    una disgiunzione, un min-max, degli scaglioni, un «se e solo se». Non misura
+    la dimensione dell'istanza, il tempo del solver né la lunghezza della pagina:
+    un problema con un modello elementare resta a una stella anche se il suo
+    duale è laborioso.
+
 !!! tip "Quaranta problemi da modellare"
     Dati come arrivano davvero — un testo, dei dati, una domanda — senza il
     modello già scritto: venti con i dati numerici espliciti e venti in forma

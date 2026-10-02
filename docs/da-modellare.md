@@ -17,6 +17,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
 !!! abstract "N1 — Sei progetti e un budget"
 
+    **Difficoltà:** ★☆☆☆☆
+
     Un dipartimento sceglie quali progetti finanziare fra sei. I costi sono $40$,
     $25$, $30$, $15$, $50$ e $20$ migliaia di euro; i benefici attesi sono $9$, $5$,
     $7$, $3$, $11$ e $4$. Il budget è $100$. I progetti $2$ e $5$ usano lo stesso
@@ -24,6 +26,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     solo se si finanzia anche il $1$. Si vuole il beneficio massimo.
 
 !!! abstract "N2 — Tre corrieri, quattro consegne"
+
+    **Difficoltà:** ★★☆☆☆
 
     Quattro consegne vanno affidate a tre corrieri. La tabella riporta, per ogni
     corriere e ogni consegna, il tempo necessario in minuti:
@@ -39,6 +43,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
 !!! abstract "N3 — Antenne su cinque quartieri"
 
+    **Difficoltà:** ★☆☆☆☆
+
     Una città ha cinque quartieri e quattro possibili siti per le antenne. Il
     sito 1 copre i quartieri $\{1,2\}$, il sito 2 copre $\{2,3,4\}$, il sito 3 copre
     $\{1,4,5\}$ e il sito 4 copre $\{3,5\}$. Ogni antenna costa lo stesso. Si vuole
@@ -46,11 +52,15 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
 !!! abstract "N4 — Quattro pacchi in scatole da dieci chili"
 
+    **Difficoltà:** ★☆☆☆☆
+
     Quattro pacchi pesano $6$, $5$, $4$ e $3$ chili. Ogni scatola porta al più $10$
     chili e un pacco non si divide. Sono disponibili tre scatole. Si vuole il minimo
     numero di scatole.
 
 !!! abstract "N5 — Due prodotti, tre reparti"
+
+    **Difficoltà:** ★☆☆☆☆
 
     Un'officina produce due articoli. Un pezzo del primo richiede $2$ ore nel
     reparto A, $1$ nel B e $3$ nel C; un pezzo del secondo richiede $1$, $3$ e $2$.
@@ -59,12 +69,16 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
 !!! abstract "N6 — I turni della settimana"
 
+    **Difficoltà:** ★★★☆☆
+
     Uno sportello è aperto sette giorni. Gli addetti necessari sono, da lunedì a
     domenica, $4$, $3$, $4$, $5$, $6$, $5$ e $3$. Ogni addetto assunto lavora cinque
     giorni consecutivi e poi ne riposa due; il ciclo può cominciare in un giorno
     qualsiasi della settimana. Si vuole il minimo numero di addetti.
 
 !!! abstract "N7 — Tre fornitori con costo di attivazione"
+
+    **Difficoltà:** ★★☆☆☆
 
     Servono $100$ unità di un componente. Tre fornitori lo vendono a $9$, $7$ e $8$
     euro l'unità, ma chi riceve un ordine chiede anche una cifra fissa di $50$, $120$
@@ -73,6 +87,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
 !!! abstract "N8 — Quattro lavori su una macchina"
 
+    **Difficoltà:** ★★★★☆
+
     Quattro lavori vanno eseguiti uno dopo l'altro su una sola macchina. Le durate
     sono $4$, $2$, $6$ e $3$ ore; le scadenze sono $8$, $5$, $14$ e $10$ ore
     dall'inizio. La macchina parte all'istante $0$ e non si ferma. Si vuole
@@ -80,6 +96,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     completamento e la scadenza.
 
 !!! abstract "N9 — Tre magazzini e tre clienti"
+
+    **Difficoltà:** ★★★☆☆
 
     Tre clienti chiedono $12$, $8$ e $15$ pallet. Tre magazzini possono essere
     aperti, con capacità $20$, $25$ e $18$ pallet e costo fisso di apertura $100$,
@@ -96,11 +114,15 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
 !!! abstract "N10 — Quattro studenti in due gruppi"
 
+    **Difficoltà:** ★★★☆☆
+
     Quattro studenti hanno voti medi $28$, $24$, $30$ e $23$. Vanno divisi in due
     gruppi da due. Si vuole che il gruppo con la media più alta e quello con la media
     più bassa siano il più vicini possibile.
 
 !!! abstract "N11 — Cinque film in due sale"
+
+    **Difficoltà:** ★★★☆☆
 
     Cinque film durano $90$, $120$, $100$, $140$ e $110$ minuti. Due sale sono
     libere per $240$ minuti ciascuna. Ogni film si proietta al più una volta, e in
@@ -109,6 +131,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     sala. Si vuole l'incasso massimo.
 
 !!! abstract "N12 — Dieta con quattro alimenti"
+
+    **Difficoltà:** ★★★☆☆
 
     Quattro alimenti costano $2$, $3$, $1$ e $4$ euro al chilo. Un chilo di ciascuno
     fornisce
@@ -124,12 +148,16 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
 !!! abstract "N13 — Acquisti a scaglioni"
 
+    **Difficoltà:** ★★★★☆
+
     Un'azienda compra fino a $200$ unità di un materiale. Il prezzo è $10$ euro
     l'unità per le prime $50$, $8$ per quelle fra $51$ e $120$, $7$ oltre $120$. Lo
     sconto vale solo sulle unità dello scaglione, non su tutte. Servono almeno $90$
     unità, e il magazzino ne contiene al più $180$. Si vuole la spesa minima.
 
 !!! abstract "N14 — Sei incroci da sorvegliare"
+
+    **Difficoltà:** ★☆☆☆☆
 
     Una rete di strade collega sei incroci con i tratti
     $\{1,2\}$, $\{1,3\}$, $\{2,3\}$, $\{2,4\}$, $\{3,5\}$, $\{4,5\}$, $\{4,6\}$ e
@@ -139,6 +167,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
 !!! abstract "N15 — Tre mesi di produzione"
 
+    **Difficoltà:** ★★★★☆
+
     Una linea produce un articolo per tre mesi. Le domande sono $100$, $140$ e $80$
     pezzi. Produrre un pezzo costa $5$ euro; lanciare la produzione in un mese costa
     $300$ euro, indipendentemente dalla quantità; tenere un pezzo in magazzino a
@@ -146,6 +176,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     si finisce con magazzino vuoto. Si vuole il costo minimo.
 
 !!! abstract "N16 — Tre container da scegliere"
+
+    **Difficoltà:** ★★☆☆☆
 
     Tre container sono disponibili: il primo porta $20$ tonnellate e costa $100$
     euro, il secondo $25$ tonnellate e costa $120$ euro, il terzo $15$ tonnellate e
@@ -157,12 +189,16 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
 !!! abstract "N17 — Sei attività e due squadre"
 
+    **Difficoltà:** ★★★☆☆
+
     Sei attività durano $3$, $2$, $4$, $1$, $5$ e $2$ giorni. Due squadre lavorano in
     parallelo, e un'attività occupa una sola squadra per tutta la sua durata, senza
     interruzioni. Ogni squadra svolge le sue attività una dopo l'altra. Si vuole
     finire il prima possibile.
 
 !!! abstract "N18 — Due squadre di pronto intervento"
+
+    **Difficoltà:** ★★★☆☆
 
     Due squadre vanno formate da quattro tecnici. Ogni tecnico ha una fra tre
     competenze: i tecnici $1$ e $2$ hanno la prima, il $3$ la seconda, il $4$ la
@@ -172,6 +208,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
 !!! abstract "N19 — Tre periodi con arretrati"
 
+    **Difficoltà:** ★★★★★
+
     Le domande di tre periodi sono $50$, $70$ e $40$ unità. La produzione costa $4$
     euro l'unità e non supera $60$ unità per periodo. Tenere un'unità in magazzino a
     fine periodo costa $1$ euro; consegnare un'unità in ritardo costa $3$ euro per
@@ -179,6 +217,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     vuole il costo minimo.
 
 !!! abstract "N20 — Cinque quadri su due pareti"
+
+    **Difficoltà:** ★★★☆☆
 
     Cinque quadri sono larghi $60$, $45$, $80$, $50$ e $70$ centimetri. Due pareti
     sono lunghe $180$ centimetri ciascuna. Ogni quadro va appeso, e su una parete
@@ -190,6 +230,8 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni problema mette in gioco due o tre legami fra variabili, e il modello va scritto in generale, con i quantificatori.
 
 !!! abstract "S1 — Progetti con budget, esclusioni e premio di portafoglio"
+
+    **Difficoltà:** ★★★☆☆
 
     Un ente deve scegliere quali progetti finanziare fra $n \in \mathbb{Z}_{\ge 1}$
     candidati. Per ogni progetto $j \in \{1, 2, \dots, n\}$, il valore
@@ -205,6 +247,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
 
 !!! abstract "S2 — Compiti e risorse da attivare"
 
+    **Difficoltà:** ★★★★☆
+
     Un reparto deve affidare $n \in \mathbb{Z}_{\ge 1}$ compiti a $m \in \mathbb{Z}_{\ge 1}$ risorse.
     Per ogni risorsa $i \in \{1, 2, \dots, m\}$ e ogni compito
     $j \in \{1, 2, \dots, n\}$, il valore $c_{ij} \in \mathbb{Q}_{>0}$ è il costo, in euro,
@@ -218,6 +262,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
     distribuire i compiti, a costo totale minimo.
 
 !!! abstract "S3 — Presidi con raggio di servizio e riserva"
+
+    **Difficoltà:** ★★★★☆
 
     Un'amministrazione deve coprire $m \in \mathbb{Z}_{\ge 1}$ utenti aprendo presidi in
     alcune di $n \in \mathbb{Z}_{\ge 1}$ sedi candidate. Per ogni sede
@@ -234,6 +280,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
 
 !!! abstract "S4 — Contenitori di più tipi con merci incompatibili"
 
+    **Difficoltà:** ★★★★☆
+
     Un magazzino deve riporre $n \in \mathbb{Z}_{\ge 1}$ oggetti in contenitori di
     $k \in \mathbb{Z}_{\ge 1}$ tipi. Per ogni oggetto $j \in \{1, 2, \dots, n\}$, il valore
     $w_j \in \mathbb{Q}_{>0}$ è il peso, in chili, e $g_j \in \{1, 2, \dots, q\}$ è la
@@ -246,6 +294,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
     contenitori di ciascun tipo usare e come riempirli, a costo totale minimo.
 
 !!! abstract "S5 — Lotti con attrezzaggio, capacità e magazzino limitato"
+
+    **Difficoltà:** ★★★★☆
 
     Un'azienda pianifica la produzione di un articolo su $n \in \mathbb{Z}_{\ge 1}$ periodi.
     Per ogni periodo $t \in \{1, 2, \dots, n\}$, il valore $d_t \in \mathbb{Q}_{\ge 0}$ è la
@@ -263,6 +313,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
 
 !!! abstract "S6 — $p$ sedi, capacità e distanza peggiore"
 
+    **Difficoltà:** ★★★★☆
+
     Un'azienda deve servire $m \in \mathbb{Z}_{\ge 1}$ clienti aprendo esattamente
     $p \in \mathbb{Z}_{\ge 1}$ sedi fra $n \in \mathbb{Z}_{\ge 1}$ candidate, con $p \le n$. Per ogni
     cliente $c \in \{1, 2, \dots, m\}$, il valore $d_c \in \mathbb{Q}_{>0}$ è la domanda, in
@@ -276,6 +328,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
     più grande fra un cliente e la sede che lo serve.
 
 !!! abstract "S7 — Macchine qualificate e date di rilascio"
+
+    **Difficoltà:** ★★★★★
 
     Un'officina deve eseguire $n \in \mathbb{Z}_{\ge 1}$ lavori su $k \in \mathbb{Z}_{\ge 1}$
     macchine. Per ogni lavoro $j \in \{1, 2, \dots, n\}$, il valore
@@ -291,6 +345,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
 
 !!! abstract "S8 — Scaffali con classi e peso massimo"
 
+    **Difficoltà:** ★★★★☆
+
     Un deposito deve distribuire $n \in \mathbb{Z}_{\ge 1}$ oggetti su $m \in \mathbb{Z}_{\ge 1}$
     scaffali. Gli oggetti appartengono a $q \in \mathbb{Z}_{\ge 1}$ classi merceologiche:
     per ogni oggetto $j \in \{1, 2, \dots, n\}$, il valore
@@ -302,6 +358,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
     più carico.
 
 !!! abstract "S9 — Taglio con più formati di barra"
+
+    **Difficoltà:** ★★★★★
 
     Un'officina deve ricavare spezzoni di $k \in \mathbb{Z}_{\ge 1}$ lunghezze diverse da
     barre di $h \in \mathbb{Z}_{\ge 1}$ formati. Per ogni formato $f \in \{1, 2, \dots, h\}$,
@@ -316,6 +374,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
 
 !!! abstract "S10 — Rete con costo fisso d'arco e archi limitati"
 
+    **Difficoltà:** ★★★★☆
+
     Un operatore logistico deve spedire $Q \in \mathbb{Q}_{>0}$ unità di merce da un nodo
     origine $s$ a un nodo destinazione $u$ su una rete orientata di nodi $V$ e archi
     $A \subseteq V \times V$; i nodi diversi da $s$ e $u$ sono di transito. Per ogni
@@ -327,6 +387,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
     e quanto farvi passare, a costo totale minimo.
 
 !!! abstract "S11 — Turni ciclici con riposo e competenze"
+
+    **Difficoltà:** ★★★★★
 
     Un servizio è attivo su $n \in \mathbb{Z}_{\ge 1}$ giorni, in ciclo settimanale. Il
     personale è diviso in $q \in \mathbb{Z}_{\ge 1}$ competenze. Per ogni giorno
@@ -342,6 +404,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
 
 !!! abstract "S12 — Portafoglio a lotti con settori"
 
+    **Difficoltà:** ★★★☆☆
+
     Un investitore dispone di un capitale $K \in \mathbb{Q}_{>0}$ euro e sceglie fra
     $n \in \mathbb{Z}_{\ge 1}$ fondi, divisi in $k \in \mathbb{Z}_{\ge 1}$ settori. Per ogni fondo
     $j \in \{1, 2, \dots, n\}$, il valore $s_j \in \{1, 2, \dots, k\}$ è il settore,
@@ -353,6 +417,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
     decidere quanti lotti comprare di ciascun fondo, a rendimento totale massimo.
 
 !!! abstract "S13 — Razione su più giorni"
+
+    **Difficoltà:** ★★★★★
 
     Una mensa prepara la razione di $n \in \mathbb{Z}_{\ge 1}$ giorni usando
     $s \in \mathbb{Z}_{\ge 1}$ alimenti e rispettando $r \in \mathbb{Z}_{\ge 1}$ vincoli
@@ -370,6 +436,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
 
 !!! abstract "S14 — Sequenze con attrezzaggi dipendenti e finestre"
 
+    **Difficoltà:** ★★★★★
+
     Su una sola macchina vanno eseguiti $n \in \mathbb{Z}_{\ge 1}$ lavori. Per ogni lavoro
     $j \in \{1, 2, \dots, n\}$, il valore $t_j \in \mathbb{Q}_{>0}$ è il tempo di
     lavorazione, in ore, e $d_j \in \mathbb{Q}_{>0}$ è la scadenza, cioè l'istante entro il
@@ -382,6 +450,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
     costo totale dei ritardi.
 
 !!! abstract "S15 — Squadre su più periodi"
+
+    **Difficoltà:** ★★★★☆
 
     Un'azienda di servizi deve coprire $m \in \mathbb{Z}_{\ge 1}$ zone per
     $n \in \mathbb{Z}_{\ge 1}$ periodi, con $k \in \mathbb{Z}_{\ge 1}$ squadre. Per ogni squadra
@@ -396,6 +466,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
 
 !!! abstract "S16 — Studenti e relatori con carichi equilibrati"
 
+    **Difficoltà:** ★★★★☆
+
     Un corso di laurea deve assegnare $n \in \mathbb{Z}_{\ge 1}$ studenti a
     $m \in \mathbb{Z}_{\ge 1}$ relatori. Per ogni studente $i \in \{1, 2, \dots, n\}$ e ogni
     relatore $j \in \{1, 2, \dots, m\}$, il valore $v_{ij} \in \mathbb{Z}_{\ge 0}$ è il
@@ -409,6 +481,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
     studente non superi $g \in \mathbb{Z}_{\ge 0}$.
 
 !!! abstract "S17 — Manutenzioni con finestre e perdita di produzione"
+
+    **Difficoltà:** ★★★★★
 
     Uno stabilimento ha $n \in \mathbb{Z}_{\ge 1}$ macchine e pianifica le manutenzioni su
     $T \in \mathbb{Z}_{\ge 1}$ periodi. Per ogni macchina $j \in \{1, 2, \dots, n\}$, il
@@ -425,6 +499,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
 
 !!! abstract "S18 — Partizione bilanciata di un grafo"
 
+    **Difficoltà:** ★★★★☆
+
     Un'organizzazione deve dividere in due squadre i $n \in \mathbb{Z}_{\ge 1}$ nodi di un
     grafo non orientato di archi $E$. Per ogni nodo $i \in \{1, 2, \dots, n\}$, il
     valore $w_i \in \mathbb{Q}_{>0}$ è il carico di lavoro che porta; per ogni arco
@@ -436,6 +512,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
     minimizzando l'intensità totale degli scambi fra le due squadre.
 
 !!! abstract "S19 — Caricamento con veicoli eterogenei"
+
+    **Difficoltà:** ★★★★☆
 
     Un corriere deve spedire $n \in \mathbb{Z}_{\ge 1}$ carichi con $m \in \mathbb{Z}_{\ge 1}$
     veicoli. Per ogni carico $j \in \{1, 2, \dots, n\}$, il valore
@@ -450,6 +528,8 @@ Dati dichiarati con il tipo e l'unità, come nei problemi delle famiglie. Ogni p
     minimo.
 
 !!! abstract "S20 — Capacità da installare con costi a scaglioni"
+
+    **Difficoltà:** ★★★★★
 
     Un gestore deve installare una capacità complessiva di almeno
     $Q \in \mathbb{Q}_{>0}$ megawatt scegliendo fra $n \in \mathbb{Z}_{\ge 1}$ tecnologie. Per ogni
