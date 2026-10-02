@@ -25,10 +25,10 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
 !!! abstract "N2 — Tre corrieri, quattro consegne"
 
-    Quattro consegne vanno affidate a tre corrieri. Il tempo che il corriere $i$
-    impiega per la consegna $j$, in minuti, è
+    Quattro consegne vanno affidate a tre corrieri. La tabella riporta, per ogni
+    corriere e ogni consegna, il tempo necessario in minuti:
 
-    |  | C1 | C2 | C3 | C4 |
+    |  | consegna 1 | consegna 2 | consegna 3 | consegna 4 |
     |---|---|---|---|---|
     | corriere 1 | 20 | 35 | 25 | 40 |
     | corriere 2 | 25 | 20 | 30 | 35 |
@@ -47,7 +47,7 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 !!! abstract "N4 — Quattro pacchi in scatole da dieci chili"
 
     Quattro pacchi pesano $6$, $5$, $4$ e $3$ chili. Ogni scatola porta al più $10$
-    chili e un pacco non si divide. Sono disponibili due scatole. Si vuole il minimo
+    chili e un pacco non si divide. Sono disponibili tre scatole. Si vuole il minimo
     numero di scatole.
 
 !!! abstract "N5 — Due prodotti, tre reparti"
@@ -83,9 +83,10 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
     Tre clienti chiedono $12$, $8$ e $15$ pallet. Tre magazzini possono essere
     aperti, con capacità $20$, $25$ e $18$ pallet e costo fisso di apertura $100$,
-    $90$ e $80$. Il costo di trasporto per pallet dal magazzino $l$ al cliente $c$ è
+    $90$ e $80$. La tabella riporta il costo di trasporto per pallet da ciascun
+    magazzino a ciascun cliente:
 
-    |  | c1 | c2 | c3 |
+    |  | cliente 1 | cliente 2 | cliente 3 |
     |---|---|---|---|
     | magazzino 1 | 2 | 4 | 5 |
     | magazzino 2 | 3 | 2 | 4 |
@@ -112,7 +113,7 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     Quattro alimenti costano $2$, $3$, $1$ e $4$ euro al chilo. Un chilo di ciascuno
     fornisce
 
-    |  | a1 | a2 | a3 | a4 |
+    |  | alimento 1 | alimento 2 | alimento 3 | alimento 4 |
     |---|---|---|---|---|
     | proteine (g) | 20 | 35 | 10 | 40 |
     | ferro (mg) | 3 | 2 | 5 | 4 |
@@ -144,13 +145,15 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     fine mese costa $1$ euro. La linea produce al più $200$ pezzi al mese. Si parte e
     si finisce con magazzino vuoto. Si vuole il costo minimo.
 
-!!! abstract "N16 — Due container"
+!!! abstract "N16 — Tre container da scegliere"
 
-    Due container portano $20$ e $25$ tonnellate. Cinque carichi pesano $10$, $8$,
-    $12$, $6$ e $9$ tonnellate. I carichi $1$ e $3$ sono incompatibili e non
-    viaggiano nello stesso container; il carico $5$ richiede un container
-    refrigerato, e lo è solo il secondo. Ogni carico va imbarcato. Usare un
-    container costa $100$ euro. Si vuole il costo minimo.
+    Tre container sono disponibili: il primo porta $20$ tonnellate e costa $100$
+    euro, il secondo $25$ tonnellate e costa $120$ euro, il terzo $15$ tonnellate e
+    costa $80$ euro; si paga solo per quelli che si usano. Quattro carichi pesano
+    $10$, $8$, $12$ e $6$ tonnellate, e ciascuno va imbarcato per intero in un
+    container solo. I carichi $1$ e $3$ sono incompatibili e non viaggiano insieme;
+    il carico $4$ richiede un container refrigerato, e lo è soltanto il secondo. Si
+    vuole il costo minimo.
 
 !!! abstract "N17 — Sei attività e due squadre"
 
