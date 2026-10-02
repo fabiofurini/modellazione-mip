@@ -6,7 +6,10 @@ sito, fascicolo delle soluzioni:
 1. il simbolo di relazione sta sul punto di allineamento (`lhs &\\le rhs`), non
    prima: cosi' `=`, `\\le`, `\\ge` e `\\in` finiscono incolonnati;
 2. una riga di dominio per famiglia di variabili, ciascuna con il suo `\\forall`;
-3. mai piu' di un vincolo per riga.
+3. mai piu' di un vincolo per riga;
+4. ogni abbreviazione del preambolo usata nelle pagine (`\\Z`, `\\ub`, ...) e'
+   definita anche per MathJax, altrimenti il browser stampa il comando invece
+   del simbolo.
 
 Esce con stato non nullo se trova una riga fuori formato, cosi' la CI si ferma.
 
@@ -18,6 +21,8 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
 DOCS = BASE / "docs"
+PREAMBOLO = BASE / "dispensa_1" / "preambolo.tex"
+MATHJAX = DOCS / "javascripts" / "mathjax.js"
 
 # un dominio: `\in \{0, 1\}`, `\ge 0`, `\le 0`, `\gtreqless 0`, `\in \Z_{\ge 0}`
 DOMINIO = re.compile(r"\\in\s*\\\{0|\\ge\s*0|\\le\s*0|\\gtreqless\s*0|\\in\s*\\(Z|Q|R)")
@@ -62,8 +67,31 @@ def problemi(riga: str) -> list[str]:
     return fuori
 
 
+def macro_non_definite() -> list[str]:
+    """Le abbreviazioni del preambolo che le pagine usano e MathJax non conosce.
+
+    Senza la definizione il browser stampa `\\Z` al posto di Z, e il modello
+    sembra sbagliato anche quando non lo e'.
+    """
+    nel_preambolo = set(re.findall(r"\\newcommand\{\\([A-Za-z]+)\}",
+                                   PREAMBOLO.read_text(encoding="utf-8")))
+    per_mathjax = set(re.findall(r"^\s*([A-Za-z]+):\s*\"",
+                                 MATHJAX.read_text(encoding="utf-8"), re.M))
+    mancanti = {}
+    for pagina in sorted(DOCS.glob("*.md")):
+        testo = pagina.read_text(encoding="utf-8")
+        for nome in set(re.findall(r"\\([A-Za-z]+)", testo)):
+            if nome in nel_preambolo and nome not in per_mathjax:
+                mancanti.setdefault(nome, []).append(pagina.name)
+    return [f"\\{n} usata in {len(p)} pagine ({', '.join(sorted(p)[:3])}...) "
+            f"ma non definita in {MATHJAX.name}" for n, p in sorted(mancanti.items())]
+
+
 def main() -> int:
     trovati = 0
+    for guaio in macro_non_definite():
+        print(guaio)
+        trovati += 1
     for pagina in sorted(DOCS.glob("*.md")):
         testo = pagina.read_text(encoding="utf-8")
         for n, blocco in enumerate(re.findall(r"\$\$\n(.*?)\n\$\$", testo, re.S), 1):
@@ -76,7 +104,7 @@ def main() -> int:
                     print(f"{pagina.name} (modello {n}): {p}\n    {riga[:110]}")
                     trovati += 1
     if trovati:
-        print(f"\n{trovati} righe fuori formato.")
+        print(f"\n{trovati} punti da sistemare.")
         return 1
     print("Formato dei modelli: tutte le pagine a posto.")
     return 0

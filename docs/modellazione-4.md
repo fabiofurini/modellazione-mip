@@ -1,4 +1,4 @@
-# Euristiche costruttive
+# 4. Euristiche costruttive
 
 **Classe:** algoritmi · **Script:** `python/cap05_euristiche.py`, `python/euristiche.py`
 { .scheda }
@@ -29,7 +29,7 @@ soluzione che esiste davvero; quando fallisce, bound primale non ce n'è.
     In un problema di **minimo** il valore di una soluzione ammissibile è un
     *upper* bound: $z(\mathit{MILP}) \le \mathit{UB}$. In un **massimo** è un
     *lower* bound: $\mathit{LB} \le z(\mathit{MILP})$. Chiamare $UB$ il
-    risultato di una euristica costruttiva su un massimo è l'errore di segno più comune del
+    risultato di un'euristica costruttiva su un massimo è l'errore di segno più comune del
     corso.
 
 ## Bin packing: le regole di inserimento
@@ -153,7 +153,7 @@ Euristica costruttivaZaino(p, w, C):
 Su $p = (10,7,6,4)$, $w = (5,4,3,3)$, $C = 9$: rapporti $2$, $7/4$, $2$, $4/3$;
 si prendono gli oggetti 1 e 3 (peso $8$), valore $16$. Poiché il problema è di
 **massimo**, $\mathit{LB} = 16 \le z(\mathit{MILP}) = 17$, gap $5{,}9\%$:
-l'ottimo prende gli oggetti 1 e 2 riempiendo lo zaino esattamente. La euristica costruttiva
+l'ottimo prende gli oggetti 1 e 2 riempiendo lo zaino esattamente. L'euristica costruttiva
 sbaglia perché l'oggetto 3 lascia un residuo inutilizzabile.
 
 ## TSP: il vicino più vicino
@@ -249,7 +249,7 @@ $9$: per arrivarci serve una mossa di **scambio** fra due macchine.
     lato pessimistico, e nient'altro. Il fatto che si sia fermata non significa
     che sia arrivata.
 
-## Quando la euristica costruttiva fallisce
+## Quando l'euristica costruttiva fallisce
 
 !!! danger "«Nessuna soluzione trovata» non è «nessuna soluzione esiste»"
     Tre lavori di durata $(3, 3, 2)$ su due macchine con disponibilità
@@ -304,7 +304,7 @@ il notebook è
     testo che finisce nella dispensa), la verifica di ammissibilita' della soluzione
     prodotta --- vincoli, bound *e* interezza --- e il confronto con l'ottimo del
     MILP corrispondente. Chiude con un passo di ricerca locale e con il caso in cui
-    la euristica costruttiva fallisce senza che il problema sia inammissibile.
+    l'euristica costruttiva fallisce senza che il problema sia inammissibile.
     """
     import gurobipy as gp
     import pandas as pd
@@ -510,7 +510,7 @@ il notebook è
     print("  bound migliori di quelli della soluzione che restituisce.")
 
     # ---------- 7. QUANDO LA GREEDY FALLISCE ----------
-    intestazione("5.8  Un fallimento della euristica costruttiva non dimostra l'inammissibilita'")
+    intestazione("5.8  Un fallimento dell'euristica costruttiva non dimostra l'inammissibilita'")
     t57 = matrice([3, 3, 2], 2)
     a57 = [5, 3]
     e57 = next_fit(t57, a57)
@@ -520,7 +520,7 @@ il notebook è
     z57 = risolvi(m57)
     print(f"  Il MILP invece e' ammissibile, con ottimo {frazione(z57)}: soluzione "
           + ", ".join(f"x[{j+1}][{mm+1}]" for j in R(3) for mm in R(2) if x57[j, mm].X > 0.5))
-    print("  La euristica costruttiva fallisce perche' e' miope, non perche' il problema non abbia")
+    print("  L'euristica costruttiva fallisce perche' e' miope, non perche' il problema non abbia")
     print("  soluzione: 'nessuna soluzione trovata' non e' 'nessuna soluzione esiste'.")
     assert not e57.ok
 
@@ -536,7 +536,7 @@ il notebook è
     for i, g in enumerate(gap):
         ax.annotate(f"{g:.1f}%", (g, i), textcoords="offset points", xytext=(4, -3), fontsize=9)
     ax.set_xlabel("gap dell'euristica rispetto all'ottimo del MILP (%)")
-    ax.set_title("Quanto e' buona ciascuna euristica costruttiva")
+    ax.set_title("Quanto e' buona ciascun'euristica costruttiva")
     ax.invert_yaxis()
     ax.set_xlim(0, max(gap) * 1.25 + 1)
     salva_figura(fig, "cap05_gap")

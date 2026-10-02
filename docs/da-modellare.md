@@ -177,7 +177,7 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
 
 !!! abstract "N16 — Tre container da scegliere"
 
-    **Difficoltà:** ★★☆☆☆
+    **Difficoltà:** ★★★☆☆
 
     Tre container sono disponibili: il primo porta $20$ tonnellate e costa $100$
     euro, il secondo $25$ tonnellate e costa $120$ euro, il terzo $15$ tonnellate e

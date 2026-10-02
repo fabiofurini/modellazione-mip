@@ -1,7 +1,7 @@
 """EX 6 -- Hub-and-spoke: il minimo numero di hub che copre otto citta' (famiglia 8).
 
 Un set covering puro, con tutti i costi pari a 1: si minimizza il numero di hub.
-Il duale e' il "packing frazionario" dei clienti, e la euristica costruttiva duale sulle citta'
+Il duale e' il "packing frazionario" dei clienti, e l'euristica costruttiva duale sulle citta'
 qui trova un bound che coincide con l'ottimo.
 """
 import gurobipy as gp

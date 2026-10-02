@@ -26,6 +26,7 @@ Ogni capitolo ha uno **script** che produce tutti i numeri citati e un
 esce da un'esecuzione riproducibile.
 
 <div class="grid cards" markdown>
+
 -   :material-shape-outline: **1. Che cos'è un modello MIP**
 
     ---
@@ -35,6 +36,7 @@ esce da un'esecuzione riproducibile.
     Branch-and-bound in una pagina.
 
     [:octicons-arrow-right-24: Il capitolo](modellazione-1.md)
+
 -   :material-arrow-collapse-vertical: **2. Rilassamenti, dualità e bound**
 
     ---
@@ -44,6 +46,7 @@ esce da un'esecuzione riproducibile.
     duali dell'LP non sono i prezzi marginali del MILP.
 
     [:octicons-arrow-right-24: Il capitolo](modellazione-2.md)
+
 -   :material-language-python: **3. Dal modello a Python/Gurobi**
 
     ---
@@ -53,15 +56,17 @@ esce da un'esecuzione riproducibile.
     `NodeCount` e le tolleranze. Il protocollo del corso, dall'inizio alla fine.
 
     [:octicons-arrow-right-24: Il capitolo](modellazione-3.md)
+
 -   :material-run-fast: **4. Euristiche costruttive**
 
     ---
 
     Next-fit, first-fit, best-fit, LPT, euristica costruttiva di copertura, euristica costruttiva per lo zaino
     e lot sizing: pseudocodice, traccia, verifica di ammissibilità e bound. Un
-    fallimento della euristica costruttiva non dimostra l'inammissibilità.
+    fallimento dell'euristica costruttiva non dimostra l'inammissibilità.
 
     [:octicons-arrow-right-24: Il capitolo](modellazione-4.md)
+
 -   :material-gate-and: **5. Logica e variabili binarie**
 
     ---
@@ -71,6 +76,7 @@ esce da un'esecuzione riproducibile.
     scissioni; cinque esercizi risolti e verificati per enumerazione.
 
     [:octicons-arrow-right-24: Il capitolo](modellazione-5.md)
+
 -   :material-link-variant: **6. Legami fra variabili**
 
     ---

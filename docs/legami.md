@@ -1,4 +1,4 @@
-# Legami fra variabili
+# 6. Legami fra variabili
 
 **Classe:** tecniche di modellazione · **Script:** `python/cap03_legami.py`
 { .scheda }

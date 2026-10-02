@@ -1,9 +1,16 @@
-"""EX 9 -- Otto regine sulla scacchiera (famiglia 11).
+"""EX 9 -- Regine sulla scacchiera (famiglia 11).
 
 Set packing su quattro famiglie di rette: righe, colonne e le due diagonali. Il
 duale del rilassamento si costruisce a mano in una riga sola (si paga 1 ogni
 riga) e vale esattamente quanto l'ottimo: e' un caso in cui il certificato chiude
-il problema. L'euristica euristica costruttiva invece si blocca a meno di otto regine.
+il problema. L'euristica costruttiva invece si blocca sotto le n regine.
+
+L'istanza e' 4x4, la piu' piccola su cui si collocano n regine: sedici binarie e
+diciotto vincoli, cosi' il modello si scrive per esteso come tutti gli altri del
+capitolo. Il caso classico 8x8 resta fra le varianti.
+
+Le diagonali di una sola casella non diventano vincoli: `x <= 1` su una binaria
+e' gia' vero per definizione, e scriverlo riempirebbe il modello di righe vuote.
 """
 import gurobipy as gp
 import pandas as pd
@@ -17,10 +24,19 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("EX 9. Otto regine: il massimo numero di regine che non si attaccano")
-N = 8
-DIAG1 = R(-(N - 1), N)          # i - j costante
-DIAG2 = R(2, 2 * N + 1)         # i + j costante (indici da 1)
+intestazione("EX 9. Regine: il massimo numero di regine che non si attaccano")
+N = 4
+
+
+def diagonali(n):
+    """Le diagonali con almeno due caselle, nei due versi.
+
+    Su `i - j = k` le caselle sono `n - |k|`, su `i + j = k` sono
+    `min(k, 2n-2-k) + 1`: quelle con una sola casella si scartano.
+    """
+    prima = [k for k in R(-(n - 1), n) if n - abs(k) >= 2]
+    seconda = [k for k in R(0, 2 * n - 1) if min(k, 2 * n - 2 - k) + 1 >= 2]
+    return prima, seconda
 
 
 def modello(n):
@@ -29,10 +45,11 @@ def modello(n):
     m.setObjective(x.sum(), GRB.MAXIMIZE)
     m.addConstrs((x.sum(i, "*") <= 1 for i in R(n)), name="riga")
     m.addConstrs((x.sum("*", j) <= 1 for j in R(n)), name="colonna")
+    prima, seconda = diagonali(n)
     m.addConstrs((gp.quicksum(x[i, j] for i in R(n) for j in R(n) if i - j == k) <= 1
-                  for k in R(-(n - 1), n)), name="diag1")
+                  for k in prima), name="diag1")
     m.addConstrs((gp.quicksum(x[i, j] for i in R(n) for j in R(n) if i + j == k) <= 1
-                  for k in R(0, 2 * n - 1)), name="diag2")
+                  for k in seconda), name="diag2")
     return m, x
 
 
@@ -40,20 +57,24 @@ def duale(n):
     """min sum_i alpha_i + sum_j beta_j + sum_k gamma_k + sum_k delta_k
        s.t. alpha_i + beta_j + gamma_{i-j} + delta_{i+j} >= 1 per ogni casella."""
     d = nuovo_modello("duale_regine")
+    prima, seconda = diagonali(n)
     alpha = d.addVars(n, name="alpha")
     beta = d.addVars(n, name="beta")
-    gamma = d.addVars(R(-(n - 1), n), name="gamma")
-    delta = d.addVars(R(0, 2 * n - 1), name="delta")
+    gamma = d.addVars(prima, name="gamma")
+    delta = d.addVars(seconda, name="delta")
     d.setObjective(alpha.sum() + beta.sum() + gamma.sum() + delta.sum(), GRB.MINIMIZE)
-    d.addConstrs((alpha[i] + beta[j] + gamma[i - j] + delta[i + j] >= 1
+    d.addConstrs((alpha[i] + beta[j]
+                  + (gamma[i - j] if i - j in prima else 0)
+                  + (delta[i + j] if i + j in seconda else 0) >= 1
                   for i in R(n) for j in R(n)), name="rc")
     return d
 
 
 m8, x8 = modello(N)
 salva_modello(m8, "ex09_primale")
-print(f"  Scacchiera {N}x{N}: {N * N} variabili binarie e {2 * N + (2 * N - 1) * 2} vincoli")
-print("  (una riga, una colonna e due diagonali per ogni retta della scacchiera).")
+_p, _s = diagonali(N)
+print(f"  Scacchiera {N}x{N}: {N * N} variabili binarie e {2 * N + len(_p) + len(_s)} vincoli")
+print(f"  ({N} righe, {N} colonne e {len(_p)} + {len(_s)} diagonali con almeno due caselle).")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
 # euristica costruttiva riga per riga: la prima colonna libera che non e' attaccata dalle regine
@@ -112,7 +133,7 @@ print("  non il bound, a lasciare il divario.")
 intestazione("EX 9. Varianti")
 varianti = {}
 # 8a: scacchiere piu' piccole; per n = 2 e n = 3 non si arriva a n regine
-for n in (4, 5, 6):
+for n in (5, 6):
     m, x = modello(n)
     z = risolvi(m)
     varianti[f"n = {n}"] = z

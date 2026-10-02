@@ -1,4 +1,4 @@
-# Logica e variabili binarie
+# 5. Logica e variabili binarie
 
 **Classe:** BIP · **Legami:** clausole e implicazioni · **Script:** `python/cap02_logica.py`
 { .scheda }

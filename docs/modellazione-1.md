@@ -1,4 +1,4 @@
-# Che cos'è un modello MIP
+# 1. Che cos'è un modello MIP
 
 **Classe:** LP · ILP · BIP · MILP · **Script:** `python/cap01_modelli.py`
 { .scheda }
@@ -261,7 +261,9 @@ Lo script completo — i due rilassamenti, l'arrotondamento e la figura — è
 (riproducibile con `python3 python/cap01_modelli.py` dalla cartella `python/`).
 Lo stesso codice è disponibile come notebook —
 [`notebooks/cap01_modelli.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/cap01_modelli.ipynb)
-— che si apre in Colab dal badge in cima alla pagina.
+— qui però si legge soltanto: Python entra nel corso al
+[capitolo 3](modellazione-3.md), e da quel capitolo in poi ogni pagina ha il suo
+badge Colab in cima.
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 

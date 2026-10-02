@@ -4,7 +4,7 @@ Ogni euristica del corso su un'istanza minima: la traccia passo-passo (lo stesso
 testo che finisce nella dispensa), la verifica di ammissibilita' della soluzione
 prodotta --- vincoli, bound *e* interezza --- e il confronto con l'ottimo del
 MILP corrispondente. Chiude con un passo di ricerca locale e con il caso in cui
-la euristica costruttiva fallisce senza che il problema sia inammissibile.
+l'euristica costruttiva fallisce senza che il problema sia inammissibile.
 """
 import gurobipy as gp
 import pandas as pd
@@ -210,7 +210,7 @@ print("  Un ottimo locale non e' un ottimo globale, e la ricerca locale non prod
 print("  bound migliori di quelli della soluzione che restituisce.")
 
 # ---------- 7. QUANDO LA GREEDY FALLISCE ----------
-intestazione("5.8  Un fallimento della euristica costruttiva non dimostra l'inammissibilita'")
+intestazione("5.8  Un fallimento dell'euristica costruttiva non dimostra l'inammissibilita'")
 t57 = matrice([3, 3, 2], 2)
 a57 = [5, 3]
 e57 = next_fit(t57, a57)
@@ -220,7 +220,7 @@ m57, x57 = modello_assegnamento(t57, [[1, 1], [1, 1], [1, 1]], a57)
 z57 = risolvi(m57)
 print(f"  Il MILP invece e' ammissibile, con ottimo {frazione(z57)}: soluzione "
       + ", ".join(f"x[{j+1}][{mm+1}]" for j in R(3) for mm in R(2) if x57[j, mm].X > 0.5))
-print("  La euristica costruttiva fallisce perche' e' miope, non perche' il problema non abbia")
+print("  L'euristica costruttiva fallisce perche' e' miope, non perche' il problema non abbia")
 print("  soluzione: 'nessuna soluzione trovata' non e' 'nessuna soluzione esiste'.")
 assert not e57.ok
 
@@ -236,7 +236,7 @@ ax.barh(etichette, gap, color=colori)
 for i, g in enumerate(gap):
     ax.annotate(f"{g:.1f}%", (g, i), textcoords="offset points", xytext=(4, -3), fontsize=9)
 ax.set_xlabel("gap dell'euristica rispetto all'ottimo del MILP (%)")
-ax.set_title("Quanto e' buona ciascuna euristica costruttiva")
+ax.set_title("Quanto e' buona ciascun'euristica costruttiva")
 ax.invert_yaxis()
 ax.set_xlim(0, max(gap) * 1.25 + 1)
 salva_figura(fig, "cap05_gap")

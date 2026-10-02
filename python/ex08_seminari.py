@@ -84,7 +84,7 @@ for passo in R(q):
           f"seminario {s + 1} nello slot {k + 1} ({SLOT[k]}), punteggio {val}")
 lb = sum(p[s][k] for s, k in scelte)
 sol_eur = {f"x[{s},{k}]": 1 for s, k in scelte}
-assert ammissibile(m, sol_eur), "la euristica costruttiva deve produrre una soluzione ammissibile"
+assert ammissibile(m, sol_eur), "l'euristica costruttiva deve produrre una soluzione ammissibile"
 print(f"  Soluzione euristica: " + ", ".join(f"seminario {s + 1} nello slot {k + 1}"
                                              for s, k in scelte)
       + f"   lb = {frazione(lb)}")

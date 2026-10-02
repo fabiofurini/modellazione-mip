@@ -26,6 +26,7 @@ aggiuntive.
 
 <div class="grid cards" markdown>
 
+
 -   :material-numeric: **Quindici modelli numerici**
 
     ---
@@ -35,6 +36,7 @@ aggiuntive.
     EX 15.
 
     [:octicons-arrow-right-24: Vai ai quindici modelli numerici](numerici.md)
+
 
 -   :material-timer-sand: **Assegnamento e scheduling**
 
@@ -46,6 +48,7 @@ aggiuntive.
 
     [:octicons-arrow-right-24: Vai ai sette problemi di assegnamento e scheduling](scheduling.md)
 
+
 -   :material-map-marker-radius: **Localizzazione e copertura**
 
     ---
@@ -54,6 +57,7 @@ aggiuntive.
     solo se» con due vincoli di link, variabile di massimo. Quattro problemi.
 
     [:octicons-arrow-right-24: Vai ai quattro problemi di localizzazione e copertura](localizzazione.md)
+
 
 -   :material-factory: **Pianificazione della produzione**
 
@@ -65,6 +69,7 @@ aggiuntive.
 
     [:octicons-arrow-right-24: Vai ai tre problemi di produzione](produzione.md)
 
+
 -   :material-shape-outline: **Problemi misti**
 
     ---
@@ -75,6 +80,7 @@ aggiuntive.
     Nove problemi risolti.
 
     [:octicons-arrow-right-24: Vai ai nove problemi misti](misti.md)
+
 
 -   :material-help-circle-outline: **Problemi da modellare**
 

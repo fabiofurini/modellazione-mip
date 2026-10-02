@@ -1,4 +1,4 @@
-# Dal modello a Python/Gurobi
+# 3. Dal modello a Python/Gurobi
 
 **Classe:** implementazione · **Script:** `python/cap06_gurobi.py`
 { .scheda }

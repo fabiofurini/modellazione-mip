@@ -7,6 +7,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
 <div class="grid cards" markdown>
 
+
 -   :material-book-open-page-variant:{ .lg .middle } **Sto studiando la teoria**
 
     ---
@@ -16,6 +17,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
     [:octicons-arrow-right-24: I sei capitoli](modellazione.md)
 
+
 -   :material-pencil-ruler:{ .lg .middle } **Voglio fare esercizi**
 
     ---
@@ -24,6 +26,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
     modello, istanza, euristica, duale e ottimo.
 
     [:octicons-arrow-right-24: I problemi](problemi.md)
+
 
 -   :material-language-python:{ .lg .middle } **Voglio usare Gurobi**
 
@@ -88,6 +91,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
 <div class="grid cards" markdown>
 
+
 -   :material-vector-polygon: **Modellazione**
 
     ---
@@ -97,6 +101,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
     basso e dall'alto, il solver.
 
     [:octicons-arrow-right-24: I sei capitoli](modellazione.md)
+
 
 -   :material-puzzle: **I problemi**
 
@@ -108,6 +113,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
     aggiuntive.
 
     [:octicons-arrow-right-24: I problemi](problemi.md)
+
 
 -   :material-school: **Il corso**
 

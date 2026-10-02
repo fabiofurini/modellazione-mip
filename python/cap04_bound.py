@@ -69,7 +69,7 @@ zlp41, zlp41r, pi41 = due_rilassamenti(m41p, d41)
 print(f"  Dualita' debole verificata: {frazione(lb41)} <= {frazione(zlp41)} <= "
       f"{frazione(z41)}")
 assert lb41 <= zlp41 + 1e-9 <= z41 + 1e-9
-# upper bound primale: la soluzione euristica costruttiva di copertura (una zona scoperta alla volta)
+# upper bound primale: la soluzione dell'euristica costruttiva di copertura (una zona scoperta alla volta)
 scoperte = set(R(m41))
 presi41 = []
 while scoperte:
@@ -79,7 +79,7 @@ while scoperte:
     scoperte -= {i for i in scoperte if j in S41[i]}
 ub41_primale = sum(c41[j] for j in presi41)
 assert ammissibile(m41p, {f"x[{j}]": 1 for j in presi41})
-print(f"  Euristica euristica costruttiva di copertura: squadre {sorted(j + 1 for j in presi41)}, "
+print(f"  Euristica costruttiva di copertura: squadre {sorted(j + 1 for j in presi41)}, "
       f"ub = {frazione(ub41_primale)}")
 riga41 = registra_bound("copertura a costo minimo", ub41_primale, lb41, zlp41, zlp41r, z41)
 salva_dati(pd.DataFrame([riga41]), "cap04_copertura")
@@ -113,7 +113,7 @@ z42 = risolvi(m42)
 scelte42 = [j + 1 for j in R(4) if x42[j].X > 0.5]
 print(f"  Ottimo intero: z(MILP) = {frazione(z42)}, oggetti {scelte42}, "
       f"peso {sum(w42[j] for j in R(4) if x42[j].X > 0.5)} su {C42}")
-# euristica euristica costruttiva per rapporto valore/peso: da' un LOWER bound
+# euristica costruttiva per rapporto valore/peso: da' un LOWER bound
 ordine = sorted(R(4), key=lambda j: -p42[j] / w42[j])
 carico, presi = 0, []
 for j in ordine:

@@ -381,7 +381,7 @@ Notebook —
         else:
             print(f"  Premio {i + 1} (preferenza {d1[i]}): i punti residui {punti} non bastano "
                   f"per nessuna delle due modalita': si salta")
-    assert pref >= ell1, "la euristica costruttiva non raggiunge la preferenza richiesta"
+    assert pref >= ell1, "l'euristica costruttiva non raggiunge la preferenza richiesta"
     ub1 = sum(c1[i] for i, mod in scelta.items() if mod == "contributo")
     sol_eur = {f"x[{i}]": 1 for i, mod in scelta.items() if mod == "punti"} \
         | {f"y[{i}]": 1 for i, mod in scelta.items() if mod == "contributo"}
