@@ -204,6 +204,259 @@ due rilassamenti coincidono perché i vincoli di assegnamento implicano già
 $x_{jm} \le 1$ — e i duali non nulli sono $\tilde\mu = (2,\ 4{,}8,\ 5)$ e
 $\tilde\pi_2 = -0{,}2$: la macchina 2 è la sola risorsa stretta.
 
+## Tre problemi che il corso riusa
+
+Fin qui il modello di esempio è sempre stato lo zaino. I tre problemi qui sotto
+ritornano nel [capitolo delle euristiche](modellazione-4.md), dove si
+costruiscono a mano le soluzioni di next-fit, first-fit, best-fit, LPT e vicino
+più vicino: qui si scrivono i loro modelli, così quelle euristiche hanno un
+ottimo con cui confrontarsi.
+
+### Bin packing: quanti contenitori bastano
+
+!!! abstract "Bin packing"
+    Ci sono $n$ oggetti, l'oggetto $j$ pesa $w_j$. I contenitori sono tutti
+    uguali, di capacità $C$. Si usi il minimo numero di contenitori.
+
+Servono due famiglie di variabili binarie: $x_{jb} = 1$ se l'oggetto $j$ va nel
+contenitore $b$, e $y_b = 1$ se il contenitore $b$ viene usato.
+
+$$
+\begin{aligned}
+\min ~~ \sum_{b=1}^{K} y_b & &\\
+\text{soggetto a} \quad \sum_{b=1}^{K} x_{jb} &= 1, & \forall j \in \{1, 2, \dots, n\},\\
+\sum_{j=1}^{n} w_j\, x_{jb} - C\, y_b &\le 0, & \forall b \in \{1, 2, \dots, K\},\\
+x_{jb} &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\},\ \forall b \in \{1, 2, \dots, K\},\\
+y_b &\in \{0, 1\}, & \forall b \in \{1, 2, \dots, K\}.
+\end{aligned}
+$$
+
+La prima famiglia dice che ogni oggetto finisce in esattamente un contenitore.
+La seconda è la capacità scritta come **attivazione**: finché $y_b = 0$ il
+contenitore $b$ non può ricevere niente, e appena $y_b = 1$ accoglie fino a $C$.
+L'obiettivo conta i contenitori accesi.
+
+```python
+def modello_bpp(w, C, K):
+    n = len(w)
+    m = nuovo_modello("bin_packing")
+    x = m.addVars(n, K, vtype=GRB.BINARY, name="x")
+    y = m.addVars(K, vtype=GRB.BINARY, name="y")
+    m.setObjective(y.sum(), GRB.MINIMIZE)
+    m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="oggetto")
+    m.addConstrs((gp.quicksum(w[j] * x[j, b] for j in R(n)) <= C * y[b]
+                  for b in R(K)), name="capacita")
+    return m, x, y
+```
+
+Sull'istanza di sei oggetti di peso $w = (5, 4, 4, 3, 3, 2)$ e capacità $C = 8$:
+
+<!-- modello-esteso: cap06_bpp -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrrrrrrrrrrrrrrr c l}
+\min &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & y_1 & +y_2 & +y_3 &  & \\
+\text{soggetto a} & x_{11} & +x_{12} & +x_{13} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  & x_{21} & +x_{22} & +x_{23} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  & x_{31} & +x_{32} & +x_{33} &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  &  &  &  & x_{41} & +x_{42} & +x_{43} &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  &  &  &  &  &  &  & x_{51} & +x_{52} & +x_{53} &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & x_{61} & +x_{62} & +x_{63} &  &  &  & = & 1\\
+ & 5x_{11} &  &  & +4x_{21} &  &  & +4x_{31} &  &  & +3x_{41} &  &  & +3x_{51} &  &  & +2x_{61} &  &  & -8y_1 &  &  & \le & 0\\
+ &  & 5x_{12} &  &  & +4x_{22} &  &  & +4x_{32} &  &  & +3x_{42} &  &  & +3x_{52} &  &  & +2x_{62} &  &  & -8y_2 &  & \le & 0\\
+ &  &  & 5x_{13} &  &  & +4x_{23} &  &  & +4x_{33} &  &  & +3x_{43} &  &  & +3x_{53} &  &  & +2x_{63} &  &  & -8y_3 & \le & 0\\
+ & x_{11}, & x_{12}, & x_{13}, & x_{21}, & x_{22}, & x_{23}, & x_{31}, & x_{32}, & x_{33}, & x_{41}, & x_{42}, & x_{43}, & x_{51}, & x_{52}, & x_{53}, & x_{61}, & x_{62}, & x_{63} &  &  &  & \in & \{0, 1\}\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & y_1, & y_2, & y_3 & \in & \{0, 1\}
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
+Il peso totale è $21$, quindi nessuna soluzione può usare meno di
+$\lceil 21/8 \rceil = 3$ contenitori; l'ottimo ne usa esattamente $3$, e il
+conteggio è quindi stretto.
+
+!!! warning "Il rilassamento del bin packing è debolissimo"
+    Rilassando $y_b$ a $y_b \ge 0$ il modello compra frazioni di contenitore, e
+    l'ottimo dell'LP scende a $\sum_j w_j / C = 21/8 = 2{,}625$: il rilassamento
+    non sa che un contenitore si apre tutto intero. È il motivo per cui su questo
+    problema il bound duale è poco utile e le euristiche contano di più.
+
+### $P||C_{\max}$: il makespan su macchine identiche
+
+!!! abstract "Makespan su macchine identiche"
+    Ci sono $n$ lavori, di durata $d_j$, e $k$ macchine identiche. Ogni lavoro va
+    su una macchina sola e non si interrompe. Si minimizzi l'istante in cui
+    l'ultima macchina finisce.
+
+Con $x_{jm} = 1$ se il lavoro $j$ va sulla macchina $m$, e $C_{\max} \ge 0$
+l'istante di fine:
+
+$$
+\begin{aligned}
+\min ~~ C_{\max} & &\\
+\text{soggetto a} \quad \sum_{m=1}^{k} x_{jm} &= 1, & \forall j \in \{1, 2, \dots, n\},\\
+\sum_{j=1}^{n} d_j\, x_{jm} - C_{\max} &\le 0, & \forall m \in \{1, 2, \dots, k\},\\
+x_{jm} &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\},\ \forall m \in \{1, 2, \dots, k\},\\
+C_{\max} &\ge 0. &
+\end{aligned}
+$$
+
+L'obiettivo è la sola $C_{\max}$: nessun dato vi compare. Sono le $k$ righe di
+carico a darle significato, dicendo che nessuna macchina lavora più a lungo di
+$C_{\max}$; il minimo la schiaccia allora sul carico della macchina più carica.
+È la tecnica [min-max](legami-06.md).
+
+```python
+def modello_cmax(d, k):
+    n = len(d)
+    m = nuovo_modello("makespan")
+    x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
+    cmax = m.addVar(name="cmax")
+    m.setObjective(cmax, GRB.MINIMIZE)
+    m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="lavoro")
+    m.addConstrs((gp.quicksum(d[j] * x[j, mm] for j in R(n)) <= cmax
+                  for mm in R(k)), name="carico")
+    return m, x, cmax
+```
+
+Sull'istanza di sette lavori di durata $d = (5, 5, 4, 4, 3, 3, 3)$ su $k = 3$
+macchine:
+
+<!-- modello-esteso: cap06_cmax -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrrrrrrrrrrrrrrrr c l}
+\min &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & cmax &  & \\
+\text{soggetto a} & x_{11} & +x_{12} & +x_{13} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  & x_{21} & +x_{22} & +x_{23} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  & x_{31} & +x_{32} & +x_{33} &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  &  &  &  & x_{41} & +x_{42} & +x_{43} &  &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  &  &  &  &  &  &  & x_{51} & +x_{52} & +x_{53} &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & x_{61} & +x_{62} & +x_{63} &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & x_{71} & +x_{72} & +x_{73} &  & = & 1\\
+ & 5x_{11} &  &  & +5x_{21} &  &  & +4x_{31} &  &  & +4x_{41} &  &  & +3x_{51} &  &  & +3x_{61} &  &  & +3x_{71} &  &  & -cmax & \le & 0\\
+ &  & 5x_{12} &  &  & +5x_{22} &  &  & +4x_{32} &  &  & +4x_{42} &  &  & +3x_{52} &  &  & +3x_{62} &  &  & +3x_{72} &  & -cmax & \le & 0\\
+ &  &  & 5x_{13} &  &  & +5x_{23} &  &  & +4x_{33} &  &  & +4x_{43} &  &  & +3x_{53} &  &  & +3x_{63} &  &  & +3x_{73} & -cmax & \le & 0\\
+ & x_{11}, & x_{12}, & x_{13}, & x_{21}, & x_{22}, & x_{23}, & x_{31}, & x_{32}, & x_{33}, & x_{41}, & x_{42}, & x_{43}, & x_{51}, & x_{52}, & x_{53}, & x_{61}, & x_{62}, & x_{63}, & x_{71}, & x_{72}, & x_{73} &  & \in & \{0, 1\}\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & cmax & \ge & 0
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
+Il carico totale è $27$ e le macchine sono tre: nessuna soluzione può scendere
+sotto $27/3 = 9$, e l'ottimo vale esattamente $9$ — i lavori si dividono in tre
+gruppi da $9$. Qui il conteggio chiude il problema da solo.
+
+### Commesso viaggiatore: la formulazione MTZ
+
+!!! abstract "Commesso viaggiatore"
+    Ci sono $n$ città e una distanza $d_{ij}$ fra ogni coppia. Si trovi il giro
+    di lunghezza minima che tocca ogni città esattamente una volta e torna al
+    punto di partenza.
+
+Con $x_{ij} = 1$ se il giro va da $i$ a $j$, le due famiglie «si esce una volta»
+e «si entra una volta» non bastano: ammettono anche soluzioni fatte di
+**sottocicli** separati. La formulazione di Miller–Tucker–Zemlin aggiunge una
+variabile $u_i$ per ogni città diversa dalla prima, che ne registra la posizione
+lungo il giro.
+
+$$
+\begin{aligned}
+\min ~~ \sum_{i=1}^{n} \sum_{j \ne i} d_{ij}\, x_{ij} & &\\
+\text{soggetto a} \quad \sum_{j \ne i} x_{ij} &= 1, & \forall i \in \{1, 2, \dots, n\},\\
+\sum_{i \ne j} x_{ij} &= 1, & \forall j \in \{1, 2, \dots, n\},\\
+u_i - u_j + n\, x_{ij} &\le n - 1, & \forall i, j \in \{2, 3, \dots, n\},\ i \ne j,\\
+x_{ij} &\in \{0, 1\}, & \forall i, j \in \{1, 2, \dots, n\},\ i \ne j,\\
+u_i &\in [1,\, n-1], & \forall i \in \{2, 3, \dots, n\}.
+\end{aligned}
+$$
+
+Il terzo gruppo è il cuore della formulazione. Se $x_{ij} = 0$ la riga diventa
+$u_i - u_j \le n - 1$, sempre vera perché le $u$ stanno fra $1$ e $n-1$: non
+vieta niente. Se invece $x_{ij} = 1$ diventa $u_j \ge u_i + 1$, cioè «se vado da
+$i$ a $j$, la posizione di $j$ è la successiva». Un sottociclo che non tocca la
+città $1$ richiederebbe una catena di posizioni sempre crescenti che si richiude
+su se stessa, e questo è impossibile; la città $1$ non ha la sua $u$ proprio
+perché è il punto in cui il giro si chiude.
+
+```python
+def modello_tsp(D):
+    n = len(D)
+    m = nuovo_modello("tsp")
+    x = m.addVars(((i, j) for i in R(n) for j in R(n) if i != j),
+                  vtype=GRB.BINARY, name="x")
+    u = m.addVars(R(1, n), lb=1, ub=n - 1, name="u")
+    m.setObjective(gp.quicksum(D[i][j] * x[i, j] for i, j in x), GRB.MINIMIZE)
+    m.addConstrs((gp.quicksum(x[i, j] for j in R(n) if j != i) == 1
+                  for i in R(n)), name="esce")
+    m.addConstrs((gp.quicksum(x[i, j] for i in R(n) if i != j) == 1
+                  for j in R(n)), name="entra")
+    m.addConstrs((u[i] - u[j] + n * x[i, j] <= n - 1
+                  for i in R(1, n) for j in R(1, n) if i != j), name="mtz")
+    return m, x, u
+```
+
+Sull'istanza di cinque città del [capitolo delle euristiche](modellazione-4.md)
+il giro ottimo è $1 \to 3 \to 5 \to 2 \to 4 \to 1$ e misura $18$. Il modello
+dell'istanza ha $24$ colonne — venti archi e quattro posizioni — e ventidue
+righe:
+
+<!-- modello-esteso: cap06_tsp -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrrrrrrrrrrrrrrrrrr c l}
+\min & 5x_{12} & +2x_{13} & +2x_{14} & +9x_{15} & +5x_{21} & +4x_{23} & +3x_{24} & +4x_{25} & +2x_{31} & +4x_{32} & +4x_{34} & +7x_{35} & +2x_{41} & +3x_{42} & +4x_{43} & +7x_{45} & +9x_{51} & +4x_{52} & +7x_{53} & +7x_{54} &  &  &  &  &  & \\
+\text{soggetto a} & x_{12} & +x_{13} & +x_{14} & +x_{15} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  & x_{21} & +x_{23} & +x_{24} & +x_{25} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  &  &  & x_{31} & +x_{32} & +x_{34} & +x_{35} &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  &  &  &  &  &  &  & x_{41} & +x_{42} & +x_{43} & +x_{45} &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & x_{51} & +x_{52} & +x_{53} & +x_{54} &  &  &  &  & = & 1\\
+ &  &  &  &  & x_{21} &  &  &  & +x_{31} &  &  &  & +x_{41} &  &  &  & +x_{51} &  &  &  &  &  &  &  & = & 1\\
+ & x_{12} &  &  &  &  &  &  &  &  & +x_{32} &  &  &  & +x_{42} &  &  &  & +x_{52} &  &  &  &  &  &  & = & 1\\
+ &  & x_{13} &  &  &  & +x_{23} &  &  &  &  &  &  &  &  & +x_{43} &  &  &  & +x_{53} &  &  &  &  &  & = & 1\\
+ &  &  & x_{14} &  &  &  & +x_{24} &  &  &  & +x_{34} &  &  &  &  &  &  &  &  & +x_{54} &  &  &  &  & = & 1\\
+ &  &  &  & x_{15} &  &  &  & +x_{25} &  &  &  & +x_{35} &  &  &  & +x_{45} &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  & 5x_{23} &  &  &  &  &  &  &  &  &  &  &  &  &  &  & +u_2 & -u_3 &  &  & \le & 4\\
+ &  &  &  &  &  &  & 5x_{24} &  &  &  &  &  &  &  &  &  &  &  &  &  & +u_2 &  & -u_4 &  & \le & 4\\
+ &  &  &  &  &  &  &  & 5x_{25} &  &  &  &  &  &  &  &  &  &  &  &  & +u_2 &  &  & -u_5 & \le & 4\\
+ &  &  &  &  &  &  &  &  &  & 5x_{32} &  &  &  &  &  &  &  &  &  &  & -u_2 & +u_3 &  &  & \le & 4\\
+ &  &  &  &  &  &  &  &  &  &  & 5x_{34} &  &  &  &  &  &  &  &  &  &  & +u_3 & -u_4 &  & \le & 4\\
+ &  &  &  &  &  &  &  &  &  &  &  & 5x_{35} &  &  &  &  &  &  &  &  &  & +u_3 &  & -u_5 & \le & 4\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  & 5x_{42} &  &  &  &  &  &  & -u_2 &  & +u_4 &  & \le & 4\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 5x_{43} &  &  &  &  &  &  & -u_3 & +u_4 &  & \le & 4\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 5x_{45} &  &  &  &  &  &  & +u_4 & -u_5 & \le & 4\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 5x_{52} &  &  & -u_2 &  &  & +u_5 & \le & 4\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 5x_{53} &  &  & -u_3 &  & +u_5 & \le & 4\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 5x_{54} &  &  & -u_4 & +u_5 & \le & 4\\
+ & x_{12}, & x_{13}, & x_{14}, & x_{15}, & x_{21}, & x_{23}, & x_{24}, & x_{25}, & x_{31}, & x_{32}, & x_{34}, & x_{35}, & x_{41}, & x_{42}, & x_{43}, & x_{45}, & x_{51}, & x_{52}, & x_{53}, & x_{54} &  &  &  &  & \in & \{0, 1\}\\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & u_2, & u_3, & u_4, & u_5 & \ge & 1
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
+!!! warning "MTZ è comoda, non è la più forte"
+    I vincoli MTZ sono $O(n^2)$ e si scrivono in tre righe di `gurobipy`, ma il
+    loro rilassamento lineare è debole: le $u$ continue assorbono quasi tutto e
+    l'LP si avvicina poco all'ottimo intero. Le formulazioni che eliminano i
+    sottocicli con i tagli di connessione danno bound molto migliori, al prezzo
+    di un numero esponenziale di vincoli da generare a mano a mano. Per le
+    dimensioni di questo corso MTZ basta.
+
 ## Il protocollo del corso, dall'inizio alla fine
 
 $$\text{dati} \to \text{modello} \to \text{euristica e verifica} \to \text{LP e duale} \to \text{MIP} \to \text{tabella} \to \text{figure e notebook}$$
@@ -265,7 +518,7 @@ il notebook è
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/cap06_gurobi.py` (201 righe)"
+??? example "Mostra lo script completo — `python/cap06_gurobi.py` (310 righe)"
 
     ```python
     """Capitolo 3 -- Dal modello a Python/Gurobi: come si scrive e come si legge.
@@ -282,6 +535,7 @@ il notebook è
     from euristiche import best_fit
     from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
                      rilassamento, risolvi, stampa_lp, stampa_soluzione, valuta, viola_interezza)
+    from esteso import salva_modello
     from stile import (ARANCIO, BLU, CICLO, GRIGIO, ROSSO, TEAL, VERDE, intestazione,
                        plt, salva_dati, salva_figura)
 
@@ -445,6 +699,114 @@ il notebook è
     assert lb <= zlp <= z <= ub + 1e-9
     print("  (7) la riga della tabella e' quella qui sopra, ed e' salvata in CSV: da li'")
     print("      la leggono la dispensa, il sito e verifica_numeri.py.")
+
+    # ---------- 8. TRE PROBLEMI CHE IL CORSO RIUSA ----------
+    # Bin packing, makespan su macchine identiche e commesso viaggiatore: sono i tre
+    # problemi su cui il capitolo delle euristiche costruisce next-fit, first-fit,
+    # best-fit, LPT e vicino piu' vicino. Qui si scrivono i modelli, cosi' quel
+    # capitolo ha qualcosa con cui confrontare le sue soluzioni.
+    intestazione("8. Bin packing, makespan e TSP: i modelli che le euristiche useranno")
+
+    # --- bin packing: quanti contenitori bastano ---
+    w_bpp = [5, 4, 4, 3, 3, 2]       # peso degli oggetti
+    C_bpp = 8                        # capacita' di un contenitore
+    n_bpp = len(w_bpp)
+    K_bpp = n_bpp                    # al piu' un contenitore per oggetto
+
+
+    def modello_bpp(w, C, K):
+        n = len(w)
+        m = nuovo_modello("bin_packing")
+        x = m.addVars(n, K, vtype=GRB.BINARY, name="x")
+        y = m.addVars(K, vtype=GRB.BINARY, name="y")
+        m.setObjective(y.sum(), GRB.MINIMIZE)
+        m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="oggetto")
+        m.addConstrs((gp.quicksum(w[j] * x[j, b] for j in R(n)) <= C * y[b] for b in R(K)),
+                     name="capacita")
+        return m, x, y
+
+
+    # con sei contenitori possibili il modello dell'istanza avrebbe 42 colonne: per
+    # scriverlo per esteso bastano i tre che servono davvero, e il conto sotto lo
+    # dimostra
+    m_bpp, x_bpp, y_bpp = modello_bpp(w_bpp, C_bpp, K_bpp)
+    z_bpp = risolvi(m_bpp)
+    minimo_teorico = -(-sum(w_bpp) // C_bpp)        # arrotondamento all'insu'
+    print(f"  Bin packing: pesi {w_bpp}, capacita' {C_bpp}.")
+    print(f"  Il peso totale e' {sum(w_bpp)}: nessuna soluzione usa meno di "
+          f"{sum(w_bpp)}/{C_bpp} = {minimo_teorico} contenitori, e l'ottimo ne usa {int(z_bpp)}.")
+    m_bpp3, x_bpp3, y_bpp3 = modello_bpp(w_bpp, C_bpp, int(z_bpp))
+    risolvi(m_bpp3)
+    salva_modello(m_bpp3, "cap06_bpp")
+    assert z_bpp == minimo_teorico
+
+    # --- P||Cmax: il makespan su macchine identiche ---
+    d_cmax = [5, 5, 4, 4, 3, 3, 3]   # durate dei lavori
+    k_cmax = 3                       # macchine identiche
+
+
+    def modello_cmax(d, k):
+        n = len(d)
+        m = nuovo_modello("makespan")
+        x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
+        cmax = m.addVar(name="cmax")
+        m.setObjective(cmax, GRB.MINIMIZE)
+        m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="lavoro")
+        m.addConstrs((gp.quicksum(d[j] * x[j, mm] for j in R(n)) <= cmax for mm in R(k)),
+                     name="carico")
+        return m, x, cmax
+
+
+    m_cmax, x_cmax, v_cmax = modello_cmax(d_cmax, k_cmax)
+    z_cmax = risolvi(m_cmax)
+    salva_modello(m_cmax, "cap06_cmax")
+    print(f"  Makespan: durate {d_cmax} su {k_cmax} macchine identiche.")
+    print(f"  Il carico totale e' {sum(d_cmax)}: diviso per {k_cmax} da' "
+          f"{frazione(sum(d_cmax) / k_cmax)}, e l'ottimo vale {frazione(z_cmax)}.")
+
+    # --- TSP con la formulazione MTZ ---
+    D_tsp = [[0, 5, 2, 2, 9],
+             [5, 0, 4, 3, 4],
+             [2, 4, 0, 4, 7],
+             [2, 3, 4, 0, 7],
+             [9, 4, 7, 7, 0]]
+    n_tsp = len(D_tsp)
+
+
+    def modello_tsp(D):
+        """TSP con i vincoli di Miller-Tucker-Zemlin.
+
+        Le variabili u ordinano le citta' lungo il tour: il vincolo
+        u_i - u_j + n x_ij <= n - 1 e' vero se x_ij = 0 e obbliga u_j >= u_i + 1 se
+        x_ij = 1. I sottocicli che non toccano la citta' 1 sono cosi' esclusi, perche'
+        richiederebbero una catena di u sempre crescenti che si richiude su se stessa.
+        """
+        n = len(D)
+        m = nuovo_modello("tsp")
+        x = m.addVars(((i, j) for i in R(n) for j in R(n) if i != j), vtype=GRB.BINARY, name="x")
+        u = m.addVars(R(1, n), lb=1, ub=n - 1, name="u")
+        m.setObjective(gp.quicksum(D[i][j] * x[i, j] for i, j in x), GRB.MINIMIZE)
+        m.addConstrs((gp.quicksum(x[i, j] for j in R(n) if j != i) == 1 for i in R(n)), name="esce")
+        m.addConstrs((gp.quicksum(x[i, j] for i in R(n) if i != j) == 1 for j in R(n)), name="entra")
+        m.addConstrs((u[i] - u[j] + n * x[i, j] <= n - 1
+                      for i in R(1, n) for j in R(1, n) if i != j), name="mtz")
+        return m, x, u
+
+
+    m_tsp, x_tsp, u_tsp = modello_tsp(D_tsp)
+    salva_modello(m_tsp, "cap06_tsp")
+    z_tsp = risolvi(m_tsp)
+    seguente = {i: j for (i, j) in x_tsp if x_tsp[i, j].X > 0.5}
+    giro, citta = [0], 0
+    while seguente[citta] != 0:
+        citta = seguente[citta]
+        giro.append(citta)
+    print(f"  TSP su {n_tsp} citta': tour ottimo "
+          + " -> ".join(str(c + 1) for c in giro + [0])
+          + f", lunghezza {frazione(z_tsp)}.")
+    salva_dati(pd.DataFrame([{"problema": "bin packing", "z_milp": z_bpp},
+                             {"problema": "makespan", "z_milp": z_cmax},
+                             {"problema": "TSP", "z_milp": z_tsp}]), "cap06_tre_problemi")
 
     # ---------- 8. FIGURA: I QUATTRO NUMERI DEL PROTOCOLLO ----------
     fig, ax = plt.subplots(figsize=(7.6, 3.0))

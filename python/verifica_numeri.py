@@ -77,6 +77,10 @@ assert int(st.loc["limite di tempo, nessuna soluzione"].sol_count) == 0
 assert uguale(st.loc["prima soluzione"].obj_val, 12) and uguale(st.loc["prima soluzione"].obj_bound, 10)
 pro = pd.read_csv(DATI / "cap06_protocollo.csv").iloc[0]
 assert uguale(pro.ub, 11) and uguale(pro.lb, 10) and uguale(pro.z_lp, F("53/5")) and uguale(pro.z_milp, 11)
+tre = pd.read_csv(DATI / "cap06_tre_problemi.csv").set_index("problema")
+assert uguale(tre.loc["bin packing"].z_milp, 3)      # = ceil(21/8), il conteggio e' stretto
+assert uguale(tre.loc["makespan"].z_milp, 9)         # = 27/3, le macchine si dividono il carico
+assert uguale(tre.loc["TSP"].z_milp, 18)             # il tour che le euristiche inseguono
 print("cap. 6: stati del solver, tolleranze e protocollo completo")
 
 # ----------------------------------------------------------------------
