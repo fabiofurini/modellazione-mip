@@ -85,52 +85,73 @@ riga41 = registra_bound("copertura a costo minimo", ub41_primale, lb41, zlp41, z
 salva_dati(pd.DataFrame([riga41]), "cap04_copertura")
 
 # ---------- 2. UN MASSIMO: I RUOLI SI SCAMBIANO ----------
-intestazione("4.2  Uno zaino di massimo: l'euristica da' il lower bound, il duale l'upper")
-p42 = [10, 7, 6, 4]                      # valori
-w42 = [5, 4, 3, 3]                       # pesi
-C42 = 9
+intestazione("4.2  Uno zaino a piu' risorse: l'euristica da' il lower bound, il duale l'upper")
+# Zaino multidimensionale: una riga di capacita' per risorsa, non una sola. Con una
+# risorsa sola il duale avrebbe una variabile e un termine per vincolo, e non si
+# vedrebbe la scelta che la ricetta deve fare fra le risorse.
+p42 = [10, 9, 7, 6, 4]                   # valori
+A42 = [[6, 4, 3, 3, 2],                  # consumo di acciaio
+       [1, 3, 4, 2, 3],                  # ore di tornio
+       [3, 2, 2, 4, 1]]                  # ore di collaudo
+B42 = [10, 9, 8]                         # disponibilita' delle tre risorse
+NOMI42 = ["acciaio", "tornio", "collaudo"]
+no42, nr42 = len(p42), len(B42)
 
 
 def primale_42():
     m = nuovo_modello("zaino")
-    x = m.addVars(4, vtype=GRB.BINARY, name="x")
-    m.setObjective(gp.quicksum(p42[j] * x[j] for j in R(4)), GRB.MAXIMIZE)
-    m.addConstr(gp.quicksum(w42[j] * x[j] for j in R(4)) <= C42, name="capacita")
+    x = m.addVars(no42, vtype=GRB.BINARY, name="x")
+    m.setObjective(gp.quicksum(p42[j] * x[j] for j in R(no42)), GRB.MAXIMIZE)
+    m.addConstrs((gp.quicksum(A42[i][j] * x[j] for j in R(no42)) <= B42[i]
+                  for i in R(nr42)), name="capacita")
     return m, x
 
 
 def duale_42():
-    """Duale del rilassamento senza i bound (x >= 0): min C v  s.t.  w_j v >= p_j, v >= 0."""
+    """Duale del rilassamento senza i bound (x >= 0):
+       min sum_i b_i v_i  s.t.  sum_i a_ij v_i >= p_j per ogni oggetto,  v >= 0."""
     d = nuovo_modello("duale_zaino")
-    v = d.addVar(name="v")
-    d.setObjective(C42 * v, GRB.MINIMIZE)
-    d.addConstrs((w42[j] * v >= p42[j] for j in R(4)), name="rc")
+    v = d.addVars(nr42, name="v")
+    d.setObjective(gp.quicksum(B42[i] * v[i] for i in R(nr42)), GRB.MINIMIZE)
+    d.addConstrs((gp.quicksum(A42[i][j] * v[i] for i in R(nr42)) >= p42[j]
+                  for j in R(no42)), name="rc")
     return d, v
 
 
 m42, x42 = primale_42()
 z42 = risolvi(m42)
-scelte42 = [j + 1 for j in R(4) if x42[j].X > 0.5]
-print(f"  Ottimo intero: z(MILP) = {frazione(z42)}, oggetti {scelte42}, "
-      f"peso {sum(w42[j] for j in R(4) if x42[j].X > 0.5)} su {C42}")
-# euristica costruttiva per rapporto valore/peso: da' un LOWER bound
-ordine = sorted(R(4), key=lambda j: -p42[j] / w42[j])
-carico, presi = 0, []
+scelte42 = [j + 1 for j in R(no42) if x42[j].X > 0.5]
+consumo = [sum(A42[i][j] for j in R(no42) if x42[j].X > 0.5) for i in R(nr42)]
+print(f"  Ottimo intero: z(MILP) = {frazione(z42)}, oggetti {scelte42}")
+print("  Consumo all'ottimo: "
+      + ", ".join(f"{NOMI42[i]} {consumo[i]} su {B42[i]}" for i in R(nr42))
+      + " --- tutte e tre le risorse sono sature.")
+# euristica costruttiva per rapporto valore / consumo totale: da' un LOWER bound
+ordine = sorted(R(no42), key=lambda j: -p42[j] / sum(A42[i][j] for i in R(nr42)))
+presi, carico = [], [0] * nr42
 for j in ordine:
-    if carico + w42[j] <= C42:
+    if all(carico[i] + A42[i][j] <= B42[i] for i in R(nr42)):
         presi.append(j)
-        carico += w42[j]
+        carico = [carico[i] + A42[i][j] for i in R(nr42)]
 lb42 = sum(p42[j] for j in presi)
 assert ammissibile(m42, {f"x[{j}]": 1 for j in presi})
-print(f"  Euristica costruttiva per rapporto p_j/w_j: prende {sorted(j + 1 for j in presi)}, "
-      f"lb = {frazione(lb42)}")
-# duale a mano: v = max_j p_j / w_j  (il rapporto migliore) e' ammissibile
-v_mano = max(p42[j] / w42[j] for j in R(4))
+print("  Euristica costruttiva per rapporto valore / consumo totale: "
+      f"prende {sorted(j + 1 for j in presi)}, lb = {frazione(lb42)}")
+# duale a mano: si paga una risorsa sola, quella che da' il bound piu' basso
 d42, v42 = duale_42()
-ub42, viol = valuta(d42, {"v": v_mano})
+candidati = {}
+for i in R(nr42):
+    vi = max(p42[j] / A42[i][j] for j in R(no42))
+    candidati[i] = B42[i] * vi
+i_scelta = min(candidati, key=candidati.get)
+v_scelta = max(p42[j] / A42[i_scelta][j] for j in R(no42))
+mano = {f"v[{i}]": (v_scelta if i == i_scelta else 0.0) for i in R(nr42)}
+ub42, viol = valuta(d42, mano)
 assert viol <= 1e-9, viol
-print(f"  Soluzione duale a mano: v = max_j p_j/w_j = {frazione(v_mano)}  ->  "
-      f"ub = C v = {frazione(ub42)}")
+print("  Soluzione duale a mano: si paga una risorsa sola. "
+      + ", ".join(f"{NOMI42[i]} darebbe {frazione(candidati[i])}" for i in R(nr42)))
+print(f"  La piu' conveniente e' {NOMI42[i_scelta]}, con v = {frazione(v_scelta)}  ->  "
+      f"ub = {frazione(ub42)}")
 zlp42, zlp42r, _ = due_rilassamenti(m42, d42)
 print(f"  Il sandwich del massimo: {frazione(lb42)} <= z(MILP) = {frazione(z42)} <= "
       f"z(LP) = {frazione(zlp42)} <= ub = {frazione(ub42)}")
@@ -140,15 +161,30 @@ salva_dati(pd.DataFrame([riga42]), "cap04_zaino")
 
 # ---------- 3. UN TAGLIO DI COPERTURA ----------
 intestazione("4.3  Una disuguaglianza valida: il taglio di copertura")
-# {1,2} e' una copertura: w_1 + w_2 = 9 > 8 = C, quindi x_1 + x_2 <= 1
+# I tagli di copertura si leggono su un vincolo per volta: qui si torna quindi a
+# uno zaino con una sola risorsa, piu' piccolo di quello della sezione 4.2.
+p43 = [10, 7, 6, 4]                      # valori
+w43 = [5, 4, 3, 3]                       # pesi
+C43 = 9
+
+
+def primale_43(C=C43):
+    m = nuovo_modello("zaino_una_risorsa")
+    x = m.addVars(4, vtype=GRB.BINARY, name="x")
+    m.setObjective(gp.quicksum(p43[j] * x[j] for j in R(4)), GRB.MAXIMIZE)
+    m.addConstr(gp.quicksum(w43[j] * x[j] for j in R(4)) <= C, name="capacita")
+    return m, x
+
+
 from itertools import combinations
-tutte = [s for k in R(2, 5) for s in combinations(R(4), k) if sum(w42[j] for j in s) > C42]
+tutte = [s for k in R(2, 5) for s in combinations(R(4), k) if sum(w43[j] for j in s) > C43]
 coperture = [s for s in tutte                                   # solo le minimali
-             if all(sum(w42[j] for j in t) <= C42
+             if all(sum(w43[j] for j in t) <= C43
                     for t in combinations(s, len(s) - 1))]
 print("  Coperture minimali trovate: "
       + "; ".join("{" + ", ".join(str(j + 1) for j in s) + "}" for s in coperture))
-m43, x43 = primale_42()
+m43, x43 = primale_43()
+z43_prima = risolvi(m43)          # l'ottimo intero prima dei tagli, per il confronto
 zlp43_prima, sol43, _ = rilassamento(m43, rafforzato=True)
 print("  Soluzione ottima del rilassamento senza tagli: "
       + ", ".join(f"x_{j+1} = {frazione(sol43[f'x[{j}]'])}" for j in R(4)))
@@ -163,7 +199,7 @@ z43 = risolvi(m43)
 zlp43_dopo, _, _ = rilassamento(m43, rafforzato=True)
 print(f"  z(LP+) senza tagli = {frazione(zlp43_prima)}   con i tagli di copertura = "
       f"{frazione(zlp43_dopo)}   z(MILP) = {frazione(z43)}")
-assert z43 == z42, "i tagli non devono cambiare l'ottimo intero"
+assert z43 == z43_prima, "i tagli non devono cambiare l'ottimo intero"
 assert zlp43_dopo <= zlp43_prima + 1e-9
 salva_dati(pd.DataFrame([{"modello": "zaino", "z_lp_senza_tagli": zlp43_prima,
                           "z_lp_con_tagli": zlp43_dopo, "z_milp": z43}]), "cap04_tagli")
@@ -205,10 +241,7 @@ salva_dati(pd.DataFrame([{"configurazione": "impostazioni predefinite", "z": m44
 intestazione("4.5  Perche' i duali dell'LP non sono i prezzi marginali del MILP")
 righe = []
 for C in (8, 9, 10, 11, 12):
-    m = nuovo_modello("zaino_C")
-    x = m.addVars(4, vtype=GRB.BINARY, name="x")
-    m.setObjective(gp.quicksum(p42[j] * x[j] for j in R(4)), GRB.MAXIMIZE)
-    con = m.addConstr(gp.quicksum(w42[j] * x[j] for j in R(4)) <= C, name="capacita")
+    m, x = primale_43(C)
     z = risolvi(m)
     zr, _, pi = rilassamento(m, rafforzato=True)
     righe.append({"capacita": C, "z_milp": z, "z_lp": zr, "duale_lp": pi["capacita"]})

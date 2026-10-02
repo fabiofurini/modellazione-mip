@@ -50,8 +50,8 @@ print("cap. 3: le quattordici tecniche — ottimi e rilassamenti a confronto")
 cop = pd.read_csv(DATI / "cap04_copertura.csv").iloc[0]
 assert uguale(cop.ub, 10) and uguale(cop.lb, 7) and uguale(cop.z_lp, F("15/2")) and uguale(cop.z_milp, 10)
 zai = pd.read_csv(DATI / "cap04_zaino.csv").iloc[0]
-assert uguale(zai.lb, 16) and uguale(zai.ub, 18) and uguale(zai.z_lp, 18)
-assert uguale(zai.z_lp_rafforzato, F("71/4")) and uguale(zai.z_milp, 17)
+assert uguale(zai.lb, 19) and uguale(zai.ub, F("70/3")) and uguale(zai.z_lp, F("159/7"))
+assert uguale(zai.z_lp_rafforzato, 22) and uguale(zai.z_milp, 22)
 tag = pd.read_csv(DATI / "cap04_tagli.csv").iloc[0]
 assert uguale(tag.z_lp_senza_tagli, F("71/4")) and uguale(tag.z_lp_con_tagli, F("69/4"))
 sol4 = pd.read_csv(DATI / "cap04_solver.csv").set_index("configurazione")
