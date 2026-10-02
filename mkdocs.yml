@@ -94,7 +94,7 @@ nav:
       - 1. Che cos'è un modello MIP: modellazione-1.md
       - 2. Rilassamenti, dualità e bound: modellazione-2.md
       - 3. Dal modello a Python/Gurobi:
-          - modellazione-3.md
+          - Panoramica: modellazione-3.md
           - 3.1 Scrivere un modello in gurobipy: gurobipy-1.md
           - 3.2 Leggere i risultati: gurobipy-2.md
           - 3.3 Tolleranze e rilassamenti: gurobipy-3.md
@@ -103,7 +103,7 @@ nav:
       - 4. Euristiche costruttive: modellazione-4.md
       - 5. Logica e variabili binarie: modellazione-5.md
       - 6. Legami fra variabili:
-          - legami.md
+          - Panoramica: legami.md
           - 6.1 Attivazione: legami-01.md
           - 6.2 Costo fisso: legami-02.md
           - 6.3 Lotto minimo: legami-03.md

@@ -1,9 +1,8 @@
 # 3.4 Tre modelli classici
 
-**Classe:** implementazione · **Script:** `python/cap06_gurobi.py`
+**Classe:** implementazione · **Script:** `python/cap06_bpp.py`, `python/cap06_cmax.py`, `python/cap06_tsp.py`
 { .scheda }
 
-[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap06_gurobi.ipynb)
 
 Bin packing, makespan e commesso viaggiatore: enunciato, modello, costruzione in
 `gurobipy` e modello dell'istanza. Sono i tre problemi su cui il
@@ -18,6 +17,10 @@ più vicino: qui si scrivono i loro modelli, così quelle euristiche hanno un
 ottimo con cui confrontarsi.
 
 ## Bin packing: quanti contenitori bastano
+
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap06_bpp.ipynb)
+
+Lo script è `python/cap06_bpp.py`.
 
 !!! abstract "Bin packing"
     Ci sono $n$ oggetti, l'oggetto $j$ pesa $w_j$. I contenitori sono tutti
@@ -97,6 +100,10 @@ conteggio è quindi stretto.
 
 ## Makespan: il carico della macchina più carica
 
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap06_cmax.ipynb)
+
+Lo script è `python/cap06_cmax.py`.
+
 !!! abstract "Makespan su macchine identiche"
     Ci sono $n$ lavori, di durata $d_j$, e $k$ macchine identiche. Ogni lavoro va
     su una macchina sola e non si interrompe. Si minimizzi l'istante in cui
@@ -169,6 +176,10 @@ sotto $18/2 = 9$, e l'ottimo vale esattamente $9$ — i lavori si dividono in
 $6+3$ e $5+4$. Qui il conteggio chiude il problema da solo.
 
 ## Commesso viaggiatore: la formulazione MTZ
+
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap06_tsp.ipynb)
+
+Lo script è `python/cap06_tsp.py`.
 
 !!! abstract "Commesso viaggiatore"
     Ci sono $n$ città e una distanza $d_{ij}$ fra ogni coppia. Si trovi il giro
