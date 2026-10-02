@@ -5,7 +5,7 @@
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap03_legami.ipynb)
 
-Il [capitolo 5](modellazione-2.md) collega variabili **tutte binarie**. Qui si
+Il [capitolo 5](modellazione-5.md) collega variabili **tutte binarie**. Qui si
 collegano famiglie **diverse**: binarie con continue, binarie con intere,
 continue fra loro. Sono quattordici tecniche, e sono il vero contenuto della
 modellazione MIP.

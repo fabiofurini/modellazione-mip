@@ -16,7 +16,7 @@ jobs:
           python-version: "3.12"
       # controllo numerico riproducibile: la licenza inclusa in gurobipy (2000
       # variabili e 2000 vincoli) basta per tutte le istanze del corso
-      - run: pip install gurobipy pandas matplotlib mkdocs-material
+      - run: pip install gurobipy pandas matplotlib mkdocs-material mkdocs-redirects
       - run: python3 python/esegui_tutti.py
       - run: python3 python/verifica_numeri.py
       # i CSV si rigenerano identici; le PNG no (dipendono dalla versione di

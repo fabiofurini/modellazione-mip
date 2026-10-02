@@ -9,15 +9,15 @@ a chi vuole vedere tutto in una volta.
 
 1. [Che cos'è un modello MIP](modellazione-1.md) — dati, variabili, obiettivo,
    vincoli; rilassamenti, bound e gap
-2. [Logica e variabili binarie](modellazione-2.md) — CNF, le tre regole di
+2. [Logica e variabili binarie](modellazione-5.md) — CNF, le tre regole di
    traduzione, cinque esercizi
 3. [Legami fra variabili](legami.md) — le quattordici tecniche, una per
    sottopagina, con la [mappa](legami.md)
-4. [Rilassamenti, dualità e bound](modellazione-4.md) — la tabella di
+4. [Rilassamenti, dualità e bound](modellazione-2.md) — la tabella di
    conversione, tre ricette per una soluzione duale a mano
-5. [Euristiche costruttive](modellazione-5.md) — le sei regole, quando
+5. [Euristiche costruttive](modellazione-4.md) — le sei regole, quando
    falliscono
-6. [Dal modello a Python/Gurobi](modellazione-6.md) — le quattro classi di
+6. [Dal modello a Python/Gurobi](modellazione-3.md) — le quattro classi di
    variabili, le tolleranze, il protocollo del corso
 
 **[I problemi](problemi.md)**

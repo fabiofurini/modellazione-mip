@@ -43,7 +43,7 @@ esce da un'esecuzione riproducibile.
     una soluzione duale, disuguaglianze valide e tagli di copertura, e perché i
     duali dell'LP non sono i prezzi marginali del MILP.
 
-    [:octicons-arrow-right-24: Il capitolo](modellazione-4.md)
+    [:octicons-arrow-right-24: Il capitolo](modellazione-2.md)
 -   :material-language-python: **3. Dal modello a Python/Gurobi**
 
     ---
@@ -52,7 +52,7 @@ esce da un'esecuzione riproducibile.
     leggono `Status`, `SolCount`, `ObjVal`, `ObjBound`, `MIPGap`,
     `NodeCount` e le tolleranze. Il protocollo del corso, dall'inizio alla fine.
 
-    [:octicons-arrow-right-24: Il capitolo](modellazione-6.md)
+    [:octicons-arrow-right-24: Il capitolo](modellazione-3.md)
 -   :material-run-fast: **4. Euristiche costruttive**
 
     ---
@@ -61,7 +61,7 @@ esce da un'esecuzione riproducibile.
     e lot sizing: pseudocodice, traccia, verifica di ammissibilità e bound. Un
     fallimento della euristica costruttiva non dimostra l'inammissibilità.
 
-    [:octicons-arrow-right-24: Il capitolo](modellazione-5.md)
+    [:octicons-arrow-right-24: Il capitolo](modellazione-4.md)
 -   :material-gate-and: **5. Logica e variabili binarie**
 
     ---
@@ -70,7 +70,7 @@ esce da un'esecuzione riproducibile.
     traducono una CNF in vincoli lineari; implicazioni, contronominali e
     scissioni; cinque esercizi risolti e verificati per enumerazione.
 
-    [:octicons-arrow-right-24: Il capitolo](modellazione-2.md)
+    [:octicons-arrow-right-24: Il capitolo](modellazione-5.md)
 -   :material-link-variant: **6. Legami fra variabili**
 
     ---

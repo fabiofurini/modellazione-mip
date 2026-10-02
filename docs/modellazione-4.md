@@ -1,539 +1,545 @@
-# Rilassamenti, dualità e bound
+# Euristiche costruttive
 
-**Classe:** LP · MILP · **Script:** `python/cap04_bound.py`
+**Classe:** algoritmi · **Script:** `python/cap05_euristiche.py`, `python/euristiche.py`
 { .scheda }
 
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap05_euristiche.ipynb)
 
-Questo capitolo insegna a produrre, **a mano**, un numero che sta certamente da
-una parte dell'ottimo intero. Serve a tre cose: capire quanto vale un modello,
-quanto vale un'euristica, e come leggere i numeri che un solver riporta quando
-non ha finito.
+Un'euristica costruttiva costruisce **una** soluzione in fretta, aggiungendo un
+elemento per volta e senza mai tornare indietro. Non dimostra niente sulla sua
+qualità, e non garantisce nemmeno di arrivare a una soluzione ammissibile: può
+bloccarsi a metà, con un elemento che non entra da nessuna parte. Quando finisce
+con una soluzione ammissibile, quella soluzione è l'altra metà del sandwich del
+[capitolo 2](modellazione-2.md): il lato pessimistico, quello garantito da una
+soluzione che esiste davvero; quando fallisce, bound primale non ce n'è.
 
-## Che cos'è un rilassamento
+!!! note "Che cosa deve produrre un'euristica in questo corso"
+    1. uno **pseudocodice** leggibile, con l'ordine di scansione, il criterio di
+       scelta, la gestione dei pareggi e il caso di fallimento dichiarati;
+    2. la **funzione Python** corrispondente, riga per riga;
+    3. la **traccia** dell'esecuzione su un'istanza;
+    4. la **verifica di ammissibilità**: vincoli, bound *e* interezza;
+    5. il **bound** che ne segue, con il nome giusto.
 
-Un **rilassamento** di un problema di minimo con insieme ammissibile $X$ è un
-problema con lo stesso obiettivo e un insieme ammissibile più grande,
-$X \subseteq \hat X$: il minimo su un insieme più grande non può essere più
-alto. In un massimo la disuguaglianza si rovescia.
+    Il punto 4 non è una formalità: una soluzione che soddisfa i vincoli lineari
+    ma ha una componente frazionaria è ammissibile per il *rilassamento*, non per
+    il MILP, e il suo valore non è un bound primale.
 
-| Nome | Che cosa si toglie | Nota |
-|---|---|---|
-| $z(\mathit{LP})$, puro | $x \in \{0,1\}$ diventa $x \ge 0$ | è quello di cui si scrive il duale a mano: ha meno vincoli, quindi un duale con meno variabili |
-| $z(\mathit{LP}^+)$, con i bound conservati | $x \in \{0,1\}$ diventa $0 \le x \le 1$ | è `relax()` di Gurobi e il rilassamento della radice |
-| $z(\mathit{LP}^{++})$, rafforzato | come sopra, più disuguaglianze valide | vedi sotto |
+!!! danger "Il verso del bound dipende dall'obiettivo, non dall'euristica"
+    In un problema di **minimo** il valore di una soluzione ammissibile è un
+    *upper* bound: $z(\mathit{MILP}) \le \mathit{UB}$. In un **massimo** è un
+    *lower* bound: $\mathit{LB} \le z(\mathit{MILP})$. Chiamare $UB$ il
+    risultato di una euristica costruttiva su un massimo è l'errore di segno più comune del
+    corso.
 
-In un minimo
-$z(\mathit{LP}) \le z(\mathit{LP}^+) \le z(\mathit{LP}^{++}) \le z(\mathit{MILP})$.
+## Bin packing: le regole di inserimento
 
-!!! note "I due rilassamenti coincidono più spesso di quanto sembri"
-    Se il modello contiene un vincolo di assegnamento $\sum_m x_{jm} = 1$ con
-    $x \ge 0$, allora $x_{jm} \le 1$ è già implicato e i due rilassamenti sono
-    **uguali**. Nella tabella dei bound del [capitolo 7](scheduling.md) succede
-    nei problemi 1, 4, 6 e 7.
+Il problema classico è il **bin packing**, il cui modello sta nel capitolo del
+solver: degli oggetti vanno messi in contenitori tutti uguali, di capacità
+limitata, usandone il meno possibile. Qui non lo si risolve: lo si *costruisce*,
+una scelta per volta.
 
-## La tabella di conversione primale/duale
+```text
+Costruisci(n, k, t, a, gamma):
+  x[j][m] <- 0 per ogni j, m;   ra[m] <- a[m] per ogni m
+  per j = 1..n:
+      # next-fit:  solo la macchina corrente, poi la successiva
+      # first-fit: la prima m con t[j][m] <= ra[m]
+      # best-fit:  fra le m ammissibili, quella di gamma(j,m,ra) minimo
+      scegli m* secondo la regola
+      se nessuna m e' ammissibile: restituisci "nessuna soluzione trovata"
+      x[j][m*] <- 1;  ra[m*] <- ra[m*] - t[j][m*]
+  restituisci x
+```
 
-Primale di **minimo**, vincoli indicizzati da $i$, variabili da $j$:
+Tutte e tre scandiscono i lavori **nell'ordine dato**: cambiare l'ordine cambia
+il risultato, e questo va detto quando si riporta un valore. I pareggi si
+rompono sull'indice più piccolo, così l'esecuzione è riproducibile.
 
-| Nel primale (min) | Nel duale (max) |
-|---|---|
-| vincolo $i$ di verso $\ge$ | variabile $\pi_i \ge 0$ |
-| vincolo $i$ di verso $\le$ | variabile $\pi_i \le 0$ |
-| vincolo $i$ di uguaglianza | variabile $\pi_i$ libera |
-| variabile $x_j \ge 0$ | vincolo $j$ di verso $\le c_j$ |
-| variabile $x_j$ libera | vincolo $j$ di uguaglianza $= c_j$ |
+Su una piccola istanza di assegnamento (un **minimo**):
 
-L'obiettivo duale è $\max \sum_i b_i \pi_i$. Se il primale è di **massimo**, tutti
-i versi si rovesciano e il duale è di minimo.
+| Euristica | $UB$ | $z(\mathit{MILP})$ | gap dell'euristica |
+|---|---:|---:|---:|
+| next-fit | 14 | 11 | $27{,}3\%$ |
+| first-fit | 14 | 11 | $27{,}3\%$ |
+| best-fit sul costo | 11 | 11 | $0{,}0\%$ |
 
-Il vincolo duale $j$ dice: «il valore che attribuisco alle risorse consumate
-dall'attività $j$ non può superare il suo costo». Con questa lettura ogni
-ricetta per costruire una soluzione duale ha un significato economico.
+Il best-fit sul costo trova l'ottimo; ma nessun bound lo certifica — ci vuole il
+solver, o un bound duale che arrivi a $11$, e lì il duale a mano
+si ferma a $10$.
 
-## Dualità debole, dualità forte
+## $P||C_{\max}$: la regola del meno carico
 
-- **Dualità debole**: $\sum_i b_i \bar\pi_i \le \sum_j c_j \bar x_j$ per ogni coppia di soluzioni
-  ammissibili. *Sempre*, senza ipotesi. È questa che serve: dà un lower bound da
-  **qualunque** soluzione duale ammissibile, anche costruita a mano.
-- **Dualità forte**: se il rilassamento ha ottimo finito, $z(\mathit{D}(\mathit{LP})) = z(\mathit{LP})$. Serve come
-  **controllo**: l'ottimo del duale scritto a mano deve coincidere con
-  $z(\mathit{LP})$. Gli script del corso lo verificano con un `assert`.
+Il secondo classico è lo **scheduling su macchine identiche**, in notazione
+standard $P||C_{\max}$: $n$ lavori di durata $t_j$ su $k$ macchine uguali,
+minimizzando l'istante in cui finisce l'ultima. La regola naturale è il **list
+scheduling** — il lavoro corrente va sulla macchina meno carica — e l'ordine in
+cui si guardano i lavori decide il risultato. L'ordine migliore è per durata
+decrescente, e la regola che ne esce si chiama **LPT**.
 
-E poi: siccome ogni soluzione ammissibile del MILP è ammissibile anche per il
-rilassamento,
+```text
+LPT(n, k, t):
+  L[m] <- 0 per ogni m                        # carichi correnti
+  per j in ordine di t[j] DECRESCENTE:
+      m* <- argmin_m L[m]                     # pareggi: l'indice piu' piccolo
+      x[j][m*] <- 1;  L[m*] <- L[m*] + t[j]
+  restituisci x, max_m L[m]
+```
 
-$$\textstyle\sum_i b_i \bar\pi_i ~\le~ z(\mathit{LP}) ~\le~ z(\mathit{MILP}).$$
+L'ordine decrescente è essenziale: mettere per ultimi i lavori lunghi li rende
+impossibili da sistemare.
 
-!!! danger "Non esiste «il duale del MILP»"
-    Il duale che si scrive è quello del **rilassamento**. Il MILP non ha un
-    duale lineare, e la dualità forte fra MILP e un qualsiasi programma lineare
-    in generale non vale: il salto $z(\mathit{MILP}) - z(\mathit{LP})$ è
-    precisamente ciò che manca.
+!!! example "Sette lavori su tre macchine"
+    $t = (5, 5, 4, 4, 3, 3, 3)$, $k = 3$, totale $27$.
 
-## Tre ricette per costruire a mano una soluzione duale
+    - **Passi 1–3.** I lavori $5$, $5$, $4$ vanno sulle tre macchine vuote:
+      $L = (5, 5, 4)$.
+    - **Passo 4.** Lavoro $4$: il carico minimo è la macchina 3, che passa a
+      $8$. $L = (5, 5, 8)$.
+    - **Passi 5–6.** I due lavori da $3$ vanno sulle macchine 1 e 2:
+      $L = (8, 8, 8)$.
+    - **Passo 7.** L'ultimo lavoro da $3$ trova tutti i carichi pari a $8$; per
+      la regola dei pareggi va sulla macchina 1, che arriva a $11$.
 
-1. **Azzerare e saturare.** Si pongono a zero tutte le variabili duali tranne
-   una famiglia, e si portano quelle al valore più grande ammissibile. Nel
-   problema [7.1](scheduling-1.md): $\bar\pi = 0$ e
-   $\bar\mu_j = \min_m c_{jm}$, cioè «ogni lavoro costa almeno il suo costo
-   minimo».
-2. **Euristica costruttiva sui vincoli.** Si scorrono i vincoli primali uno alla volta, si alza
-   la variabile duale corrispondente fino a saturare il primo vincolo duale che
-   si oppone, e si aggiornano i residui.
-3. **Il rapporto migliore.** Con un solo vincolo di capacità in un massimo,
-   $\bar v = \max_j p_j / w_j$ è ammissibile e dà il bound $b \bar v$.
+    Makespan dell'LPT: $\mathit{UB} = 11$, con carichi $(11, 8, 8)$.
 
-Qualunque ricetta si usi, la soluzione va **verificata ammissibile** per il
-duale — è l'unica cosa che rende valido il bound — e il suo valore confrontato
-con $z(\mathit{LP})$.
+    **Il bound elementare.** Il makespan è almeno
+    $\max(\max_j t_j,\ \sum_j t_j / k) = \max(5, 9) = 9$. L'ottimo è proprio
+    $z(\mathit{MILP}) = 9$ — si raggiunge con $\{5,4\}$, $\{5,4\}$,
+    $\{3,3,3\}$ — e l'LPT sbaglia del $22{,}2\%$.
 
-## Un problema di minimo, per esteso
+!!! tip "Due bound gratis, da confrontare"
+    $\max_j t_j$ e $\sum_j t_j / k$ si calcolano senza risolvere niente, e il
+    migliore dei due è già spesso vicino all'ottimo. Un bound «ovvio» che nessuno
+    scrive è un bound sprecato: il duale del [capitolo 2](modellazione-2.md)
+    serve quando quelli ovvi non bastano, non al loro posto.
 
-!!! abstract "Copertura di zone a costo minimo"
-    Un comune ha $4$ distretti; attivare la squadra del distretto $j$ costa
-    $c_j$. Ci sono $6$ zone sensibili, ognuna al confine fra due distretti: la
-    zona $i$ è coperta se almeno una delle due squadre confinanti è attiva. Si
-    vogliono coprire tutte le zone a costo minimo.
+## Set covering: la regola del completamento più economico
 
-Dati: $n = 4$ squadre di costo $c = (4, 3, 5, 3)$ e $m = 6$ zone, che sono le sei coppie di distretti, nell'ordine
-$\{1,2\}$, $\{2,3\}$, $\{1,3\}$, $\{1,4\}$, $\{2,4\}$, $\{3,4\}$.
+```text
+Euristica costruttivaCopertura(c, S):
+  scoperte <- {1..m};   y[j] <- 0 per ogni j
+  finche' scoperte non e' vuoto:
+      per ogni j non ancora scelto: nuove(j) <- |{i in scoperte : j in S_i}|
+      se nuove(j) = 0 per ogni j: restituisci "nessuna soluzione trovata"
+      j* <- argmin_{j : nuove(j) > 0} c[j] / nuove(j)
+      y[j*] <- 1;   scoperte <- scoperte \ {i : j* in S_i}
+  restituisci y
+```
 
-$$
-\begin{aligned}
-\min ~~ \sum_{j=1}^{n} c_j\, x_j & &\\
-\text{soggetto a}\quad \sum_{j \in S_i} x_j &\ge 1, & \forall i \in \{1, 2, \dots, m\},\\
-x_j &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\}.
-\end{aligned}
-$$
+Il criterio è il **costo per zona nuova**, non il costo assoluto.
 
-**Il duale del rilassamento senza i bound**, con $\pi_i \ge 0$ per ogni vincolo di
-copertura:
+Sulle quattro squadre del [capitolo 2](modellazione-2.md), $c = (4,3,5,3)$:
+passo 1 rapporti $4/3$, $1$, $5/3$, $1$ → elemento 2 (copre le zone 1, 2, 5);
+passo 2 rapporti $2$, $5/2$, $3/2$ → elemento 4 (zone 4 e 6); passo 3 rapporti
+$4$ e $5$ → elemento 1. Soluzione $\{1,2,4\}$, costo $\mathit{UB} = 10$, che qui
+è l'ottimo.
 
-$$
-\begin{aligned}
-\max ~~ \sum_{i=1}^{m} \pi_i & &\\
-\text{soggetto a}\quad \sum_{i \,:\, j \in S_i} \pi_i &\le c_j, & \forall j \in \{1, 2, \dots, n\},\\
-\pi_i &\ge 0, & \forall i \in \{1, 2, \dots, m\}.
-\end{aligned}
-$$
+## Zaino: la regola del rapporto migliore
 
-Per l'istanza, ogni squadra copre tre zone:
-$\pi_1 + \pi_3 + \pi_4 \le 4$, $\pi_1 + \pi_2 + \pi_5 \le 3$, $\pi_2 + \pi_3 + \pi_6 \le 5$,
-$\pi_4 + \pi_5 + \pi_6 \le 3$.
+Lo **zaino** è il modello con cui si apre il capitolo del solver: gli oggetti
+hanno un valore oltre a un peso, e la risorsa è una sola. La regola costruttiva
+guarda il rapporto fra i due, e quello che produce è una soluzione ammissibile,
+quindi un bound primale.
 
-**Una soluzione duale a mano (ricetta 2).**
+```text
+Euristica costruttivaZaino(p, w, C):
+  residuo <- C;   y[j] <- 0 per ogni j
+  per j in ordine di p[j]/w[j] DECRESCENTE:
+      se w[j] <= residuo:  y[j] <- 1;  residuo <- residuo - w[j]
+  restituisci y
+```
 
-- **Zona 1** ($\{1,2\}$): residui $(4,3,5,3)$, il minimo fra le squadre 1 e 2 è
-  $3$. $\bar \pi_1 = 3$; residui $(1,0,5,3)$.
-- **Zona 2** ($\{2,3\}$): il residuo della squadra 2 è $0$, quindi
-  $\bar \pi_2 = 0$.
-- **Zona 3** ($\{1,3\}$): minimo fra $1$ e $5$, cioè $1$. $\bar \pi_3 = 1$;
-  residui $(0,0,4,3)$.
-- **Zone 4 e 5**: le squadre 1 e 2 hanno residuo nullo,
-  $\bar \pi_4 = \bar \pi_5 = 0$.
-- **Zona 6** ($\{3,4\}$): minimo fra $4$ e $3$, cioè $3$. $\bar \pi_6 = 3$.
+Su $p = (10,7,6,4)$, $w = (5,4,3,3)$, $C = 9$: rapporti $2$, $7/4$, $2$, $4/3$;
+si prendono gli oggetti 1 e 3 (peso $8$), valore $16$. Poiché il problema è di
+**massimo**, $\mathit{LB} = 16 \le z(\mathit{MILP}) = 17$, gap $5{,}9\%$:
+l'ottimo prende gli oggetti 1 e 2 riempiendo lo zaino esattamente. La euristica costruttiva
+sbaglia perché l'oggetto 3 lascia un residuo inutilizzabile.
 
-$$\mathit{LB} = 3 + 0 + 1 + 0 + 0 + 3 = 7.$$
+## TSP: il vicino più vicino
 
-**Un upper bound primale.** L'euristica costruttiva di copertura — a ogni passo
-si sceglie l'elemento che costa meno per ogni nuovo requisito coperto — prende
-le squadre $1$, $2$, $4$, di costo $4+3+3 = 10$: soluzione ammissibile e
-**intera**, quindi $\mathit{UB} = 10$.
+Il quarto classico è il **commesso viaggiatore** (*travelling salesman problem*,
+TSP): date $n$ città e le distanze $d_{ij}$ fra ogni coppia, si cerca il giro
+più corto che le visiti tutte una volta sola e torni al punto di partenza. È il
+problema su cui la costruzione passo per passo si vede meglio, perché la
+soluzione è una sequenza: l'ordine *è* la soluzione.
 
-| $UB$ (euristica costruttiva) | $LB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{MILP})$ | gap euristica |
-|---:|---:|---:|---:|---:|
-| 10 | 7 | $15/2$ | 10 | $0{,}0\%$ |
+La regola costruttiva classica è il **vicino più vicino**: si parte da una
+città, e ogni volta si va alla più vicina fra quelle non ancora visitate; quando
+non ne restano, si torna alla partenza. È ammissibile per costruzione e veloce,
+perché a ogni passo guarda solo le distanze dalla città corrente.
 
-Il divario certificato fra i due bound costruiti a mano è $(10-7)/10 = 30\%$:
-senza risolvere il MILP sapremmo solo che l'ottimo sta fra $7$ e $10$.
-L'euristica era già ottima, ma non lo si può sapere dai bound.
+!!! example "Cinque città, cinque partenze"
+    Le distanze, simmetriche:
 
-## Un problema di massimo: i ruoli si scambiano
+    |  | 1 | 2 | 3 | 4 | 5 |
+    |---|---:|---:|---:|---:|---:|
+    | 1 | — | 5 | 2 | 2 | 9 |
+    | 2 | 5 | — | 4 | 3 | 4 |
+    | 3 | 2 | 4 | — | 4 | 7 |
+    | 4 | 2 | 3 | 4 | — | 7 |
+    | 5 | 9 | 4 | 7 | 7 | — |
 
-!!! abstract "Zaino"
-    Quattro oggetti di valore $p = (10, 7, 6, 4)$ e peso $w = (5, 4, 3, 3)$;
-    capacità $b = 9$.
+    Partendo dalla città 1: la più vicina è la 3 (distanza 2); da lì la 2 (4); da
+    lì la 4 (3); resta la 5 (7); e si torna alla 1, che costa 9. Il giro
+    $1 \to 3 \to 2 \to 4 \to 5 \to 1$ è lungo 25.
 
-Il duale del rilassamento senza i bound ha una sola variabile $v \ge 0$:
-$\min\ b v$ con $w_j v \ge p_j$ per ogni $j$.
+    L'ultimo arco è quello che si paga: la regola sceglie bene finché ha scelta, e
+    all'ultimo passo non ne ha più. Cambiando la città di partenza cambia il giro:
 
-- **Euristica** (euristica costruttiva per rapporto): rapporti $2$, $7/4$, $2$, $4/3$; si
-  prendono gli oggetti 1 e 3 (peso $8$), valore $16$. In un **massimo**
-  l'euristica dà un **lower** bound: $\mathit{LB} = 16$.
-- **Duale a mano** (ricetta 3): $\bar v = \max_j p_j/w_j = 2$, valore
-  $b \bar v = 18$. In un **massimo** il duale dà un **upper** bound:
-  $\mathit{UB} = 18$.
+    | partenza | giro | lunghezza |
+    |---|---|---:|
+    | 1 | $1 \to 3 \to 2 \to 4 \to 5 \to 1$ | 25 |
+    | 2 | $2 \to 4 \to 1 \to 3 \to 5 \to 2$ | 18 |
+    | 3 | $3 \to 1 \to 4 \to 2 \to 5 \to 3$ | 18 |
+    | 4 | $4 \to 1 \to 3 \to 2 \to 5 \to 4$ | 19 |
+    | 5 | $5 \to 2 \to 4 \to 1 \to 3 \to 5$ | 18 |
 
-$$16 ~\le~ z(\mathit{MILP}) = 17 ~\le~ z(\mathit{LP}^+) = \tfrac{71}{4} ~\le~ z(\mathit{LP}) = 18.$$
+    Con cinque città i giri distinti sono $(5-1)!/2 = 12$ e si possono enumerare
+    tutti: l'ottimo è $1 \to 3 \to 5 \to 2 \to 4 \to 1$, lungo 18. Tre partenze
+    su cinque lo trovano, una resta a 19 e quella da cui siamo partiti a 25, cioè
+    il 38,9 % sopra l'ottimo.
 
-Qui il duale a mano è **ottimo** per il rilassamento senza i bound, e il rilassamento con
-i bound conservati è strettamente migliore ($71/4 < 18$): il vincolo
-$x_j \le 1$ morde, perché senza di esso l'LP prende $9/5$ unità dell'oggetto 1.
+    Due cose da portare via. L'euristica dà *una* soluzione ammissibile, quindi un
+    bound superiore — qui $z(\mathit{MILP}) \le 25$ — e nient'altro; che 18 sia
+    l'ottimo lo sappiamo per enumerazione. E far girare la stessa regola da tutte
+    le partenze, tenendo il giro migliore, costa $n$ volte tanto e dà un bound
+    migliore: è la forma più semplice di *multi-start*, e resta un bound da un
+    lato solo.
 
-![Il sandwich dei due problemi](img/cap04_sandwich.png)
+## Lot sizing: copertura di periodi a costo unitario minimo
 
-!!! note "Il sandwich scritto una volta per tutte"
-    $$\text{minimo:}\quad \mathit{LB}(\bar\pi) \le z(\mathit{D}(\mathit{LP})) = z(\mathit{LP}) \le z(\mathit{LP}^+) \le z(\mathit{MILP}) \le \mathit{UB}(\bar x)$$
-    $$\text{massimo:}\quad \mathit{LB}(\bar x) \le z(\mathit{MILP}) \le z(\mathit{LP}^+) \le z(\mathit{LP}) = z(\mathit{D}(\mathit{LP})) \le \mathit{UB}(\bar\pi)$$
+```text
+LeastUnitCost(d, f, h):
+  t <- 1
+  finche' t <= T:
+      salta i periodi con d[t] = 0
+      per k = 1..T-t+1:
+          Q_k <- somma di d[t..t+k-1]
+          c_k <- (f + h * somma di (s-t)*d[s] per s = t..t+k-1) / Q_k
+      k* <- argmin_k c_k                      # il costo medio per unita' piu' basso
+      produci Q_{k*} nel periodo t;   t <- t + k*
+```
 
-    dove $(\bar\pi_1, \bar\pi_2, \dots, \bar\pi_m)$ è una soluzione duale
-    ammissibile del rilassamento, di valore $\sum_{i=1}^{m} b_i\, \bar\pi_i$, e
-    $(\bar x_1, \bar x_2, \dots, \bar x_n)$ una soluzione ammissibile del MILP,
-    di valore $\sum_{j=1}^{n} c_j\, \bar x_j$.
+!!! danger "Questa non è la procedura di Wagner–Whitin"
+    Wagner–Whitin è un algoritmo **esatto** di programmazione dinamica per il
+    modello di lot sizing *senza capacità*: risolve quel modello all'ottimo in
+    tempo polinomiale. La procedura qui sopra è un'euristica, e il suo valore è
+    solo un bound. Chiamarla «euristica costruttiva di Wagner–Whitin» confonde due cose diverse.
 
-    Il *lato del rilassamento* è ottimistico e contiene tutti i bound duali; il
-    *lato dell'euristica* è pessimistico e contiene tutte le soluzioni
-    ammissibili. Il nome ($\mathit{LB}$ o $\mathit{UB}$) dipende dal verso
-    dell'obiettivo, il ruolo no.
+Su $d = (20, 10, 30, 40, 10)$, lancio $f = 50$, magazzino $h = 1$: dal periodo 1
+conviene coprire 2 periodi (costo unitario $2$); dal periodo 3 altri 2 (costo
+unitario $\approx 1{,}286$); dal periodo 5 solo quello (costo unitario $5$).
+Costo $\mathit{UB} = 200$ contro $z(\mathit{MILP}) = 170$, gap $17{,}6\%$ — che
+è anche il valore che darebbe Wagner–Whitin, essendo esatto su questo modello.
 
-## Disuguaglianze valide e vincoli che preservano l'ottimalità
+## Ricerca locale, e che cosa non dà
 
-- Una **disuguaglianza valida** è soddisfatta da *tutte* le soluzioni
-  ammissibili intere: aggiungerla non cambia $z(\mathit{MILP})$; se riduce
-  $z(\mathit{LP}^+)$ si chiama **taglio**.
-- Un **vincolo che preserva l'ottimalità** taglia alcune soluzioni ammissibili
-  ma non tutte quelle ottime. Non è una disuguaglianza valida, e va dichiarato
-  come tale.
+Una **ricerca locale** parte da una soluzione ammissibile e prova mosse
+elementari, accettando quelle che migliorano; si ferma in un **ottimo locale**.
 
-**Il taglio di copertura.** Un insieme $S$ è una *copertura* se
-$\sum_{j \in S} w_j > b$; allora $\sum_{j \in S} x_j \le |S| - 1$ è valida. Sullo
-zaino ($w = (5,4,3,3)$, $b = 9$) le coperture minimali sono le quattro terne. La
-soluzione ottima del rilassamento è $\tilde x = (1,\ 1/4,\ 1,\ 0)$:
+Sulla soluzione LPT ($L = (11, 8, 8)$, makespan $11$), la mossa «sposta un
+lavoro su un'altra macchina» non migliora nulla: spostare uno dei due lavori da
+$3$ dalla macchina 1 porta il suo carico a $8$ ma alza a $11$ quello della
+macchina che lo riceve. La ricerca locale si ferma a $11$, mentre l'ottimo è
+$9$: per arrivarci serve una mossa di **scambio** fra due macchine.
 
-| Copertura $S$ | $\sum_{j \in S} \tilde x_j$ | $\|S\|-1$ | |
-|---|---:|---:|---|
-| $\{1,2,3\}$ | $9/4$ | 2 | **violato**: il taglio serve |
-| $\{1,2,4\}$ | $5/4$ | 2 | soddisfatto |
-| $\{1,3,4\}$ | $2$ | 2 | soddisfatto (all'uguaglianza) |
-| $\{2,3,4\}$ | $5/4$ | 2 | soddisfatto |
+!!! warning "Un ottimo locale non è un bound migliore"
+    La ricerca locale restituisce una soluzione ammissibile, quindi un bound dal
+    lato pessimistico, e nient'altro. Il fatto che si sia fermata non significa
+    che sia arrivata.
 
-Aggiungendo i quattro tagli, $z(\mathit{LP}^+)$ scende da $71/4 = 17{,}75$ a
-$69/4 = 17{,}25$ e $z(\mathit{MILP})$ resta $17$.
+## Quando la euristica costruttiva fallisce
 
-## Formulazioni più forti
+!!! danger "«Nessuna soluzione trovata» non è «nessuna soluzione esiste»"
+    Tre lavori di durata $(3, 3, 2)$ su due macchine con disponibilità
+    $(5, 3)$. Il next-fit: il lavoro 1 va sulla macchina 1 (residuo $2$); il
+    lavoro 2 non ci sta e passa alla macchina 2 (residuo $0$); il lavoro 3 non
+    ci sta e non ci sono altre macchine: **fallimento**. Ma il problema è
+    ammissibile: i lavori 2 e 3 stanno insieme sulla macchina 1 ($3 + 2 = 5$) e
+    il lavoro 1 sulla macchina 2 ($3 \le 3$).
 
-Due formulazioni $A$ e $B$ si confrontano in **due passi**: (1) stesso insieme
-intero, cioè le due formulazioni devono ammettere esattamente gli stessi
-punti a coordinate intere — senza questo non si sta confrontando nulla; (2) $B$ è *più forte* se $X_B \subseteq X_A$ come
-poliedri. Il caso di riferimento è l'[attivazione](legami-01.md).
+    Un'euristica costruttiva è *miope*: decide una cosa alla volta e non torna
+    indietro. Il suo fallimento è un'informazione sull'euristica, non sul
+    problema. Per dimostrare che un modello è inammissibile serve il solver
+    (`Status = INFEASIBLE`) o una dimostrazione.
 
-!!! warning "Più forte non significa più veloce"
-    Una formulazione più forte ha meno nodi ma righe in più, e ogni nodo costa
-    di più. Quello che si **dimostra** è la forza del rilassamento; la velocità
-    si **misura**.
+## Il quadro delle euristiche
 
-## Quello che dice il solver
+| Euristica | Verso | valore | $z(\mathit{MILP})$ | gap dell'euristica |
+|---|---|---:|---:|---:|
+| next-fit / first-fit (assegnamento) | min ($UB$) | 14 | 11 | $27{,}3\%$ |
+| best-fit sul costo (assegnamento) | min ($UB$) | 11 | 11 | $0{,}0\%$ |
+| LPT (makespan) | min ($UB$) | 11 | 9 | $22{,}2\%$ |
+| euristica costruttiva di copertura | min ($UB$) | 10 | 10 | $0{,}0\%$ |
+| euristica costruttiva per rapporto (zaino) | max ($LB$) | 16 | 17 | $5{,}9\%$ |
+| least unit cost (lot sizing) | min ($UB$) | 200 | 170 | $17{,}6\%$ |
 
-!!! danger "`ObjBound` non è il rilassamento della radice"
-    Sull'istanza di copertura, il rilassamento del modello *come lo abbiamo
-    scritto* vale $15/2$ e l'ottimo intero $10$. Eppure Gurobi riporta
-    `ObjBound = 10` e `NodeCount = 0`: ha chiuso il gap nella radice, con
-    presolve, tagli propri ed euristiche, senza mai ramificare. Spegnendoli
-    (`Presolve = Cuts = Heuristics = 0`) lo stesso modello dà lo stesso ottimo
-    ma con $5$ nodi.
+![Il gap delle euristiche](img/cap05_gap.png)
 
-    Due conseguenze: «quanto è difficile un modello» non è una proprietà del
-    solo modello; e il rilassamento di cui parliamo nei bound a mano è quello
-    del modello scritto, e si ottiene con `relax()`.
-
-## I duali dell'LP non sono i prezzi marginali del MILP
-
-| $b$ | $z(\mathit{MILP})$ | $z(\mathit{LP}^+)$ | duale dell'LP | variazione vera |
-|---:|---:|---:|---:|---:|
-| 8 | 16 | 16 | $2$ | — |
-| 9 | 17 | $71/4$ | $7/4$ | $+1$ |
-| 10 | 17 | $39/2$ | $7/4$ | **0** |
-| 11 | 20 | $85/4$ | $7/4$ | $+3$ |
-| 12 | 23 | 23 | $7/4$ | $+3$ |
-
-Il duale dell'LP è il rapporto $p_j/w_j$ dell'oggetto «critico». La variazione
-vera dell'ottimo intero è a scatti: da $b = 9$ a $b = 10$ non cambia *affatto*,
-mentre il duale promette $7/4$.
-
-!!! note "Che cosa si può dire, allora"
-    Del duale dell'LP resta vero l'unico uso che il corso ne fa: è un **bound**.
-    Come indicazione gestionale («conviene comprare un'unità in più?») va
-    verificata risolvendo di nuovo il MILP: la differenza
-    $z(\mathit{MILP})(b_i + 1) - z(\mathit{MILP})(b_i)$ è l'unica risposta
-    corretta, e non c'è una formula chiusa che la dia.
-
-## Il protocollo dei bound del corso
-
-Ogni esercizio della [Parte II](problemi.md) produce: (1) una soluzione
-ammissibile **e intera** da un'euristica, verificata su vincoli, bound e
-interezza; (2) il duale del rilassamento senza i bound, generale e per l'istanza; (3) una
-soluzione duale ammissibile costruita a mano, con la ricetta dichiarata; (4) i
-due rilassamenti dal solver; (5) l'ottimo e la tabella
-$\mathit{UB} \cdot \mathit{LB} \cdot z(\mathit{LP}) \cdot z(\mathit{LP}^+) \cdot z(\mathit{MILP}) \cdot$ gap;
-(6) le considerazioni aggiuntive.
-
-Ogni numero della tabella esiste in un CSV prodotto dallo script del problema, e
-un `assert` in `verifica_numeri.py` lo confronta con il valore citato nel testo.
+!!! tip "Che cosa si impara da questa tabella"
+    Due euristiche trovano l'ottimo e quattro no, e **prima** di risolvere il
+    MILP non c'è modo di sapere quali. Un gap del $0\%$ e uno del $27\%$ si
+    distinguono soltanto *dopo*. È per questo che il corso chiede sempre due
+    bound: un'euristica da sola dice quanto costa una soluzione che si può
+    realizzare, non quanto si sta perdendo.
 
 ## Codice
 
-Lo script completo è
-[`python/cap04_bound.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/cap04_bound.py);
+Le euristiche sono in
+[`python/euristiche.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/euristiche.py),
+gli esempi in
+[`python/cap05_euristiche.py`](https://github.com/fabiofurini/modellazione-mip/blob/main/python/cap05_euristiche.py);
 il notebook è
-[`notebooks/cap04_bound.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/cap04_bound.ipynb).
+[`notebooks/cap05_euristiche.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/cap05_euristiche.ipynb).
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/cap04_bound.py` (253 righe)"
+??? example "Mostra lo script completo — `python/cap05_euristiche.py` (243 righe)"
 
     ```python
-    """Capitolo 2 -- Rilassamenti, dualita' e bound: gli esempi verificati.
+    """Capitolo 4 -- Euristiche costruttive sui problemi classici, con traccia e bound.
 
-    Un problema di minimo e uno di massimo, scritti con il loro duale; una soluzione
-    duale costruita a mano e la verifica della dualita' debole; il confronto fra il
-    rilassamento senza i bound e quello con i bound conservati; un taglio di copertura; il
-    bound letto da Gurobi a fine risoluzione; e il controesempio che mostra perche'
-    i duali dell'LP non sono i prezzi marginali del MILP.
+    Ogni euristica del corso su un'istanza minima: la traccia passo-passo (lo stesso
+    testo che finisce nella dispensa), la verifica di ammissibilita' della soluzione
+    prodotta --- vincoli, bound *e* interezza --- e il confronto con l'ottimo del
+    MILP corrispondente. Chiude con un passo di ricerca locale e con il caso in cui
+    la euristica costruttiva fallisce senza che il problema sia inammissibile.
     """
     import gurobipy as gp
     import pandas as pd
     from gurobipy import GRB
 
-    from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, registra_bound,
-                     rilassamento, risolvi, stampa_soluzione, valuta, viola_interezza)
+    from euristiche import (vicino_piu_vicino, best_fit, first_fit, euristica_copertura, euristica_lotti, euristica_zaino,
+                            lpt, matrice, next_fit)
+    from mip import (ammissibile, frazione, nuovo_modello, rilassamento, risolvi,
+                     stampa_soluzione, valuta, viola_interezza)
     from stile import (ARANCIO, BLU, CICLO, GRIGIO, ROSSO, TEAL, VERDE, intestazione,
                        plt, salva_dati, salva_figura)
 
     R = range
-
-    # ---------- 1. UN MINIMO, IL SUO DUALE, UNA SOLUZIONE DUALE A MANO ----------
-    intestazione("4.1  Copertura a costo minimo: primale, duale e bound costruito a mano")
-    # min sum c_j x_j   s.t.  sum_{j in S_i} x_j >= 1 per ogni i,  x binaria
-    c41 = [4, 3, 5, 3]                       # costo delle quattro squadre
-    # sei zone, ciascuna al confine fra due distretti: la zona i e' coperta dalle due
-    # squadre dei distretti che confina
-    S41 = [[0, 1], [1, 2], [0, 2], [0, 3], [1, 3], [2, 3]]
-    n41, m41 = len(c41), len(S41)
+    CONFRONTO = []
 
 
-    def primale_41():
-        m = nuovo_modello("copertura")
-        x = m.addVars(n41, vtype=GRB.BINARY, name="x")
-        m.setObjective(gp.quicksum(c41[j] * x[j] for j in R(n41)), GRB.MINIMIZE)
-        m.addConstrs((gp.quicksum(x[j] for j in S41[i]) >= 1 for i in R(m41)), name="copri")
+    def confronta(nome, senso, valore_eur, zmilp, note=""):
+        gap = abs(valore_eur - zmilp) / abs(zmilp) if abs(zmilp) > 1e-9 else 0.0
+        ruolo = "ub" if senso == "min" else "lb"
+        print(f"  {nome:34s} euristica = {frazione(valore_eur):>6} ({ruolo})   "
+              f"z(MILP) = {frazione(zmilp):>6}   gap = {100 * gap:.1f}%  {note}")
+        CONFRONTO.append({"euristica": nome, "senso": senso, "valore_euristica": valore_eur,
+                          "ruolo": ruolo, "z_milp": zmilp, "gap": gap})
+
+
+    # ---------- 1. BIN PACKING: NEXT-FIT, FIRST-FIT, BEST-FIT ----------
+    intestazione("5.1  Le tre euristiche di tipo bin packing su lavori e macchine")
+    t51 = [[2, 1, 3], [3, 4, 2], [4, 5, 3]]
+    c51 = [[5, 10, 2], [5, 4, 6], [5, 4, 6]]
+    a51 = [5, 6, 7]
+
+
+    def modello_assegnamento(t, c, a):
+        n, k = len(t), len(a)
+        m = nuovo_modello("assegnamento")
+        x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
+        m.setObjective(gp.quicksum(c[j][mm] * x[j, mm] for j in R(n) for mm in R(k)), GRB.MINIMIZE)
+        m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="assegna")
+        m.addConstrs((gp.quicksum(t[j][mm] * x[j, mm] for j in R(n)) <= a[mm] for mm in R(k)),
+                     name="disponibilita")
         return m, x
 
 
-    def duale_41():
-        """max sum u_i  s.t.  sum_{i : j in S_i} u_i <= c_j,  u >= 0."""
-        d = nuovo_modello("duale_copertura")
-        u = d.addVars(m41, name="u")
-        d.setObjective(u.sum(), GRB.MAXIMIZE)
-        d.addConstrs((gp.quicksum(u[i] for i in R(m41) if j in S41[i]) <= c41[j] for j in R(n41)),
-                     name="rc")
-        return d, u
+    m51, x51 = modello_assegnamento(t51, c51, a51)
+    z51 = risolvi(m51)
+    for nome, e in [("next-fit", next_fit(t51, a51)),
+                    ("first-fit", first_fit(t51, a51)),
+                    ("best-fit (costo minimo)", best_fit(t51, a51, lambda j, mm, ra: c51[j][mm], "costo"))]:
+        valore = sum(c51[j][mm] for (j, mm) in e.x)
+        sol = {f"x[{j},{mm}]": 1 for (j, mm) in e.x}
+        assert ammissibile(m51, sol), nome           # vincoli, bound E interezza
+        confronta(f"5.1 {nome}", "min", valore, z51)
+    print("  Traccia del best-fit (il testo che compare nella dispensa):")
+    best_fit(t51, a51, lambda j, mm, ra: c51[j][mm], "costo").traccia.stampa()
 
+    # ---------- 2. LPT: BILANCIAMENTO SU MACCHINE IDENTICHE ----------
+    intestazione("5.2  LPT: il makespan su macchine identiche")
+    t52 = [5, 5, 4, 4, 3, 3, 3]
+    k52 = 3
+    e52 = lpt(t52, k52)
+    e52.traccia.stampa()
+    m52 = nuovo_modello("makespan")
+    x52 = m52.addVars(len(t52), k52, vtype=GRB.BINARY, name="x")
+    T52 = m52.addVar(name="T")
+    m52.setObjective(T52, GRB.MINIMIZE)
+    m52.addConstrs((x52.sum(j, "*") == 1 for j in R(len(t52))), name="assegna")
+    m52.addConstrs((T52 >= gp.quicksum(t52[j] * x52[j, mm] for j in R(len(t52))) for mm in R(k52)),
+                   name="max")
+    z52 = risolvi(m52)
+    sol52 = {f"x[{j},{mm}]": 1 for (j, mm) in e52.x} | {"T": e52.makespan}
+    assert ammissibile(m52, sol52)
+    confronta("5.2 LPT (makespan)", "min", e52.makespan, z52,
+              f"carichi {[int(c) for c in e52.carichi]}, totale {sum(t52)}")
+    print(f"  Bound elementare: il makespan e' almeno max(max_j t_j, somma/k) = "
+          f"max({max(t52)}, {frazione(sum(t52) / k52)}) = {frazione(max(max(t52), sum(t52) / k52))}")
 
-    m41p, x41 = primale_41()
-    z41 = risolvi(m41p)
-    scelte41 = [j + 1 for j in R(n41) if x41[j].X > 0.5]
-    print(f"  Ottimo intero: z(MILP) = {frazione(z41)}, squadre scelte {scelte41}")
+    # ---------- 3. GREEDY DI COPERTURA ----------
+    intestazione("5.3  Euristica costruttiva di copertura")
+    c53 = [4, 3, 5, 3]
+    S53 = [[0, 1], [1, 2], [0, 2], [0, 3], [1, 3], [2, 3]]
+    e53 = euristica_copertura(c53, S53)
+    e53.traccia.stampa()
+    m53 = nuovo_modello("copertura")
+    x53 = m53.addVars(len(c53), vtype=GRB.BINARY, name="x")
+    m53.setObjective(gp.quicksum(c53[j] * x53[j] for j in R(len(c53))), GRB.MINIMIZE)
+    m53.addConstrs((gp.quicksum(x53[j] for j in S53[i]) >= 1 for i in R(len(S53))), name="copri")
+    z53 = risolvi(m53)
+    assert ammissibile(m53, {f"x[{j}]": e53.y[j] for j in R(len(c53))})
+    confronta("5.3 euristica costruttiva di copertura", "min", e53.valore, z53,
+              f"scelti {[j + 1 for j in R(len(c53)) if e53.y[j]]}")
 
-    # soluzione duale costruita a mano: si assegna a ogni zona il minimo costo unitario
-    # disponibile, rispettando i vincoli duali una colonna alla volta (euristica costruttiva duale)
-    u_mano = {i: 0.0 for i in R(m41)}
-    residuo = {j: c41[j] for j in R(n41)}
-    for i in R(m41):
-        incremento = min(residuo[j] for j in S41[i])
-        u_mano[i] = incremento
-        for j in S41[i]:
-            residuo[j] -= incremento
-    d41, u41 = duale_41()
-    lb41, viol = valuta(d41, {f"u[{i}]": u_mano[i] for i in R(m41)})
-    assert viol <= 1e-9, viol
-    print("  Soluzione duale a mano (euristica costruttiva sulle zone): u = "
-          + ", ".join(f"u_{i+1} = {frazione(u_mano[i])}" for i in R(m41))
-          + f"   ->  lb = {frazione(lb41)}")
-    zlp41, zlp41r, pi41 = due_rilassamenti(m41p, d41)
-    print(f"  Dualita' debole verificata: {frazione(lb41)} <= {frazione(zlp41)} <= "
-          f"{frazione(z41)}")
-    assert lb41 <= zlp41 + 1e-9 <= z41 + 1e-9
-    # upper bound primale: la soluzione euristica costruttiva di copertura (una zona scoperta alla volta)
-    scoperte = set(R(m41))
-    presi41 = []
-    while scoperte:
-        j = min(R(n41), key=lambda j: c41[j] / max(1, len({i for i in scoperte if j in S41[i]}))
-                if any(j in S41[i] for i in scoperte) else float("inf"))
-        presi41.append(j)
-        scoperte -= {i for i in scoperte if j in S41[i]}
-    ub41_primale = sum(c41[j] for j in presi41)
-    assert ammissibile(m41p, {f"x[{j}]": 1 for j in presi41})
-    print(f"  Euristica euristica costruttiva di copertura: squadre {sorted(j + 1 for j in presi41)}, "
-          f"ub = {frazione(ub41_primale)}")
-    riga41 = registra_bound("copertura a costo minimo", ub41_primale, lb41, zlp41, zlp41r, z41)
-    salva_dati(pd.DataFrame([riga41]), "cap04_copertura")
+    # ---------- 4. GREEDY PER LO ZAINO: UN LOWER BOUND ----------
+    intestazione("5.4  Euristica costruttiva per lo zaino: in un massimo l'euristica da' un lower bound")
+    p54, w54, C54 = [10, 7, 6, 4], [5, 4, 3, 3], 9
+    e54 = euristica_zaino(p54, w54, C54)
+    e54.traccia.stampa()
+    m54 = nuovo_modello("zaino")
+    x54 = m54.addVars(4, vtype=GRB.BINARY, name="x")
+    m54.setObjective(gp.quicksum(p54[j] * x54[j] for j in R(4)), GRB.MAXIMIZE)
+    m54.addConstr(gp.quicksum(w54[j] * x54[j] for j in R(4)) <= C54, name="capacita")
+    z54 = risolvi(m54)
+    assert ammissibile(m54, {f"x[{j}]": e54.y[j] for j in R(4)})
+    confronta("5.4 euristica costruttiva per rapporto p/w", "max", e54.valore, z54,
+              f"presi {[j + 1 for j in R(4) if e54.y[j]]}, residuo {e54.residuo:g}")
 
-    # ---------- 2. UN MASSIMO: I RUOLI SI SCAMBIANO ----------
-    intestazione("4.2  Uno zaino di massimo: l'euristica da' il lower bound, il duale l'upper")
-    p42 = [10, 7, 6, 4]                      # valori
-    w42 = [5, 4, 3, 3]                       # pesi
-    C42 = 9
+    # ---------- 5. NEAREST NEIGHBOUR PER IL TSP ----------
+    intestazione("5.5  Nearest neighbour per il TSP: il tour dipende dal nodo di partenza")
+    # cinque citta', distanze simmetriche, nessuna coordinata: solo la matrice
+    # distanze simmetriche e metriche (rispettano la disuguaglianza triangolare)
+    D55 = [[0, 5, 2, 2, 9],
+           [5, 0, 4, 3, 4],
+           [2, 4, 0, 4, 7],
+           [2, 3, 4, 0, 7],
+           [9, 4, 7, 7, 0]]
+    n55 = len(D55)
+    e55t = vicino_piu_vicino(D55, partenza=0)
+    e55t.traccia.stampa()
+    print(f"  Tour dal nodo 1: {' -> '.join(str(v + 1) for v in e55t.tour)}, lunghezza {e55t.valore:g}")
+    tour_da = {}
+    for s in R(n55):
+        e = vicino_piu_vicino(D55, partenza=s)
+        tour_da[s] = (e.tour, e.valore)
+        if s:
+            print(f"  Tour dal nodo {s + 1}: {' -> '.join(str(v + 1) for v in e.tour)}, "
+                  f"lunghezza {e.valore:g}")
+    # l'ottimo: si enumerano le (n-1)!/2 permutazioni, con cinque nodi sono dodici
+    from itertools import permutations
+    ottimo, tour_ottimo = None, None
+    for perm in permutations(R(1, n55)):
+        if perm[0] > perm[-1]:
+            continue
+        giro = (0,) + perm + (0,)
+        lung = sum(D55[giro[i]][giro[i + 1]] for i in R(n55))
+        if ottimo is None or lung < ottimo:
+            ottimo, tour_ottimo = lung, giro
+    print(f"  Ottimo per enumerazione: {' -> '.join(str(v + 1) for v in tour_ottimo)}, "
+          f"lunghezza {ottimo:g}")
+    salva_dati(pd.DataFrame({"partenza": [s + 1 for s in R(n55)],
+                             "tour": [" - ".join(str(v + 1) for v in tour_da[s][0]) for s in R(n55)],
+                             "lunghezza": [tour_da[s][1] for s in R(n55)]}),
+               "cap05_tsp")
+    confronta("5.5 nearest neighbour (TSP)", "min", e55t.valore, ottimo,
+              f"tour {' - '.join(str(v + 1) for v in e55t.tour)}")
 
+    # ---------- 6. GREEDY DI LOT SIZING ----------
+    intestazione("5.6  Lot sizing: copertura di periodi a costo unitario minimo")
+    d55 = [20, 10, 30, 40, 10]
+    setup55, hold55 = 50, 1
+    e55 = euristica_lotti(d55, setup55, hold55)
+    e55.traccia.stampa()
+    T55 = len(d55)
+    m55 = nuovo_modello("lotti")
+    q55 = m55.addVars(T55, name="q")
+    I55 = m55.addVars(T55, name="I")
+    y55 = m55.addVars(T55, vtype=GRB.BINARY, name="y")
+    Mtot = sum(d55)
+    m55.setObjective(gp.quicksum(setup55 * y55[t] + hold55 * I55[t] for t in R(T55)), GRB.MINIMIZE)
+    for t in R(T55):
+        m55.addConstr((I55[t - 1] if t else 0) + q55[t] - I55[t] == d55[t], name=f"bilancio{t}")
+        m55.addConstr(q55[t] <= Mtot * y55[t], name=f"link{t}")
+    z55 = risolvi(m55)
+    sol55 = {}
+    for t in R(T55):
+        sol55[f"q[{t}]"] = e55.lanci.get(t, 0)
+        sol55[f"y[{t}]"] = 1 if t in e55.lanci else 0
+    scorta = 0
+    for t in R(T55):
+        scorta += sol55[f"q[{t}]"] - d55[t]
+        sol55[f"I[{t}]"] = scorta
+    assert ammissibile(m55, sol55)
+    confronta("5.5 lot sizing (least unit cost)", "min", e55.valore, z55,
+              f"lanci nei periodi {[t + 1 for t in sorted(e55.lanci)]}")
+    print("  Wagner-Whitin risolve *all'ottimo* questo stesso modello con la programmazione")
+    print(f"  dinamica: il suo valore e' {frazione(z55)}, non quello dell'euristica.")
 
-    def primale_42():
-        m = nuovo_modello("zaino")
-        x = m.addVars(4, vtype=GRB.BINARY, name="x")
-        m.setObjective(gp.quicksum(p42[j] * x[j] for j in R(4)), GRB.MAXIMIZE)
-        m.addConstr(gp.quicksum(w42[j] * x[j] for j in R(4)) <= C42, name="capacita")
-        return m, x
+    # ---------- 7. UN PASSO DI RICERCA LOCALE ----------
+    intestazione("5.7  Un passo di ricerca locale sulla soluzione LPT")
+    carichi = list(e52.carichi)
+    assegn = {j: mm for (j, mm) in e52.x}
+    migliorato = True
+    passi = 0
+    while migliorato:
+        migliorato = False
+        for j, mm in list(assegn.items()):
+            for nuovo in R(k52):
+                if nuovo == mm:
+                    continue
+                prova = list(carichi)
+                prova[mm] -= t52[j]
+                prova[nuovo] += t52[j]
+                if max(prova) < max(carichi) - 1e-9:
+                    print(f"  Spostare il lavoro {j + 1} dalla macchina {mm + 1} alla {nuovo + 1}: "
+                          f"makespan {max(carichi):g} -> {max(prova):g}")
+                    carichi, assegn[j], migliorato, passi = prova, nuovo, True, passi + 1
+                    break
+            if migliorato:
+                break
+    if passi == 0:
+        print(f"  Nessuno spostamento singolo migliora il makespan {max(carichi):g}: la")
+        print(f"  soluzione LPT e' un ottimo locale per questa mossa. L'ottimo globale e' "
+              f"{frazione(z52)}.")
+    print("  Un ottimo locale non e' un ottimo globale, e la ricerca locale non produce")
+    print("  bound migliori di quelli della soluzione che restituisce.")
 
+    # ---------- 7. QUANDO LA GREEDY FALLISCE ----------
+    intestazione("5.8  Un fallimento della euristica costruttiva non dimostra l'inammissibilita'")
+    t57 = matrice([3, 3, 2], 2)
+    a57 = [5, 3]
+    e57 = next_fit(t57, a57)
+    e57.traccia.stampa()
+    print(f"  next-fit: ok = {e57.ok}")
+    m57, x57 = modello_assegnamento(t57, [[1, 1], [1, 1], [1, 1]], a57)
+    z57 = risolvi(m57)
+    print(f"  Il MILP invece e' ammissibile, con ottimo {frazione(z57)}: soluzione "
+          + ", ".join(f"x[{j+1}][{mm+1}]" for j in R(3) for mm in R(2) if x57[j, mm].X > 0.5))
+    print("  La euristica costruttiva fallisce perche' e' miope, non perche' il problema non abbia")
+    print("  soluzione: 'nessuna soluzione trovata' non e' 'nessuna soluzione esiste'.")
+    assert not e57.ok
 
-    def duale_42():
-        """Duale del rilassamento senza i bound (x >= 0): min C v  s.t.  w_j v >= p_j, v >= 0."""
-        d = nuovo_modello("duale_zaino")
-        v = d.addVar(name="v")
-        d.setObjective(C42 * v, GRB.MINIMIZE)
-        d.addConstrs((w42[j] * v >= p42[j] for j in R(4)), name="rc")
-        return d, v
-
-
-    m42, x42 = primale_42()
-    z42 = risolvi(m42)
-    scelte42 = [j + 1 for j in R(4) if x42[j].X > 0.5]
-    print(f"  Ottimo intero: z(MILP) = {frazione(z42)}, oggetti {scelte42}, "
-          f"peso {sum(w42[j] for j in R(4) if x42[j].X > 0.5)} su {C42}")
-    # euristica euristica costruttiva per rapporto valore/peso: da' un LOWER bound
-    ordine = sorted(R(4), key=lambda j: -p42[j] / w42[j])
-    carico, presi = 0, []
-    for j in ordine:
-        if carico + w42[j] <= C42:
-            presi.append(j)
-            carico += w42[j]
-    lb42 = sum(p42[j] for j in presi)
-    assert ammissibile(m42, {f"x[{j}]": 1 for j in presi})
-    print(f"  Euristica costruttiva per rapporto p_j/w_j: prende {sorted(j + 1 for j in presi)}, "
-          f"lb = {frazione(lb42)}")
-    # duale a mano: v = max_j p_j / w_j  (il rapporto migliore) e' ammissibile
-    v_mano = max(p42[j] / w42[j] for j in R(4))
-    d42, v42 = duale_42()
-    ub42, viol = valuta(d42, {"v": v_mano})
-    assert viol <= 1e-9, viol
-    print(f"  Soluzione duale a mano: v = max_j p_j/w_j = {frazione(v_mano)}  ->  "
-          f"ub = C v = {frazione(ub42)}")
-    zlp42, zlp42r, _ = due_rilassamenti(m42, d42)
-    print(f"  Il sandwich del massimo: {frazione(lb42)} <= z(MILP) = {frazione(z42)} <= "
-          f"z(LP) = {frazione(zlp42)} <= ub = {frazione(ub42)}")
-    assert lb42 <= z42 <= zlp42 + 1e-9 <= ub42 + 1e-9
-    riga42 = registra_bound("zaino di massimo", ub42, lb42, zlp42, zlp42r, z42, senso="max")
-    salva_dati(pd.DataFrame([riga42]), "cap04_zaino")
-
-    # ---------- 3. UN TAGLIO DI COPERTURA ----------
-    intestazione("4.3  Una disuguaglianza valida: il taglio di copertura")
-    # {1,2} e' una copertura: w_1 + w_2 = 9 > 8 = C, quindi x_1 + x_2 <= 1
-    from itertools import combinations
-    tutte = [s for k in R(2, 5) for s in combinations(R(4), k) if sum(w42[j] for j in s) > C42]
-    coperture = [s for s in tutte                                   # solo le minimali
-                 if all(sum(w42[j] for j in t) <= C42
-                        for t in combinations(s, len(s) - 1))]
-    print("  Coperture minimali trovate: "
-          + "; ".join("{" + ", ".join(str(j + 1) for j in s) + "}" for s in coperture))
-    m43, x43 = primale_42()
-    zlp43_prima, sol43, _ = rilassamento(m43, rafforzato=True)
-    print("  Soluzione ottima del rilassamento senza tagli: "
-          + ", ".join(f"x_{j+1} = {frazione(sol43[f'x[{j}]'])}" for j in R(4)))
-    for s in coperture:
-        somma = sum(sol43[f"x[{j}]"] for j in s)
-        stato = "VIOLATO" if somma > len(s) - 1 + 1e-9 else "soddisfatto"
-        print(f"    taglio su {{{', '.join(str(j + 1) for j in s)}}}: "
-              f"somma = {frazione(somma)} contro {len(s) - 1}  ->  {stato}")
-    for s in coperture:
-        m43.addConstr(gp.quicksum(x43[j] for j in s) <= len(s) - 1, name="cover" + "".join(map(str, s)))
-    z43 = risolvi(m43)
-    zlp43_dopo, _, _ = rilassamento(m43, rafforzato=True)
-    print(f"  z(LP+) senza tagli = {frazione(zlp43_prima)}   con i tagli di copertura = "
-          f"{frazione(zlp43_dopo)}   z(MILP) = {frazione(z43)}")
-    assert z43 == z42, "i tagli non devono cambiare l'ottimo intero"
-    assert zlp43_dopo <= zlp43_prima + 1e-9
-    salva_dati(pd.DataFrame([{"modello": "zaino", "z_lp_senza_tagli": zlp43_prima,
-                              "z_lp_con_tagli": zlp43_dopo, "z_milp": z43}]), "cap04_tagli")
-
-    # ---------- 4. QUELLO CHE FA IL SOLVER: relax() E ObjBound ----------
-    intestazione("4.4  Il primo rilassamento e il bound finale del solver")
-    m44, x44 = primale_41()          # la copertura: qui il solver deve lavorare
-    m44.Params.OutputFlag = 0
-    m44.optimize()
-    print(f"  Status = {m44.Status} (2 = OPTIMAL), SolCount = {m44.SolCount}")
-    print(f"  ObjVal   = {frazione(m44.ObjVal)}   (la migliore soluzione intera trovata)")
-    print(f"  ObjBound = {frazione(m44.ObjBound)} (il miglior bound dimostrato)")
-    print(f"  MIPGap   = {m44.MIPGap:.4f}          NodeCount = {int(m44.NodeCount)}")
-    zrad, _, _ = rilassamento(m44, rafforzato=True)
-    print(f"  Rilassamento del modello scritto da noi, con relax(): {frazione(zrad)}")
-    assert abs(m44.ObjBound - m44.ObjVal) <= 1e-6
-    assert zrad <= m44.ObjVal + 1e-9         # minimo: il rilassamento sta sotto l'ottimo
-    print(f"  Il rilassamento vale {frazione(zrad)}, l'ottimo intero {frazione(m44.ObjVal)}: il")
-    print("  gap c'e', ma NodeCount = 0. Gurobi lo chiude *nella radice*, con presolve,")
-    print("  tagli propri ed euristiche, senza mai ramificare.")
-    # per vedere il solver al lavoro si spengono presolve, tagli ed euristiche
-    m45, x45 = primale_41()
-    m45.Params.Presolve = 0
-    m45.Params.Cuts = 0
-    m45.Params.Heuristics = 0
-    m45.optimize()
-    print(f"  Con Presolve = Cuts = Heuristics = 0: z = {frazione(m45.ObjVal)}, "
-          f"NodeCount = {int(m45.NodeCount)}")
-    print("  Stesso ottimo, ma ora i nodi si contano: 'quanto e' difficile' non e' una")
-    print("  proprieta' del solo modello, dipende anche da cosa il solver mette in campo.")
-    assert m45.ObjVal == m44.ObjVal
-    salva_dati(pd.DataFrame([{"configurazione": "impostazioni predefinite", "z": m44.ObjVal,
-                              "z_lp_scritto": zrad, "nodi": int(m44.NodeCount)},
-                             {"configurazione": "senza presolve, tagli ed euristiche",
-                              "z": m45.ObjVal, "z_lp_scritto": zrad,
-                              "nodi": int(m45.NodeCount)}]), "cap04_solver")
-
-    # ---------- 5. I DUALI DELL'LP NON SONO I PREZZI MARGINALI DEL MILP ----------
-    intestazione("4.5  Perche' i duali dell'LP non sono i prezzi marginali del MILP")
-    righe = []
-    for C in (8, 9, 10, 11, 12):
-        m = nuovo_modello("zaino_C")
-        x = m.addVars(4, vtype=GRB.BINARY, name="x")
-        m.setObjective(gp.quicksum(p42[j] * x[j] for j in R(4)), GRB.MAXIMIZE)
-        con = m.addConstr(gp.quicksum(w42[j] * x[j] for j in R(4)) <= C, name="capacita")
-        z = risolvi(m)
-        zr, _, pi = rilassamento(m, rafforzato=True)
-        righe.append({"capacita": C, "z_milp": z, "z_lp": zr, "duale_lp": pi["capacita"]})
-    print("   C   z(MILP)   z(LP+)   duale dell'LP   variazione vera di z(MILP)")
-    for k, r in enumerate(righe):
-        delta = "" if k == 0 else frazione(r["z_milp"] - righe[k - 1]["z_milp"])
-        print(f"  {r['capacita']:2d}    {frazione(r['z_milp']):>5}   {frazione(r['z_lp']):>6}   "
-              f"{r['duale_lp']:>10.4f}      {delta:>6}")
-    salva_dati(pd.DataFrame(righe), "cap04_prezzi")
-    print("  Il duale dell'LP e' il rapporto p_j/w_j dell'oggetto 'critico': 2 quando la")
-    print("  capacita' si esaurisce sull'oggetto 1, 7/4 quando avanza spazio per l'oggetto 2.")
-    print("  Dice quanto vale una unita' di capacita' in piu' *nel continuo*. Sull'intero la")
-    print("  variazione vera e' a scatti (1, 0, 3, 3) e non coincide mai con quel valore:")
-    print("  passando da C = 9 a C = 10 l'ottimo intero non cambia affatto, mentre il duale")
-    print("  continua a promettere 7/4. Il duale dell'LP non e' il prezzo marginale del")
-    print("  MILP, e usarlo come tale e' un errore, non un'approssimazione.")
-
-    # ---------- 6. FIGURA: IL SANDWICH DEI DUE PROBLEMI ----------
-    fig, ax = plt.subplots(figsize=(7.2, 2.5))
-    etichette = ["copertura (min)", "zaino (max)"]
-    lb = [lb41, lb42]
-    ub = [ub41_primale, ub42]
-    zl = [zlp41, zlp42]
-    zm = [z41, z42]
-    for i in R(2):
-        ax.plot([lb[i], ub[i]], [i, i], color=GRIGIO, lw=2, solid_capstyle="round")
-        ax.plot(lb[i], i, "|", color=TEAL, ms=18, mew=2.5)
-        ax.plot(ub[i], i, "|", color=ARANCIO, ms=18, mew=2.5)
-        ax.plot(zl[i], i, "d", color=BLU, ms=8)
-        ax.plot(zm[i], i, "o", color=ROSSO, ms=9)
-    ax.plot([], [], "|", color=TEAL, ms=12, mew=2.5, label="lower bound")
-    ax.plot([], [], "|", color=ARANCIO, ms=12, mew=2.5, label="upper bound")
-    ax.plot([], [], "d", color=BLU, ms=7, label="$z(\\mathrm{LP})$")
-    ax.plot([], [], "o", color=ROSSO, ms=8, label="$z(\\mathrm{MILP})$")
-    ax.set_yticks(R(2))
-    ax.set_yticklabels(etichette)
-    ax.set_xlabel("valore dell'obiettivo")
-    ax.set_title("Il sandwich: in un minimo il duale sta a sinistra, in un massimo a destra")
-    ax.legend(fontsize=8, ncols=4, loc="lower center", bbox_to_anchor=(0.5, -0.42))
-    ax.set_ylim(-0.6, 1.6)
-    salva_figura(fig, "cap04_sandwich")
+    # ---------- 8. IL QUADRO DELLE EURISTICHE ----------
+    intestazione("5.9  Il quadro")
+    tab = pd.DataFrame(CONFRONTO)
+    salva_dati(tab, "cap05_euristiche")
+    fig, ax = plt.subplots(figsize=(7.6, 3.6))
+    etichette = [r["euristica"].split(" ", 1)[1][:22] for r in CONFRONTO]
+    gap = [100 * r["gap"] for r in CONFRONTO]
+    colori = [TEAL if r["senso"] == "min" else ARANCIO for r in CONFRONTO]
+    ax.barh(etichette, gap, color=colori)
+    for i, g in enumerate(gap):
+        ax.annotate(f"{g:.1f}%", (g, i), textcoords="offset points", xytext=(4, -3), fontsize=9)
+    ax.set_xlabel("gap dell'euristica rispetto all'ottimo del MILP (%)")
+    ax.set_title("Quanto e' buona ciascuna euristica costruttiva")
+    ax.invert_yaxis()
+    ax.set_xlim(0, max(gap) * 1.25 + 1)
+    salva_figura(fig, "cap05_gap")
     print("Fine.")
     ```
 
