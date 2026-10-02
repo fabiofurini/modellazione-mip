@@ -1,4 +1,4 @@
-"""EX 11 -- Bilanciamento fra due operai (famiglia 7, rimando alla 11).
+"""EX 12 -- Bilanciamento fra due operai (famiglia 7, rimando alla 11).
 
 Quattro lavori indivisibili di durata 2, 3, 6, 7 e due operai: si vogliono
 carichi il piu' possibile bilanciati.
@@ -23,11 +23,11 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("EX 11. Bilanciamento: quattro lavori indivisibili su due operai")
+intestazione("EX 12. Bilanciamento: quattro lavori indivisibili su due operai")
 d = [2, 3, 6, 7]
 n, D = len(d), sum(d)
 print(f"  Durate {d}; totale {D}; a carichi perfettamente pari ciascuno farebbe {frazione(D / 2)}")
-salva_dati(pd.DataFrame({"lavoro": R(1, n + 1), "durata": d}), "ex11_lavori")
+salva_dati(pd.DataFrame({"lavoro": R(1, n + 1), "durata": d}), "ex12_lavori")
 
 
 def modello_minmax(d):
@@ -69,7 +69,7 @@ def duale_minmax(d):
 
 
 m, x, z = modello_minmax(d)
-salva_modello(m, "ex11_primale")
+salva_modello(m, "ex12_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 # LPT su due operai: i lavori in ordine di durata decrescente, ciascuno al meno carico
@@ -90,7 +90,7 @@ print(f"  ub = max dei carichi = {frazione(ub)}")
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 dl, pi1, pi2 = duale_minmax(d)
-salva_modello(dl, "ex11_duale")
+salva_modello(dl, "ex12_duale")
 # ricetta: i vincoli d_j (pi1 - pi2) <= 0 impongono pi1 <= pi2; con pi1 = pi2 = t il
 # vincolo -pi1 - pi2 <= 1 da' t >= -1/2, e l'obiettivo -D t cresce al calare di t
 mano = {"pi[0]": -0.5, "pi[1]": -0.5}
@@ -111,12 +111,12 @@ op2 = [j + 1 for j in R(n) if x[j].X <= 0.5]
 c1 = sum(d[j - 1] for j in op1)
 print(f"  Soluzione ottima (min-max): operaio 1 = {op1} (carico {c1}), operaio 2 = {op2} "
       f"(carico {D - c1});  z(MILP) = {frazione(zv)}")
-riga = registra_bound("EX 11 bilanciamento", ub, lb, zlp, zlpr, zv)
-salva_dati(pd.DataFrame([riga]), "ex11_bound")
+riga = registra_bound("EX 12 bilanciamento", ub, lb, zlp, zlpr, zv)
+salva_dati(pd.DataFrame([riga]), "ex12_bound")
 assert lb <= zlp <= zv <= ub + 1e-9
 
 # ---------- 5. LO STESSO PROBLEMA CON L'OBIETTIVO «DIFFERENZA» ----------
-intestazione("EX 11 (seguito). Lo stesso problema scritto come minima differenza")
+intestazione("EX 12 (seguito). Lo stesso problema scritto come minima differenza")
 md, xd, sd = modello_differenza(d)
 zd = risolvi(md)
 op1d = [j + 1 for j in R(n) if xd[j].X > 0.5]
@@ -131,7 +131,7 @@ assert abs(zv - (D / 2 + zd / 2)) < 1e-9
 print("  Percio' i due modelli hanno le stesse soluzioni ottime, ma i loro valori non si")
 print("  confrontano: chiamare 'differenza' il valore del min-max e' un errore.")
 salva_dati(pd.DataFrame([{"obiettivo": "min-max", "z": zv},
-                         {"obiettivo": "minima differenza", "z": zd}]), "ex11_obiettivi")
+                         {"obiettivo": "minima differenza", "z": zd}]), "ex12_obiettivi")
 
 # ---------- 6. FIGURA ----------
 fig, ax = plt.subplots(figsize=(6.6, 2.6))
@@ -148,8 +148,8 @@ ax.annotate(f"D/2 = {frazione(D / 2)}", (D / 2, -0.62), ha="center", fontsize=9,
 ax.set_yticks([0, 1])
 ax.set_yticklabels(["operaio 1", "operaio 2"])
 ax.set_xlabel("carico")
-ax.set_title(f"EX 11: carichi ottimi ({c1}, {D - c1}); max = {frazione(zv)}, "
+ax.set_title(f"EX 12: carichi ottimi ({c1}, {D - c1}); max = {frazione(zv)}, "
              f"differenza = {frazione(zd)}")
 ax.invert_yaxis()
-salva_figura(fig, "ex11_ottimo")
+salva_figura(fig, "ex12_ottimo")
 print("Fine.")

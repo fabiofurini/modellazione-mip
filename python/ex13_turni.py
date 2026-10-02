@@ -1,4 +1,4 @@
-"""EX 14 -- Turni del pronto soccorso (famiglia 12).
+"""EX 13 -- Turni del pronto soccorso (famiglia 12).
 
 Copertura ciclica: sette schemi di turno, uno per giorno di inizio, ciascuno con
 quattro giorni pieni, un giorno a mezzo servizio e due di riposo. E' un set
@@ -20,7 +20,7 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. DATI, COSTI E MATRICE DI COPERTURA ----------
-intestazione("EX 14. Turni del pronto soccorso: coprire il fabbisogno al costo minimo")
+intestazione("EX 13. Turni del pronto soccorso: coprire il fabbisogno al costo minimo")
 GIORNI = ["lun", "mar", "mer", "gio", "ven", "sab", "dom"]
 b13 = [10, 8, 12, 9, 9, 7, 8]          # equivalenti a tempo pieno richiesti
 costo_giorno = [100, 100, 100, 100, 100, 110, 130]
@@ -40,8 +40,8 @@ for j in R(ng):
     print(f"    schema {j + 1} (inizia {GIORNI[j]}): pieno {pieni}; mezzo servizio "
           f"{GIORNI[(j + 4) % ng]}  ->  {frazione(c13[j])} euro")
 salva_dati(pd.DataFrame({"schema": R(1, ng + 1), "inizio": GIORNI, "costo": c13}),
-           "ex14_schemi")
-salva_dati(pd.DataFrame({"giorno": GIORNI, "fabbisogno": b13}), "ex14_fabbisogno")
+           "ex13_schemi")
+salva_dati(pd.DataFrame({"giorno": GIORNI, "fabbisogno": b13}), "ex13_fabbisogno")
 
 
 def modello(a, b, c):
@@ -66,7 +66,7 @@ def duale(a, b, c):
 
 
 m13, x13 = modello(a13, b13, c13)
-salva_modello(m13, "ex14_primale")
+salva_modello(m13, "ex13_primale")
 print("  Il modello dell'istanza:")
 stampa_lp(m13)
 
@@ -106,7 +106,7 @@ print("  Soluzione euristica: " + ", ".join(f"{x_eur[j]} dello schema {j + 1}" f
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 d13 = duale(a13, b13, c13)
-salva_modello(d13, "ex14_duale")
+salva_modello(d13, "ex13_duale")
 # ricetta del rapporto migliore: stesso prezzo t su tutti i giorni. Ogni schema
 # copre 4 + 1/2 = 9/2 giornate, quindi il vincolo duale e' (9/2) t <= c_j:
 # il t piu' grande ammissibile e' min_j c_j / (9/2).
@@ -132,12 +132,12 @@ print("  Soluzione ottima: " + ", ".join(f"{int(x13[j].X)} dello schema {j + 1}"
 copertura_ott = [sum(a13[i][j] * x13[j].X for j in R(ng)) for i in R(ng)]
 print("  Copertura per giorno: " + ", ".join(
     f"{GIORNI[i]} {frazione(copertura_ott[i])} su {b13[i]}" for i in R(ng)))
-riga = registra_bound("EX 14 turni", ub13, lb13, zlp13, zlp13r, z13)
-salva_dati(pd.DataFrame([riga]), "ex14_bound")
+riga = registra_bound("EX 13 turni", ub13, lb13, zlp13, zlp13r, z13)
+salva_dati(pd.DataFrame([riga]), "ex13_bound")
 assert lb13 <= zlp13 <= z13 <= ub13 + 1e-9
 
 # ---------- 5. IL PREZZO DELL'INTEREZZA E IL RUOLO DEL MEZZO SERVIZIO ----------
-intestazione("EX 14. Due letture del risultato")
+intestazione("EX 13. Due letture del risultato")
 print(f"  z(LP) = {frazione(zlp13)} e z(MILP) = {frazione(z13)}: la differenza "
       f"{frazione(z13 - zlp13)} e' il prezzo dell'interezza, cioe' del fatto che le persone")
 print("  si assumono a una a una.")
@@ -160,7 +160,7 @@ print("  persa costa piu' di quanto valga la copertura in piu'.")
 assert z_senza < z13
 salva_dati(pd.DataFrame([{"variante": "schema con mezzo servizio", "z": z13},
                          {"variante": "schema senza mezzo servizio", "z": z_senza}]),
-           "ex14_varianti")
+           "ex13_varianti")
 
 # ---------- 6. FIGURA ----------
 fig, ax = plt.subplots(figsize=(6.8, 3.0))
@@ -172,7 +172,7 @@ ax.plot(idx, [sum(a13[i][j] * x_eur[j] for j in R(ng)) for i in idx], marker="^"
 ax.set_xticks(idx)
 ax.set_xticklabels(GIORNI)
 ax.set_ylabel("equivalenti a tempo pieno")
-ax.set_title(f"EX 14: costo {frazione(z13)} contro euristica {frazione(ub13)}")
+ax.set_title(f"EX 13: costo {frazione(z13)} contro euristica {frazione(ub13)}")
 ax.legend(fontsize=8)
-salva_figura(fig, "ex14_copertura")
+salva_figura(fig, "ex13_copertura")
 print("Fine.")

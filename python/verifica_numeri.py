@@ -158,10 +158,10 @@ print("cap. 8: le otto domande aggiuntive — ottimi coincidono con i testi")
 attesi_num = {   # NUM: (ub, lb, z(LP), z(LP+), z(MILP), senso)
     "02": (13, 7, 9, 9, 9, "min"),
     "03": (99, 93, 95, 95, 95, "min"),
-    "06": (3, 3, 3, 3, 3, "min"),
+    "04": (3, 3, 3, 3, 3, "min"),
     "08": (18, 18, 18, 18, 18, "max"),
     "10": (F("23000/3"), 2000, 5200, 5200, 2500, "max"),
-    "11": (9, 9, 9, 9, 9, "min"),
+    "12": (9, 9, 9, 9, 9, "min"),
 }
 for k, (ub, lb, zlp, zlpr, zmilp, senso) in attesi_num.items():
     r = pd.read_csv(DATI / f"ex{k}_bound.csv").iloc[0]
@@ -174,8 +174,8 @@ for k, (ub, lb, zlp, zlpr, zmilp, senso) in attesi_num.items():
         assert float(r.lb) <= float(r.z_milp) <= float(r.z_lp) + 1e-6 <= float(r.ub) + 1e-6, k
     else:
         assert float(r.lb) <= float(r.z_lp) <= float(r.z_milp) <= float(r.ub) + 1e-9, k
-# EX 11: i due obiettivi descrivono la stessa soluzione con numeri diversi
-ob = pd.read_csv(DATI / "ex11_obiettivi.csv").set_index("obiettivo")["z"]
+# EX 12: i due obiettivi descrivono la stessa soluzione con numeri diversi
+ob = pd.read_csv(DATI / "ex12_obiettivi.csv").set_index("obiettivo")["z"]
 assert uguale(ob["min-max"], 9) and uguale(ob["minima differenza"], 0)
 assert uguale(ob["min-max"], 18 / 2 + ob["minima differenza"] / 2)
 print("modelli numerici EX 2, 5, 7, 9, 10, 15 — bound e ottimi coincidono con i testi")
@@ -239,13 +239,13 @@ print("cap. 9-10: le ventiquattro domande aggiuntive — ottimi coincidono con i
 # ----------------------------------------------------------------------
 attesi_num2 = {
     "01": (160, 110, 160, 140, 120, "max"),
-    "04": (825000, 761250, 773500, 773500, 774180, "min"),
-    "05": (F("280000/11"), 25200, F("280000/11"), F("229000/9"), 25250, "max"),
+    "05": (F("50/3"), 16, F("50/3"), F("50/3"), 16, "max"),
+    "06": (F("280000/11"), 25200, F("280000/11"), F("229000/9"), 25250, "max"),
     "07": (5, 4, 5, 5, 5, "max"),
     "09": (4, 3, 4, 4, 4, "max"),
-    "12": (24000, 24000, 24000, 24000, 24000, "max"),
-    "13": (F("50/3"), 16, F("50/3"), F("50/3"), 16, "max"),
-    "14": (8410, 6300, F("115970/17"), F("115970/17"), 7060, "min"),
+    "11": (24000, 24000, 24000, 24000, 24000, "max"),
+    "13": (8410, 6300, F("115970/17"), F("115970/17"), 7060, "min"),
+    "14": (825000, 761250, 773500, 773500, 774180, "min"),
     "15": (1, 0, 0, 1, 1, "min"),
 }
 for k, (ub, lb, zlp, zlpr, zmilp, senso) in attesi_num2.items():

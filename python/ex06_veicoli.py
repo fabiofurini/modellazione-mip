@@ -1,4 +1,4 @@
-"""EX 5 -- Produzione di veicoli con lotto minimo (famiglia 9).
+"""EX 6 -- Produzione di veicoli con lotto minimo (famiglia 9).
 
 Due risorse (acciaio e ore di lavoro) e cinque tipi di veicolo, ciascuno con una
 quantita' minima se lo si produce. E' la stessa struttura del problema 9.3 senza
@@ -17,7 +17,7 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("EX 5. Veicoli: due risorse e una quantita' minima per tipo")
+intestazione("EX 6. Veicoli: due risorse e una quantita' minima per tipo")
 NOMI = ["utilitaria", "berlina", "vettura grande", "monovolume", "monovolume grande"]
 a4 = [[2, 3, 5, 6, 8],            # acciaio per unita'
       [30, 25, 40, 45, 55]]       # ore di lavoro per unita'
@@ -28,7 +28,7 @@ q4 = [10, 10, 10, 5, 5]           # quantita' minima se il tipo si produce
 ns, nr = len(p4), len(b4)
 M4 = [min(b4[i] // a4[i][j] for i in R(nr)) for j in R(ns)]
 salva_dati(pd.DataFrame({"tipo": NOMI, "acciaio": a4[0], "ore": a4[1], "profitto": p4,
-                         "minimo": q4, "massimo": M4}), "ex05_dati")
+                         "minimo": q4, "massimo": M4}), "ex06_dati")
 print("  Quantita' massima producibile di un solo tipo (il big-M naturale):")
 for j in R(ns):
     print(f"    {NOMI[j]:20s} min({b4[0]}/{a4[0][j]}, {b4[1]}/{a4[1][j]}) = {M4[j]}")
@@ -66,7 +66,7 @@ def duale(a, b, p, q, M):
 
 
 m4, x4, y4 = modello(a4, b4, p4, q4, M4)
-salva_modello(m4, "ex05_primale")
+salva_modello(m4, "ex06_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
 # euristica costruttiva sul profitto per ora di lavoro (la risorsa piu' stretta): si accende un
@@ -102,7 +102,7 @@ print(f"  Soluzione euristica: " + ", ".join(f"{x_e[j]} {NOMI[j]}" for j in R(ns
 
 # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 d4 = duale(a4, b4, p4, q4, M4)
-salva_modello(d4, "ex05_duale")
+salva_modello(d4, "ex06_duale")
 # ricetta: lam = mu = 0 (il lotto minimo non si valuta) e una sola risorsa
 # valutata al prezzo che nessun veicolo riesce a battere
 migliore, mano, scelta = float("inf"), None, None
@@ -130,12 +130,12 @@ print("  Soluzione ottima: " + ", ".join(f"{int(x4[j].X)} {NOMI[j]}" for j in R(
 for i in R(nr):
     usato = sum(a4[i][j] * x4[j].X for j in R(ns))
     print(f"    {RISORSE[i]}: {frazione(usato)} su {b4[i]}")
-riga = registra_bound("EX 5 veicoli", ub4, lb4, zlp4, zlp4r, z4, senso="max")
-salva_dati(pd.DataFrame([riga]), "ex05_bound")
+riga = registra_bound("EX 6 veicoli", ub4, lb4, zlp4, zlp4r, z4, senso="max")
+salva_dati(pd.DataFrame([riga]), "ex06_bound")
 assert lb4 <= z4 <= zlp4 <= ub4 + 1e-9
 
 # ---------- 5. IL LOTTO MINIMO E' UN VINCOLO, NON UN AIUTO ----------
-intestazione("EX 5. Che cosa costa il lotto minimo")
+intestazione("EX 6. Che cosa costa il lotto minimo")
 m, x, y = modello(a4, b4, p4, [0] * ns, M4)
 z_senza = risolvi(m)
 print(f"  Senza quantita' minime l'ottimo sale a {frazione(z_senza)} "
@@ -159,7 +159,7 @@ print(f"  4b. Con le ore di lavoro raddoppiate: z = {frazione(z_b)}; risorse usa
       + ", ".join(f"{RISORSE[i]} {frazione(uso_b[i])} su {b_b[i]}" for i in R(nr)))
 print("      Le ore restano la risorsa stretta e il profitto raddoppia quasi esattamente.")
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
-           "ex05_varianti")
+           "ex06_varianti")
 
 # ---------- 6. FIGURA ----------
 fig, ax = plt.subplots(figsize=(6.8, 3.0))
@@ -172,7 +172,7 @@ ax.plot([], [], color=GRIGIO, lw=1.5, label="quantita' minima")
 ax.set_xticks(idx)
 ax.set_xticklabels([n.replace(" ", "\n") for n in NOMI], fontsize=8)
 ax.set_ylabel("unita' prodotte")
-ax.set_title(f"EX 5: euristica {frazione(lb4)} contro ottimo {frazione(z4)}")
+ax.set_title(f"EX 6: euristica {frazione(lb4)} contro ottimo {frazione(z4)}")
 ax.legend(fontsize=8)
-salva_figura(fig, "ex05_produzione")
+salva_figura(fig, "ex06_produzione")
 print("Fine.")

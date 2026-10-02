@@ -1,4 +1,4 @@
-"""EX 13 -- Fondi acquistabili a lotti (famiglia 10).
+"""EX 5 -- Fondi acquistabili a lotti (famiglia 10).
 
 Uno zaino intero (non binario) con due soli tipi di lotto e un vincolo di
 proporzione riscritto in forma lineare. Serve anche a mostrare come si verifica
@@ -17,7 +17,7 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("EX 13. Fondi a lotti: massimizzare il rendimento annuo entro il budget")
+intestazione("EX 5. Fondi a lotti: massimizzare il rendimento annuo entro il budget")
 c12 = [12, 20, 15, 25]         # costo di un lotto (milioni)
 t12 = [1 / 6, 0.15, 2 / 15, 0.12]   # rendimento annuo, frazione del capitale investito
 nf = len(c12)
@@ -27,7 +27,7 @@ QUOTA = 0.5                    # il fondo 2 non puo' superare meta' dei lotti to
 # nel vincolo di quota il fondo 2 ha coefficiente +1 e gli altri -1
 QC = [1 if j == 1 else -1 for j in R(nf)]
 salva_dati(pd.DataFrame({"fondo": list(R(1, nf + 1)), "costo_lotto": c12,
-                         "rendimento": t12, "rendimento_lotto": p12}), "ex13_dati")
+                         "rendimento": t12, "rendimento_lotto": p12}), "ex05_dati")
 print("  Rendimento di un lotto: "
       + ", ".join(f"fondo {j + 1} = {c12[j]} * {frazione(t12[j])} = {frazione(p12[j])}"
                   for j in R(nf)) + " milioni.")
@@ -55,7 +55,7 @@ def duale(c, p, B):
 
 
 m12, x12 = modello(c12, p12, B12)
-salva_modello(m12, "ex13_primale")
+salva_modello(m12, "ex05_primale")
 print("  Il modello dell'istanza:")
 stampa_lp(m12)
 
@@ -97,7 +97,7 @@ print("  Soluzione euristica: "
 
 # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 d12 = duale(c12, p12, B12)
-salva_modello(d12, "ex13_duale")
+salva_modello(d12, "ex05_duale")
 # controesempio: la scelta alpha = 5/32, beta = 1/8 non e' ammissibile
 tentativo = {"alpha": 5 / 32, "beta": 1 / 8}
 val_t, viol_t = valuta(d12, tentativo)
@@ -123,12 +123,12 @@ print("  Soluzione ottima: "
       + ", ".join(f"{int(x12[j].X)} lotti del fondo {j + 1}" for j in R(nf))
       + f", spesa {int(sum(c12[j] * x12[j].X for j in R(nf)))} su {B12}, "
       f"rendimento {frazione(z12)}")
-riga = registra_bound("EX 13 fondi", ub12, lb12, zlp12, zlp12r, z12, senso="max")
-salva_dati(pd.DataFrame([riga]), "ex13_bound")
+riga = registra_bound("EX 5 fondi", ub12, lb12, zlp12, zlp12r, z12, senso="max")
+salva_dati(pd.DataFrame([riga]), "ex05_bound")
 assert lb12 <= z12 <= zlp12 <= ub12 + 1e-9
 
 # ---------- 5. IL PREZZO DELL'INTEREZZA ----------
-intestazione("EX 13. Il prezzo dell'interezza e il ruolo della quota")
+intestazione("EX 5. Il prezzo dell'interezza e il ruolo della quota")
 print(f"  z(LP) = {frazione(zlp12)} contro z(MILP) = {frazione(z12)}: il rilassamento compra")
 print(f"  {frazione(B12 / c12[0])} lotti del fondo 1, che non si possono acquistare a pezzi.")
 print(f"  La differenza {frazione(zlp12 - z12)} e' il costo dell'indivisibilita' dei lotti.")
@@ -151,7 +151,7 @@ for nome, p_alt, quota in [("dati originali, con quota", p12, True),
     print(f"  {nome:38s} z = {frazione(z):>4}   "
           f"x = ({', '.join(str(int(x[j].X)) for j in R(nf))})")
     prove.append({"variante": nome, "z": z, "x1": int(x[0].X), "x2": int(x[1].X)})
-salva_dati(pd.DataFrame(prove), "ex13_quota")
+salva_dati(pd.DataFrame(prove), "ex05_quota")
 assert prove[2]["z"] < prove[3]["z"], "col fondo 2 piu' redditizio la quota deve mordere"
 
 # ---------- 6. FIGURA: LA SOLUZIONE ----------
@@ -170,7 +170,7 @@ ax.plot([], [], color=GRIGIO, lw=1.3, ls=":", label="lotti comprabili col solo b
 ax.set_xticks(idx)
 ax.set_xticklabels([f"fondo {j + 1}\n{c12[j]} mln al lotto" for j in idx], fontsize=8)
 ax.set_ylabel("lotti comprati")
-ax.set_title(f"EX 13: la soluzione, {int(sum(c12[j] * x12[j].X for j in R(nf)))} milioni "
+ax.set_title(f"EX 5: la soluzione, {int(sum(c12[j] * x12[j].X for j in R(nf)))} milioni "
              f"impegnati su {B12}")
-salva_figura(fig, "ex13_regione")
+salva_figura(fig, "ex05_regione")
 print("Fine.")

@@ -26,10 +26,10 @@ a chi vuole vedere tutto in una volta.
 
 EX 2 [Linee di autobus](ex-02.md) ·
 EX 3 [Staffetta](ex-03.md) ·
-EX 6 [Hub-and-spoke](ex-06.md) ·
+EX 4 [Hub-and-spoke](ex-04.md) ·
 EX 8 [Seminari](ex-08.md) ·
 EX 10 [Utensili CNC](ex-10.md) ·
-EX 11 [Bilanciamento](ex-11.md)
+EX 12 [Bilanciamento](ex-12.md)
 
 *[Assegnamento e scheduling](scheduling.md)*
 

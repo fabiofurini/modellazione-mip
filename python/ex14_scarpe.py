@@ -1,4 +1,4 @@
-"""EX 4 -- Produzione di scarpe e manodopera su tre mesi (famiglia 9).
+"""EX 14 -- Produzione di scarpe e manodopera su tre mesi (famiglia 9).
 
 Bilancio delle scorte, ore di lavoro proporzionali alla produzione e dinamica
 della forza lavoro con sole assunzioni. E' la versione numerica del problema 9.2,
@@ -17,7 +17,7 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("EX 4. Scarpe: produzione, scorte e assunzioni su tre mesi")
+intestazione("EX 14. Scarpe: produzione, scorte e assunzioni su tre mesi")
 d3 = [3000, 5000, 7000]      # domanda mensile in paia
 s0 = 500                     # scorte iniziali
 y0 = 100                     # operai in servizio all'inizio
@@ -28,7 +28,7 @@ mat3 = 15                    # materie prime per un paio
 ass3 = 100                   # costo di assunzione di un operaio
 mag3 = 3                     # costo di magazzino per un paio a fine mese
 T = len(d3)
-salva_dati(pd.DataFrame({"mese": R(1, T + 1), "domanda": d3}), "ex04_domanda")
+salva_dati(pd.DataFrame({"mese": R(1, T + 1), "domanda": d3}), "ex14_domanda")
 netta = [d3[0] - s0] + d3[1:]
 print(f"  Domanda netta del primo mese: {d3[0]} - {s0} = {netta[0]} paia; totale da produrre "
       f"{sum(netta)} paia.")
@@ -79,7 +79,7 @@ def duale(d, s0, y0):
 
 
 m3, x3, s3, y3, z3 = modello(d3, s0, y0)
-salva_modello(m3, "ex04_primale")
+salva_modello(m3, "ex14_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 # produzione "just in time": ogni mese si produce esattamente la domanda netta,
@@ -114,7 +114,7 @@ print(f"  Costo della soluzione euristica: ub = {frazione(ub3)}")
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 dl3 = duale(d3, s0, y0)
-salva_modello(dl3, "ex04_duale")
+salva_modello(dl3, "ex14_duale")
 # ricetta: l'ora di lavoro vale beta = w / ore (quanto costa davvero), quindi un
 # paio vale al piu' alpha = mat + ore_paio * beta; gamma = 0
 beta_v = w3 / ore3
@@ -135,12 +135,12 @@ for t in R(T):
     scorta = s3[t].X if t < T - 1 else 0.0
     print(f"    mese {t + 1}: {frazione(x3[t].X)} paia, {int(y3[t].X)} operai "
           f"({int(z3[t].X)} assunti), scorte a fine mese {frazione(scorta)}")
-riga = registra_bound("EX 4 scarpe", ub3, lb3, zlp3, zlp3r, z3v)
-salva_dati(pd.DataFrame([riga]), "ex04_bound")
+riga = registra_bound("EX 14 scarpe", ub3, lb3, zlp3, zlp3r, z3v)
+salva_dati(pd.DataFrame([riga]), "ex14_bound")
 assert lb3 <= zlp3 <= z3v <= ub3 + 1e-9
 
 # ---------- 5. PERCHE' CONVIENE ANTICIPARE LA PRODUZIONE ----------
-intestazione("EX 4. Magazzino contro assunzioni")
+intestazione("EX 14. Magazzino contro assunzioni")
 print(f"  Tenere un paio in magazzino per un mese costa {mag3} euro; assumere un operaio")
 print(f"  costa {ass3} euro una tantum piu' {w3} euro al mese. L'ottimo anticipa la")
 print("  produzione proprio per non dover assumere all'ultimo momento.")
@@ -154,7 +154,7 @@ for nome, mag in [("magazzino a 3 euro", 3), ("magazzino a 20 euro", 20),
           + ", ".join(frazione(v) for v in scorte))
     prove.append({"variante": nome, "z": val,
                   "scorte": " ".join(str(int(v)) for v in scorte)})
-salva_dati(pd.DataFrame(prove), "ex04_varianti")
+salva_dati(pd.DataFrame(prove), "ex14_varianti")
 
 # ---------- 6. FIGURA ----------
 fig, ax = plt.subplots(figsize=(6.6, 3.0))
@@ -169,8 +169,8 @@ ax2.set_ylabel("operai")
 ax.set_xticks(idx)
 ax.set_xticklabels([f"mese {t + 1}" for t in idx])
 ax.set_ylabel("paia")
-ax.set_title(f"EX 4: piano ottimo (costo {frazione(z3v)})")
+ax.set_title(f"EX 14: piano ottimo (costo {frazione(z3v)})")
 ax.legend(fontsize=8, loc="upper left")
 ax2.legend(fontsize=8, loc="lower right")
-salva_figura(fig, "ex04_piano")
+salva_figura(fig, "ex14_piano")
 print("Fine.")

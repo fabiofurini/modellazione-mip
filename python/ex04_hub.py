@@ -1,4 +1,4 @@
-"""EX 6 -- Hub-and-spoke: il minimo numero di hub che copre otto citta' (famiglia 8).
+"""EX 4 -- Hub-and-spoke: il minimo numero di hub che copre otto citta' (famiglia 8).
 
 Un set covering puro, con tutti i costi pari a 1: si minimizza il numero di hub.
 Il duale e' il "packing frazionario" dei clienti, e l'euristica costruttiva duale sulle citta'
@@ -17,7 +17,7 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("EX 6. Hub-and-spoke: il minimo numero di hub entro 1000 miglia da ogni citta'")
+intestazione("EX 4. Hub-and-spoke: il minimo numero di hub entro 1000 miglia da ogni citta'")
 CITTA = ["Atlanta", "Chicago", "Denver", "Houston", "Los Angeles", "New York",
          "San Francisco", "Seattle"]
 # copre[i] = citta' che, se scelte come hub, coprono la citta' i (entro 1000 miglia)
@@ -31,7 +31,7 @@ copre = [[0, 1, 3, 5],      # Atlanta: Atlanta, Chicago, Houston, New York
          [6, 7]]            # Seattle
 n = len(CITTA)
 salva_dati(pd.DataFrame([{"citta": CITTA[i], "coperta_da": ", ".join(CITTA[j] for j in copre[i])}
-                         for i in R(n)]), "ex06_copertura")
+                         for i in R(n)]), "ex04_copertura")
 
 
 def modello(copre):
@@ -55,7 +55,7 @@ def duale(copre):
 
 
 m, y = modello(copre)
-salva_modello(m, "ex06_primale")
+salva_modello(m, "ex04_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
 e = euristica_copertura([1] * n, copre)
@@ -68,7 +68,7 @@ print(f"  Soluzione euristica: hub in " + ", ".join(CITTA[j] for j in scelti)
 
 # ---------- 3. RILASSAMENTO LP E DUALE (LOWER BOUND) ----------
 d = duale(copre)
-salva_modello(d, "ex06_duale")
+salva_modello(d, "ex04_duale")
 # euristica costruttiva duale sulle citta': si alza u_i fino a saturare il primo vincolo duale che si oppone
 residuo = [1.0] * n
 mano = {}
@@ -93,8 +93,8 @@ for i in R(n):
     quali = [CITTA[j] for j in copre[i] if j in ott]
     assert quali, CITTA[i]
 print("  Ogni citta' e' coperta da almeno un hub scelto: verificato per tutte e otto.")
-riga = registra_bound("EX 6 hub-and-spoke", ub, lb, zlp, zlpr, z)
-salva_dati(pd.DataFrame([riga]), "ex06_bound")
+riga = registra_bound("EX 4 hub-and-spoke", ub, lb, zlp, zlpr, z)
+salva_dati(pd.DataFrame([riga]), "ex04_bound")
 assert lb <= zlp <= z <= ub + 1e-9
 if abs(lb - z) < 1e-9:
     print("  Qui il duale a mano coincide con l'ottimo intero: il bound chiude il problema")
@@ -112,6 +112,6 @@ for j in R(n):
 ax.set_xticks(R(n))
 ax.set_xticklabels([c.replace(" ", "\n") for c in CITTA], fontsize=7.5)
 ax.set_ylabel("citta' coperte se scelta come hub")
-ax.set_title(f"EX 6: i {len(ott)} hub scelti (in teal) e quante citta' copre ciascuna sede")
-salva_figura(fig, "ex06_ottimo")
+ax.set_title(f"EX 4: i {len(ott)} hub scelti (in teal) e quante citta' copre ciascuna sede")
+salva_figura(fig, "ex04_ottimo")
 print("Fine.")

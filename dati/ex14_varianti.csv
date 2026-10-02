@@ -1,3 +1,4 @@
-variante,z
-schema con mezzo servizio,7060.0
-schema senza mezzo servizio,6710.0
+variante,z,scorte
+magazzino a 3 euro,774180.0,1480 480
+magazzino a 20 euro,807500.0,1000 0
+magazzino a 60 euro,825000.0,0 0

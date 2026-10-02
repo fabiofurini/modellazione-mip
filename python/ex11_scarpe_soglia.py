@@ -1,4 +1,4 @@
-"""EX 12 -- Scarpe con soglia minima di produzione (famiglia 9).
+"""EX 11 -- Scarpe con soglia minima di produzione (famiglia 9).
 
 Tre risorse, tre tipi di scarpa e una soglia minima per tipo: o se ne producono
 almeno q_j paia, oppure zero. E' la variabile semicontinua della tecnica 3.3,
@@ -16,7 +16,7 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("EX 12. Scarpe: tre risorse e una soglia minima di produzione")
+intestazione("EX 11. Scarpe: tre risorse e una soglia minima di produzione")
 NOMI = ["scarponi", "mocassini", "scarpe da passeggio"]
 RISORSE = ["pelle (g)", "ore macchina", "chiodi"]
 a11 = [[850, 600, 700],       # pelle per paio
@@ -28,7 +28,7 @@ q11 = [100, 200, 150]         # soglia minima
 ns, nr = len(p11), len(b11)
 M11 = [min(int(b11[i] // a11[i][j]) for i in R(nr)) for j in R(ns)]
 salva_dati(pd.DataFrame({"tipo": NOMI, "pelle": a11[0], "ore": a11[1], "chiodi": a11[2],
-                         "prezzo": p11, "soglia": q11, "massimo": M11}), "ex12_dati")
+                         "prezzo": p11, "soglia": q11, "massimo": M11}), "ex11_dati")
 print("  Massimo producibile di un solo tipo (il big-M naturale):")
 for j in R(ns):
     quale = min(R(nr), key=lambda i: b11[i] / a11[i][j])
@@ -69,7 +69,7 @@ def duale(a, b, p, q, M):
 
 
 m11, x11, y11 = modello(a11, b11, p11, q11, M11)
-salva_modello(m11, "ex12_primale")
+salva_modello(m11, "ex11_primale")
 
 # ---------- 2. EURISTICA COSTRUTTIVA (LOWER BOUND) ----------
 # euristica costruttiva sul prezzo per grammo di pelle (la risorsa piu' stretta), rispettando la
@@ -105,7 +105,7 @@ print("  Soluzione euristica: " + ", ".join(f"{x_e[j]} {NOMI[j]}" for j in R(ns)
 
 # ---------- 3. RILASSAMENTO LP E DUALE (UPPER BOUND) ----------
 d11 = duale(a11, b11, p11, q11, M11)
-salva_modello(d11, "ex12_duale")
+salva_modello(d11, "ex11_duale")
 migliore, mano, scelta = float("inf"), None, None
 for i in R(nr):
     prezzo = max(p11[j] / a11[i][j] for j in R(ns))
@@ -132,12 +132,12 @@ for i in R(nr):
     usato = sum(a11[i][j] * x11[j].X for j in R(ns))
     print(f"    {RISORSE[i]}: {frazione(usato)} su {b11[i]} "
           f"({'satura' if abs(usato - b11[i]) < 1e-6 else 'residua'})")
-riga = registra_bound("EX 12 scarpe con soglia", ub11, lb11, zlp11, zlp11r, z11, senso="max")
-salva_dati(pd.DataFrame([riga]), "ex12_bound")
+riga = registra_bound("EX 11 scarpe con soglia", ub11, lb11, zlp11, zlp11r, z11, senso="max")
+salva_dati(pd.DataFrame([riga]), "ex11_bound")
 assert lb11 <= z11 <= zlp11 <= ub11 + 1e-9
 
 # ---------- 5. QUANTO COSTA LA SOGLIA ----------
-intestazione("EX 12. Il prezzo della soglia e quello dell'interezza")
+intestazione("EX 11. Il prezzo della soglia e quello dell'interezza")
 m, x, y = modello(a11, b11, p11, [0] * ns, M11)
 z_senza = risolvi(m)
 print(f"  ub = lb = z(LP) = z(LP+) = z(MILP) = {frazione(z11)}: su questa istanza il sandwich")
@@ -162,7 +162,7 @@ print(f"  11b. Con 200000 g di pelle: z = {frazione(z_b)}, cioe' "
 print("       Il massimo producibile cresce con la risorsa: i big-M vanno ricalcolati "
       f"({M_alt}).")
 salva_dati(pd.DataFrame({"variante": list(varianti), "z": list(varianti.values())}),
-           "ex12_varianti")
+           "ex11_varianti")
 
 # ---------- 6. FIGURA ----------
 fig, ax = plt.subplots(figsize=(6.8, 3.0))
@@ -177,7 +177,7 @@ ax.plot([], [], color=BLU, lw=1.2, ls=":", label="massimo producibile")
 ax.set_xticks(idx)
 ax.set_xticklabels([n.replace(" ", "\n") for n in NOMI], fontsize=8)
 ax.set_ylabel("paia prodotte")
-ax.set_title(f"EX 12: euristica {frazione(lb11)} contro ottimo {frazione(z11)}")
+ax.set_title(f"EX 11: euristica {frazione(lb11)} contro ottimo {frazione(z11)}")
 ax.legend(fontsize=8)
-salva_figura(fig, "ex12_produzione")
+salva_figura(fig, "ex11_produzione")
 print("Fine.")
