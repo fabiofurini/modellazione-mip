@@ -77,7 +77,7 @@ m.addConstrs((gp.quicksum(w[j] * x[j, i] for j in range(n)) <= c * y[i]
               for i in range(k)), name="capacita")
 ```
 
-Lo **scheduling su macchine identiche** ($P||C_{\max}$) cambia solo l'obiettivo e
+Lo **scheduling su macchine identiche** ($P||z$) cambia solo l'obiettivo e
 un vincolo: una continua $T$ per il makespan, $\min T$, e
 $\sum_j t_j x_{ji} \le T$ per ogni macchina. Il **commesso viaggiatore** ha una
 binaria per arco, $x_{ij}$, e due famiglie di uguaglianze — da ogni città si
@@ -220,6 +220,8 @@ ottimo con cui confrontarsi.
     Ci sono $n$ oggetti, l'oggetto $j$ pesa $w_j$. I contenitori sono tutti
     uguali, di capacità $c$. Si usi il minimo numero di contenitori.
 
+#### Il modello
+
 Servono due famiglie di variabili binarie: $x_{jb} = 1$ se l'oggetto $j$ va nel
 contenitore $b$, e $y_b = 1$ se il contenitore $b$ viene usato.
 
@@ -238,6 +240,8 @@ La seconda è la capacità scritta come **attivazione**: finché $y_b = 0$ il
 contenitore $b$ non può ricevere niente, e appena $y_b = 1$ accoglie fino a $c$.
 L'obiettivo conta i contenitori accesi.
 
+#### La costruzione in gurobipy
+
 ```python
 def modello_bpp(w, c, k):
     n = len(w)
@@ -251,26 +255,26 @@ def modello_bpp(w, c, k):
     return m, x, y
 ```
 
-Sull'istanza di sei oggetti di peso $w = (5, 4, 4, 3, 3, 2)$ e capacità $c = 8$:
+#### L'istanza
+
+Sull'istanza di quattro oggetti di peso $w = (5, 4, 3, 3)$ e capacità $c = 7$:
 
 <!-- modello-esteso: cap06_bpp -->
 
 <div class="modello-esteso largo" markdown>
 
 $$
-\begin{array}{rrrrrrrrrrrrrrrrrrrrrr c l}
-\min &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & y_1 & +y_2 & +y_3 &  & \\
-\text{soggetto a} & x_{11} & +x_{12} & +x_{13} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  & x_{21} & +x_{22} & +x_{23} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  &  &  &  & x_{31} & +x_{32} & +x_{33} &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  &  &  &  &  &  &  & x_{41} & +x_{42} & +x_{43} &  &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  &  &  &  &  &  &  &  &  &  & x_{51} & +x_{52} & +x_{53} &  &  &  &  &  &  & = & 1\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & x_{61} & +x_{62} & +x_{63} &  &  &  & = & 1\\
- & 5x_{11} &  &  & +4x_{21} &  &  & +4x_{31} &  &  & +3x_{41} &  &  & +3x_{51} &  &  & +2x_{61} &  &  & -8y_1 &  &  & \le & 0\\
- &  & 5x_{12} &  &  & +4x_{22} &  &  & +4x_{32} &  &  & +3x_{42} &  &  & +3x_{52} &  &  & +2x_{62} &  &  & -8y_2 &  & \le & 0\\
- &  &  & 5x_{13} &  &  & +4x_{23} &  &  & +4x_{33} &  &  & +3x_{43} &  &  & +3x_{53} &  &  & +2x_{63} &  &  & -8y_3 & \le & 0\\
- & x_{11}, & x_{12}, & x_{13}, & x_{21}, & x_{22}, & x_{23}, & x_{31}, & x_{32}, & x_{33}, & x_{41}, & x_{42}, & x_{43}, & x_{51}, & x_{52}, & x_{53}, & x_{61}, & x_{62}, & x_{63} &  &  &  & \in & \{0, 1\}\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & y_1, & y_2, & y_3 & \in & \{0, 1\}
+\begin{array}{rrrrrrrrrrrrrrrr c l}
+\min &  &  &  &  &  &  &  &  &  &  &  &  & y_1 & +y_2 & +y_3 &  & \\
+\text{soggetto a} & x_{11} & +x_{12} & +x_{13} &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  & x_{21} & +x_{22} & +x_{23} &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  & x_{31} & +x_{32} & +x_{33} &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  &  &  &  & x_{41} & +x_{42} & +x_{43} &  &  &  & = & 1\\
+ & 5x_{11} &  &  & +4x_{21} &  &  & +3x_{31} &  &  & +3x_{41} &  &  & -7y_1 &  &  & \le & 0\\
+ &  & 5x_{12} &  &  & +4x_{22} &  &  & +3x_{32} &  &  & +3x_{42} &  &  & -7y_2 &  & \le & 0\\
+ &  &  & 5x_{13} &  &  & +4x_{23} &  &  & +3x_{33} &  &  & +3x_{43} &  &  & -7y_3 & \le & 0\\
+ & x_{11}, & x_{12}, & x_{13}, & x_{21}, & x_{22}, & x_{23}, & x_{31}, & x_{32}, & x_{33}, & x_{41}, & x_{42}, & x_{43} &  &  &  & \in & \{0, 1\}\\
+ &  &  &  &  &  &  &  &  &  &  &  &  & y_1, & y_2, & y_3 & \in & \{0, 1\}
 \end{array}
 $$
 
@@ -278,53 +282,59 @@ $$
 
 <!-- modello-esteso: fine -->
 
-Il peso totale è $21$, quindi nessuna soluzione può usare meno di
-$\lceil 21/8 \rceil = 3$ contenitori; l'ottimo ne usa esattamente $3$, e il
+Il peso totale è $15$, quindi nessuna soluzione può usare meno di
+$\lceil 15/7 \rceil = 3$ contenitori; l'ottimo ne usa esattamente $3$, e il
 conteggio è quindi stretto.
 
 !!! warning "Il rilassamento del bin packing è debolissimo"
     Rilassando $y_b$ a $y_b \ge 0$ il modello compra frazioni di contenitore, e
-    l'ottimo dell'LP scende a $\sum_j w_j / c = 21/8 = 2{,}625$: il rilassamento
+    l'ottimo dell'LP scende a $\sum_j w_j / c = 15/7 \approx 2{,}14$: il rilassamento
     non sa che un contenitore si apre tutto intero. È il motivo per cui su questo
     problema il bound duale è poco utile e le euristiche contano di più.
 
-### $P||C_{\max}$: il makespan su macchine identiche
+### Makespan: il carico della macchina più carica
 
 !!! abstract "Makespan su macchine identiche"
     Ci sono $n$ lavori, di durata $d_j$, e $k$ macchine identiche. Ogni lavoro va
     su una macchina sola e non si interrompe. Si minimizzi l'istante in cui
     l'ultima macchina finisce.
 
-Con $x_{jm} = 1$ se il lavoro $j$ va sulla macchina $m$, e $C_{\max} \ge 0$
-l'istante di fine:
+#### Il modello
+
+Con $x_{jm} = 1$ se il lavoro $j$ va sulla macchina $m$, e $z \ge 0$ il carico
+della macchina più carica:
 
 $$
 \begin{aligned}
-\min ~~ C_{\max} & &\\
+\min ~~ z & &\\
 \text{soggetto a} \quad \sum_{m=1}^{k} x_{jm} &= 1, & \forall j \in \{1, 2, \dots, n\},\\
-\sum_{j=1}^{n} d_j\, x_{jm} - C_{\max} &\le 0, & \forall m \in \{1, 2, \dots, k\},\\
+\sum_{j=1}^{n} d_j\, x_{jm} - z &\le 0, & \forall m \in \{1, 2, \dots, k\},\\
 x_{jm} &\in \{0, 1\}, & \forall j \in \{1, 2, \dots, n\},\ \forall m \in \{1, 2, \dots, k\},\\
-C_{\max} &\ge 0. &
+z &\ge 0. &
 \end{aligned}
 $$
 
-L'obiettivo è la sola $C_{\max}$: nessun dato vi compare. Sono le $k$ righe di
+L'obiettivo è la sola variabile $z$: nessun dato vi compare. Sono le $k$ righe di
 carico a darle significato, dicendo che nessuna macchina lavora più a lungo di
-$C_{\max}$; il minimo la schiaccia allora sul carico della macchina più carica.
+$z$; il minimo la schiaccia allora sul carico della macchina più carica.
 È la tecnica [min-max](legami-06.md).
+
+#### La costruzione in gurobipy
 
 ```python
 def modello_cmax(d, k):
     n = len(d)
     m = nuovo_modello("makespan")
     x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
-    cmax = m.addVar(name="cmax")
-    m.setObjective(cmax, GRB.MINIMIZE)
+    z = m.addVar(name="z")
+    m.setObjective(z, GRB.MINIMIZE)
     m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="lavoro")
-    m.addConstrs((gp.quicksum(d[j] * x[j, mm] for j in R(n)) <= cmax
+    m.addConstrs((gp.quicksum(d[j] * x[j, mm] for j in R(n)) <= z
                   for mm in R(k)), name="carico")
-    return m, x, cmax
+    return m, x, z
 ```
+
+#### L'istanza
 
 Sull'istanza di sette lavori di durata $d = (5, 5, 4, 4, 3, 3, 3)$ su $k = 3$
 macchine:
@@ -335,7 +345,7 @@ macchine:
 
 $$
 \begin{array}{rrrrrrrrrrrrrrrrrrrrrrr c l}
-\min &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & cmax &  & \\
+\min &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & z &  & \\
 \text{soggetto a} & x_{11} & +x_{12} & +x_{13} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
  &  &  &  & x_{21} & +x_{22} & +x_{23} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
  &  &  &  &  &  &  & x_{31} & +x_{32} & +x_{33} &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
@@ -343,11 +353,11 @@ $$
  &  &  &  &  &  &  &  &  &  &  &  &  & x_{51} & +x_{52} & +x_{53} &  &  &  &  &  &  &  & = & 1\\
  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & x_{61} & +x_{62} & +x_{63} &  &  &  &  & = & 1\\
  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & x_{71} & +x_{72} & +x_{73} &  & = & 1\\
- & 5x_{11} &  &  & +5x_{21} &  &  & +4x_{31} &  &  & +4x_{41} &  &  & +3x_{51} &  &  & +3x_{61} &  &  & +3x_{71} &  &  & -cmax & \le & 0\\
- &  & 5x_{12} &  &  & +5x_{22} &  &  & +4x_{32} &  &  & +4x_{42} &  &  & +3x_{52} &  &  & +3x_{62} &  &  & +3x_{72} &  & -cmax & \le & 0\\
- &  &  & 5x_{13} &  &  & +5x_{23} &  &  & +4x_{33} &  &  & +4x_{43} &  &  & +3x_{53} &  &  & +3x_{63} &  &  & +3x_{73} & -cmax & \le & 0\\
+ & 5x_{11} &  &  & +5x_{21} &  &  & +4x_{31} &  &  & +4x_{41} &  &  & +3x_{51} &  &  & +3x_{61} &  &  & +3x_{71} &  &  & -z & \le & 0\\
+ &  & 5x_{12} &  &  & +5x_{22} &  &  & +4x_{32} &  &  & +4x_{42} &  &  & +3x_{52} &  &  & +3x_{62} &  &  & +3x_{72} &  & -z & \le & 0\\
+ &  &  & 5x_{13} &  &  & +5x_{23} &  &  & +4x_{33} &  &  & +4x_{43} &  &  & +3x_{53} &  &  & +3x_{63} &  &  & +3x_{73} & -z & \le & 0\\
  & x_{11}, & x_{12}, & x_{13}, & x_{21}, & x_{22}, & x_{23}, & x_{31}, & x_{32}, & x_{33}, & x_{41}, & x_{42}, & x_{43}, & x_{51}, & x_{52}, & x_{53}, & x_{61}, & x_{62}, & x_{63}, & x_{71}, & x_{72}, & x_{73} &  & \in & \{0, 1\}\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & cmax & \ge & 0
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & z & \ge & 0
 \end{array}
 $$
 
@@ -365,6 +375,8 @@ gruppi da $9$. Qui il conteggio chiude il problema da solo.
     Ci sono $n$ città e una distanza $d_{ij}$ fra ogni coppia. Si trovi il giro
     di lunghezza minima che tocca ogni città esattamente una volta e torna al
     punto di partenza.
+
+#### Il modello
 
 Con $x_{ij} = 1$ se il giro va da $i$ a $j$, le due famiglie «si esce una volta»
 e «si entra una volta» non bastano: ammettono anche soluzioni fatte di
@@ -391,6 +403,8 @@ città $1$ richiederebbe una catena di posizioni sempre crescenti che si richiud
 su se stessa, e questo è impossibile; la città $1$ non ha la sua $u$ proprio
 perché è il punto in cui il giro si chiude.
 
+#### La costruzione in gurobipy
+
 ```python
 def modello_tsp(D):
     n = len(D)
@@ -408,42 +422,36 @@ def modello_tsp(D):
     return m, x, u
 ```
 
-Sull'istanza di cinque città del [capitolo delle euristiche](modellazione-4.md)
-il giro ottimo è $1 \to 3 \to 5 \to 2 \to 4 \to 1$ e misura $18$. Il modello
-dell'istanza ha $24$ colonne — venti archi e quattro posizioni — e ventidue
-righe:
+#### L'istanza
+
+Sull'istanza di quattro città del
+[capitolo delle euristiche](modellazione-4.md) il giro ottimo è
+$1 \to 2 \to 4 \to 3 \to 1$ e misura $22$. Il modello dell'istanza ha quindici
+colonne — dodici archi e tre posizioni — e quattordici righe:
 
 <!-- modello-esteso: cap06_tsp -->
 
 <div class="modello-esteso largo" markdown>
 
 $$
-\begin{array}{rrrrrrrrrrrrrrrrrrrrrrrrr c l}
-\min & 5x_{12} & +2x_{13} & +2x_{14} & +9x_{15} & +5x_{21} & +4x_{23} & +3x_{24} & +4x_{25} & +2x_{31} & +4x_{32} & +4x_{34} & +7x_{35} & +2x_{41} & +3x_{42} & +4x_{43} & +7x_{45} & +9x_{51} & +4x_{52} & +7x_{53} & +7x_{54} &  &  &  &  &  & \\
-\text{soggetto a} & x_{12} & +x_{13} & +x_{14} & +x_{15} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  &  & x_{21} & +x_{23} & +x_{24} & +x_{25} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  &  &  &  &  &  & x_{31} & +x_{32} & +x_{34} & +x_{35} &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  &  &  &  &  &  &  &  &  &  & x_{41} & +x_{42} & +x_{43} & +x_{45} &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & x_{51} & +x_{52} & +x_{53} & +x_{54} &  &  &  &  & = & 1\\
- &  &  &  &  & x_{21} &  &  &  & +x_{31} &  &  &  & +x_{41} &  &  &  & +x_{51} &  &  &  &  &  &  &  & = & 1\\
- & x_{12} &  &  &  &  &  &  &  &  & +x_{32} &  &  &  & +x_{42} &  &  &  & +x_{52} &  &  &  &  &  &  & = & 1\\
- &  & x_{13} &  &  &  & +x_{23} &  &  &  &  &  &  &  &  & +x_{43} &  &  &  & +x_{53} &  &  &  &  &  & = & 1\\
- &  &  & x_{14} &  &  &  & +x_{24} &  &  &  & +x_{34} &  &  &  &  &  &  &  &  & +x_{54} &  &  &  &  & = & 1\\
- &  &  &  & x_{15} &  &  &  & +x_{25} &  &  &  & +x_{35} &  &  &  & +x_{45} &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  &  &  & 5x_{23} &  &  &  &  &  &  &  &  &  &  &  &  &  &  & +u_2 & -u_3 &  &  & \le & 4\\
- &  &  &  &  &  &  & 5x_{24} &  &  &  &  &  &  &  &  &  &  &  &  &  & +u_2 &  & -u_4 &  & \le & 4\\
- &  &  &  &  &  &  &  & 5x_{25} &  &  &  &  &  &  &  &  &  &  &  &  & +u_2 &  &  & -u_5 & \le & 4\\
- &  &  &  &  &  &  &  &  &  & 5x_{32} &  &  &  &  &  &  &  &  &  &  & -u_2 & +u_3 &  &  & \le & 4\\
- &  &  &  &  &  &  &  &  &  &  & 5x_{34} &  &  &  &  &  &  &  &  &  &  & +u_3 & -u_4 &  & \le & 4\\
- &  &  &  &  &  &  &  &  &  &  &  & 5x_{35} &  &  &  &  &  &  &  &  &  & +u_3 &  & -u_5 & \le & 4\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  & 5x_{42} &  &  &  &  &  &  & -u_2 &  & +u_4 &  & \le & 4\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 5x_{43} &  &  &  &  &  &  & -u_3 & +u_4 &  & \le & 4\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 5x_{45} &  &  &  &  &  &  & +u_4 & -u_5 & \le & 4\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 5x_{52} &  &  & -u_2 &  &  & +u_5 & \le & 4\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 5x_{53} &  &  & -u_3 &  & +u_5 & \le & 4\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 5x_{54} &  &  & -u_4 & +u_5 & \le & 4\\
- & x_{12}, & x_{13}, & x_{14}, & x_{15}, & x_{21}, & x_{23}, & x_{24}, & x_{25}, & x_{31}, & x_{32}, & x_{34}, & x_{35}, & x_{41}, & x_{42}, & x_{43}, & x_{45}, & x_{51}, & x_{52}, & x_{53}, & x_{54} &  &  &  &  & \in & \{0, 1\}\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & u_2, & u_3, & u_4, & u_5 & \ge & 1
+\begin{array}{rrrrrrrrrrrrrrrr c l}
+\min & 4x_{12} & +5x_{13} & +9x_{14} & +4x_{21} & +9x_{23} & +9x_{24} & +5x_{31} & +9x_{32} & +4x_{34} & +9x_{41} & +9x_{42} & +4x_{43} &  &  &  &  & \\
+\text{soggetto a} & x_{12} & +x_{13} & +x_{14} &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  & x_{21} & +x_{23} & +x_{24} &  &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  & x_{31} & +x_{32} & +x_{34} &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  &  &  &  & x_{41} & +x_{42} & +x_{43} &  &  &  & = & 1\\
+ &  &  &  & x_{21} &  &  & +x_{31} &  &  & +x_{41} &  &  &  &  &  & = & 1\\
+ & x_{12} &  &  &  &  &  &  & +x_{32} &  &  & +x_{42} &  &  &  &  & = & 1\\
+ &  & x_{13} &  &  & +x_{23} &  &  &  &  &  &  & +x_{43} &  &  &  & = & 1\\
+ &  &  & x_{14} &  &  & +x_{24} &  &  & +x_{34} &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  & 4x_{23} &  &  &  &  &  &  &  & +u_2 & -u_3 &  & \le & 3\\
+ &  &  &  &  &  & 4x_{24} &  &  &  &  &  &  & +u_2 &  & -u_4 & \le & 3\\
+ &  &  &  &  &  &  &  & 4x_{32} &  &  &  &  & -u_2 & +u_3 &  & \le & 3\\
+ &  &  &  &  &  &  &  &  & 4x_{34} &  &  &  &  & +u_3 & -u_4 & \le & 3\\
+ &  &  &  &  &  &  &  &  &  &  & 4x_{42} &  & -u_2 &  & +u_4 & \le & 3\\
+ &  &  &  &  &  &  &  &  &  &  &  & 4x_{43} &  & -u_3 & +u_4 & \le & 3\\
+ & x_{12}, & x_{13}, & x_{14}, & x_{21}, & x_{23}, & x_{24}, & x_{31}, & x_{32}, & x_{34}, & x_{41}, & x_{42}, & x_{43} &  &  &  & \in & \{0, 1\}\\
+ &  &  &  &  &  &  &  &  &  &  &  &  & u_2, & u_3, & u_4 & \ge & 1
 \end{array}
 $$
 
@@ -520,7 +528,7 @@ il notebook è
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/cap06_gurobi.py` (310 righe)"
+??? example "Mostra lo script completo — `python/cap06_gurobi.py` (309 righe)"
 
     ```python
     """Capitolo 3 -- Dal modello a Python/Gurobi: come si scrive e come si legge.
@@ -710,8 +718,8 @@ il notebook è
     intestazione("8. Bin packing, makespan e TSP: i modelli che le euristiche useranno")
 
     # --- bin packing: quanti contenitori bastano ---
-    w_bpp = [5, 4, 4, 3, 3, 2]       # peso degli oggetti
-    c_bpp = 8                        # capacita' di un contenitore
+    w_bpp = [5, 4, 3, 3]             # peso degli oggetti
+    c_bpp = 7                        # capacita' di un contenitore
     n_bpp = len(w_bpp)
     k_bpp = n_bpp                    # al piu' un contenitore per oggetto
 
@@ -751,15 +759,15 @@ il notebook è
         n = len(d)
         m = nuovo_modello("makespan")
         x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
-        cmax = m.addVar(name="cmax")
-        m.setObjective(cmax, GRB.MINIMIZE)
+        z = m.addVar(name="z")
+        m.setObjective(z, GRB.MINIMIZE)
         m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="lavoro")
-        m.addConstrs((gp.quicksum(d[j] * x[j, mm] for j in R(n)) <= cmax for mm in R(k)),
+        m.addConstrs((gp.quicksum(d[j] * x[j, mm] for j in R(n)) <= z for mm in R(k)),
                      name="carico")
-        return m, x, cmax
+        return m, x, z
 
 
-    m_cmax, x_cmax, v_cmax = modello_cmax(d_cmax, k_cmax)
+    m_cmax, x_cmax, z_cmax_var = modello_cmax(d_cmax, k_cmax)
     z_cmax = risolvi(m_cmax)
     salva_modello(m_cmax, "cap06_cmax")
     print(f"  Makespan: durate {d_cmax} su {k_cmax} macchine identiche.")
@@ -767,11 +775,10 @@ il notebook è
           f"{frazione(sum(d_cmax) / k_cmax)}, e l'ottimo vale {frazione(z_cmax)}.")
 
     # --- TSP con la formulazione MTZ ---
-    D_tsp = [[0, 5, 2, 2, 9],
-             [5, 0, 4, 3, 4],
-             [2, 4, 0, 4, 7],
-             [2, 3, 4, 0, 7],
-             [9, 4, 7, 7, 0]]
+    D_tsp = [[0, 4, 5, 9],
+             [4, 0, 9, 9],
+             [5, 9, 0, 4],
+             [9, 9, 4, 0]]
     n_tsp = len(D_tsp)
 
 
