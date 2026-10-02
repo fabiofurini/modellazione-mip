@@ -109,20 +109,28 @@ $n = 3$ lavori, $k = 3$ macchine:
 |---|---:|---:|---:|
 | $a_m$ | 5 | 6 | 7 |
 
-Il modello per l'istanza:
+Il modello scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam07_1_primale -->
+
+<div class="modello-esteso largo" markdown>
 
 $$
-\begin{array}{r r@{\;}r@{\;}r@{\;}r@{\;}r@{\;}r@{\;}r@{\;}r@{\;}r c r}
-\min & 5x_{11} & +10x_{12} & +2x_{13} & +5x_{21} & +4x_{22} & +6x_{23} & +5x_{31} & +4x_{32} & +6x_{33} & & \\
-\text{soggetto a} & x_{11} & +x_{12} & +x_{13} & & & & & & & = & 1\\
- & & & & x_{21} & +x_{22} & +x_{23} & & & & = & 1\\
- & & & & & & & x_{31} & +x_{32} & +x_{33} & = & 1\\
- & 2x_{11} & & & +3x_{21} & & & +4x_{31} & & & \le & 5\\
- & & x_{12} & & & +4x_{22} & & & +5x_{32} & & \le & 6\\
- & & & 3x_{13} & & & +2x_{23} & & & +3x_{33} & \le & 7\\
- & x_{11}, & x_{12}, & x_{13}, & x_{21}, & x_{22}, & x_{23}, & x_{31}, & x_{32}, & x_{33} & \in & \{0,1\}
+\begin{array}{rrrrrrrrrr c l}
+\min & 5x_{11} & +10x_{12} & +2x_{13} & +5x_{21} & +4x_{22} & +6x_{23} & +5x_{31} & +4x_{32} & +6x_{33} &  & \\
+\text{soggetto a} & x_{11} & +x_{12} & +x_{13} &  &  &  &  &  &  & = & 1\\
+ &  &  &  & x_{21} & +x_{22} & +x_{23} &  &  &  & = & 1\\
+ &  &  &  &  &  &  & x_{31} & +x_{32} & +x_{33} & = & 1\\
+ & 2x_{11} &  &  & +3x_{21} &  &  & +4x_{31} &  &  & \le & 5\\
+ &  & x_{12} &  &  & +4x_{22} &  &  & +5x_{32} &  & \le & 6\\
+ &  &  & 3x_{13} &  &  & +2x_{23} &  &  & +3x_{33} & \le & 7\\
+ & x_{11}, & x_{12}, & x_{13}, & x_{21}, & x_{22}, & x_{23}, & x_{31}, & x_{32}, & x_{33} & \in & \{0, 1\}
 \end{array}
 $$
+
+</div>
+
+<!-- modello-esteso: fine -->
 
 ## Euristica costruttiva: il bound primale
 
@@ -178,6 +186,34 @@ $$
 $$
 
 <!-- modello: fine -->
+
+Lo stesso duale, scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam07_1_duale -->
+
+<div class="modello-esteso" markdown>
+
+$$
+\begin{array}{rrrrrrr c l}
+\max & \mu_1 & +\mu_2 & +\mu_3 & +5\pi_1 & +6\pi_2 & +7\pi_3 &  & \\
+\text{soggetto a} & \mu_1 &  &  & +2\pi_1 &  &  & \le & 5\\
+ & \mu_1 &  &  &  & +\pi_2 &  & \le & 10\\
+ & \mu_1 &  &  &  &  & +3\pi_3 & \le & 2\\
+ &  & \mu_2 &  & +3\pi_1 &  &  & \le & 5\\
+ &  & \mu_2 &  &  & +4\pi_2 &  & \le & 4\\
+ &  & \mu_2 &  &  &  & +2\pi_3 & \le & 6\\
+ &  &  & \mu_3 & +4\pi_1 &  &  & \le & 5\\
+ &  &  & \mu_3 &  & +5\pi_2 &  & \le & 4\\
+ &  &  & \mu_3 &  &  & +3\pi_3 & \le & 6\\
+ & \mu_1, & \mu_2, & \mu_3 &  &  &  & \gtreqless & 0\\
+ &  &  &  & \pi_1, & \pi_2, & \pi_3 & \gtreqless & 0
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 
 **Una soluzione duale a mano.** Con $\bar\pi_m = 0$, i vincoli diventano
 $\mu_j \le c_{jm}$ per ogni $m$: il valore più grande ammissibile è

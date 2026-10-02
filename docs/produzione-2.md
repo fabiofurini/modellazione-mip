@@ -179,6 +179,31 @@ $g = 4$ ore per paio, $h_t = 3$.
 Con due operai la capacità iniziale è $2 \cdot 160 / 4 = 80$ paia al mese:
 basta per il primo mese, non per gli altri due.
 
+Il modello scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam09_2_primale -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrr c l}
+\min & 15x_1 & +15x_2 & +15x_3 & +3s_1 & +3s_2 & +4600z_1 & +3100z_2 & +1600z_3 &  & \\
+\text{soggetto a} & x_1 &  &  & -s_1 &  &  &  &  & = & 60\\
+ &  & x_2 &  & +s_1 & -s_2 &  &  &  & = & 100\\
+ &  &  & x_3 &  & +s_2 &  &  &  & = & 140\\
+ & -4x_1 &  &  &  &  & +160z_1 &  &  & \ge & -320\\
+ &  & -4x_2 &  &  &  & +160z_1 & +160z_2 &  & \ge & -320\\
+ &  &  & -4x_3 &  &  & +160z_1 & +160z_2 & +160z_3 & \ge & -320\\
+ & x_1, & x_2, & x_3 &  &  &  &  &  & \in & \Z_{\ge 0}\\
+ &  &  &  & s_1, & s_2 &  &  &  & \in & \Z_{\ge 0}\\
+ &  &  &  &  &  & z_1, & z_2, & z_3 & \in & \Z_{\ge 0}
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 ## Euristica costruttiva: il bound primale
 
 Produzione «just in time»: ogni mese si produce esattamente la domanda, e si
@@ -212,6 +237,33 @@ r \sum_{t=j}^{n} \nu_t &\le u + w\,(n - j + 1), & \forall j \in \{1, 2, \dots, n
 $$
 
 <!-- modello: fine -->
+
+Lo stesso duale, scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam09_2_duale -->
+
+<div class="modello-esteso" markdown>
+
+$$
+\begin{array}{rrrrrrr c l}
+\max & 60\mu_1 & +100\mu_2 & +140\mu_3 & -320\nu_1 & -320\nu_2 & -320\nu_3 &  & \\
+\text{soggetto a} & \mu_1 &  &  & -4\nu_1 &  &  & \le & 15\\
+ &  & \mu_2 &  &  & -4\nu_2 &  & \le & 15\\
+ &  &  & \mu_3 &  &  & -4\nu_3 & \le & 15\\
+ & -\mu_1 & +\mu_2 &  &  &  &  & \le & 3\\
+ &  & -\mu_2 & +\mu_3 &  &  &  & \le & 3\\
+ &  &  &  & 160\nu_1 & +160\nu_2 & +160\nu_3 & \le & 4600\\
+ &  &  &  &  & 160\nu_2 & +160\nu_3 & \le & 3100\\
+ &  &  &  &  &  & 160\nu_3 & \le & 1600\\
+ & \mu_1, & \mu_2, & \mu_3 &  &  &  & \gtreqless & 0\\
+ &  &  &  & \nu_1, & \nu_2, & \nu_3 & \ge & 0
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 
 **Descrizione.** $\mu_t$ è il valore di un paio disponibile nel mese $t$ e
 $\nu_t$ il prezzo di un'ora di lavoro. L'obiettivo valuta la domanda a quei

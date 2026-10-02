@@ -119,6 +119,32 @@ Il prezzo di una luce dipende dal colore e dal tipo di scatola: colore 1 a $10$
 nella scatola 1 e a $40/3$ nella 2; colore 2 a $50$ in entrambe. Il colore 2 è
 molto più caro, ed è questo a comandare la soluzione.
 
+Il modello scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam10_4_primale -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrr c l}
+\min & 7x_1 & +6x_2 & +8x_3 & +100y_1 & +200y_2 &  &  &  &  & \\
+\text{soggetto a} & x_1 & +x_2 & +x_3 &  &  &  &  &  & = & 20\\
+ & -4x_1 & -2x_2 & -2x_3 & +10y_1 & +15y_2 &  &  &  & \ge & 0\\
+ & -2x_1 & -3x_2 & -2x_3 & +2y_1 & +4y_2 &  &  &  & \ge & 0\\
+ &  &  &  &  &  & z_1 & +z_2 & +z_3 & \ge & 2\\
+ & x_1 &  &  &  &  & -z_1 &  &  & \ge & 0\\
+ &  & x_2 &  &  &  &  & -z_2 &  & \ge & 0\\
+ &  &  & x_3 &  &  &  &  & -z_3 & \ge & 0\\
+ & x_1, & x_2, & x_3 &  &  &  &  &  & \in & \Z_{\ge 0}\\
+ &  &  &  & y_1, & y_2 &  &  &  & \in & \Z_{\ge 0}\\
+ &  &  &  &  &  & z_1, & z_2, & z_3 & \in & \{0, 1\}
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 ## Euristica costruttiva: il bound primale
 
 Due fasi. Prima le configurazioni: $q - f + 1$ alberi con quella di
@@ -159,6 +185,35 @@ $$
 $$
 
 <!-- modello: fine -->
+
+Lo stesso duale, scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam10_4_duale -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrr c l}
+\max & 20\alpha &  &  & +2\gamma &  &  &  &  & \\
+\text{soggetto a} & \alpha & -4\beta_1 & -2\beta_2 &  & +\delta_1 &  &  & \le & 7\\
+ & \alpha & -2\beta_1 & -3\beta_2 &  &  & +\delta_2 &  & \le & 6\\
+ & \alpha & -2\beta_1 & -2\beta_2 &  &  &  & +\delta_3 & \le & 8\\
+ &  & 10\beta_1 & +2\beta_2 &  &  &  &  & \le & 100\\
+ &  & 15\beta_1 & +4\beta_2 &  &  &  &  & \le & 200\\
+ &  &  &  & \gamma & -\delta_1 &  &  & \le & 0\\
+ &  &  &  & \gamma &  & -\delta_2 &  & \le & 0\\
+ &  &  &  & \gamma &  &  & -\delta_3 & \le & 0\\
+ & \alpha &  &  &  &  &  &  & \gtreqless & 0\\
+ &  & \beta_1, & \beta_2 &  &  &  &  & \ge & 0\\
+ &  &  &  & \gamma &  &  &  & \ge & 0\\
+ &  &  &  &  & \delta_1, & \delta_2, & \delta_3 & \ge & 0
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 
 **Descrizione.** $\alpha$ è il valore di un albero decorato, $\beta_l$ il prezzo
 di una luce di colore $l$, $\gamma$ il prezzo della varietà e $\delta_c$ quello

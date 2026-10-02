@@ -107,6 +107,36 @@ $n = 2$ stabilimenti, $m = 2$ clienti, $k = 2$ prodotti, $w = 10$.
 
 Le unità da spedire sono $5 + 0 + 2 + 4 = 11$ in tutto.
 
+Il modello scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam10_5_primale -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrrrrrr c l}
+\min &  &  &  &  &  &  &  &  & y_{11} & +y_{12} & +y_{21} & +y_{22} &  & \\
+\text{soggetto a} & x_{111} &  & +x_{121} &  &  &  &  &  &  &  &  &  & = & 5\\
+ &  & x_{112} &  & +x_{122} &  &  &  &  &  &  &  &  & = & 0\\
+ &  &  &  &  & x_{211} &  & +x_{221} &  &  &  &  &  & = & 2\\
+ &  &  &  &  &  & x_{212} &  & +x_{222} &  &  &  &  & = & 4\\
+ & x_{111} & +x_{112} &  &  &  &  &  &  &  &  &  &  & \le & 8\\
+ &  &  & x_{121} & +x_{122} &  &  &  &  &  &  &  &  & \le & 6\\
+ &  &  &  &  & x_{211} & +x_{212} &  &  &  &  &  &  & \le & 5\\
+ &  &  &  &  &  &  & x_{221} & +x_{222} &  &  &  &  & \le & 7\\
+ & -x_{111} &  &  &  & -x_{211} &  &  &  & +10y_{11} &  &  &  & \ge & 0\\
+ &  & -x_{112} &  &  &  & -x_{212} &  &  &  & +10y_{12} &  &  & \ge & 0\\
+ &  &  & -x_{121} &  &  &  & -x_{221} &  &  &  & +10y_{21} &  & \ge & 0\\
+ &  &  &  & -x_{122} &  &  &  & -x_{222} &  &  &  & +10y_{22} & \ge & 0\\
+ & x_{111}, & x_{112}, & x_{121}, & x_{122}, & x_{211}, & x_{212}, & x_{221}, & x_{222} &  &  &  &  & \in & \Z_{\ge 0}\\
+ &  &  &  &  &  &  &  &  & y_{11}, & y_{12}, & y_{21}, & y_{22} & \in & \Z_{\ge 0}
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 ## Euristica costruttiva: il bound primale
 
 Cliente per cliente: si cerca di servirlo da un solo stabilimento, quello che ha
@@ -140,6 +170,38 @@ w\, \gamma_{sc} &\le 1, & \forall s \in S,\ \forall c \in C, \\
 $$
 
 <!-- modello: fine -->
+
+Lo stesso duale, scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam10_5_duale -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrrrrrr c l}
+\max & 5\alpha_{11} &  & +2\alpha_{21} & +4\alpha_{22} & +8\beta_{11} & +6\beta_{12} & +5\beta_{21} & +7\beta_{22} &  &  &  &  &  & \\
+\text{soggetto a} & \alpha_{11} &  &  &  & +\beta_{11} &  &  &  & -\gamma_{11} &  &  &  & \le & 0\\
+ &  & \alpha_{12} &  &  & +\beta_{11} &  &  &  &  & -\gamma_{12} &  &  & \le & 0\\
+ & \alpha_{11} &  &  &  &  & +\beta_{12} &  &  &  &  & -\gamma_{21} &  & \le & 0\\
+ &  & \alpha_{12} &  &  &  & +\beta_{12} &  &  &  &  &  & -\gamma_{22} & \le & 0\\
+ &  &  & \alpha_{21} &  &  &  & +\beta_{21} &  & -\gamma_{11} &  &  &  & \le & 0\\
+ &  &  &  & \alpha_{22} &  &  & +\beta_{21} &  &  & -\gamma_{12} &  &  & \le & 0\\
+ &  &  & \alpha_{21} &  &  &  &  & +\beta_{22} &  &  & -\gamma_{21} &  & \le & 0\\
+ &  &  &  & \alpha_{22} &  &  &  & +\beta_{22} &  &  &  & -\gamma_{22} & \le & 0\\
+ &  &  &  &  &  &  &  &  & 10\gamma_{11} &  &  &  & \le & 1\\
+ &  &  &  &  &  &  &  &  &  & 10\gamma_{12} &  &  & \le & 1\\
+ &  &  &  &  &  &  &  &  &  &  & 10\gamma_{21} &  & \le & 1\\
+ &  &  &  &  &  &  &  &  &  &  &  & 10\gamma_{22} & \le & 1\\
+ & \alpha_{11}, & \alpha_{12}, & \alpha_{21}, & \alpha_{22} &  &  &  &  &  &  &  &  & \gtreqless & 0\\
+ &  &  &  &  & \beta_{11}, & \beta_{12}, & \beta_{21}, & \beta_{22} &  &  &  &  & \gtreqless & 0\\
+ &  &  &  &  &  &  &  &  & \gamma_{11}, & \gamma_{12}, & \gamma_{21}, & \gamma_{22} & \ge & 0
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 
 **Descrizione.** $\alpha_{pc}$ è il valore di una unità del prodotto $p$
 consegnata al cliente $c$, $\beta_{ps}$ il prezzo (non positivo) della

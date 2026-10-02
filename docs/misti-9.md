@@ -79,6 +79,38 @@ $n = 4$ libri, $m = 2$ scaffali, $c = 10$.
 
 La larghezza totale dei libri è $18$, la capacità complessiva $2 \cdot 10 = 20$.
 
+Il modello scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam10_9_primale -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrrrr c l}
+\min &  &  &  &  &  &  &  &  & y_1 & +y_2 &  & \\
+\text{soggetto a} & x_{11} & +x_{12} &  &  &  &  &  &  &  &  & = & 1\\
+ &  &  & x_{21} & +x_{22} &  &  &  &  &  &  & = & 1\\
+ &  &  &  &  & x_{31} & +x_{32} &  &  &  &  & = & 1\\
+ &  &  &  &  &  &  & x_{41} & +x_{42} &  &  & = & 1\\
+ & 3x_{11} &  & +5x_{21} &  & +4x_{31} &  & +6x_{41} &  &  &  & \le & 10\\
+ &  & 3x_{12} &  & +5x_{22} &  & +4x_{32} &  & +6x_{42} &  &  & \le & 10\\
+ & -8x_{11} &  &  &  &  &  &  &  & +y_1 &  & \ge & 0\\
+ &  & -8x_{12} &  &  &  &  &  &  &  & +y_2 & \ge & 0\\
+ &  &  & -5x_{21} &  &  &  &  &  & +y_1 &  & \ge & 0\\
+ &  &  &  & -5x_{22} &  &  &  &  &  & +y_2 & \ge & 0\\
+ &  &  &  &  & -7x_{31} &  &  &  & +y_1 &  & \ge & 0\\
+ &  &  &  &  &  & -7x_{32} &  &  &  & +y_2 & \ge & 0\\
+ &  &  &  &  &  &  & -4x_{41} &  & +y_1 &  & \ge & 0\\
+ &  &  &  &  &  &  &  & -4x_{42} &  & +y_2 & \ge & 0\\
+ & x_{11}, & x_{12}, & x_{21}, & x_{22}, & x_{31}, & x_{32}, & x_{41}, & x_{42} &  &  & \in & \{0, 1\}\\
+ &  &  &  &  &  &  &  &  & y_1, & y_2 & \ge & 0
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 ## Euristica costruttiva: due ordini, due esiti
 
 La regola è first-fit: ogni libro sul primo scaffale in cui entra. Come nel
@@ -124,6 +156,36 @@ $$
 $$
 
 <!-- modello: fine -->
+
+Lo stesso duale, scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam10_9_duale -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrrrrrrrr c l}
+\max & \alpha_1 & +\alpha_2 & +\alpha_3 & +\alpha_4 & +10\beta_1 & +10\beta_2 &  &  &  &  &  &  &  &  &  & \\
+\text{soggetto a} &  &  &  &  &  &  & \gamma_{11} &  & +\gamma_{21} &  & +\gamma_{31} &  & +\gamma_{41} &  & \le & 1\\
+ &  &  &  &  &  &  &  & \gamma_{12} &  & +\gamma_{22} &  & +\gamma_{32} &  & +\gamma_{42} & \le & 1\\
+ & \alpha_1 &  &  &  & +3\beta_1 &  & -8\gamma_{11} &  &  &  &  &  &  &  & \le & 0\\
+ & \alpha_1 &  &  &  &  & +3\beta_2 &  & -8\gamma_{12} &  &  &  &  &  &  & \le & 0\\
+ &  & \alpha_2 &  &  & +5\beta_1 &  &  &  & -5\gamma_{21} &  &  &  &  &  & \le & 0\\
+ &  & \alpha_2 &  &  &  & +5\beta_2 &  &  &  & -5\gamma_{22} &  &  &  &  & \le & 0\\
+ &  &  & \alpha_3 &  & +4\beta_1 &  &  &  &  &  & -7\gamma_{31} &  &  &  & \le & 0\\
+ &  &  & \alpha_3 &  &  & +4\beta_2 &  &  &  &  &  & -7\gamma_{32} &  &  & \le & 0\\
+ &  &  &  & \alpha_4 & +6\beta_1 &  &  &  &  &  &  &  & -4\gamma_{41} &  & \le & 0\\
+ &  &  &  & \alpha_4 &  & +6\beta_2 &  &  &  &  &  &  &  & -4\gamma_{42} & \le & 0\\
+ & \alpha_1, & \alpha_2, & \alpha_3, & \alpha_4 &  &  &  &  &  &  &  &  &  &  & \gtreqless & 0\\
+ &  &  &  &  & \beta_1, & \beta_2 &  &  &  &  &  &  &  &  & \gtreqless & 0\\
+ &  &  &  &  &  &  & \gamma_{11}, & \gamma_{12}, & \gamma_{21}, & \gamma_{22}, & \gamma_{31}, & \gamma_{32}, & \gamma_{41}, & \gamma_{42} & \ge & 0
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 
 **Descrizione.** $\alpha_b$ è il valore del libro $b$, $\beta_s$ il prezzo (non
 positivo) della larghezza dello scaffale $s$ e $\gamma_{bs}$ il prezzo del

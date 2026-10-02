@@ -114,6 +114,34 @@ I big-M sono calcolati dai dati:
 $M_1 = \min(\lfloor 100/2 \rfloor, \lfloor 1200/30 \rfloor) = 40$, e
 analogamente $M_2 = 33$, $M_3 = 20$.
 
+Il modello scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam09_3_primale -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrr c l}
+\max & 200x_1 & +250x_2 & +300x_3 &  &  &  & +500z &  & \\
+\text{soggetto a} & 2x_1 & +3x_2 & +5x_3 &  &  &  &  & \le & 100\\
+ & 30x_1 & +25x_2 & +40x_3 &  &  &  &  & \le & 1200\\
+ & x_1 &  &  & -10y_1 &  &  &  & \ge & 0\\
+ &  & x_2 &  &  & -10y_2 &  &  & \ge & 0\\
+ &  &  & x_3 &  &  & -10y_3 &  & \ge & 0\\
+ & x_1 &  &  & -40y_1 &  &  &  & \le & 0\\
+ &  & x_2 &  &  & -33y_2 &  &  & \le & 0\\
+ &  &  & x_3 &  &  & -20y_3 &  & \le & 0\\
+ &  &  &  & -y_1 & -y_2 & -y_3 & +2z & \le & 0\\
+ & x_1, & x_2, & x_3 &  &  &  &  & \in & \Z_{\ge 0}\\
+ &  &  &  & y_1, & y_2, & y_3 &  & \in & \{0, 1\}\\
+ &  &  &  &  &  &  & z & \in & \{0, 1\}
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 ## Euristica costruttiva: il bound primale
 
 Il problema è di massimo, quindi l'euristica dà il bound **primale**, che sta
@@ -150,6 +178,34 @@ $$
 $$
 
 <!-- modello: fine -->
+
+Lo stesso duale, scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam09_3_duale -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrrr c l}
+\min & 100\pi_1 & +1200\pi_2 &  &  &  &  &  &  &  &  & \\
+\text{soggetto a} & 2\pi_1 & +30\pi_2 & +\alpha_1 &  &  & +\beta_1 &  &  &  & \ge & 200\\
+ & 3\pi_1 & +25\pi_2 &  & +\alpha_2 &  &  & +\beta_2 &  &  & \ge & 250\\
+ & 5\pi_1 & +40\pi_2 &  &  & +\alpha_3 &  &  & +\beta_3 &  & \ge & 300\\
+ &  &  & -10\alpha_1 &  &  & -40\beta_1 &  &  & -\gamma & \ge & 0\\
+ &  &  &  & -10\alpha_2 &  &  & -33\beta_2 &  & -\gamma & \ge & 0\\
+ &  &  &  &  & -10\alpha_3 &  &  & -20\beta_3 & -\gamma & \ge & 0\\
+ &  &  &  &  &  &  &  &  & 2\gamma & \ge & 500\\
+ & \pi_1, & \pi_2 &  &  &  &  &  &  &  & \ge & 0\\
+ &  &  & \alpha_1, & \alpha_2, & \alpha_3 &  &  &  &  & \gtreqless & 0\\
+ &  &  &  &  &  & \beta_1, & \beta_2, & \beta_3 &  & \ge & 0\\
+ &  &  &  &  &  &  &  &  & \gamma & \ge & 0
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 
 **Descrizione.** $\pi_i$ è il prezzo di una unità della risorsa $i$; $\ell_j$ e
 $\beta_j$ sono i prezzi dei due vincoli di semi-interezza del tipo $j$, e

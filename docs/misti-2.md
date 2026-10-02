@@ -89,6 +89,27 @@ $$
 
 con $x_j \in \{0,1\}$.
 
+Il modello scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam10_2_primale -->
+
+<div class="modello-esteso" markdown>
+
+$$
+\begin{array}{rrrrrrr c l}
+\max & 6x_1 & +3x_2 & +12x_3 & +12x_4 & +10x_5 & +16x_6 &  & \\
+\text{soggetto a} & x_1 &  &  & +x_4 &  & +x_6 & \le & 1\\
+ &  & x_2 &  &  & +x_5 &  & \le & 1\\
+ &  &  & x_3 & +x_4 &  & +x_6 & \le & 1\\
+ &  &  & x_3 &  & +x_5 & +x_6 & \le & 1\\
+ & x_1, & x_2, & x_3, & x_4, & x_5, & x_6 & \in & \{0, 1\}
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 ## Euristica costruttiva: il bound primale
 
 Il problema è di massimo, quindi l'euristica dà il bound **primale**, che sta
@@ -124,6 +145,30 @@ $$
 $$
 
 <!-- modello: fine -->
+
+Lo stesso duale, scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam10_2_duale -->
+
+<div class="modello-esteso" markdown>
+
+$$
+\begin{array}{rrrrr c l}
+\min & \lambda_1 & +\lambda_2 & +\lambda_3 & +\lambda_4 &  & \\
+\text{soggetto a} & \lambda_1 &  &  &  & \ge & 6\\
+ &  & \lambda_2 &  &  & \ge & 3\\
+ &  &  & \lambda_3 & +\lambda_4 & \ge & 12\\
+ & \lambda_1 &  & +\lambda_3 &  & \ge & 12\\
+ &  & \lambda_2 &  & +\lambda_4 & \ge & 10\\
+ & \lambda_1 &  & +\lambda_3 & +\lambda_4 & \ge & 16\\
+ & \lambda_1, & \lambda_2, & \lambda_3, & \lambda_4 & \ge & 0
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 
 **Descrizione.** $\lambda_i$ è il prezzo che il banditore attribuisce
 all'oggetto $i$. L'obiettivo è il valore complessivo dei lotti a quei prezzi. I

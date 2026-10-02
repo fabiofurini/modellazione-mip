@@ -93,6 +93,30 @@ $s = 4$ filiali, $r = 3$ prodotti.
 | $i=4$ | 2 | 7 | 9 | 18 |
 | $T_j$ | 14 | 22 | 20 | |
 
+Il modello scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam10_7_primale -->
+
+<div class="modello-esteso" markdown>
+
+$$
+\begin{array}{rrrrrr c l}
+\min &  &  &  &  & z &  & \\
+\text{soggetto a} & -6x_1 & -12x_2 & -6x_3 & -4x_4 & +z & \ge & -14\\
+ & 6x_1 & +12x_2 & +6x_3 & +4x_4 & +z & \ge & 14\\
+ & -6x_1 & -16x_2 & -8x_3 & -14x_4 & +z & \ge & -22\\
+ & 6x_1 & +16x_2 & +8x_3 & +14x_4 & +z & \ge & 22\\
+ & -4x_1 & -10x_2 & -8x_3 & -18x_4 & +z & \ge & -20\\
+ & 4x_1 & +10x_2 & +8x_3 & +18x_4 & +z & \ge & 20\\
+ & x_1, & x_2, & x_3, & x_4 &  & \in & \{0, 1\}\\
+ &  &  &  &  & z & \gtreqless & 0
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 ## Euristica costruttiva: il bound primale
 
 Si assegnano le filiali in ordine di fatturato complessivo decrescente, ciascuna
@@ -124,6 +148,30 @@ $$
 $$
 
 <!-- modello: fine -->
+
+Lo stesso duale, scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam10_7_duale -->
+
+<div class="modello-esteso" markdown>
+
+$$
+\begin{array}{rrrrrrr c l}
+\max & -14\lambda_1 & -22\lambda_2 & -20\lambda_3 & +14\mu_1 & +22\mu_2 & +20\mu_3 &  & \\
+\text{soggetto a} & \lambda_1 & +\lambda_2 & +\lambda_3 & +\mu_1 & +\mu_2 & +\mu_3 & = & 1\\
+ & -6\lambda_1 & -6\lambda_2 & -4\lambda_3 & +6\mu_1 & +6\mu_2 & +4\mu_3 & \le & 0\\
+ & -12\lambda_1 & -16\lambda_2 & -10\lambda_3 & +12\mu_1 & +16\mu_2 & +10\mu_3 & \le & 0\\
+ & -6\lambda_1 & -8\lambda_2 & -8\lambda_3 & +6\mu_1 & +8\mu_2 & +8\mu_3 & \le & 0\\
+ & -4\lambda_1 & -14\lambda_2 & -18\lambda_3 & +4\mu_1 & +14\mu_2 & +18\mu_3 & \le & 0\\
+ & \lambda_1, & \lambda_2, & \lambda_3 &  &  &  & \ge & 0\\
+ &  &  &  & \mu_1, & \mu_2, & \mu_3 & \ge & 0
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 
 **Descrizione.** $\lambda_j$ e $\mu_j$ sono i prezzi dei due vincoli che
 stringono lo squilibrio del prodotto $j$, uno da sopra e uno da sotto.

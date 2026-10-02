@@ -98,6 +98,37 @@ $s = 4$ cibi, $r = 2$ nutrienti, $c_i = 1$, $d_i = 8$, $t = 3$.
 | $a_j$ | 60 | 40 |
 | $b_j$ | 200 | 150 |
 
+Il modello scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam10_3_primale -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrr c l}
+\min & 2x_1 & +3x_2 & +x_3 & +4x_4 &  &  &  &  &  & \\
+\text{soggetto a} & 10x_1 & +20x_2 & +5x_3 & +25x_4 &  &  &  &  & \ge & 60\\
+ & 5x_1 & +10x_2 & +15x_3 & +5x_4 &  &  &  &  & \ge & 40\\
+ & 10x_1 & +20x_2 & +5x_3 & +25x_4 &  &  &  &  & \le & 200\\
+ & 5x_1 & +10x_2 & +15x_3 & +5x_4 &  &  &  &  & \le & 150\\
+ & x_1 &  &  &  & -y_1 &  &  &  & \ge & 0\\
+ &  & x_2 &  &  &  & -y_2 &  &  & \ge & 0\\
+ &  &  & x_3 &  &  &  & -y_3 &  & \ge & 0\\
+ &  &  &  & x_4 &  &  &  & -y_4 & \ge & 0\\
+ & x_1 &  &  &  & -8y_1 &  &  &  & \le & 0\\
+ &  & x_2 &  &  &  & -8y_2 &  &  & \le & 0\\
+ &  &  & x_3 &  &  &  & -8y_3 &  & \le & 0\\
+ &  &  &  & x_4 &  &  &  & -8y_4 & \le & 0\\
+ &  &  &  &  & y_1 & +y_2 & +y_3 & +y_4 & \ge & 3\\
+ & x_1, & x_2, & x_3, & x_4 &  &  &  &  & \ge & 0\\
+ &  &  &  &  & y_1, & y_2, & y_3, & y_4 & \in & \{0, 1\}
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 ## Euristica costruttiva: il bound primale
 
 Si accendono al lotto minimo i $t$ cibi più economici, poi si copre il
@@ -139,6 +170,36 @@ $$
 $$
 
 <!-- modello: fine -->
+
+Lo stesso duale, scritto sui dati dell'istanza:
+
+<!-- modello-esteso: fam10_3_duale -->
+
+<div class="modello-esteso largo" markdown>
+
+$$
+\begin{array}{rrrrrrrrrrrrrr c l}
+\max & 60\alpha_1 & +40\alpha_2 & -200\beta_1 & -150\beta_2 &  &  &  &  &  &  &  &  & +3\tau &  & \\
+\text{soggetto a} & 10\alpha_1 & +5\alpha_2 & -10\beta_1 & -5\beta_2 & +\lambda_1 &  &  &  & -\mu_1 &  &  &  &  & \le & 2\\
+ & 20\alpha_1 & +10\alpha_2 & -20\beta_1 & -10\beta_2 &  & +\lambda_2 &  &  &  & -\mu_2 &  &  &  & \le & 3\\
+ & 5\alpha_1 & +15\alpha_2 & -5\beta_1 & -15\beta_2 &  &  & +\lambda_3 &  &  &  & -\mu_3 &  &  & \le & 1\\
+ & 25\alpha_1 & +5\alpha_2 & -25\beta_1 & -5\beta_2 &  &  &  & +\lambda_4 &  &  &  & -\mu_4 &  & \le & 4\\
+ &  &  &  &  & -\lambda_1 &  &  &  & +8\mu_1 &  &  &  & +\tau & \le & 0\\
+ &  &  &  &  &  & -\lambda_2 &  &  &  & +8\mu_2 &  &  & +\tau & \le & 0\\
+ &  &  &  &  &  &  & -\lambda_3 &  &  &  & +8\mu_3 &  & +\tau & \le & 0\\
+ &  &  &  &  &  &  &  & -\lambda_4 &  &  &  & +8\mu_4 & +\tau & \le & 0\\
+ & \alpha_1, & \alpha_2 &  &  &  &  &  &  &  &  &  &  &  & \ge & 0\\
+ &  &  & \beta_1, & \beta_2 &  &  &  &  &  &  &  &  &  & \ge & 0\\
+ &  &  &  &  & \lambda_1, & \lambda_2, & \lambda_3, & \lambda_4 &  &  &  &  &  & \ge & 0\\
+ &  &  &  &  &  &  &  &  & \mu_1, & \mu_2, & \mu_3, & \mu_4 &  & \ge & 0\\
+ &  &  &  &  &  &  &  &  &  &  &  &  & \tau & \ge & 0
+\end{array}
+$$
+
+</div>
+
+<!-- modello-esteso: fine -->
+
 
 **Descrizione.** $\alpha_j$ è il prezzo di una unità del nutriente $j$ quando
 serve a raggiungere il fabbisogno minimo, $\beta_j$ quello che si paga per non
