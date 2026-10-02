@@ -336,28 +336,24 @@ def modello_cmax(d, k):
 
 #### L'istanza
 
-Sull'istanza di sette lavori di durata $d = (5, 5, 4, 4, 3, 3, 3)$ su $k = 3$
-macchine:
+Sull'istanza di quattro lavori di durata $d = (3, 4, 5, 6)$ su $k = 2$
+macchine --- la stessa su cui il capitolo delle euristiche fa correre LPT:
 
 <!-- modello-esteso: cap06_cmax -->
 
 <div class="modello-esteso largo" markdown>
 
 $$
-\begin{array}{rrrrrrrrrrrrrrrrrrrrrrr c l}
-\min &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & z &  & \\
-\text{soggetto a} & x_{11} & +x_{12} & +x_{13} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  & x_{21} & +x_{22} & +x_{23} &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  &  &  &  & x_{31} & +x_{32} & +x_{33} &  &  &  &  &  &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  &  &  &  &  &  &  & x_{41} & +x_{42} & +x_{43} &  &  &  &  &  &  &  &  &  &  & = & 1\\
- &  &  &  &  &  &  &  &  &  &  &  &  & x_{51} & +x_{52} & +x_{53} &  &  &  &  &  &  &  & = & 1\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & x_{61} & +x_{62} & +x_{63} &  &  &  &  & = & 1\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & x_{71} & +x_{72} & +x_{73} &  & = & 1\\
- & 5x_{11} &  &  & +5x_{21} &  &  & +4x_{31} &  &  & +4x_{41} &  &  & +3x_{51} &  &  & +3x_{61} &  &  & +3x_{71} &  &  & -z & \le & 0\\
- &  & 5x_{12} &  &  & +5x_{22} &  &  & +4x_{32} &  &  & +4x_{42} &  &  & +3x_{52} &  &  & +3x_{62} &  &  & +3x_{72} &  & -z & \le & 0\\
- &  &  & 5x_{13} &  &  & +5x_{23} &  &  & +4x_{33} &  &  & +4x_{43} &  &  & +3x_{53} &  &  & +3x_{63} &  &  & +3x_{73} & -z & \le & 0\\
- & x_{11}, & x_{12}, & x_{13}, & x_{21}, & x_{22}, & x_{23}, & x_{31}, & x_{32}, & x_{33}, & x_{41}, & x_{42}, & x_{43}, & x_{51}, & x_{52}, & x_{53}, & x_{61}, & x_{62}, & x_{63}, & x_{71}, & x_{72}, & x_{73} &  & \in & \{0, 1\}\\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & z & \ge & 0
+\begin{array}{rrrrrrrrrr c l}
+\min &  &  &  &  &  &  &  &  & z &  & \\
+\text{soggetto a} & x_{11} & +x_{12} &  &  &  &  &  &  &  & = & 1\\
+ &  &  & x_{21} & +x_{22} &  &  &  &  &  & = & 1\\
+ &  &  &  &  & x_{31} & +x_{32} &  &  &  & = & 1\\
+ &  &  &  &  &  &  & x_{41} & +x_{42} &  & = & 1\\
+ & 3x_{11} &  & +4x_{21} &  & +5x_{31} &  & +6x_{41} &  & -z & \le & 0\\
+ &  & 3x_{12} &  & +4x_{22} &  & +5x_{32} &  & +6x_{42} & -z & \le & 0\\
+ & x_{11}, & x_{12}, & x_{21}, & x_{22}, & x_{31}, & x_{32}, & x_{41}, & x_{42} &  & \in & \{0, 1\}\\
+ &  &  &  &  &  &  &  &  & z & \ge & 0
 \end{array}
 $$
 
@@ -365,9 +361,9 @@ $$
 
 <!-- modello-esteso: fine -->
 
-Il carico totale è $27$ e le macchine sono tre: nessuna soluzione può scendere
-sotto $27/3 = 9$, e l'ottimo vale esattamente $9$ — i lavori si dividono in tre
-gruppi da $9$. Qui il conteggio chiude il problema da solo.
+Il carico totale è $18$ e le macchine sono due: nessuna soluzione può scendere
+sotto $18/2 = 9$, e l'ottimo vale esattamente $9$ — i lavori si dividono in
+$6+3$ e $5+4$. Qui il conteggio chiude il problema da solo.
 
 ### Commesso viaggiatore: la formulazione MTZ
 
@@ -751,8 +747,8 @@ il notebook è
     assert z_bpp == minimo_teorico
 
     # --- P||Cmax: il makespan su macchine identiche ---
-    d_cmax = [5, 5, 4, 4, 3, 3, 3]   # durate dei lavori
-    k_cmax = 3                       # macchine identiche
+    d_cmax = [3, 4, 5, 6]             # durate dei lavori
+    k_cmax = 2                       # macchine identiche
 
 
     def modello_cmax(d, k):

@@ -218,8 +218,8 @@ salva_modello(m_bpp3, "cap06_bpp")
 assert z_bpp == minimo_teorico
 
 # --- P||Cmax: il makespan su macchine identiche ---
-d_cmax = [5, 5, 4, 4, 3, 3, 3]   # durate dei lavori
-k_cmax = 3                       # macchine identiche
+d_cmax = [3, 4, 5, 6]             # durate dei lavori
+k_cmax = 2                       # macchine identiche
 
 
 def modello_cmax(d, k):
