@@ -128,7 +128,15 @@ Minimize
    + 5 x[2,0] + 4 x[2,1] + 6 x[2,2]
 Subject To
  assegna[0]: x[0,0] + x[0,1] + x[0,2] = 1
- ...
+ assegna[1]: x[1,0] + x[1,1] + x[1,2] = 1
+ assegna[2]: x[2,0] + x[2,1] + x[2,2] = 1
+ disponibilita[0]: 2 x[0,0] + 3 x[1,0] + 4 x[2,0] <= 5
+ disponibilita[1]: x[0,1] + 4 x[1,1] + 5 x[2,1] <= 6
+ disponibilita[2]: 3 x[0,2] + 2 x[1,2] + 3 x[2,2] <= 7
+Bounds
+Binaries
+ x[0,0] x[0,1] x[0,2] x[1,0] x[1,1] x[1,2] x[2,0] x[2,1] x[2,2]
+End
 ```
 
 È il modo più rapido per accorgersi di un coefficiente sbagliato: il tabulare

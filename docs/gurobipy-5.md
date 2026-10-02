@@ -69,7 +69,7 @@ il notebook è
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/cap06_gurobi.py` (202 righe)"
+??? example "Mostra lo script completo — `python/cap06_gurobi.py` (204 righe)"
 
     ```python
     """Capitolo 3 -- Dal modello a Python/Gurobi: come si scrive e come si legge.
@@ -139,9 +139,11 @@ il notebook è
         percorso = os.path.join(d, "modello.lp")
         m2.write(percorso)
         testo_lp = open(percorso).read()
-    for riga in [r for r in testo_lp.splitlines() if r.strip()][:8]:
+    # la firma del modello cambia a ogni modifica: non serve a chi legge
+    for riga in [r for r in testo_lp.splitlines() if r.strip()]:
+        if riga.startswith("\\ Signature"):
+            continue
         print("    " + riga)
-    print("    ...")
 
     # ---------- 3. LEGGERE I RISULTATI: IL CASO NORMALE ----------
     intestazione("3. Leggere i risultati quando tutto va bene")
