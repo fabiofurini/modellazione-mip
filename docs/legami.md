@@ -16,7 +16,7 @@ modellazione MIP.
     dai vincoli, con un argomento di scambio se uno segue dall'ottimalità, con
     un *controesempio* quando una conversa è falsa; (d) la **forza del
     rilassamento** su un'istanza minima risolta dallo script; (e) la riga
-    `gurobipy` e i rimandi ai problemi della Parte II.
+    `gurobipy` e i rimandi ai problemi del corso.
 
 !!! warning "Due proprietà che non vanno confuse"
     Una proprietà **imposta dai vincoli** vale per *ogni* soluzione ammissibile,

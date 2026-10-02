@@ -250,7 +250,7 @@ la prima cella installa `gurobipy` e scarica i tre moduli comuni.
 !!! tip "La licenza inclusa in `gurobipy` basta, e perché"
     La licenza *size-limited* del pacchetto pip permette modelli fino a **2000
     variabili e 2000 vincoli**. Le istanze di questo corso sono piccolissime — il
-    modello più grande della Parte II ha poche decine di variabili — e ci stanno
+    modello più grande del corso ha poche decine di variabili — e ci stanno
     tutte con enorme margine. Per istanze più grandi si attiva gratuitamente la
     licenza accademica da [portal.gurobi.com](https://portal.gurobi.com). Se un
     modello supera il limite, Gurobi lo segnala con un errore esplicito
@@ -265,7 +265,7 @@ il notebook è
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/cap06_gurobi.py` (197 righe)"
+??? example "Mostra lo script completo — `python/cap06_gurobi.py` (201 righe)"
 
     ```python
     """Capitolo 3 -- Dal modello a Python/Gurobi: come si scrive e come si legge.
@@ -447,20 +447,24 @@ il notebook è
     print("      la leggono la dispensa, il sito e verifica_numeri.py.")
 
     # ---------- 8. FIGURA: I QUATTRO NUMERI DEL PROTOCOLLO ----------
-    fig, ax = plt.subplots(figsize=(7.2, 2.6))
+    fig, ax = plt.subplots(figsize=(7.6, 3.0))
     ax.plot([lb, ub], [0, 0], color=GRIGIO, lw=3, solid_capstyle="round")
-    for valore, colore, testo, dy in [(lb, TEAL, "$\\mathrm{lb}$ (duale a mano)", 14),
-                                      (zlp, BLU, "$z(\\mathrm{LP})$", -20),
-                                      (z, ROSSO, "$z(\\mathrm{MILP})$", 14),
-                                      (ub, ARANCIO, "$\\mathrm{ub}$ (euristica)", -20)]:
-        ax.plot(valore, 0, "o", color=colore, ms=10)
+    # z(MILP) e ub cadono sullo stesso punto quando l'euristica e' ottima: il pallino
+    # piu' grande sta sotto, cosi' si vede che sono due numeri e non uno solo, e le
+    # etichette si scostano a sinistra e a destra per non sovrapporsi
+    for valore, colore, testo, dx, dy, ha, ms in [
+            (lb, TEAL, "$\\mathrm{lb}$ (duale a mano)", 0, 16, "center", 10),
+            (zlp, BLU, "$z(\\mathrm{LP})$", -8, -30, "right", 10),
+            (ub, ARANCIO, "$\\mathrm{ub}$ (euristica)", 8, -30, "left", 15),
+            (z, ROSSO, "$z(\\mathrm{MILP})$", 0, 16, "center", 9)]:
+        ax.plot(valore, 0, "o", color=colore, ms=ms)
         ax.annotate(f"{testo}\n{frazione(valore)}", (valore, 0), textcoords="offset points",
-                    xytext=(0, dy), ha="center", fontsize=9, color=colore)
+                    xytext=(dx, dy), ha=ha, fontsize=9, color=colore)
     ax.set_yticks([])
-    ax.set_ylim(-0.8, 0.8)
-    ax.set_xlim(lb - 0.5, ub + 0.5)
+    ax.set_ylim(-1.1, 1.0)
+    ax.set_xlim(lb - 0.7, ub + 0.7)
     ax.set_xlabel("valore dell'obiettivo")
-    ax.set_title("I quattro numeri che ogni esercizio della Parte II produce")
+    ax.set_title("I quattro numeri che ogni esercizio produce")
     ax.spines["left"].set_visible(False)
     ax.grid(False)
     salva_figura(fig, "cap06_protocollo")

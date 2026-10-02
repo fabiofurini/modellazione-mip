@@ -272,7 +272,7 @@ mentre il duale promette $7/4$.
 
 ## Il protocollo dei bound del corso
 
-Ogni esercizio della [Parte II](problemi.md) produce: (1) una soluzione
+Ogni [problema del corso](problemi.md) produce: (1) una soluzione
 ammissibile **e intera** da un'euristica, verificata su vincoli, bound e
 interezza; (2) il duale del rilassamento senza i bound, generale e per l'istanza; (3) una
 soluzione duale ammissibile costruita a mano, con la ricetta dichiarata; (4) i
