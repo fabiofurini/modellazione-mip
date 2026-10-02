@@ -99,9 +99,30 @@ def macro_non_definite() -> list[str]:
             f"ma non definita in {MATHJAX.name}" for n, p in sorted(mancanti.items())]
 
 
+def modelli_mancanti() -> list[str]:
+    """Ogni pagina numerica mostra il primale e, se esiste, il duale.
+
+    Il modello generato puo' esserci senza che nessuno lo incorpori: in quel caso
+    la pagina parla di un duale che il lettore non vede.
+    """
+    fuori = []
+    for pagina in sorted(DOCS.glob("ex-*.md")):
+        n = pagina.stem.removeprefix("ex-")
+        testo = pagina.read_text(encoding="utf-8")
+        for verso in ("primale", "duale"):
+            nome = f"ex{n}_{verso}"
+            if (BASE / "dati" / "modelli" / f"{nome}.tex").exists() \
+                    and f"modello-esteso: {nome}" not in testo:
+                fuori.append(f"{pagina.name}: il modello {nome} esiste ma la pagina non lo mostra")
+    return fuori
+
+
 def main() -> int:
     trovati = 0
     for guaio in macro_non_definite():
+        print(guaio)
+        trovati += 1
+    for guaio in modelli_mancanti():
         print(guaio)
         trovati += 1
     for pagina in sorted(DOCS.glob("*.md")):
