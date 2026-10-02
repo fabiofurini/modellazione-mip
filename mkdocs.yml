@@ -1,4 +1,5 @@
 site_name: Modellazione MIP · Fabio Furini
+site_url: https://fabiofurini.github.io/modellazione-mip/
 site_description: >-
   Modelli di programmazione lineare intera per prendere decisioni ottime:
   costruirli, dimostrarli, stringerli con bound e risolverli con Gurobi.
