@@ -202,7 +202,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Descrizione.** $\alpha_{pc}$ è il valore di una unità del prodotto $p$
 consegnata al cliente $c$, $\beta_{ps}$ il prezzo (non positivo) della
 disponibilità e $\gamma_{sc}$ il prezzo di una unità di spazio sulla tratta da
@@ -270,23 +269,28 @@ ottimo.
 
 ## Domande di modellazione aggiuntive
 
-??? question "10.5.1 — Scatole più piccole"
-    Le scatole contengono $4$ unità invece di $10$. Qual è il nuovo ottimo?
-
-??? question "10.5.2 — Prodotti separati"
+??? question "10.5.1 — Prodotti separati"
     Prodotti diversi non possono viaggiare nella stessa scatola. Come cambia il
     modello? Qual è il nuovo ottimo?
 
-## Il sandwich sulla variante 5a
+## Una variante svolta: scatole più piccole
+
+Le scatole contengono $4$ unità invece di $10$.
+
+Cambia solo il dato $w$. Sull'istanza l'ottimo sale da $2$ a $3$: il cliente 1,
+che ordina $7$ unità, ne richiede ora almeno $\lceil 7/4 \rceil = 2$, e il
+cliente 2 almeno $\lceil 4/4 \rceil = 1$. Il bound intero costruito sopra
+diventa $2 + 1 = 3$ ed è di nuovo esatto.
 
 Cambia la capacità della scatola, $4$ invece di $10$, non la struttura: la
-ricetta resta $\beta = 0$ e $\gamma = \alpha = 1/w$, e il bound del
-rilassamento è sempre «unità ordinate diviso capacità», cioè $11/4$ invece di
-$11/10$ — inversamente proporzionale alla capacità, quindi scatole più piccole
-lo alzano. Come nel problema base, però, il conteggio per cliente è più forte:
-ogni cliente riceve almeno $\lceil (\text{sue unità}) / 4 \rceil$ scatole e le
-scatole non si dividono fra clienti, quindi $\mathit{LB} = 2 + 1 = 3$.
-L'euristica ne usa $3$: il sandwich si chiude, e l'ottimo passa da $2$ a $3$.
+ricetta resta $\beta = 0$ e $\gamma = \alpha = 1/w$, i vincoli duali restano
+verificati per costruzione e il bound del rilassamento è sempre «unità ordinate
+diviso capacità della scatola», cioè $11/4$ invece di $11/10$ — inversamente
+proporzionale alla capacità, quindi scatole più piccole lo alzano. Come nel
+problema base, però, il conteggio per cliente è più forte: ogni cliente riceve
+almeno $\lceil (\text{sue unità}) / 4 \rceil$ scatole e le scatole non si
+dividono fra clienti, quindi $\lb = 2 + 1 = 3$. L'euristica ne usa $3$: il
+sandwich si chiude, e l'ottimo passa da $2$ a $3$.
 
 <!-- tabella-variante: fam10_5a_bound -->
 

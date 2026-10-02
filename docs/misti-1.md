@@ -192,7 +192,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Descrizione.** $\pi$ è il prezzo di un punto, $\rho$ il valore di una unità di
 preferenza e $\sigma_i$ il prezzo della mutua esclusione del premio $i$.
 L'obiettivo incassa la soglia $\ell$ valutata a $\rho$ e paga il budget di punti
@@ -279,17 +278,30 @@ costa solo $5$ euro di contributo.
     ne può prendere al più uno, in qualunque modalità. Come cambia il modello?
     Qual è il nuovo ottimo?
 
-??? question "10.1.2 — Almeno quattro premi"
-    Oltre alla soglia di preferenza, il cliente vuole almeno quattro premi
-    diversi. Come cambia il modello? Qual è il nuovo ottimo?
+## Una variante svolta: almeno quattro premi
 
-## Il sandwich sulla variante 1b
+Oltre alla soglia di preferenza, il cliente vuole almeno quattro premi diversi.
+
+Si aggiunge il singolo vincolo lineare
+
+$$
+\sum_{i=1}^{s} (x_i + y_i) \ge 4 ,
+$$
+
+di nuovo scritto sugli indicatori $x_i + y_i$. Sull'istanza l'ottimo sale a
+$13$: con soli $20$ punti, quattro premi richiedono di usare più volte la
+modalità economica in punti, cioè quella che costa denaro. Si noti che il
+vincolo di preferenza e quello di conteggio non sono equivalenti, benché
+somiglino: il primo pesa i premi con $d_i$, il secondo li conta.
 
 Il vincolo $\sum_i (x_i + y_i) \ge 4$ aggiunge al duale una $\kappa \ge 0$ con
-termine noto $4$, che compare in **tutte e due** le colonne di ogni premio.
-Cercando anche $\kappa$ sulla griglia dei quarti si trova $\pi = \varrho = 3/2$,
-$\kappa = 9/2$. L'euristica enumera i $3^5 = 243$ stati possibili e trova $13$,
-che è l'ottimo.
+termine noto $4$: entra nell'obiettivo e compare in *tutte e due* le
+colonne di ogni premio, perché un premio conta comunque lo si sia preso. La
+ricetta del problema base si estende cercando anche $\kappa$ sulla griglia dei
+quarti, e dà $\pi = \varrho = 3/2$, $\kappa = 9/2$, cioè $\lb = 6$. L'euristica
+enumera i $3^5 = 243$ stati possibili — ogni premio non preso, a punti o con
+contributo — e trova $13$, che è l'ottimo: con cinque oggetti l'enumerazione è
+la regola più onesta.
 
 <!-- tabella-variante: fam10_1b_bound -->
 

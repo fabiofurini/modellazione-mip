@@ -169,7 +169,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Descrizione.** $\lambda_i$ è il prezzo che il banditore attribuisce
 all'oggetto $i$. L'obiettivo è il valore complessivo dei lotti a quei prezzi. I
 vincoli sono le colonne delle $x_j$, uno per offerta: gli oggetti che l'offerta
@@ -232,18 +231,29 @@ sullo scaffale.
     Le offerte $4$ e $5$ provengono dallo stesso partecipante, che può vincerne
     al più una. Come cambia il modello? Qual è il nuovo ottimo?
 
-??? question "10.2.2 — Consegne limitate"
-    In questa tornata il banditore può consegnare al più due oggetti in totale.
-    Come cambia il modello? Qual è il nuovo ottimo?
+## Una variante svolta: consegne limitate
 
-## Il sandwich sulla variante 2b
+In questa tornata il banditore può consegnare al più due oggetti in totale.
 
-Il tetto $\sum_j |B_j| x_j \le 2$ aggiunge al duale una $\mu \ge 0$ con termine
-noto $2$, che nella colonna di ogni offerta compare moltiplicata per quanti
-oggetti quell'offerta chiede. Provando $\mu$ fra i profitti per oggetto si
-arriva a $\mu = 6$, $\lambda = 0$ e bound $12$; l'euristica accetta la sola
-offerta $3$ e vale anch'essa $12$. Il sandwich si chiude senza risolvere il
-MILP.
+Si aggiunge il singolo vincolo lineare
+
+$$
+\sum_{j=1}^{r} |B_j|\, x_j \le 2 ,
+$$
+
+in cui il coefficiente di ogni offerta è il numero di oggetti che chiede: è un
+vincolo di zaino sovrapposto al set packing. Sull'istanza l'ottimo scende a
+$12$: si accetta una sola offerta da due oggetti, la più redditizia fra la $3$ e
+la $4$ (entrambe valgono $12$).
+
+Il tetto sugli oggetti consegnati, $\sum_j |B_j| x_j \le 2$, aggiunge al duale
+una $\mu \ge 0$ con termine noto $2$, e nella colonna di ogni offerta compare
+moltiplicata per quanti oggetti quell'offerta chiede. Fissato $\mu$, ogni
+offerta si spalma sui suoi oggetti al netto di $\mu$ e $\lambda_i$ è il massimo
+fra le offerte che chiedono l'oggetto $i$: provando $\mu$ fra i profitti per
+oggetto si arriva a $\mu = 6$, $\lambda = 0$ e $\ub = 12$. L'euristica accetta
+la sola offerta $3$ e vale anch'essa $12$: il sandwich si chiude, e l'ottimo si
+conosce senza risolvere il MILP.
 
 <!-- tabella-variante: fam10_2b_bound -->
 

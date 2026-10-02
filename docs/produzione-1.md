@@ -201,7 +201,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Ricetta.** $\bar\pi_t = 0$: i lanci si regalano. Restano $\mu_t \le p_t$ e
 $\mu_{t+1} \le \mu_t + h_t$, e il valore più grande ammissibile si costruisce in
 avanti,
@@ -246,22 +245,35 @@ ottimista.
 
 ## Domande di modellazione aggiuntive
 
-??? question "9.1.1 — Capacità giornaliera"
-    L'impianto non può produrre più di $35$ unità al giorno. Come cambia il
-    modello? Qual è il nuovo ottimo?
-
-??? question "9.1.2 — Lotto minimo"
+??? question "9.1.1 — Lotto minimo"
     Se in un giorno si produce, si devono produrre almeno $25$ unità. Come cambia
     il modello? Qual è il nuovo ottimo?
 
-## Il sandwich sulla variante 1a
+## Una variante svolta: capacità giornaliera
+
+L'impianto non può produrre più di $35$ unità al giorno.
+
+Si aggiungono gli $n$ vincoli lineari
+
+$$
+x_t \le 35, \qquad \forall t \in \{1, 2, \dots, n\} .
+$$
+
+In alternativa si può sostituire il big-M con $M_t' = \min(M_t, 35)$: il
+vincolo diventa allora sia il legame di attivazione sia il
+vincolo di capacità, esattamente come nella localizzazione capacitata del
+capitolo «Localizzazione e copertura». Sull'istanza il piano ottimo con due soli
+lanci non è più ammissibile ($80 > 35$) e l'ottimo sale a $470$.
 
 Il tetto $x_t \le 35$ aggiunge al duale una famiglia $\nu_t \ge 0$ con termine
-noto $-35$. Alzare $\nu_t$ alza il tetto su $\mu_t$ e incassa $d_t$, ma costa
-$35$: conviene solo dove la domanda supera la capacità, e qui la catena delle
-scorte tiene già $\mu_t$ sotto il tetto, quindi il certificato resta quello del
-problema base. Cambia l'euristica: il quarto giorno sforerebbe, e le $5$ unità
-in eccesso si anticipano al terzo.
+noto $-35$: entra nell'obiettivo con il segno negativo e allenta la colonna di
+$x_t$. Alzare $\nu_t$ di una unità alza il tetto su $\mu_t$ e incassa $d_t$, ma
+costa $35$, quindi conviene solo dove la domanda supera la capacità; e
+sull'istanza nemmeno il giorno più carico lo giustifica, perché la catena delle
+scorte tiene già $\mu_t$ sotto il tetto. Il certificato resta allora quello del
+problema base, $\lb = 270$. Cambia invece l'euristica: il quarto giorno il
+lot-for-lot sforerebbe, e le $5$ unità in eccesso si anticipano al terzo, che le
+tiene in magazzino.
 
 <!-- tabella-variante: fam09_1a_bound -->
 

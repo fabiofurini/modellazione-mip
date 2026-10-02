@@ -206,7 +206,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Descrizione.** $\pi_i$ è il prezzo di una unità della risorsa $i$; $\ell_j$ e
 $\beta_j$ sono i prezzi dei due vincoli di semi-interezza del tipo $j$, e
 $\gamma$ quello del premio. L'obiettivo valuta a quei prezzi tutte le risorse
@@ -275,21 +274,33 @@ sulle $1200$ disponibili.
 
 ## Domande di modellazione aggiuntive
 
-??? question "9.3.1 — Premio più esigente"
-    Il premio si incassa solo se si producono almeno *tre* tipi diversi. Come
-    cambia il modello? Qual è il nuovo ottimo?
-
-??? question "9.3.2 — Premio nullo"
+??? question "9.3.1 — Premio nullo"
     Il contributo per la diversificazione viene abolito, cioè $\bar r = 0$. Che
     cosa succede alla variabile $z$?
 
-## Il sandwich sulla variante 3a
+## Una variante svolta: premio più esigente
+
+Il premio si incassa solo se si producono almeno *tre* tipi diversi.
+
+Basta cambiare un coefficiente: il vincolo diventa
+
+$$
+-\sum_{j=1}^{s} y_j + 3\, z \le 0 .
+$$
+
+Sull'istanza il nuovo ottimo è $9200$, cioè $500$ in meno. Attivare anche il
+terzo tipo costerebbe più del premio: conviene rinunciare al premio, e infatti
+all'ottimo $z = 0$. Il valore coincide, per caso, con quello della soluzione
+euristica del problema di partenza.
 
 Il vincolo del premio tocca una sola colonna del duale, quella di $z$, che
-adesso vede $\bar r / 3$ invece di $\bar r / 2$. Con $\gamma = 500/3$ il bound
-scende da $11250$ a $32500/3$: chiedere tre tipi invece di due spalma il premio
-su più attivazioni, e i prezzi duali si abbassano. L'euristica non riesce ad
-accendere un terzo tipo e resta a $8700$.
+adesso vede $\bar r / 3$ invece di $\bar r / 2$; tutto il resto del duale è
+identico. La ricetta è quella del problema base con $\gamma = \bar r / 3 =
+500/3$, e il bound scende da $11250$ a $32500/3$: chiedere tre tipi invece di
+due spalma il premio su più attivazioni, quindi ogni tipo ne porta una quota
+minore e i prezzi duali si abbassano. L'euristica parte dal piano base, prova ad
+accendere un terzo tipo al suo lotto minimo e con queste risorse non ci riesce:
+resta a $8700$, e l'ottimo scende da $9700$ a $9200$.
 
 <!-- tabella-variante: fam09_3a_bound -->
 

@@ -213,7 +213,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Una soluzione duale a mano.** $\bar\pi_m = c_m / a_m$ (il costo per minuto di
 ogni macchina): $\tfrac{8}{25}, \tfrac{7}{20}, \tfrac{5}{12}$; poi
 $\bar\mu_j = \min_m t_{jm}\bar\pi_m$:
@@ -258,16 +257,32 @@ accese, $\tilde x_{12} = \tilde x_{23} = \tilde x_{33} = 1$.
     Ogni macchina usata deve lavorare almeno $\ell = 8$ minuti. Modellare e
     trovare il nuovo ottimo.
 
-??? question "7.2.2 — Legame fra due attivazioni"
-    Se si usa la macchina 1 si deve usare anche la 3. Scrivere il vincolo e
-    discutere che cosa impone e che cosa non impone.
+## Una variante svolta: legame fra due attivazioni
 
-## Il sandwich sulla variante 2b
+La macchina 3 condivide l'alimentazione con la macchina 1: se si usa la
+macchina 1 si deve usare anche la 3.
 
-Il legame fra attivazioni aggiunge $\rho \le 0$, ma qui non conviene muoverlo: la
-macchina 3 è il minimo per tutti i lavori. Il certificato resta quello del
-problema base — un legame fra attivazioni non tocca il rilassamento, che può
-accendere mezza macchina. A crescere è l'ottimo intero.
+È un'implicazione fra due variabili binarie, $y_1 \Longrightarrow y_3$, cioè
+$\NOT y_1 \OR y_3$, che è già in CNF: il vincolo lineare è
+
+$$
+1 - y_1 + y_3 \ge 1 \quad\Longleftrightarrow\quad y_1 \le y_3
+$$
+
+(un vincolo lineare). Impone che $y_1 = 1$ forzi $y_3 = 1$ e, per
+contronominale, che $y_3 = 0$ forzi $y_1 = 0$. Non impone il viceversa: la
+macchina 3 può essere usata da sola ($y_3 = 1$, $y_1 = 0$ è ammissibile), e
+$y_1 = y_3 = 0$ resta ammissibile. Sull'istanza il vincolo non cambia l'ottimo,
+$12$, perché la soluzione ottima non usa la macchina 1; lo cambierebbe se
+i costi rendessero conveniente la macchina 1 da sola.
+
+Il legame «se si usa la macchina 1 si usa anche la 3» aggiunge al duale una
+variabile $\rho \le 0$, che allenta la colonna di $y_1$ e stringe quella di
+$y_3$. Sui dati dell'istanza non conviene muoverla: la macchina 3 è il minimo per
+tutti i lavori, e abbassarne il prezzo abbasserebbe ogni $\mu_j$. Il certificato
+resta quello del problema base — un legame fra *attivazioni* non tocca il
+rilassamento, che può accendere mezza macchina. A crescere è l'ottimo intero, e
+quindi il divario.
 
 <!-- tabella-variante: fam07_2b_bound -->
 

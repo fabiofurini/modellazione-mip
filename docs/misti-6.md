@@ -207,7 +207,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Descrizione.** $\alpha_i$ e $\beta_i$ sono i prezzi di un posto per le bambine
 e per i bambini della nazionalità $i$; $\gamma_j$ è il prezzo di un posto nel
 campo $j$, $\delta_j$ quello del vincolo di parità e $\varepsilon_{ij}$ quello
@@ -287,19 +286,26 @@ possa fare da maggioranza.
 
 ## Domande di modellazione aggiuntive
 
-??? question "10.6.1 — Un campo più grande"
-    Il campo 1 viene ampliato e arriva a $20$ posti. Qual è il nuovo ottimo?
-
-??? question "10.6.2 — Una nazionalità non divisibile"
+??? question "10.6.1 — Una nazionalità non divisibile"
     Per motivi organizzativi i bambini della nazionalità 1 devono stare tutti
     nello stesso campo. Come cambia il modello? Qual è il nuovo ottimo?
 
-## Il sandwich sulla variante 6a
+## Una variante svolta: un campo più grande
+
+Il campo 1 viene ampliato e arriva a $20$ posti.
+
+Cambia solo il dato $d_1$. La capacità totale sale a $28$, ma l'ottimo si ferma
+a $24$: comanda ora il secondo argomento combinatorio, quello della nazionalità
+maggioritaria, $2 \cdot (f_1 + g_1) = 2 \cdot 12 = 24$. È un buon esempio del
+fatto che il bound «giusto» cambia con l'istanza: la ricetta duale
+$\gamma_j = 1$ darebbe $28$, peggiore.
 
 Il campo 1 passa da $15$ a $20$ posti: cambia un dato, non la struttura. La
-ricetta resta $\gamma_j = 1$ con tutte le altre duali a zero, perché ogni
-bambino accettato occupa un posto, e restituisce $\sum_j d_j = 28$ invece di
-$23$. Il certificato non cambia forma: cambia il dato che somma.
+ricetta è quella del problema base — $\gamma_j = 1$ e tutte le altre duali a
+zero, perché ogni bambino accettato occupa un posto — e restituisce
+$\sum_j d_j$, che adesso vale $28$ invece di $23$. Il certificato non cambia
+forma: cambia il dato che somma. L'euristica riempie i campi in ordine e arriva
+a $20$, l'ottimo è $24$.
 
 <!-- tabella-variante: fam10_6a_bound -->
 

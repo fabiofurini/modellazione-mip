@@ -66,8 +66,6 @@ EX 12 [Bilanciamento](ex-12.md)
 10.8 [Brani fra CD](misti-8.md) ·
 10.9 [Libri fra scaffali](misti-9.md)
 
-
-
 **Il corso**
 
 - [Organizzazione del corso](organizzazione.md) — il percorso, l'esame, gli

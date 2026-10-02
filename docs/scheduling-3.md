@@ -182,7 +182,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Una soluzione duale a mano.** $\bar\pi_m = c_m/a_m$: $\tfrac{4}{21}, \tfrac{3}{11}, \tfrac{3}{20}$;
 poi $\bar\mu_j = \max\{0, \max_m (r_j - t_j \bar\pi_m)\}$:
 $\bar\mu_1 = \tfrac{25}{4}$, $\bar\mu_2 = 9$, $\bar\mu_3 = \tfrac{75}{4}$; valore $34$:
@@ -214,15 +213,31 @@ dell'euristica: $20\%$.
     Tutti i lavori vanno eseguiti. Come cambia il modello e quanto costa
     l'obbligo?
 
-??? question "7.3.2 — Un lavoro condizionato a un altro"
-    Si può eseguire il lavoro 3 solo se si esegue anche il lavoro 2. Scrivere
-    il vincolo e trovare il nuovo ottimo.
+## Una variante svolta: un lavoro condizionato a un altro
 
-## Il sandwich sulla variante 3b
+Il lavoro 3 richiede un semilavorato prodotto dal lavoro 2: si può eseguire il
+lavoro 3 solo se si esegue anche il lavoro 2 (su qualunque macchina).
 
-Il moltiplicatore nuovo $\lambda \ge 0$ sconta le colonne del lavoro 3 e carica
-quelle del lavoro 2. Su questa istanza il lavoro 2 non ha margine, $\lambda$ resta
-a zero e il certificato coincide con quello del problema base.
+«Eseguo il lavoro 3» è la proposizione $\sum_m x_{3m} = 1$, «eseguo il lavoro 2»
+è $\sum_m x_{2m} = 1$; l'implicazione «3 $\Rightarrow$ 2» si scrive
+
+$$
+\sum_{m=1}^{k} x_{3m} \le \sum_{m=1}^{k} x_{2m}
+$$
+
+(un vincolo lineare). Se il lavoro 3 è eseguito il membro sinistro vale $1$ e
+il vincolo forza il membro destro a $1$: il lavoro 2 è eseguito; viceversa, se
+il lavoro 2 non è eseguito il membro destro vale $0$ e il vincolo forza
+$\sum_m x_{3m} = 0$. Il vincolo non impone la converse: il lavoro 2 può essere
+eseguito senza il 3. Sull'istanza l'ottimo diventa $20$: la soluzione da $25$
+(lavori 1 e 3 senza il 2) non è più ammissibile, e la migliore è di nuovo
+$\{1, 2\}$ sulla macchina 1 e $\{3\}$ sulla macchina 3.
+
+«Il lavoro 3 solo se anche il lavoro 2» aggiunge al duale un moltiplicatore
+$\lambda \ge 0$, che sconta le colonne del lavoro 3 e carica quelle del lavoro 2.
+Si alza $\lambda$ fin dove il lavoro 2 lo regge a costo zero: su questa istanza
+quel margine non c'è, $\lambda$ resta a zero e il certificato coincide con quello
+del problema base.
 
 <!-- tabella-variante: fam07_3b_bound -->
 

@@ -172,7 +172,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 Con $\bar\pi_c=0$, $\bar\mu=0$ e $\bar\lambda_c = p_c/(m-1) = p_c/2$:
 
 $$
@@ -204,19 +203,28 @@ trovato dall'euristica. Gap euristica $44{,}4\%$.
 
 ## Domande di modellazione aggiuntive
 
-??? question "8.3.1 — Copertura minima garantita"
-    Almeno 3 clienti devono essere coperti. Come cambia il modello? Qual è
-    il nuovo ottimo?
-
-??? question "8.3.2 — Installazione condizionata"
+??? question "8.3.1 — Installazione condizionata"
     La sede 1 può essere installata solo se lo è anche la sede 3. Come si
     modella? Qual è il nuovo ottimo?
 
-## Il sandwich sulla variante 3a
+## Una variante svolta: copertura minima garantita
 
-$\omega \le 0$ conviene lasciarlo a zero: abbassarlo costringe ogni $\lambda_c$ a
-salire di $-\omega/(m-1)$, e nell'obiettivo quelle $\lambda$ pesano più di quanto
-il termine noto faccia risparmiare.
+Per contratto, almeno $3$ clienti devono essere coperti.
+
+Si aggiunge il vincolo lineare
+
+$$
+\sum_{c=1}^{n} y_c \ge 3
+$$
+
+(un vincolo lineare). Sull'istanza l'ottimo del problema 8.3 copre già $3$
+clienti, quindi il vincolo non è vincolante e l'ottimo resta $45$.
+
+«Almeno tre clienti coperti» aggiunge al duale $\omega \le 0$. Conviene lasciarlo
+a zero, e il conto dice perché: abbassarlo costringe ogni $\lambda_c$ a salire di
+$-\omega/(m-1)$, e nell'obiettivo quelle $\lambda$ pesano più di quanto il termine
+noto faccia risparmiare. L'euristica, con poche sedi, prova ogni scelta di $k$ e
+tiene la migliore fra quelle ammissibili.
 
 <!-- tabella-variante: fam08_3a_bound -->
 

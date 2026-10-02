@@ -172,7 +172,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Descrizione.** $\lambda_j$ e $\mu_j$ sono i prezzi dei due vincoli che
 stringono lo squilibrio del prodotto $j$, uno da sopra e uno da sotto.
 L'obiettivo valuta a quei prezzi il totale $T_j$ di ciascun prodotto. Il primo
@@ -255,22 +254,34 @@ tabella la colonna si chiama «bound certificato» proprio per questo.
 
 ## Domande di modellazione aggiuntive
 
-??? question "10.7.1 — Due filiali inseparabili"
-    Le filiali $1$ e $2$ condividono la sede e devono restare nella stessa
-    società. Come cambia il modello? Qual è il nuovo ottimo?
-
-??? question "10.7.2 — Min-sum invece di min-max"
+??? question "10.7.1 — Min-sum invece di min-max"
     Si vuole minimizzare la *somma* delle differenze su tutti i prodotti invece
     della differenza peggiore. Come cambia il modello? La partizione ottima è la
     stessa?
 
-## Il sandwich sulla variante 7a
+## Una variante svolta: due filiali inseparabili
 
-L'uguaglianza $x_1 - x_2 = 0$ aggiunge al duale una $\sigma$ libera con termine
-noto zero, quindi l'obiettivo non cambia e il rilassamento vale $0$ come nel
-problema base. Il bound utile è di nuovo combinatorio: con $1$ e $2$ legate il
-miglior squilibrio possibile sui tre prodotti vale $4$, $0$ e $2$, quindi
-$z(\mathit{MILP}) \ge 4$. Con le filiali libere era $2$.
+Le filiali $1$ e $2$ condividono la sede e devono restare nella stessa società.
+
+Si aggiunge il singolo vincolo lineare
+
+$$
+x_1 - x_2 = 0 ,
+$$
+
+cioè «entrambe ad $A$ oppure entrambe a $B$». Sull'istanza l'ottimo peggiora da
+$4$ a $6$: le uniche partizioni ammissibili con $1$ e $2$ insieme sono
+$\{1,2\}$, $\{1,2,3\}$ e $\{1,2,4\}$ (con i complementi), e la migliore è
+proprio quella trovata dall'euristica.
+
+L'uguaglianza $x_1 - x_2 = 0$ aggiunge al duale una $\sigma$ libera, che compare
+con il segno più nella colonna della filiale $1$ e con il meno in quella della
+filiale $2$. Il suo termine noto è zero, quindi l'obiettivo non cambia: il
+rilassamento vale $0$ come nel problema base, e per la stessa ragione. Il bound
+utile è di nuovo combinatorio: tenendo insieme le filiali $1$ e $2$, il miglior
+squilibrio possibile sui tre prodotti vale $4$, $0$ e $2$, e ogni partizione
+ammissibile deve rispettarli tutti, quindi $\zmilp \ge 4$. Con le filiali libere
+era $2$: legare due filiali alza il bound.
 
 <!-- tabella-variante: fam10_7a_bound -->
 

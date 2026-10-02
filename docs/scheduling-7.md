@@ -198,7 +198,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Una soluzione duale a mano.** I $\beta$ hanno coefficiente negativo: a zero,
 e allora $\alpha = 0$; restano $\delta_j \le \gamma_j \le 1$ e ogni lavoro
 contribuisce al più $t_j - d_j$, positivo solo se in ritardo anche eseguito per
@@ -226,18 +225,34 @@ $\tilde\tau = (6, 0, 5)$.
 
 ## Domande di modellazione aggiuntive
 
-??? question "7.7.1 — Date di rilascio"
-    Il lavoro 2 non può iniziare prima dell'istante $\rho_2 = 2$.
-
-??? question "7.7.2 — Minimizzare il ritardo massimo"
+??? question "7.7.1 — Minimizzare il ritardo massimo"
     Minimizzare il ritardo del lavoro più in ritardo.
 
-## Il sandwich sulla variante 7a
+## Una variante svolta: date di rilascio
 
-Le date di rilascio aggiungono $\varepsilon_j \ge 0$ con termine noto
-$\rho_j + t_j$. Posto $\gamma_j = 1$, la colonna di $\kappa_j$ impone
-$\delta_j + \varepsilon_j \le 1$: conviene mettere tutto il peso su
-$\varepsilon_j$, cioè il rilascio sostituisce il tempo di lavorazione.
+Il lavoro 2 non può iniziare prima dell'istante $\rho_2 = 2$ (il materiale
+arriva in ritardo); gli altri sono disponibili da subito.
+
+Un lavoro che inizia non prima di $\rho_j$ si completa non prima di
+$\rho_j + t_j$: basta rafforzare i vincoli in
+
+$$
+\kappa_j \ge \rho_j + t_j, \qquad \forall j \in \{1, 2, \dots, n\}
+$$
+
+($n$ vincoli, con $\rho_j = 0$ per i lavori disponibili subito). Attenzione al
+big-M: i completamenti possono ora superare $\sum_j t_j$ (la macchina può
+restare ferma ad aspettare), e $M$ va aggiornato a $\max_j \rho_j + \sum_j t_j$.
+Sull'istanza l'ottimo diventa $12$: la sequenza $2 \to 1 \to 3$ costringerebbe
+la macchina ad attendere fino a $2$, e con $\kappa_2 = 6$, $\kappa_1 = 11$,
+$\kappa_3 = 17$ i ritardi sarebbero $2 + 8 + 7$; l'ordine $1 \to 2 \to 3$
+resta a $12$ ed è ottimo.
+
+Le date di rilascio aggiungono al duale una famiglia $\varepsilon_j \ge 0$ che
+entra nell'obiettivo con il suo termine noto $\rho_j + t_j$. Posto $\gamma_j = 1$,
+la colonna di $\kappa_j$ impone $\delta_j + \varepsilon_j \le 1$, e conviene
+mettere tutto il peso su $\varepsilon_j$: il rilascio sostituisce il tempo di
+lavorazione. L'euristica è la stessa regola EDD, che adesso aspetta il rilascio.
 
 <!-- tabella-variante: fam07_7a_bound -->
 

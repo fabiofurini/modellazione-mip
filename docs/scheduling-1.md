@@ -214,7 +214,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Una soluzione duale a mano.** Con $\bar\pi_m = 0$, i vincoli diventano
 $\mu_j \le c_{jm}$ per ogni $m$: il valore più grande ammissibile è
 
@@ -257,22 +256,37 @@ chiude il gap).
 
 ## Domande di modellazione aggiuntive
 
-??? question "7.1.1 — I lavori 1 e 3 sulla stessa macchina"
-    I lavori 1 e 3 usano lo stesso utensile e devono essere eseguiti dalla stessa
-    macchina. Come cambia il modello? Qual è il nuovo ottimo per l'istanza?
-
-??? question "7.1.2 — Costo fisso per macchina usata"
+??? question "7.1.1 — Costo fisso per macchina usata"
     Ogni macchina che esegue almeno un lavoro costa in più $g_m = 3$ euro di
     accensione. Modellare il costo fisso e trovare il nuovo ottimo. Quale legame
     entra in gioco?
 
-## Il sandwich sulla variante 1a
+## Una variante svolta: i lavori 1 e 3 sulla stessa macchina
 
-Il vincolo «i lavori 1 e 3 sulla stessa macchina» aggiunge al duale una variabile
-libera $\sigma_m$ per ogni macchina, e con essa i due lavori si possono valutare
-**insieme**: le loro colonne danno $\mu_1 + \mu_3 \le \min_m (c_{1m} + c_{3m})$,
-più di quanto si ottenga valutandoli separatamente. I due bound si toccano e il
-problema si chiude senza il solver.
+I lavori 1 e 3 usano lo stesso utensile e devono essere eseguiti dalla stessa
+macchina. È un legame fra due variabili della stessa famiglia: per ogni macchina
+$m$, $x_{1m} = 1$ se e solo se $x_{3m} = 1$, cioè
+
+$$
+x_{1m} = x_{3m}, \qquad \forall m \in \{1, 2, \dots, k\}
+$$
+
+($k$ vincoli lineari). Entrambi i versi sono imposti dal vincolo: se
+$x_{1m} = 1$ allora $x_{3m} = 1$ e viceversa; i vincoli di assegnamento
+garantiscono poi che la macchina comune sia una sola.
+
+Il legame cambia anche il duale: aggiunge una variabile libera $\sigma_m$ per
+ogni macchina, e con essa i due lavori si possono valutare *insieme*: i
+vincoli delle loro colonne danno
+$\mu_1 + \mu_3 \le \min_m (c_{1m} + c_{3m})$, che è più di quanto si ottenga
+valutandoli separatamente.
+
+Sull'istanza la coppia deve stare dove $t_{1m} + t_{3m} \le a_m$: sulla macchina
+1 no ($2 + 4 > 5$), sulla 2 sì ($1 + 5 \le 6$, costo $10 + 4$), sulla 3 sì
+($3 + 3 \le 7$, costo $2 + 6$); con il lavoro 2 sulla macchina 2 (costo $4$) la
+scelta migliore è la macchina 3 per la coppia, e il nuovo ottimo è
+$2 + 6 + 4 = 12$. I due bound si toccano e il problema si chiude senza il
+solver.
 
 <!-- tabella-variante: fam07_1a_bound -->
 

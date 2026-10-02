@@ -3,12 +3,10 @@
 **Classe:** implementazione · **Script:** `python/cap06_bpp.py`, `python/cap06_cmax.py`, `python/cap06_tsp.py`
 { .scheda }
 
-
 Bin packing, makespan e commesso viaggiatore: enunciato, modello, costruzione in
 `gurobipy` e modello dell'istanza. Sono i tre problemi su cui il
 [capitolo delle euristiche](modellazione-4.md) costruisce next-fit, first-fit,
 best-fit, LPT e vicino più vicino.
-
 
 Fin qui il modello di esempio è sempre stato lo zaino. I tre problemi qui sotto
 ritornano nel [capitolo delle euristiche](modellazione-4.md), dove si

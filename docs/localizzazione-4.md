@@ -188,7 +188,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 Con $\bar\gamma_{ij}=0$ e $\bar\beta_j = f_j/k$ (il massimo ammesso), il
 vincolo su $\alpha_i$ vale per **ogni** hub $j$, non solo il più
 conveniente: $\bar\alpha_i = \min_j \bar\beta_j$.
@@ -235,15 +234,26 @@ economico per lui), i terminali 2 e 3 sull'hub 1. Gap euristica $5{,}3\%$.
     l'ottimo? Cambia il rilassamento? E che cosa succede se, invece di
     aggiungerli, si *sostituisce* con essi il vincolo aggregato?
 
-??? question "8.4.2 — Connessione vietata"
-    Il terminale 1 non può connettersi all'hub 2. Come si modella? Qual è
-    il nuovo ottimo?
+## Una variante svolta: connessione vietata
 
-## Il sandwich sulla variante 4b
+Il terminale 1 non può essere connesso all'hub 2 (un vincolo di sicurezza).
 
-Vietare una connessione toglie una colonna dal primale, quindi **toglie** un
-vincolo dal duale: $\alpha_1$ può salire. È il caso in cui un vincolo in più nel
-primale *migliora* il certificato, invece di lasciarlo fermo.
+Si fissa la variabile a zero con il vincolo lineare
+
+$$
+x_{12} = 0
+$$
+
+(un vincolo lineare). Sull'istanza l'ottimo del problema 8.4 non usa già
+$x_{12}$ (il terminale 1 è connesso all'hub 3), quindi il vincolo aggiuntivo
+non è vincolante e l'ottimo resta $19$.
+
+Vietare una connessione significa togliere una colonna dal primale, quindi
+*togliere* un vincolo dal duale: $\alpha_1$ non deve più reggere il confronto
+con l'hub proibito e può salire. Gli si dà un $\gamma$ su ciascuno degli hub che
+gli restano — il budget di ogni hub è $1$ e nessun altro terminale lo usa — e
+il bound cresce. È il caso in cui un vincolo in più nel primale *migliora* il
+certificato, invece di lasciarlo fermo.
 
 <!-- tabella-variante: fam08_4b_bound -->
 

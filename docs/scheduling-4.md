@@ -190,7 +190,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 Il secondo vincolo è il costo ridotto di $y_m$: il coefficiente $1$
 nell'obiettivo primale limita la somma dei $\lambda_{jm}$.
 
@@ -216,19 +215,41 @@ viene in mente, non la migliore.
 
 ## Domande di modellazione aggiuntive
 
-??? question "7.4.1 — Minimizzare il tempo della macchina più lenta"
-    Minimizzare il massimo dei tempi di lavorazione (makespan), non la somma.
-
-??? question "7.4.2 — Costo fisso se la macchina lavora"
+??? question "7.4.1 — Costo fisso se la macchina lavora"
     Accendere una macchina costa $g_m = 4$ euro, un minuto costa $1$ euro.
     Quale legame serve e qual è il big-M più piccolo?
 
-## Il sandwich sulla variante 4a
+## Una variante svolta: minimizzare il tempo della macchina più lenta
 
-Il min-max toglie il costo alle $y_m$ e aggiunge $\nu_m \ge 0$ con
-$\sum_m \nu_m \le 1$. Conviene valutare il lavoro più lungo: il $\nu$ che
-massimizza $\min_m t_{jm}\nu_m$ rende quel prodotto costante, e il bound è la
-media armonica dei suoi tempi. La ricetta è **ottima** per il rilassamento.
+Le macchine lavorano tutte insieme e l'azienda vuole finire il prima possibile:
+minimizzare il *massimo* dei tempi di lavorazione delle macchine
+(il makespan), non la somma.
+
+Un secondo livello di massimo: una variabile $w \ge 0$ con i vincoli
+
+$$
+w \ge y_m, \qquad \forall m \in \{1, 2, \dots, k\}
+$$
+
+($k$ vincoli lineari) e obiettivo $\min w$. Il pattern è lo stesso del
+legame di massimo: i vincoli impongono $w \ge \max_m y_m$ e la minimizzazione
+forza $w = \max_m y_m$ all'ottimo. Attenzione: ora le $y_m$ non hanno più
+coefficiente positivo nell'obiettivo, quindi l'argomento «$y_m = $ massimo dei
+$t_{jm} x_{jm}$ in ogni ottimo» cade — $y_m$ può gonfiarsi fino a $w$ senza
+costo. Resta vero che *esiste* un ottimo in cui $y_m$ è il massimo:
+basta abbassarla, i vincoli restano soddisfatti e $w$ non cresce. Sull'istanza
+il makespan ottimo è $10$: il lavoro 3 richiede almeno $10$ minuti su
+qualunque macchina, quindi nessuna soluzione scende sotto $10$; la soluzione
+ottima lo mette sulla macchina 3 e sistema gli altri due senza superare $10$
+(per esempio il lavoro 2 con lui sulla macchina 3 e il lavoro 1 sulla
+macchina 1).
+
+Minimizzare il *massimo* dei tempi invece della somma toglie il costo alle
+$y_m$ e aggiunge una famiglia $\nu_m \ge 0$ per i vincoli $w \ge y_m$, con la
+colonna di $w$ che impone $\sum_m \nu_m \le 1$. Conviene valutare un lavoro solo,
+il più lungo: il $\nu$ che massimizza $\min_m t_{jm}\nu_m$ rende quel prodotto
+costante, cioè $\nu_m$ proporzionale a $1/t_{jm}$, e il bound è la media armonica
+dei tempi di quel lavoro. La ricetta risulta *ottima* per il rilassamento.
 
 <!-- tabella-variante: fam07_4a_bound -->
 

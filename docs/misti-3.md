@@ -200,7 +200,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Descrizione.** $\alpha_j$ è il prezzo di una unità del nutriente $j$ quando
 serve a raggiungere il fabbisogno minimo, $\beta_j$ quello che si paga per non
 sforare il tetto, $\lambda_i$ e $\mu_i$ i prezzi dei due vincoli di
@@ -264,16 +263,24 @@ maggiori di uno.
     Il lotto minimo sale da $1$ a $2$ chili per ogni cibo scelto. Come cambia il
     modello? Qual è il nuovo ottimo?
 
-??? question "10.3.2 — Più varietà"
-    Si vogliono almeno quattro cibi diversi invece di tre. Come cambia il
-    modello? Qual è il nuovo ottimo?
+## Una variante svolta: più varietà
 
-## Il sandwich sulla variante 3b
+Si vogliono almeno quattro cibi diversi invece di tre.
 
-La variante cambia un dato, $t = 4$, non la struttura. Il conteggio dei cibi non
-si valuta: la colonna delle $y_i$ impone $\tau \le c_i \lambda_i - d_i \mu_i$, e
-con $\lambda = \mu = 0$ resta $\tau = 0$. Il bound duale non si muove, l'ottimo
-sì: l'euristica accende il quarto cibo al lotto minimo e raggiunge $31/3$.
+Cambia solo il dato $t$, da $3$ a $4$. Sull'istanza l'ottimo sale a $31/3
+\approx 10{,}33$: si è costretti a comprare almeno un chilo anche del cibo più
+caro (le patate) oppure a ricomporre le quantità. Il costo della varietà è
+dunque $31/3 - 48/5 = 11/15 \approx 0{,}73$ euro al mese. Con $t = s$ il
+vincolo diventa «tutti i cibi», e il modello si irrigidisce fino a coincidere
+con il caso in cui tutti gli indicatori valgono uno.
+
+La variante cambia un dato, $t = 4$, non la struttura. Il conteggio dei cibi
+però non si valuta: $\tau$ entra nell'obiettivo con il suo termine noto, ma la
+colonna delle $y_i$ impone $\tau \le c_i \lambda_i - d_i \mu_i$, e con la
+ricetta del problema base — $\lambda = \mu = 0$ e un solo $\alpha$ positivo,
+sul ferro — resta $\tau = 0$. Il bound duale non si muove, l'ottimo sì:
+l'euristica accende il quarto cibo al suo lotto minimo, completa con il pane e
+raggiunge $31/3$, che è l'ottimo.
 
 <!-- tabella-variante: fam10_3b_bound -->
 

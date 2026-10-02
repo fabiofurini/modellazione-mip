@@ -3,7 +3,6 @@
 **Classe:** LP · MILP · **Script:** `python/cap04_bound.py`
 { .scheda }
 
-
 Questo capitolo insegna a produrre, **a mano**, un numero che sta certamente da
 una parte dell'ottimo intero. Serve a tre cose: capire quanto vale un modello,
 quanto vale un'euristica, e come leggere i numeri che un solver riporta quando

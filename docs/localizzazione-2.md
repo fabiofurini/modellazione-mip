@@ -169,7 +169,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 Con $\bar\varrho=0$, $\bar\pi_{lc}=0$ e $\bar\mu_c = \min_l d_{lc}$ (la
 distanza dalla sede più vicina in assoluto):
 
@@ -199,21 +198,32 @@ sedi 1 e 3 aperte (non 1 e 2 come nell'euristica): gap euristica $20{,}0\%$.
 
 ## Domande di modellazione aggiuntive
 
-??? question "8.2.1 — Esattamente $k$ sedi aperte"
-    Si devono aprire esattamente $k$ sedi. Come cambia il modello? Qual è il
-    nuovo ottimo?
-
-??? question "8.2.2 — Copertura di prossimità per un cliente"
+??? question "8.2.1 — Copertura di prossimità per un cliente"
     Il cliente 1 deve essere servito entro distanza $4$. Come si modella?
     Qual è il nuovo ottimo?
 
-## Il sandwich sulla variante 2a
+## Una variante svolta: esattamente $k$ sedi aperte
 
-L'algebra chiude la questione in una riga: la colonna delle $x_l$ impone
-$\varrho + \sigma \le 0$, e l'obiettivo contiene $k(\varrho + \sigma)$, mai
-positivo. Imporre **esattamente** $k$ sedi invece di **al più** $k$ non muove il
-rilassamento --- e qui non muove nemmeno l'ottimo intero, che resta $15$. Non è
-un caso dell'istanza: senza costo di apertura una sede in più non può peggiorare
+Per motivi organizzativi, si devono aprire esattamente $k$ sedi (non al più).
+
+Basta aggiungere il vincolo lineare
+
+$$
+\sum_{l=1}^{m} x_l \ge k,
+$$
+
+che insieme al vincolo già presente impone
+l'uguaglianza (un vincolo lineare in più). Sull'istanza l'ottimo del
+problema 8.2 apre già esattamente $2 = k$ sedi, quindi il vincolo aggiuntivo
+non è vincolante e l'ottimo resta $15$.
+
+Imporre *esattamente* $k$ sedi invece di *al più* $k$ aggiunge al duale
+$\sigma \ge 0$ con termine noto $k$. L'algebra chiude la questione in una riga: la
+colonna delle $x_l$ impone $\varrho + \sigma \le 0$, e l'obiettivo contiene
+$k(\varrho + \sigma)$, che perciò non è mai positivo. Il massimo si ha con
+$\varrho + \sigma = 0$ e il valore torna $\sum_c \mu_c$: il rilassamento non si
+muove — e qui non si muove nemmeno l'ottimo intero, che resta $15$. Non è un
+caso dell'istanza: senza costo di apertura una sede in più non può peggiorare
 l'assegnamento, quindi da una soluzione con meno di $k$ sedi se ne ricava sempre
 una altrettanto buona con esattamente $k$. Il vincolo di uguaglianza è
 ridondante; diventa vincolante solo se aprire costa.

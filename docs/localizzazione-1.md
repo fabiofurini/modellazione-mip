@@ -180,7 +180,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 Con $\bar\mu_l = i_l/u_l$ (spalma il costo fisso sulla capacità) e
 $\bar\pi_c = \min_l(t_{lc}+\bar\mu_l)$:
 
@@ -217,15 +216,27 @@ resto del cliente 2 e tutto il cliente 3. Gap euristica $20{,}3\%$.
     Ogni sede aperta deve spedire almeno $5$ litri. Come cambia il modello?
     Qual è il nuovo ottimo?
 
-??? question "8.1.2 — Apertura condizionata"
-    La sede 2 può essere installata solo se lo è anche la sede 1. Come si
-    modella? Qual è il nuovo ottimo?
+## Una variante svolta: apertura condizionata
 
-## Il sandwich sulla variante 1b
+La sede 2 può essere installata solo se lo è anche la sede 1 (ad esempio, un
+vincolo logistico di supervisione).
 
-$\rho \le 0$ sposta costo fisso fra le due sedi. Si prova fra i valori che fanno
-cambiare il minimo che definisce $\pi_c$; qui il migliore è $\rho = 0$, perché la
-sede 1 ha già il costo per litro più basso.
+È un legame fra due variabili della stessa famiglia, imposto dal singolo
+vincolo lineare
+
+$$
+x_2 \le x_1
+$$
+
+(un vincolo lineare): se $x_2 = 1$ allora necessariamente $x_1 = 1$.
+Sull'istanza l'ottimo del problema 8.1 apre già entrambe le sedi, quindi il
+vincolo aggiuntivo non è vincolante e l'ottimo resta $365$.
+
+«La sede 2 si apre solo se si apre la sede 1» aggiunge al duale $\rho \le 0$, che
+sposta costo fisso fra le due sedi: $\mu_1 = (i_1 + \rho)/u_1$ e
+$\mu_2 = (i_2 - \rho)/u_2$. Si prova $\rho$ fra i valori che fanno cambiare il
+minimo che definisce $\pi_c$; su questa istanza il migliore è $\rho = 0$, perché
+la sede 1 ha già il costo per litro più basso.
 
 <!-- tabella-variante: fam08_1b_bound -->
 

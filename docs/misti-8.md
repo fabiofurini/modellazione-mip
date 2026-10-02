@@ -183,7 +183,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Descrizione.** $\alpha_i$ è il valore del brano $i$, $\beta_j$ il prezzo del
 numero minimo di brani sul CD $j$, mentre $\gamma_j$ e $\delta_j$ sono i pesi
 con cui il CD $j$ entra nella durata massima e in quella minima. L'obiettivo
@@ -258,20 +257,26 @@ problema ha più ottimi.
     Il CD 1 è un supporto ridotto e non può superare i $15$ minuti. Come cambia
     il modello? Qual è il nuovo ottimo?
 
-??? question "10.8.2 — Tre CD"
-    La raccolta si distribuisce su tre CD invece che su due. Come cambia il
-    modello? Qual è il nuovo ottimo?
+## Una variante svolta: tre CD
 
-## Il sandwich sulla variante 8b
+La raccolta si distribuisce su tre CD invece che su due.
+
+Cambia solo il dato $m$, da $2$ a $3$ (e la lista $w$). Sull'istanza l'ottimo
+sale a $2$: con tre CD la durata totale $35$ non si divide in parti uguali, e
+l'argomento di parità va rifatto. Il brano da $10$ minuti è il vincolo
+strutturale: se sta da solo su un CD, quel CD dura $10$ e gli altri due si
+dividono $25$, con un massimo di almeno $13$; se sta con il brano da $3$, si
+ottengono $13, 11, 11$ e la differenza è $2$.
 
 Con tre CD invece di due la struttura non cambia: le colonne di $y$ e $z$
 chiedono che le $\gamma$ e le $\delta$ sommino a uno, e spalmarle in parti
-uguali, $\gamma_j = \delta_j = 1/3$, non privilegia nessun CD. Il duale vale $0$
-come il rilassamento, perché una soluzione frazionaria spezza ogni brano in tre
-e pareggia le durate. Il bound utile viene dall'interezza, come nel problema
-base: le durate sono interi che sommano a $35$, che non è multiplo di $3$,
-quindi non possono essere tutte uguali e la differenza vale almeno $1$.
-L'euristica LPT ne lascia $2$, che è l'ottimo.
+uguali, $\gamma_j = \delta_j = 1/3$, è la scelta che non privilegia nessun CD.
+Il duale vale $0$, come il rilassamento, per il motivo di sempre: una soluzione
+frazionaria spezza ogni brano in tre parti uguali e pareggia le durate. Il bound
+utile viene dall'interezza, come nel problema base: le durate sono interi che
+sommano a $35$, che non è multiplo di $3$, quindi non possono essere tutte
+uguali e la differenza vale almeno $1$. L'euristica LPT ne lascia $2$, che è
+l'ottimo: il divario certificato resta aperto di una unità.
 
 <!-- tabella-variante: fam10_8b_bound -->
 

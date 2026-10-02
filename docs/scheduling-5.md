@@ -182,7 +182,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Una soluzione duale a mano.** $\bar\lambda = 0$ e
 $\bar\pi = \max_j r_j/t_j = \tfrac{10}{5} = 2$: valore $100$. Quindi
 $9 \le z(\mathit{MILP}) \le 100$: un bound grossolano, come spesso i bound «di
@@ -207,18 +206,27 @@ L'euristica resta a $9$ (gap $57\%$): l'ordine di scansione conta.
 
 ## Domande di modellazione aggiuntive
 
-??? question "7.5.1 — Una sola classe"
-    Si può attivare al più una classe.
-
-??? question "7.5.2 — Una classe subordinata a un'altra"
+??? question "7.5.1 — Una classe subordinata a un'altra"
     La classe 3 si può attivare solo se si attiva anche la classe 1.
 
-## Il sandwich sulla variante 5a
+## Una variante svolta: una sola classe
 
-«Al più una classe» aggiunge $\theta \ge 0$ con termine noto $1$. Fissato il
-prezzo del tempo $\pi$, le altre duali sono forzate: la ricetta si riduce a
-cercare $\pi$ fra i rapporti $r_j/t_j$ e tenere il valore più basso. Il bound
-migliora di molto rispetto alla ricetta del problema base.
+Cambiare classe richiede una pulizia della macchina che l'azienda vuole
+evitare del tutto: si può attivare al più una classe.
+
+Un vincolo di *set packing* sulle attivazioni,
+$\sum_{c=1}^{q} y_c \le 1$ (un vincolo lineare): al più una $y_c$ vale $1$, e
+con essa, tramite, solo i lavori di quella classe possono
+essere eseguiti. Sull'istanza l'ottimo scende a $17$: la classe migliore da
+sola è la 3, con tutti i suoi lavori ($9 + 5 + 6 + 6 = 26 \le 50$), profitto
+$21 - 4 = 17$.
+
+«Al più una classe attivata» aggiunge al duale una variabile $\theta \ge 0$ con
+termine noto $1$: entra nell'obiettivo e allenta le colonne delle $y_c$. Fissato
+il prezzo del tempo $\pi$, le $\lambda_j$ e $\theta$ sono forzate dai vincoli
+duali, quindi la ricetta si riduce a cercare $\pi$ fra i rapporti $r_j/t_j$ e
+tenere il valore più basso. Il bound migliora di molto rispetto alla ricetta del
+problema base.
 
 <!-- tabella-variante: fam07_5a_bound -->
 

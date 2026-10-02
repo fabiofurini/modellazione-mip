@@ -264,7 +264,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Descrizione.** $\mu_t$ è il valore di un paio disponibile nel mese $t$ e
 $\nu_t$ il prezzo di un'ora di lavoro. L'obiettivo valuta la domanda a quei
 prezzi e sottrae $r\, m_0 \sum_t \nu_t$, cioè le ore che i due operai iniziali
@@ -331,21 +330,28 @@ euro contro i $1600$ di un'assunzione al terzo mese.
 
 ## Domande di modellazione aggiuntive
 
-??? question "9.2.1 — Assunzioni molto costose"
-    Il costo di assunzione sale da $100$ a $3000$ euro (selezione e formazione).
-    Come cambia il piano ottimo?
-
-??? question "9.2.2 — Straordinari"
+??? question "9.2.1 — Straordinari"
     Ogni operaio può fare fino a $40$ ore di straordinario al mese, pagate $25$
     euro l'ora. Come cambia il modello? Conviene usarli?
 
-## Il sandwich sulla variante 2a
+## Una variante svolta: assunzioni molto costose
 
-La variante cambia un dato, $u = 3000$ invece di $100$, non la struttura. Il
-certificato non se ne accorge: $\mu_t$ è il costo minimo per avere un paio
-disponibile al mese $t$, e il costo di assunzione lì non compare. Il bound resta
-$13500$, l'ottimo sale da $16660$ a $19560$ — un bound corretto può essere del
-tutto insensibile al dato che muove il problema.
+Il costo di assunzione sale da $100$ a $3000$ euro (selezione e formazione).
+
+Cambia solo il dato $u$. Il nuovo ottimo è $19\,560$, cioè $2900$ euro in più.
+Il piano non cambia: si assume comunque un operaio, perché senza quell'assunzione
+il problema è inammissibile ($4 \cdot 120 / 160 = 3$ operai servono comunque). La
+differenza è esattamente $3000 - 100 = 2900$: il costo aggiuntivo di
+un'assunzione inevitabile. È un esempio utile di analisi di sensitività fatta
+risolvendo di nuovo il modello.
+
+La variante non aggiunge vincoli: cambia un dato, $u = 3000$ invece di $100$.
+Modello, duale e ricetta restano quelli del problema base, e il certificato non
+si accorge del cambiamento, perché $\mu_t$ è il costo minimo per avere un paio
+disponibile al mese $t$ e il costo di assunzione lì non compare: il bound resta
+$13500$, mentre l'ottimo sale da $16660$ a $19560$. È il caso limite di questo
+capitolo: un bound duale corretto può essere del tutto insensibile al dato che
+muove il problema, e qui è l'euristica a seguirlo.
 
 <!-- tabella-variante: fam09_2a_bound -->
 

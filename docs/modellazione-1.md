@@ -3,7 +3,6 @@
 **Classe:** LP · ILP · BIP · MILP · **Script:** `python/cap01_modelli.py`
 { .scheda }
 
-
 ## Dati, variabili, obiettivo, vincoli
 
 Un modello di *programmazione matematica* traduce una decisione in quattro

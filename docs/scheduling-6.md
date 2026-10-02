@@ -191,7 +191,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Una soluzione duale a mano.** Il premio di ogni classe caricato su un solo
 lavoro: $\bar\pi_1 = -5$, $\bar\pi_3 = -4$, $\bar\pi_5 = -10$; $\bar\lambda = 0$;
 $\bar\mu = \max_j (r_j - \bar\pi_j)/t_j = \max\{3, \tfrac{1}{3}, \tfrac{24}{25}, \tfrac{4}{5}, 2, \tfrac{11}{19}\} = 3$;
@@ -218,17 +217,27 @@ ricavo $10 + 22 + 10$. Gap dell'euristica $24\%$.
 
 ## Domande di modellazione aggiuntive
 
-??? question "7.6.1 — Almeno un lavoro per classe"
-    Eseguire almeno un lavoro di ogni classe. Che succede a $z$?
-
-??? question "7.6.2 — Penalità per classe iniziata e non finita"
+??? question "7.6.1 — Penalità per classe iniziata e non finita"
     Iniziare una classe senza completarla costa $w = 3$.
 
-## Il sandwich sulla variante 6a
+## Una variante svolta: almeno un lavoro per classe
 
-«Almeno un lavoro per classe» aggiunge una famiglia $\omega_c \le 0$ che entra
-nell'obiettivo e, essendo non positiva, lo **abbassa**. L'euristica parte dal
-lavoro più corto di ogni classe, così è ammissibile per costruzione.
+Un accordo sindacale impone di eseguire almeno un lavoro di ogni classe.
+
+Un vincolo di copertura per classe,
+$\sum_{j \in \mathscr{J}_c} x_j \ge 1$ per ogni $c$ ($q$ vincoli lineari). Con
+$q \ge 2$ classi tutte toccate, per ogni coppia di classi esiste una coppia
+mista di lavori eseguiti, e i vincoli forzano $z = 1$: la
+riduzione $u$ è certa e la si può sostituire nel vincolo di capacità
+($a - u$ al posto di $a$, eliminando $z$). Sull'istanza l'ottimo scende da $42$
+a $40$: per esempio i lavori $1$, $3$ e $5$ ($5 + 25 + 10 + 10 = 50$), ricavo
+$40$, nessuna classe completa.
+
+«Almeno un lavoro per classe» aggiunge al duale una famiglia $\omega_c \le 0$,
+una per classe, che entra nell'obiettivo: essendo non positiva, lo *abbassa*.
+Si scende con ciascuna $\omega_c$ fin dove le colonne di quella classe lo
+permettono. L'euristica parte dal lavoro più corto di ogni classe — così è
+ammissibile per costruzione — e poi riempie il tempo residuo.
 
 <!-- tabella-variante: fam07_6a_bound -->
 

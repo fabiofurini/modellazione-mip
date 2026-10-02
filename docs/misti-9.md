@@ -186,7 +186,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Descrizione.** $\alpha_b$ è il valore del libro $b$, $\beta_s$ il prezzo (non
 positivo) della larghezza dello scaffale $s$ e $\gamma_{bs}$ il prezzo del
 legame «l'altezza dello scaffale $s$ copre il libro $b$». L'obiettivo valuta i
@@ -252,16 +251,25 @@ l'ottimo. Il gap certificato, prima di risolvere il MILP, è $(15-12)/15 = 20\%$
     La biblioteca compra un terzo scaffale, largo come gli altri. Qual è il
     nuovo ottimo?
 
-??? question "10.9.2 — Scaffali più larghi"
-    Gli scaffali sono larghi $12$ invece di $10$. Qual è il nuovo ottimo?
+## Una variante svolta: scaffali più larghi
 
-## Il sandwich sulla variante 9b
+Gli scaffali sono larghi $12$ invece di $10$.
 
-La larghezza non entra nel certificato duale: tutto il peso $\gamma$ va sul
-libro più alto (il $1$, alto $8$), e il bound duale resta $8$. Serve anche qui
-l'argomento combinatorio del problema base: la larghezza totale è $18$ e uno
-scaffale ne regge $12$, quindi gli scaffali non vuoti restano almeno due, uno
-alto almeno $8$ e l'altro almeno $4$, cioè $\mathit{LB} = 12$. Cambia
+Cambia solo il dato $c$. L'ottimo scende da $15$ a $12$. Con scaffali larghi
+$12$ diventa ammissibile la disposizione $\{1, 2, 3\}$ sul primo scaffale
+(larghezza $3 + 5 + 4 = 12$, altezza $\max(8,5,7) = 8$) e $\{4\}$ sul secondo
+(larghezza $6$, altezza $4$), per una somma di $8 + 4 = 12$. Si noti che il
+bound combinatorio costruito sopra, $\min_b h_b$ più l'altezza del libro più
+alto, vale ancora $8 + 4 = 12$ e qui è *esatto*: i tre libri più bassi
+stanno tutti sullo stesso scaffale di quello più alto, e il quarto resta da
+solo.
+
+La larghezza non entra nel certificato duale: la ricetta mette tutto il peso
+$\gamma$ sul libro più alto — il $1$, alto $8$ — perché qualunque scaffale
+lo ospiti deve essere alto almeno quanto lui, e il bound duale resta $8$. Serve
+anche qui l'argomento combinatorio del problema base: la larghezza totale è
+$18$ e uno scaffale ne regge $12$, quindi gli scaffali non vuoti restano almeno
+due, uno alto almeno $8$ e l'altro almeno $4$, cioè $\lb = 12$. Cambia
 l'euristica: il first-fit per larghezza decrescente adesso incastra i quattro
 libri su due scaffali alti $5$ e $8$ e scende da $15$ a $13$; l'ottimo da $15$ a
 $12$, e il bound lo certifica.

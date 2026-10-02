@@ -13,7 +13,6 @@ cuore del materiale. Quello che viene dopo e' di contorno.
 
 <div class="grid cards" markdown>
 
-
 -   :material-book-open-variant: **Modellazione**
 
     ---
@@ -24,7 +23,6 @@ cuore del materiale. Quello che viene dopo e' di contorno.
 
     [:octicons-download-24: dispensa-1-modellazione.pdf](pdf/dispensa-1-modellazione.pdf)
 
-
 -   :material-numeric: **Problemi numerici**
 
     ---
@@ -34,7 +32,6 @@ cuore del materiale. Quello che viene dopo e' di contorno.
     prima dei problemi generali.
 
     [:octicons-download-24: dispensa-2-numerici.pdf](pdf/dispensa-2-numerici.pdf)
-
 
 -   :material-function-variant: **Problemi con modello simbolico**
 
@@ -52,7 +49,6 @@ cuore del materiale. Quello che viene dopo e' di contorno.
 
 <div class="grid cards" markdown>
 
-
 -   :material-school-outline: **Come si lavora con il corso**
 
     ---
@@ -62,7 +58,6 @@ cuore del materiale. Quello che viene dopo e' di contorno.
     gli errori più comuni e la riproducibilità dei numeri.
 
     [:octicons-download-24: organizzazione-del-corso.pdf](pdf/organizzazione-del-corso.pdf)
-
 
 -   :material-help-circle-outline: **Problemi da modellare**
 
@@ -75,7 +70,6 @@ cuore del materiale. Quello che viene dopo e' di contorno.
 
     [:octicons-download-24: esercizi.pdf](pdf/esercizi.pdf)
 
-
 -   :material-presentation: **Le slide del corso**
 
     ---
@@ -87,7 +81,6 @@ cuore del materiale. Quello che viene dopo e' di contorno.
     generati dalle stesse sorgenti delle dispense.
 
     [:octicons-download-24: slide-mip.pdf](pdf/slide-mip.pdf)
-
 
 -   :material-language-python: **Il codice**
 
@@ -108,7 +101,6 @@ python3 python/esegui_tutti.py       # dati, figure, modelli e notebook
 python3 python/verifica_numeri.py    # ogni numero citato nei testi
 python3 -m mkdocs build --strict     # il sito
 ```
-
 
 ## La licenza di Gurobi
 

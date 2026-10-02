@@ -214,7 +214,6 @@ $$
 
 <!-- modello-esteso: fine -->
 
-
 **Descrizione.** $\alpha$ è il valore di un albero decorato, $\beta_l$ il prezzo
 di una luce di colore $l$, $\gamma$ il prezzo della varietà e $\delta_c$ quello
 del legame fra la configurazione $c$ e il suo indicatore. L'obiettivo valuta i
@@ -273,22 +272,27 @@ Il bound duale sbaglia di **una** unità su $2141$, e il rilassamento con i boun
 
 ## Domande di modellazione aggiuntive
 
-??? question "10.4.1 — Tutte le configurazioni"
-    Si vuole che compaiano tutte e tre le configurazioni. Come cambia il
-    modello? Qual è il nuovo ottimo?
-
-??? question "10.4.2 — Lotto minimo per configurazione"
+??? question "10.4.1 — Lotto minimo per configurazione"
     Ogni configurazione usata deve decorare almeno tre alberi (sotto quella
     soglia non vale la pena attrezzare la squadra). Come cambia il modello? Qual
     è il nuovo ottimo?
 
-## Il sandwich sulla variante 4a
+## Una variante svolta: tutte le configurazioni
+
+Si vuole che compaiano tutte e tre le configurazioni.
+
+Cambia solo il dato $f$, da $2$ a $3$. Sull'istanza l'ottimo sale da $2141$ a
+$2239$: costringere ad usare anche la configurazione 2, la più avida di luci del
+colore costoso, costa $98$ euro. Si noti che il vincolo di varietà, da solo, non
+dice *quanti* alberi devono usare ciascuna configurazione: uno basta.
 
 Chiedere tutte e tre le configurazioni cambia il termine noto del vincolo di
-varietà, ma quel vincolo non si valuta: la ricetta tiene $\gamma = \delta = 0$ e
-il bound resta $2140$ mentre l'ottimo sale da $2141$ a $2239$. L'euristica monta
-le due configurazioni mancanti su un albero ciascuna e costa $3023$: il gap
-certificato resta largo, e qui il MILP serve davvero.
+varietà, non la struttura. Ma quel vincolo non si valuta: la ricetta del
+problema base tiene $\gamma = \delta = 0$ e mette tutto il prezzo su un solo
+colore, quindi il bound resta $2140$ mentre l'ottimo sale da $2141$ a $2239$.
+L'euristica è la stessa, e per rispettare la varietà monta le due configurazioni
+mancanti su un albero ciascuna: costa $3023$, e il gap certificato resta largo.
+Qui il MILP serve davvero.
 
 <!-- tabella-variante: fam10_4a_bound -->
 
