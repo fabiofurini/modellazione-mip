@@ -30,11 +30,10 @@ DIR_MODELLI = DIR_DATI / "modelli"
 DISPENSE = sorted(BASE.glob("dispensa_*/capitoli"))
 ESERCIZI = BASE / "esercizi" / "capitoli"
 
-NOME_EX = {
-    1: "ex01", 2: "ex02", 3: "ex03", 4: "ex14", 5: "ex06", 6: "ex04", 7: "ex07",
-    8: "ex08", 9: "ex09", 10: "ex10", 11: "ex12", 12: "ex11", 13: "ex05",
-    14: "ex13", 15: "ex15",
-}
+# I quindici numerici stanno in ordine di difficolta', e il numero
+# dell'esercizio e quello del suo modello coincidono: la corrispondenza si
+# ricava, cosi' non puo' sfasarsi come e' successo con la rinumerazione.
+NOME_EX = {k: f"ex{k:02d}" for k in range(1, 16)}
 FAMIGLIE = ([(f"7.{i}", f"fam07_{i}") for i in range(1, 8)]
             + [(f"8.{i}", f"fam08_{i}") for i in range(1, 5)]
             + [(f"9.{i}", f"fam09_{i}") for i in range(1, 4)]
