@@ -1,7 +1,7 @@
 """EX 15 -- Orario della scuola di musica (famiglia 11).
 
 Due pomeriggi da due ore, quattro ore di lezione da collocare: l'orario e' una
-partizione delle quattro caselle. Il modello usa il conteggio degli strumenti
+partizione delle quattro caselle. Due soli strumenti, due ore ciascuno. Il modello usa il conteggio degli strumenti
 per giorno (tecnica 3.11), le precedenze fra ore consecutive (3.9) e i vincoli
 violabili con penalita' (3.13).
 
@@ -30,8 +30,8 @@ R = range
 intestazione("EX 15. Orario della scuola di musica: minimizzare le preferenze violate")
 GIORNI = ["lunedi", "martedi"]
 ORE = [1, 2]
-STRUM = ["chitarra", "violino", "pianoforte"]
-h14 = [2, 1, 1]                 # ore da collocare per strumento
+STRUM = ["chitarra", "violino"]
+h14 = [2, 2]                    # ore da collocare per strumento
 nd, nt, ni = len(GIORNI), len(ORE), len(STRUM)
 print(f"  Ore da collocare: {sum(h14)}; caselle disponibili: {nd} * {nt} = {nd * nt}.")
 print("  Le due cifre coincidono: ogni casella dell'orario ospita esattamente una lezione.")
@@ -46,10 +46,8 @@ def costi(extra_chitarra=()):
                 c[d][t][0] = 1                      # chitarra: il docente non viene di martedi
             if t in extra_chitarra:
                 c[d][t][0] = 1                      # preferenze aggiuntive della chitarra
-            if t == 0 and d == 0:
-                c[d][t][1] = 1                      # violino: non all'ora 1 di lunedi
-            if t == 1 and d == 0:
-                c[d][t][2] = 1                      # pianoforte: non all'ora 2 di lunedi
+            if d == 0:
+                c[d][t][1] = 1                      # violino: il docente non viene di lunedi
     return c
 
 
@@ -60,7 +58,7 @@ salva_dati(pd.DataFrame([{"giorno": GIORNI[d], "ora": ORE[t], "strumento": STRUM
 
 
 def modello(h, c, minimo_strumenti=2, legame_doppio=True):
-    """Con `legame_doppio=False` si ottiene il modello della bozza di partenza."""
+    """Con `legame_doppio=False` si ottiene il modello scritto a senso unico."""
     mod = nuovo_modello("orario")
     x = mod.addVars(nd, nt, ni, vtype=GRB.BINARY, name="x")
     y = mod.addVars(nd, ni, vtype=GRB.BINARY, name="y")
@@ -112,12 +110,12 @@ salva_dati(pd.DataFrame({"giorno": GIORNI, "strumenti_modello_errato": strumenti
            "ex15_varieta")
 
 # ---------- 3. UNA SOLUZIONE AMMISSIBILE COSTRUITA A MANO ----------
-# Regola: la chitarra prende un'ora per giorno, perche' altrimenti un giorno
-# resterebbe con un solo strumento; il violino va all'ora 2 di lunedi, dove non ha
-# preferenze contrarie; il pianoforte riempie l'ora 2 di martedi.
+# Regola: ogni giorno deve avere tutti e due gli strumenti, quindi ciascun giorno
+# ospita un'ora di chitarra e un'ora di violino; le ore si mettono nell'ordine
+# dato. Due caselle violano una preferenza, e non si puo' fare di meglio.
 piano_orario = {
     (0, 0): 0, (0, 1): 1,
-    (1, 0): 0, (1, 1): 2,
+    (1, 0): 0, (1, 1): 1,
 }
 sol_eur = {f"x[{d},{t},{i}]": 1 for (d, t), i in piano_orario.items()}
 for (d, t), i in piano_orario.items():

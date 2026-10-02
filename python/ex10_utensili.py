@@ -4,7 +4,7 @@ Attivazione disaggregata al rovescio: un'operazione si esegue solo se *tutti* i
 suoi utensili sono caricati, e il magazzino ne tiene al piu' quattro. E' un
 massimo, quindi l'euristica da' il lower bound e il duale l'upper.
 
-La bozza dell'archivio proponeva alpha = 2000 con tutti i moltiplicatori a 900:
+Viene spontaneo proporre alpha = 2000 con tutti i moltiplicatori a 900:
 quella soluzione duale *non e' ammissibile*, perche' alcuni utensili servono a
 piu' di due operazioni. Qui la ricetta duale e' diversa e viene verificata.
 """
@@ -100,13 +100,13 @@ print("  Carico di ciascun utensile: "
 utensile_critico = max(carico, key=carico.get)
 print(f"  Il massimo e' l'utensile {utensile_critico + 1}, quindi alpha = "
       f"{frazione(mano['alpha'])} e ub = {K} alpha = {frazione(ub)}")
-# la ricetta della bozza dell'archivio NON e' ammissibile: si verifica
-bozza = {f"beta[{i},{j}]": 900 for i in R(no) for j in T[i]} | {"alpha": 2000}
-_, viol_bozza = valuta(d, bozza)
-assert viol_bozza > 1e-6
+# la ricetta che viene spontanea NON e' ammissibile: si verifica
+tentativo = {f"beta[{i},{j}]": 900 for i in R(no) for j in T[i]} | {"alpha": 2000}
+_, viol_tentativo = valuta(d, tentativo)
+assert viol_tentativo > 1e-6
 peggiore = max(R(nu), key=lambda j: sum(900 for i in R(no) if j in T[i]))
-print(f"  Controllo della ricetta della bozza (alpha = 2000, tutti i beta = 900): NON")
-print(f"  ammissibile, violazione massima {frazione(viol_bozza)}. L'utensile "
+print(f"  Controllo della ricetta spontanea (alpha = 2000, tutti i beta = 900): NON")
+print(f"  ammissibile, violazione massima {frazione(viol_tentativo)}. L'utensile "
       f"{peggiore + 1} serve a "
       f"{sum(1 for i in R(no) if peggiore in T[i])} operazioni, quindi riceve "
       f"{sum(900 for i in R(no) if peggiore in T[i])} > 2000.")

@@ -3,7 +3,7 @@
 Quattro lavori indivisibili di durata 2, 3, 6, 7 e due operai: si vogliono
 carichi il piu' possibile bilanciati.
 
-Due avvertenze che la bozza dell'archivio confondeva:
+Due avvertenze che è facile confondere:
 1. «carichi bilanciati» si puo' scrivere come min-max oppure come min della
    differenza: le soluzioni ottime sono le stesse (il totale e' costante) ma i
    *valori* dell'obiettivo non coincidono. Qui si riportano entrambi.

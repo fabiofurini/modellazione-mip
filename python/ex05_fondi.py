@@ -1,9 +1,14 @@
 """EX 5 -- Fondi acquistabili a lotti (famiglia 10).
 
-Uno zaino intero (non binario) con due soli tipi di lotto e un vincolo di
+Uno zaino intero (non binario) con quattro tipi di lotto e un vincolo di
 proporzione riscritto in forma lineare. Serve anche a mostrare come si verifica
-una soluzione duale: la bozza di partenza ne proponeva una non ammissibile, qui
-la si esibisce come controesempio e poi si costruisce quella giusta.
+una soluzione duale: se ne esibisce prima una non ammissibile, come
+controesempio, e poi si costruisce quella giusta.
+
+La quota morde: il secondo fondo rende piu' del doppio degli altri per milione
+investito, ma non si puo' comprare da solo. L'euristica ci casca --- parte dal
+fondo migliore, non riesce a comprarne nemmeno un lotto e ripiega sul primo ---
+e si ferma a 16 contro un ottimo di 23.
 """
 import gurobipy as gp
 import pandas as pd
@@ -18,10 +23,10 @@ R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
 intestazione("EX 5. Fondi a lotti: massimizzare il rendimento annuo entro il budget")
-c12 = [12, 20, 15, 25]         # costo di un lotto (milioni)
-t12 = [1 / 6, 0.15, 2 / 15, 0.12]   # rendimento annuo, frazione del capitale investito
+c12 = [12, 15, 18, 25]         # costo di un lotto (milioni)
+t12 = [1 / 6, 1 / 3, 1 / 9, 0.16]   # rendimento annuo, frazione del capitale investito
 nf = len(c12)
-p12 = [c12[j] * t12[j] for j in R(nf)]  # rendimento di un lotto: 2, 3, 2 e 3 milioni
+p12 = [c12[j] * t12[j] for j in R(nf)]  # rendimento di un lotto: 2, 5, 2 e 4 milioni
 B12 = 100                      # budget disponibile
 QUOTA = 0.5                    # il fondo 2 non puo' superare meta' dei lotti totali
 # nel vincolo di quota il fondo 2 ha coefficiente +1 e gli altri -1
@@ -133,15 +138,15 @@ print(f"  z(LP) = {frazione(zlp12)} contro z(MILP) = {frazione(z12)}: il rilassa
 print(f"  {frazione(B12 / c12[0])} lotti del fondo 1, che non si possono acquistare a pezzi.")
 print(f"  La differenza {frazione(zlp12 - z12)} e' il costo dell'indivisibilita' dei lotti.")
 print()
-print("  Sui dati dell'istanza la quota non morde: il fondo 1 rende di piu' per milione investito e")
-print("  la soluzione ottima non compra affatto il fondo 2. La quota diventa attiva appena il")
-print("  fondo 2 rende il 20 per cento, cioe' 4 milioni a lotto:")
-p_ricco = [4.0 if j == 1 else p12[j] for j in R(nf)]   # il fondo 2 rende il 20 per cento
+print("  La quota morde: il fondo 2 rende piu' del doppio degli altri per milione investito, e")
+print("  senza il vincolo si comprerebbe soltanto quello. Con la quota, ogni lotto del fondo 2")
+print("  va accompagnato da un lotto di un altro fondo:")
+p_povero = [3.0 if j == 1 else p12[j] for j in R(nf)]   # il fondo 2 scende al 20 per cento
 prove = []
 for nome, p_alt, quota in [("dati originali, con quota", p12, True),
                            ("dati originali, senza quota", p12, False),
-                           ("fondo 2 al 20 per cento, con quota", p_ricco, True),
-                           ("fondo 2 al 20 per cento, senza quota", p_ricco, False)]:
+                           ("fondo 2 meno redditizio, con quota", p_povero, True),
+                           ("fondo 2 meno redditizio, senza quota", p_povero, False)]:
     m, x = modello(c12, p_alt, B12)
     if not quota:
         m.update()

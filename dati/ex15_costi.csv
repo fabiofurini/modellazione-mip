@@ -1,13 +1,9 @@
 giorno,ora,strumento,costo
 lunedi,1,chitarra,0
 lunedi,1,violino,1
-lunedi,1,pianoforte,0
 lunedi,2,chitarra,0
-lunedi,2,violino,0
-lunedi,2,pianoforte,1
+lunedi,2,violino,1
 martedi,1,chitarra,1
 martedi,1,violino,0
-martedi,1,pianoforte,0
 martedi,2,chitarra,1
 martedi,2,violino,0
-martedi,2,pianoforte,0
