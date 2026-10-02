@@ -13,7 +13,7 @@ cella, con le figure che compaiono sotto le celle invece di finire in un file.
 
 | Capitolo | Classe | Notebook |
 |---|---|---|
-| [3. Dal modello a Python/Gurobi](modellazione-3.md) | implementazione | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap06_gurobi.ipynb) |
+| [3.5 Il protocollo, e come si esegue](gurobipy-5.md) | implementazione | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap06_gurobi.ipynb) |
 | [4. Euristiche costruttive](modellazione-4.md) | algoritmi | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap05_euristiche.ipynb) |
 | [5. Logica e variabili binarie](modellazione-5.md) | BIP | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap02_logica.ipynb) |
 | [6. Legami fra variabili](legami.md) | tecniche di modellazione | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap03_legami.ipynb) |
