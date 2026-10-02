@@ -44,13 +44,6 @@ theme:
 
 plugins:
   - search
-  # i sei capitoli hanno cambiato numero: i vecchi indirizzi restano validi
-  - redirects:
-      redirect_maps:
-        modellazione-4.md: modellazione-2.md
-        modellazione-6.md: modellazione-3.md
-        modellazione-5.md: modellazione-4.md
-        modellazione-2.md: modellazione-5.md
 
 extra:
   social:
