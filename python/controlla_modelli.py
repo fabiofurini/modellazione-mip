@@ -24,6 +24,14 @@ DOCS = BASE / "docs"
 PREAMBOLO = BASE / "dispensa_1" / "preambolo.tex"
 MATHJAX = DOCS / "javascripts" / "mathjax.js"
 
+# Le abbreviazioni definite dal preambolo delle dispense. L'elenco sta qui, e non
+# si legge dal `.tex`, perche' le dispense sono private e in CI non ci sono; se il
+# preambolo e' a portata di mano si controlla anche che i due elenchi coincidano.
+MACRO_DEL_CORSO = frozenset({
+    "AND", "E", "NOT", "OR", "Prob", "Q", "R", "Z", "cvar", "false", "figdat",
+    "lb", "true", "ub", "var", "zdual", "zlp", "zlpp", "zlppp", "zmilp",
+})
+
 # un dominio: `\in \{0, 1\}`, `\ge 0`, `\le 0`, `\gtreqless 0`, `\in \Z_{\ge 0}`
 DOMINIO = re.compile(r"\\in\s*\\\{0|\\ge\s*0|\\le\s*0|\\gtreqless\s*0|\\in\s*\\(Z|Q|R)")
 RELAZIONE = re.compile(r"\\le|\\ge|\\in|\\gtreqless|(?<![<>!=])=(?!=)")
@@ -68,20 +76,24 @@ def problemi(riga: str) -> list[str]:
 
 
 def macro_non_definite() -> list[str]:
-    """Le abbreviazioni del preambolo che le pagine usano e MathJax non conosce.
+    """Le abbreviazioni del corso che le pagine usano e MathJax non conosce.
 
     Senza la definizione il browser stampa `\\Z` al posto di Z, e il modello
     sembra sbagliato anche quando non lo e'.
     """
-    nel_preambolo = set(re.findall(r"\\newcommand\{\\([A-Za-z]+)\}",
-                                   PREAMBOLO.read_text(encoding="utf-8")))
+    if PREAMBOLO.exists():   # in locale: l'elenco qui sopra deve restare allineato
+        nel_tex = set(re.findall(r"\\newcommand\{\\([A-Za-z]+)\}",
+                                 PREAMBOLO.read_text(encoding="utf-8")))
+        if nel_tex != set(MACRO_DEL_CORSO):
+            return [f"MACRO_DEL_CORSO non coincide con {PREAMBOLO.name}: "
+                    f"solo nel tex {sorted(nel_tex - MACRO_DEL_CORSO)}, "
+                    f"solo qui {sorted(MACRO_DEL_CORSO - nel_tex)}"]
     per_mathjax = set(re.findall(r"^\s*([A-Za-z]+):\s*\"",
                                  MATHJAX.read_text(encoding="utf-8"), re.M))
-    mancanti = {}
+    mancanti: dict[str, list[str]] = {}
     for pagina in sorted(DOCS.glob("*.md")):
-        testo = pagina.read_text(encoding="utf-8")
-        for nome in set(re.findall(r"\\([A-Za-z]+)", testo)):
-            if nome in nel_preambolo and nome not in per_mathjax:
+        for nome in set(re.findall(r"\\([A-Za-z]+)", pagina.read_text(encoding="utf-8"))):
+            if nome in MACRO_DEL_CORSO and nome not in per_mathjax:
                 mancanti.setdefault(nome, []).append(pagina.name)
     return [f"\\{n} usata in {len(p)} pagine ({', '.join(sorted(p)[:3])}...) "
             f"ma non definita in {MATHJAX.name}" for n, p in sorted(mancanti.items())]
