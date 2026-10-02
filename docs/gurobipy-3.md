@@ -3,6 +3,8 @@
 **Classe:** implementazione · **Script:** `python/cap06_gurobi.py`
 { .scheda }
 
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap06_gurobi.ipynb)
+
 «Intero» vuol dire «intero entro una tolleranza», e `relax()` costruisce il
 rilassamento del modello che si è appena scritto.
 

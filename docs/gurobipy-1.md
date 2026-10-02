@@ -3,6 +3,8 @@
 **Classe:** implementazione · **Script:** `python/cap06_gurobi.py`
 { .scheda }
 
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap06_gurobi.ipynb)
+
 Le poche istruzioni che bastano per scrivere un modello, le quattro classi di
 variabili e la regola del corso: una famiglia di vincoli per blocco, con i nomi
 del modello matematico.

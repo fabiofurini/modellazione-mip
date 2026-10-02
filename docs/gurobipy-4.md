@@ -3,12 +3,13 @@
 **Classe:** implementazione · **Script:** `python/cap06_gurobi.py`
 { .scheda }
 
+[![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap06_gurobi.ipynb)
+
 Bin packing, makespan e commesso viaggiatore: enunciato, modello, costruzione in
 `gurobipy` e modello dell'istanza. Sono i tre problemi su cui il
 [capitolo delle euristiche](modellazione-4.md) costruisce next-fit, first-fit,
 best-fit, LPT e vicino più vicino.
 
-## Tre problemi che il corso riusa
 
 Fin qui il modello di esempio è sempre stato lo zaino. I tre problemi qui sotto
 ritornano nel [capitolo delle euristiche](modellazione-4.md), dove si
@@ -22,7 +23,7 @@ ottimo con cui confrontarsi.
     Ci sono $n$ oggetti, l'oggetto $j$ pesa $w_j$. I contenitori sono tutti
     uguali, di capacità $c$. Si usi il minimo numero di contenitori.
 
-## Il modello
+### Il modello
 
 Servono due famiglie di variabili binarie: $x_{jb} = 1$ se l'oggetto $j$ va nel
 contenitore $b$, e $y_b = 1$ se il contenitore $b$ viene usato.
@@ -42,7 +43,7 @@ La seconda è la capacità scritta come **attivazione**: finché $y_b = 0$ il
 contenitore $b$ non può ricevere niente, e appena $y_b = 1$ accoglie fino a $c$.
 L'obiettivo conta i contenitori accesi.
 
-## La costruzione in gurobipy
+### La costruzione in gurobipy
 
 ```python
 def modello_bpp(w, c, k):
@@ -57,7 +58,7 @@ def modello_bpp(w, c, k):
     return m, x, y
 ```
 
-## L'istanza
+### L'istanza
 
 Sull'istanza di quattro oggetti di peso $w = (5, 4, 3, 3)$ e capacità $c = 7$:
 
@@ -101,7 +102,7 @@ conteggio è quindi stretto.
     su una macchina sola e non si interrompe. Si minimizzi l'istante in cui
     l'ultima macchina finisce.
 
-## Il modello
+### Il modello
 
 Con $x_{jm} = 1$ se il lavoro $j$ va sulla macchina $m$, e $z \ge 0$ il carico
 della macchina più carica:
@@ -121,7 +122,7 @@ carico a darle significato, dicendo che nessuna macchina lavora più a lungo di
 $z$; il minimo la schiaccia allora sul carico della macchina più carica.
 È la tecnica [min-max](legami-06.md).
 
-## La costruzione in gurobipy
+### La costruzione in gurobipy
 
 ```python
 def modello_cmax(d, k):
@@ -136,7 +137,7 @@ def modello_cmax(d, k):
     return m, x, z
 ```
 
-## L'istanza
+### L'istanza
 
 Sull'istanza di quattro lavori di durata $d = (3, 4, 5, 6)$ su $k = 2$
 macchine --- la stessa su cui il capitolo delle euristiche fa correre LPT:
@@ -174,7 +175,7 @@ $6+3$ e $5+4$. Qui il conteggio chiude il problema da solo.
     di lunghezza minima che tocca ogni città esattamente una volta e torna al
     punto di partenza.
 
-## Il modello
+### Il modello
 
 Con $x_{ij} = 1$ se il giro va da $i$ a $j$, le due famiglie «si esce una volta»
 e «si entra una volta» non bastano: ammettono anche soluzioni fatte di
@@ -201,7 +202,7 @@ città $1$ richiederebbe una catena di posizioni sempre crescenti che si richiud
 su se stessa, e questo è impossibile; la città $1$ non ha la sua $u$ proprio
 perché è il punto in cui il giro si chiude.
 
-## La costruzione in gurobipy
+### La costruzione in gurobipy
 
 ```python
 def modello_tsp(D):
@@ -220,7 +221,7 @@ def modello_tsp(D):
     return m, x, u
 ```
 
-## L'istanza
+### L'istanza
 
 Sull'istanza di quattro città del
 [capitolo delle euristiche](modellazione-4.md) il giro ottimo è
