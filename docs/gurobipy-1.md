@@ -3,13 +3,13 @@
 **Classe:** implementazione · **Script:** `python/cap06_gurobi.py`
 { .scheda }
 
-Le otto istruzioni che bastano per scrivere un modello, le quattro classi di
+Le poche istruzioni che bastano per scrivere un modello, le quattro classi di
 variabili e la regola del corso: una famiglia di vincoli per blocco, con i nomi
 del modello matematico.
 
-## Le otto istruzioni che bastano
+## Le istruzioni di base di gurobipy
 
-Un modello si scrive in gurobipy con otto istruzioni, sempre le stesse, e da qui
+Un modello si scrive in gurobipy con poche istruzioni, sempre le stesse, e da qui
 in poi accanto a ogni modello comparirà la riga di codice che lo scrive. Conviene
 vederle una volta su un modello piccolo e completo: lo **zaino binario**, dove di
 $n$ oggetti di valore $p_j$ e peso $w_j$ si sceglie un sottoinsieme di peso al
@@ -39,7 +39,7 @@ m.addConstr(gp.quicksum(w[j] * x[j] for j in range(n)) <= c, name="capacita")
 m.optimize()
 ```
 
-Otto istruzioni, una per riga del modello:
+Le istruzioni, una per riga del modello:
 
 - `Model` crea il modello; tutto il resto si appende a lui.
 - `addVars` aggiunge un'intera famiglia indicizzata: `addVars(n)` dà
@@ -58,7 +58,7 @@ Otto istruzioni, una per riga del modello:
   riga sola nel modello scritto.
 - `optimize` risolve.
 
-Con le stesse otto istruzioni si scrivono gli altri problemi classici che tornano
+Con le stesse istruzioni si scrivono gli altri problemi classici che tornano
 in queste pagine. Il **bin packing** — $n$ oggetti di dimensione $w_j$ in
 contenitori di capacità $c$, usandone il meno possibile — vuole due famiglie di
 binarie, $x_{ji}$ e $y_i$, e due famiglie di vincoli:

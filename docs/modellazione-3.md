@@ -11,8 +11,8 @@ modello matematico — come si **leggono** i risultati, incluso il caso in cui i
 solver non ha finito, e tre **modelli completi** che il
 [capitolo delle euristiche](modellazione-4.md) riprende.
 
-Tutto il capitolo gira su un unico script, `python/cap06_gurobi.py`, e si legge
-in cinque sezioni.
+Ogni numero di queste pagine esce da un unico script,
+`python/cap06_gurobi.py`, e il capitolo è diviso in cinque sezioni.
 
 <div class="grid cards" markdown>
 
@@ -20,7 +20,7 @@ in cinque sezioni.
 
     ---
 
-    Le otto istruzioni che bastano, le quattro classi di variabili e la regola del
+    Le istruzioni di base di gurobipy, le quattro classi di variabili e la regola del
     corso: una famiglia di vincoli per blocco.
 
     [:octicons-arrow-right-24: La sezione](gurobipy-1.md)
