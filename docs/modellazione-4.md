@@ -117,7 +117,7 @@ impossibili da sistemare.
 ## Set covering: la regola del completamento più economico
 
 ```text
-Euristica costruttivaCopertura(c, S):
+EuristicaCopertura(c, S):
   scoperte <- {1..m};   y[j] <- 0 per ogni j
   finche' scoperte non e' vuoto:
       per ogni j non ancora scelto: nuove(j) <- |{i in scoperte : j in S_i}|
@@ -143,7 +143,7 @@ guarda il rapporto fra i due, e quello che produce è una soluzione ammissibile,
 quindi un bound primale.
 
 ```text
-Euristica costruttivaZaino(p, w, C):
+EuristicaZaino(p, w, C):
   residuo <- C;   y[j] <- 0 per ogni j
   per j in ordine di p[j]/w[j] DECRESCENTE:
       se w[j] <= residuo:  y[j] <- 1;  residuo <- residuo - w[j]
