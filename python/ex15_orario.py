@@ -20,7 +20,8 @@ import gurobipy as gp
 import pandas as pd
 from gurobipy import GRB
 
-from mip import ammissibile, frazione, nuovo_modello, risolvi, rilassamento, valuta
+from mip import (ammissibile, due_rilassamenti, frazione, nuovo_modello, risolvi,
+                 valuta)
 from stile import ARANCIO, BLU, GRIGIO, TEAL, intestazione, plt, salva_dati, salva_figura
 from esteso import salva_modello
 
@@ -78,6 +79,36 @@ def modello(h, c, minimo_strumenti=2, legame_doppio=True):
 
 m14, x14, y14 = modello(h14, c14)
 salva_modello(m14, "ex15_primale")
+
+
+def duale(h, c, minimo_strumenti=2):
+    """Duale del rilassamento LP (con x, y >= 0 soltanto).
+
+    Una variabile per famiglia di vincoli del primale: alpha_i libera sulle ore
+    di ciascuno strumento (vincolo di uguaglianza), beta_dt <= 0 sulle caselle,
+    gamma_d >= 0 sulla varieta', delta_dti <= 0 e epsilon_di <= 0 sui due versi
+    del legame fra lezione e indicatore.
+    """
+    d = nuovo_modello("duale_orario")
+    alpha = d.addVars(ni, lb=-GRB.INFINITY, name="alpha")
+    beta = d.addVars(nd, nt, lb=-GRB.INFINITY, ub=0.0, name="beta")
+    gamma = d.addVars(nd, name="gamma")
+    delta = d.addVars(nd, nt, ni, lb=-GRB.INFINITY, ub=0.0, name="delta")
+    epsilon = d.addVars(nd, ni, lb=-GRB.INFINITY, ub=0.0, name="epsilon")
+    d.setObjective(gp.quicksum(h[i] * alpha[i] for i in R(ni))
+                   + gp.quicksum(beta[dd, tt] for dd in R(nd) for tt in R(nt))
+                   + minimo_strumenti * gamma.sum(), GRB.MAXIMIZE)
+    # colonna di x_dti
+    d.addConstrs((alpha[i] + beta[dd, tt] + delta[dd, tt, i] - epsilon[dd, i] <= c[dd][tt][i]
+                  for dd in R(nd) for tt in R(nt) for i in R(ni)), name="rc_x")
+    # colonna di y_di
+    d.addConstrs((gamma[dd] - gp.quicksum(delta[dd, tt, i] for tt in R(nt)) + epsilon[dd, i] <= 0
+                  for dd in R(nd) for i in R(ni)), name="rc_y")
+    return d
+
+
+d14 = duale(h14, c14)
+salva_modello(d14, "ex15_duale")
 
 
 def stampa_orario(valore):
@@ -142,8 +173,7 @@ print(f"  {nt - 1}, perche' il giorno vuole almeno due strumenti; almeno {conteg
 print("  chitarra cade quindi di martedi, dove il docente non vorrebbe venire. Attenzione:")
 print("  quel conteggio vale sul problema intero, non sul rilassamento --- infatti z(LP) = 0")
 print("  --- quindi non si puo' mettere al posto di lb nella catena dei bound.")
-zlp14, _, _ = rilassamento(m14, rafforzato=False)
-zlp14r, _, _ = rilassamento(m14, rafforzato=True)
+zlp14, zlp14r, _ = due_rilassamenti(m14, d14)
 print(f"    lb = {frazione(lb14)}   z(LP) = {frazione(zlp14)}   z(LP+) = {frazione(zlp14r)}")
 assert lb14 <= zlp14 + 1e-9 <= zlp14r + 1e-9
 
