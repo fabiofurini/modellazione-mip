@@ -79,14 +79,3 @@ modo sistematico.
     [:octicons-arrow-right-24: MILP · lotto minimo](produzione-3.md)
 
 </div>
-
-## Modelli numerici della famiglia
-
-Tre modelli brevi con dati espliciti sulle stesse tecniche: il bilancio
-delle scorte, il costo fisso di attrezzaggio e il lotto minimo.
-
-| Modello | Che cosa mette in gioco | $z(\mathit{MILP})$ |
-|---|---|---:|
-| [EX 7 — Aerei su commessa con costo fisso](ex-07-aerei.md) | costo fisso di attrezzaggio e quantità libera fino alla richiesta | 5 |
-| [EX 11 — Scarpe con soglia minima di produzione](ex-11-scarpe-soglia.md) | lotto minimo con tre risorse condivise | 24 000 |
-| [EX 14 — Scarpe: produzione, scorte e assunzioni](ex-14-scarpe.md) | bilancio delle scorte e organico su tre mesi | 774 180 |

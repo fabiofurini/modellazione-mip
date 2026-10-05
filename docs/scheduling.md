@@ -109,18 +109,3 @@ ritardo rispetto alle scadenze quando i lavori si susseguono su una sola macchin
     [:octicons-arrow-right-24: MILP · big-M](scheduling-7.md)
 
 </div>
-
-## Modelli numerici della famiglia
-
-Sei modelli brevi con dati espliciti, che riusano le tecniche di questa
-famiglia: modello, soluzione ammissibile costruita a mano, duale con la sua
-soluzione e tabella dei bound.
-
-| Modello | Che cosa mette in gioco | $z(\mathit{MILP})$ |
-|---|---|---:|
-| [EX 2 — Linee di autobus](ex-02-linee.md) | assegnamento con capacità in numero di lavori | 9 |
-| [EX 3 — Staffetta](ex-03-staffetta.md) | assegnamento con più risorse che compiti; matrice totalmente unimodulare | 95 |
-| [EX 8 — Seminari](ex-08-seminari.md) | cardinalità esatta, non-adiacenza, duale con variabile libera | 18 |
-| [EX 12 — Bilanciamento](ex-12-bilanciamento.md) | min-max contro differenza: stesse soluzioni, valori diversi | 9 |
-| [EX 13 — I turni del pronto soccorso](ex-13-turni.md) | copertura dei fabbisogni giornalieri con turni settimanali | 7 060 |
-| [EX 15 — L'orario della scuola di musica](ex-15-orario.md) | conflitti, non-adiacenza e preferenze da evitare | 0 |
