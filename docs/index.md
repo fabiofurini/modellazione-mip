@@ -29,7 +29,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
     ---
 
-    Quarantaquattro notebook che girano nel browser, senza installare niente:
+    Quarantacinque notebook che girano nel browser, senza installare niente:
     lo stesso codice delle pagine, cella per cella.
 
     [:octicons-arrow-right-24: I notebook](notebook.md)
@@ -73,7 +73,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 - **Quaranta problemi da modellare**, dati come arrivano davvero e senza il
   modello già scritto: venti con i dati numerici espliciti e venti in forma
   simbolica.
-- **Quarantaquattro [notebook](notebook.md)** che girano in Colab, senza
+- **Quarantacinque [notebook](notebook.md)** che girano in Colab, senza
   installare niente: lo stesso codice delle pagine, cella per cella.
 - **Nessun risultato trascritto a mano**: ogni numero viene da uno script che si
   può rilanciare, e un controllo automatico verifica che il testo e il codice
@@ -122,7 +122,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 ## Il corso in breve
 
 **6 capitoli di modellazione · 38 problemi svolti per intero · 40 problemi da
-modellare · 44 notebook in Colab.** L'elenco completo, capitolo per capitolo, sta
+modellare · 45 notebook in Colab.** L'elenco completo, capitolo per capitolo, sta
 nel [programma](programma.md).
 
 ## Per cominciare
