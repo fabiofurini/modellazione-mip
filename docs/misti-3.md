@@ -305,15 +305,16 @@ Notebook —
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/fam10_3_dieta.py` (240 righe)"
+??? example "Mostra lo script completo — `python/fam10_3_dieta.py` (241 righe)"
 
     ```python
     """Problema 10.3 -- Dieta con conteggio dei cibi e lotto minimo.
 
     Una dieta classica (quantita' continue, vincoli nutrizionali a due versi) con
-    sopra tre tecniche intere: attivazione (6.2), lotto minimo (6.3) e conteggio dei
-    tipi (6.11). Senza il lotto minimo il conteggio «almeno t cibi diversi» sarebbe
-    vuoto: si accenderebbero indicatori con quantita' nulla.
+    sopra tre tecniche intere: l'attivazione col tetto di capacita' (6.2), il lotto
+    minimo (6.3) e il conteggio dei tipi (6.11). Senza il lotto minimo il conteggio
+    «almeno t cibi diversi» sarebbe vuoto: si accenderebbero indicatori con
+    quantita' nulla.
     """
     import gurobipy as gp
     import pandas as pd
