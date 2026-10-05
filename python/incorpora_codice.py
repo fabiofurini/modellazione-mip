@@ -5,7 +5,9 @@ collegamento al file su GitHub, la pagina contiene lo script per intero dentro u
 blocco richiudibile. Copiarlo a mano significa farlo divergere; qui si rigenera.
 
 Come funziona: ogni pagina che dichiara `**Script:** `python/NOME.py`` riceve, in
-fondo, un blocco delimitato da due marcatori HTML. Il contenuto fra i marcatori
+fondo, un blocco delimitato da due marcatori HTML. Se l'intestazione nomina piu'
+script --- la sezione 3.4 ne ha tre --- il blocco li contiene tutti, uno per
+riquadro richiudibile. Il contenuto fra i marcatori
 e' rigenerato da questo script; tutto il resto della pagina non si tocca.
 
 Uso:  python3 incorpora_codice.py             # rigenera i blocchi
@@ -21,24 +23,33 @@ DIR_DOCS = BASE / "docs"
 
 INIZIO = "<!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->"
 FINE = "<!-- script-incorporato: fine -->"
-INTESTAZIONE = re.compile(r"\*\*Script:\*\*\s*`python/([A-Za-z0-9_]+)\.py`")
+INTESTAZIONE = re.compile(r"\*\*Script:\*\*(.*)")       # la riga dell'intestazione
+SCRIPT = re.compile(r"`python/([A-Za-z0-9_]+)\.py`")       # gli script che nomina
 
 
-def blocco(nome: str) -> str:
-    """Il blocco richiudibile con lo script per intero."""
-    codice = (DIR_SCRIPT / f"{nome}.py").read_text().rstrip("\n")
-    righe = codice.count("\n") + 1
-    return "\n".join([
-        INIZIO,
-        "",
-        f'??? example "Mostra lo script completo — `python/{nome}.py` ({righe} righe)"',
-        "",
-        "    ```python",
-        *[f"    {r}" if r else "" for r in codice.splitlines()],
-        "    ```",
-        "",
-        FINE,
-    ])
+def blocco(nomi: list[str]) -> str:
+    """Il blocco con gli script per intero, un riquadro richiudibile ciascuno."""
+    parti = [INIZIO, ""]
+    for nome in nomi:
+        codice = (DIR_SCRIPT / f"{nome}.py").read_text().rstrip("\n")
+        righe = codice.count("\n") + 1
+        parti += [
+            f'??? example "Mostra lo script completo — `python/{nome}.py` ({righe} righe)"',
+            "",
+            "    ```python",
+            *[f"    {r}" if r else "" for r in codice.splitlines()],
+            "    ```",
+            "",
+        ]
+    return "\n".join(parti + [FINE])
+
+
+def corpo(testo: str) -> str:
+    """La pagina senza il blocco incorporato: il codice non deve contare."""
+    if INIZIO in testo and FINE in testo:
+        prima, resto = testo.split(INIZIO, 1)
+        return prima + resto.split(FINE, 1)[1]
+    return testo
 
 
 def pagina_principale(nome: str) -> str | None:
@@ -50,9 +61,7 @@ def pagina_principale(nome: str) -> str | None:
     """
     candidate = []
     for pagina in sorted(DIR_DOCS.glob("*.md")):
-        testo = pagina.read_text()
-        quante = testo.replace(INIZIO, "").split(FINE)[0].count(f"python/{nome}.py") \
-            if INIZIO in testo else testo.count(f"python/{nome}.py")
+        quante = corpo(pagina.read_text()).count(f"python/{nome}.py")
         if quante:
             candidate.append((-quante, len(pagina.stem), pagina.stem))
     return min(candidate)[2] if candidate else None
@@ -62,14 +71,15 @@ def aggiorna(pagina: Path) -> str | None:
     """Il testo della pagina con il blocco aggiornato, o None se non va toccata."""
     testo = pagina.read_text()
     m = INTESTAZIONE.search(testo)
-    if not m or not (DIR_SCRIPT / f"{m.group(1)}.py").exists():
-        return None
-    if pagina_principale(m.group(1)) != pagina.stem:
+    nominati = SCRIPT.findall(m.group(1)) if m else []
+    nomi = [n for n in nominati
+            if (DIR_SCRIPT / f"{n}.py").exists() and pagina_principale(n) == pagina.stem]
+    if not nomi:
         if INIZIO not in testo:                       # sottopagina: niente da fare
             return None
         prima, resto = testo.split(INIZIO, 1)         # blocco da togliere
         return (prima.rstrip("\n") + "\n" + resto.split(FINE, 1)[1].lstrip("\n"))
-    nuovo = blocco(m.group(1))
+    nuovo = blocco(nomi)
     if INIZIO in testo:
         prima, resto = testo.split(INIZIO, 1)
         dopo = resto.split(FINE, 1)[1]
