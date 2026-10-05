@@ -1,7 +1,7 @@
 """Problema 10.9 -- Libri sugli scaffali: minimizzare la somma delle altezze.
 
 Assegnamento con capacita' (la larghezza dello scaffale) e una variabile di
-massimo per scaffale (tecnica 3.5): l'altezza di uno scaffale e' quella del libro
+massimo per scaffale (tecnica 6.5): l'altezza di uno scaffale e' quella del libro
 piu' alto che vi si trova. Serve anche a mostrare che l'ordine con cui l'euristica
 guarda gli oggetti puo' portarla in un vicolo cieco.
 """

@@ -1,7 +1,7 @@
 """EX 11 -- Scarpe con soglia minima di produzione (famiglia 9).
 
 Tre risorse, tre tipi di scarpa e una soglia minima per tipo: o se ne producono
-almeno q_j paia, oppure zero. E' la variabile semicontinua della tecnica 3.3,
+almeno q_j paia, oppure zero. E' la variabile semicontinua della tecnica 6.3,
 con il big-M scelto in modo naturale come massimo producibile di quel solo tipo.
 """
 import gurobipy as gp

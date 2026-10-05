@@ -330,9 +330,9 @@ Script completo —
     ```python
     """Problema 9.3 -- Veicoli: lotto minimo e premio per la varieta'.
 
-    Tre tecniche insieme: la variabile semi-intera del lotto minimo (3.3), il
-    conteggio dei tipi attivi (3.11) e un premio «se e solo se» si producono almeno
-    due tipi (3.10). Il premio si incassa solo se il conteggio arriva a due: il
+    Tre tecniche insieme: la variabile semi-intera del lotto minimo (6.3), il
+    conteggio dei tipi attivi (6.11) e un premio «se e solo se» si producono almeno
+    due tipi (6.10). Il premio si incassa solo se il conteggio arriva a due: il
     verso mancante segue dall'ottimalita' perche' il premio e' positivo.
     """
     import gurobipy as gp

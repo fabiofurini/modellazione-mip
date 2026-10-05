@@ -323,7 +323,7 @@ Script completo —
 
     Le quantita' spedite sono un flusso a piu' prodotti fra stabilimenti e clienti;
     sopra ci sono le scatole, che sono un conteggio intero legato al flusso dalla
-    capacita' (tecnica 3.4: y >= ceil(somma / w)). Il rilassamento lineare vede solo
+    capacita' (tecnica 6.4: y >= ceil(somma / w)). Il rilassamento lineare vede solo
     il rapporto fra unita' e capacita' e perde completamente il fatto che una scatola
     non si divide fra due clienti.
     """

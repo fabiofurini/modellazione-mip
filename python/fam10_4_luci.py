@@ -3,7 +3,7 @@
 Due decisioni intere legate da un vincolo di disponibilita': quante luci servono
 (dalle configurazioni scelte) e quante se ne comprano (dalle scatole). Sopra, il
 vincolo di varieta' «almeno f configurazioni diverse», che richiede un indicatore
-per configurazione e il legame con il conteggio (tecnica 3.11).
+per configurazione e il legame con il conteggio (tecnica 6.11).
 """
 import gurobipy as gp
 import pandas as pd

@@ -163,8 +163,8 @@ il notebook è
 
     Uno zaino con due vincoli in piu': al piu' due gruppi accettati e l'implicazione
     «se accetto il gruppo 2 devo accettare anche il 4». E' l'occasione per vedere in
-    un caso minuscolo tutte e tre le tecniche del capitolo 3 che servono qui:
-    capacita' (3.1), conteggio (3.4) e precedenza logica (3.9).
+    un caso minuscolo tutte e tre le tecniche del capitolo 6 che servono qui:
+    capacita' (6.1), conteggio (6.4) e precedenza logica (6.9).
     """
     import gurobipy as gp
     import pandas as pd

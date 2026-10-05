@@ -199,8 +199,8 @@ il notebook è
 
     Due pomeriggi da due ore, quattro ore di lezione da collocare: l'orario e' una
     partizione delle quattro caselle. Due soli strumenti, due ore ciascuno. Il modello usa il conteggio degli strumenti
-    per giorno (tecnica 3.11), le precedenze fra ore consecutive (3.9) e i vincoli
-    violabili con penalita' (3.13).
+    per giorno (tecnica 6.11), le precedenze fra ore consecutive (6.9) e i vincoli
+    violabili con penalita' (6.13).
 
     Il modello di partenza contiene un errore istruttivo: il legame fra la lezione e
     l'indicatore di strumento e' scritto a senso unico, e il vincolo di varieta'
@@ -332,7 +332,7 @@ il notebook è
     print(f"  Ci sono giorni con un solo strumento ({', '.join(poveri)}), eppure il vincolo")
     print("  sum_i y_di >= 2 e' soddisfatto: basta porre y_di = 1 senza fare lezione. Il legame")
     print("  x_dti <= y_di dice «se c'e' lezione allora l'indicatore e' acceso», non il viceversa.")
-    print("  Serve anche y_di <= sum_t x_dti, cioe' la tecnica 3.10 (se e solo se).")
+    print("  Serve anche y_di <= sum_t x_dti, cioe' la tecnica 6.10 (se e solo se).")
     assert poveri, "il modello senza il secondo verso deve ammettere giorni a uno strumento"
     salva_dati(pd.DataFrame({"giorno": GIORNI, "strumenti_modello_errato": strumenti_giorno}),
                "ex15_varieta")

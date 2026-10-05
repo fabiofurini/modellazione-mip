@@ -1,7 +1,7 @@
 """Problema 9.1 -- Produzione e lotti con costo fisso di lancio.
 
 Bilancio delle scorte, attivazione della produzione con big-M e magazzino. Il
-legame e' quello del costo fisso (sezione 3.2) con il coefficiente ricavato dai
+legame e' quello del costo fisso (sezione 6.2) con il coefficiente ricavato dai
 dati: M_t e' la domanda residua, non un numero grande a caso.
 """
 import gurobipy as gp

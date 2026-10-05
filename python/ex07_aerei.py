@@ -1,7 +1,7 @@
 """EX 7 -- Aerei su commessa con costo fisso di setup (famiglia 9).
 
 Tre commesse, ciascuna con un costo fisso di attrezzaggio e un tetto di unita'.
-E' il costo fisso della tecnica 3.2 in forma pura: il legame x <= M y serve sia a
+E' il costo fisso della tecnica 6.2 in forma pura: il legame x <= M y serve sia a
 limitare la quantita' sia a far pagare il setup. Il duale del rilassamento si
 costruisce a mano in due righe e coincide con l'ottimo del MILP.
 """

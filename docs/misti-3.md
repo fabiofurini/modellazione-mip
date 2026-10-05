@@ -311,8 +311,8 @@ Notebook —
     """Problema 10.3 -- Dieta con conteggio dei cibi e lotto minimo.
 
     Una dieta classica (quantita' continue, vincoli nutrizionali a due versi) con
-    sopra tre tecniche intere: attivazione (3.2), lotto minimo (3.3) e conteggio dei
-    tipi (3.11). Senza il lotto minimo il conteggio «almeno t cibi diversi» sarebbe
+    sopra tre tecniche intere: attivazione (6.2), lotto minimo (6.3) e conteggio dei
+    tipi (6.11). Senza il lotto minimo il conteggio «almeno t cibi diversi» sarebbe
     vuoto: si accenderebbero indicatori con quantita' nulla.
     """
     import gurobipy as gp
