@@ -31,34 +31,52 @@ def confronta(nome, senso, valore_eur, zmilp, note=""):
 
 
 # ---------- 1. BIN PACKING: NEXT-FIT, FIRST-FIT, BEST-FIT ----------
-intestazione("5.1  Le tre euristiche di tipo bin packing su lavori e macchine")
-t51 = [[2, 1, 3], [3, 4, 2], [4, 5, 3]]
-c51 = [[5, 10, 2], [5, 4, 6], [5, 4, 6]]
-a51 = [5, 6, 7]
+intestazione("5.1  Le tre regole di inserimento sul bin packing")
+# Gli stessi contenitori del modello della sezione 3.4 (capacita' 7) con due
+# oggetti in piu'. L'istanza di la' serve a scrivere il modello e va tenuta
+# piccola; qui ne serve una appena piu' grande, perche' su quella le tre regole
+# rispondono tutte e tre "tre contenitori" e non si distinguono.
+w51, C51 = [4, 4, 5, 3, 2, 3], 7
+k51 = len(w51)                      # un contenitore per oggetto: il limite banale
+t51, a51 = matrice(w51, k51), [C51] * k51     # un oggetto pesa uguale in ogni contenitore
 
 
-def modello_assegnamento(t, c, a):
-    n, k = len(t), len(a)
-    m = nuovo_modello("assegnamento")
+def modello_bpp(w, c, k):
+    n = len(w)
+    m = nuovo_modello("bin_packing")
     x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
-    m.setObjective(gp.quicksum(c[j][mm] * x[j, mm] for j in R(n) for mm in R(k)), GRB.MINIMIZE)
-    m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="assegna")
-    m.addConstrs((gp.quicksum(t[j][mm] * x[j, mm] for j in R(n)) <= a[mm] for mm in R(k)),
-                 name="disponibilita")
-    return m, x
+    y = m.addVars(k, vtype=GRB.BINARY, name="y")
+    m.setObjective(y.sum(), GRB.MINIMIZE)
+    m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="oggetto")
+    m.addConstrs((gp.quicksum(w[j] * x[j, b] for j in R(n)) <= c * y[b] for b in R(k)),
+                 name="capacita")
+    return m, x, y
 
 
-m51, x51 = modello_assegnamento(t51, c51, a51)
+def riempimenti(e, w):
+    """I contenitori usati, con dentro i pesi: [4+3] [4+3] [5+2]."""
+    dentro = {}
+    for (j, b) in sorted(e.x):
+        dentro.setdefault(b, []).append(w[j])
+    return " ".join("[" + "+".join(str(v) for v in pesi) + "]" for _, pesi in sorted(dentro.items()))
+
+
+m51, x51, y51 = modello_bpp(w51, C51, k51)
 z51 = risolvi(m51)
 for nome, e in [("next-fit", next_fit(t51, a51)),
-                ("first-fit", first_fit(t51, a51)),
-                ("best-fit (costo minimo)", best_fit(t51, a51, lambda j, mm, ra: c51[j][mm], "costo"))]:
-    valore = sum(c51[j][mm] for (j, mm) in e.x)
-    sol = {f"x[{j},{mm}]": 1 for (j, mm) in e.x}
+                ("first-fit", first_fit(t51, a51, solo_aperte=True)),
+                ("best-fit (riempimento)",
+                 best_fit(t51, a51, lambda j, b, ra: ra[b] - w51[j], "residuo", solo_aperte=True))]:
+    usati = sorted({b for (_, b) in e.x})
+    sol = {f"x[{j},{b}]": 1 for (j, b) in e.x} | {f"y[{b}]": 1 for b in usati}
     assert ammissibile(m51, sol), nome           # vincoli, bound E interezza
-    confronta(f"5.1 {nome}", "min", valore, z51)
-print("  Traccia del best-fit (il testo che compare nella dispensa):")
-best_fit(t51, a51, lambda j, mm, ra: c51[j][mm], "costo").traccia.stampa()
+    confronta(f"5.1 {nome}", "min", len(usati), z51, riempimenti(e, w51))
+lb51 = -(-sum(w51) // C51)
+print(f"  Bound elementare: il peso totale e' {sum(w51)} e un contenitore ne porta {C51}, "
+      f"quindi servono almeno ceil({sum(w51)}/{C51}) = {lb51} contenitori.")
+print(f"  Il best-fit arriva a {lb51}: il bound e il valore si toccano, e l'ottimo e' dimostrato")
+print("  senza il solver. Il next-fit ne usa due di piu', e nessun bound lo smentisce.")
+assert z51 == lb51
 
 # ---------- 2. LPT: BILANCIAMENTO SU MACCHINE IDENTICHE ----------
 intestazione("5.2  LPT: il makespan su macchine identiche")
@@ -213,6 +231,19 @@ print("  bound migliori di quelli della soluzione che restituisce.")
 intestazione("5.8  Un fallimento dell'euristica costruttiva non dimostra l'inammissibilita'")
 t57 = matrice([3, 3, 2], 2)
 a57 = [5, 3]
+
+
+def modello_assegnamento(t, c, a):
+    n, k = len(t), len(a)
+    m = nuovo_modello("assegnamento")
+    x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
+    m.setObjective(gp.quicksum(c[j][mm] * x[j, mm] for j in R(n) for mm in R(k)), GRB.MINIMIZE)
+    m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="assegna")
+    m.addConstrs((gp.quicksum(t[j][mm] * x[j, mm] for j in R(n)) <= a[mm] for mm in R(k)),
+                 name="disponibilita")
+    return m, x
+
+
 e57 = next_fit(t57, a57)
 e57.traccia.stampa()
 print(f"  next-fit: ok = {e57.ok}")

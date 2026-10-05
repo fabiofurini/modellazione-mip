@@ -34,45 +34,64 @@ soluzione che esiste davvero; quando fallisce, bound primale non ce n'è.
 
 ## Bin packing: le regole di inserimento
 
-Il problema classico è il **bin packing**, il cui modello sta nel capitolo del
-solver: degli oggetti vanno messi in contenitori tutti uguali, di capacità
-limitata, usandone il meno possibile. Qui non lo si risolve: lo si *costruisce*,
-una scelta per volta.
+Il problema classico è il **bin packing**, il cui modello sta nel
+[capitolo del solver](gurobipy-4.md): degli oggetti vanno messi in contenitori
+tutti uguali, di capacità limitata, usandone il meno possibile. Qui non lo si
+risolve: lo si *costruisce*, una scelta per volta.
 
 ```text
-Costruisci(n, k, t, a, gamma):
-  x[j][m] <- 0 per ogni j, m;   ra[m] <- a[m] per ogni m
+Costruisci(n, w, C, gamma):
+  nessun contenitore aperto
   per j = 1..n:
-      # next-fit:  solo la macchina corrente, poi la successiva
-      # first-fit: la prima m con t[j][m] <= ra[m]
-      # best-fit:  fra le m ammissibili, quella di gamma(j,m,ra) minimo
-      scegli m* secondo la regola
-      se nessuna m e' ammissibile: restituisci "nessuna soluzione trovata"
-      x[j][m*] <- 1;  ra[m*] <- ra[m*] - t[j][m*]
-  restituisci x
+      # next-fit:  solo il contenitore corrente, poi se ne apre uno nuovo
+      # first-fit: il primo contenitore aperto in cui l'oggetto ci sta
+      # best-fit:  fra i contenitori in cui ci sta, quello di gamma(j,b,res) minimo
+      scegli b* secondo la regola
+      se nessun contenitore aperto va bene: aprine uno nuovo
+      metti j in b*;  res[b*] <- res[b*] - w[j]
+  restituisci i contenitori usati
 ```
 
-Tutte e tre scandiscono i lavori **nell'ordine dato**: cambiare l'ordine cambia
-il risultato, e questo va detto quando si riporta un valore. I pareggi si
+Tutte e tre scandiscono gli oggetti **nell'ordine dato**: cambiare l'ordine
+cambia il risultato, e questo va detto quando si riporta un valore. I pareggi si
 rompono sull'indice più piccolo, così l'esecuzione è riproducibile.
 
-Su una piccola istanza di assegnamento (un **minimo**):
+**L'istanza.** Sei oggetti di peso $w = (4, 4, 5, 3, 2, 3)$, contenitori di
+capacità $C = 7$: gli stessi contenitori del
+[modello del §3.4](gurobipy-4.md), con due oggetti in più. L'istanza di là serve
+a scrivere il modello e sta piccola apposta — ma proprio per questo le tre
+regole vi rispondono tutte e tre «tre contenitori», e non si distinguono.
 
-| Euristica | $UB$ | $z(\mathit{MILP})$ | gap dell'euristica |
-|---|---:|---:|---:|
-| next-fit | 14 | 11 | $27{,}3\%$ |
-| first-fit | 14 | 11 | $27{,}3\%$ |
-| best-fit sul costo | 11 | 11 | $0{,}0\%$ |
+| Euristica | come riempie | $UB$ | $z(\mathit{MILP})$ | gap dell'euristica |
+|---|---|---:|---:|---:|
+| next-fit | `[4] [4] [5] [3+2] [3]` | 5 | 3 | $66{,}7\%$ |
+| first-fit | `[4+3] [4+2] [5] [3]` | 4 | 3 | $33{,}3\%$ |
+| best-fit sul riempimento | `[4+3] [4+3] [5+2]` | 3 | 3 | $0{,}0\%$ |
 
-Il best-fit sul costo trova l'ottimo; ma nessun bound lo certifica — ci vuole il
-solver, o un bound duale che arrivi a $11$, e lì il duale a mano
-si ferma a $10$.
+**Il bound elementare chiude il discorso senza solver.** Il peso totale è
+$4 + 4 + 5 + 3 + 2 + 3 = 21$ e un contenitore ne porta $7$: servono almeno
+$\lceil 21/7 \rceil = 3$ contenitori. Il best-fit ne usa tre, riempiendoli tutti
+e tre esatti, quindi $\mathit{LB} = \mathit{UB} = 3$ e l'ottimo è **dimostrato**
+— è il sandwich del corso su un'istanza che si chiude a mano.
+
+!!! tip "Dove le tre regole si separano"
+    Il **next-fit** chiude un contenitore appena un oggetto non ci sta, e non
+    torna mai indietro: l'ultimo oggetto, di peso $3$, entrerebbe esatto nel
+    primo contenitore, che ha ancora $3$ di spazio, ma quel contenitore non lo
+    guarda più. Cinque contenitori invece di tre.
+
+    Fra **first-fit** e **best-fit** la differenza sta tutta sull'oggetto di
+    peso $2$. Il first-fit lo mette nel *primo* che lo accoglie, il secondo
+    contenitore, che resta con $1$ di spazio ormai inutile; il best-fit lo mette
+    dove entra *esatto*, il terzo, che aveva $2$. Così il $3$ finale trova
+    ancora posto nel secondo, e i contenitori restano tre.
 
 ## $P||C_{\max}$: la regola del meno carico
 
 Il secondo classico è lo **scheduling su macchine identiche**, in notazione
-standard $P||C_{\max}$: $n$ lavori di durata $t_j$ su $k$ macchine uguali,
-minimizzando l'istante in cui finisce l'ultima. La regola naturale è il **list
+standard $P||C_{\max}$, il cui modello sta anch'esso nel
+[capitolo del solver](gurobipy-4.md): $n$ lavori di durata $t_j$ su $k$ macchine
+uguali, minimizzando l'istante in cui finisce l'ultima. La regola naturale è il **list
 scheduling** — il lavoro corrente va sulla macchina meno carica — e l'ordine in
 cui si guardano i lavori decide il risultato. L'ordine migliore è per durata
 decrescente, e la regola che ne esce si chiama **LPT**.
@@ -159,8 +178,10 @@ sbaglia perché l'oggetto 3 lascia un residuo inutilizzabile.
 ## TSP: il vicino più vicino
 
 Il quarto classico è il **commesso viaggiatore** (*travelling salesman problem*,
-TSP): date $n$ città e le distanze $d_{ij}$ fra ogni coppia, si cerca il giro
-più corto che le visiti tutte una volta sola e torni al punto di partenza. È il
+TSP), il terzo e ultimo modello scritto nel
+[capitolo del solver](gurobipy-4.md): date $n$ città e le distanze $d_{ij}$ fra
+ogni coppia, si cerca il giro più corto che le visiti tutte una volta sola e
+torni al punto di partenza. È il
 problema su cui la costruzione passo per passo si vede meglio, perché la
 soluzione è una sequenza: l'ordine *è* la soluzione.
 
@@ -268,18 +289,20 @@ $9$: per arrivarci serve una mossa di **scambio** fra due macchine.
 
 | Euristica | Verso | valore | $z(\mathit{MILP})$ | gap dell'euristica |
 |---|---|---:|---:|---:|
-| next-fit / first-fit (assegnamento) | min ($UB$) | 14 | 11 | $27{,}3\%$ |
-| best-fit sul costo (assegnamento) | min ($UB$) | 11 | 11 | $0{,}0\%$ |
+| next-fit (bin packing) | min ($UB$) | 5 | 3 | $66{,}7\%$ |
+| first-fit (bin packing) | min ($UB$) | 4 | 3 | $33{,}3\%$ |
+| best-fit sul riempimento (bin packing) | min ($UB$) | 3 | 3 | $0{,}0\%$ |
 | LPT (makespan) | min ($UB$) | 11 | 9 | $22{,}2\%$ |
 | euristica costruttiva di copertura | min ($UB$) | 10 | 10 | $0{,}0\%$ |
 | euristica costruttiva per rapporto (zaino) | max ($LB$) | 16 | 17 | $5{,}9\%$ |
+| nearest neighbour (TSP) | min ($UB$) | 25 | 18 | $38{,}9\%$ |
 | least unit cost (lot sizing) | min ($UB$) | 200 | 170 | $17{,}6\%$ |
 
 ![Il gap delle euristiche](img/cap05_gap.png)
 
 !!! tip "Che cosa si impara da questa tabella"
-    Due euristiche trovano l'ottimo e quattro no, e **prima** di risolvere il
-    MILP non c'è modo di sapere quali. Un gap del $0\%$ e uno del $27\%$ si
+    Due euristiche trovano l'ottimo e sei no, e **prima** di risolvere il
+    MILP non c'è modo di sapere quali. Un gap del $0\%$ e uno del $67\%$ si
     distinguono soltanto *dopo*. È per questo che il corso chiede sempre due
     bound: un'euristica da sola dice quanto costa una soluzione che si può
     realizzare, non quanto si sta perdendo.
@@ -295,7 +318,7 @@ il notebook è
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
-??? example "Mostra lo script completo — `python/cap05_euristiche.py` (243 righe)"
+??? example "Mostra lo script completo — `python/cap05_euristiche.py` (274 righe)"
 
     ```python
     """Capitolo 4 -- Euristiche costruttive sui problemi classici, con traccia e bound.
@@ -331,34 +354,52 @@ il notebook è
 
 
     # ---------- 1. BIN PACKING: NEXT-FIT, FIRST-FIT, BEST-FIT ----------
-    intestazione("5.1  Le tre euristiche di tipo bin packing su lavori e macchine")
-    t51 = [[2, 1, 3], [3, 4, 2], [4, 5, 3]]
-    c51 = [[5, 10, 2], [5, 4, 6], [5, 4, 6]]
-    a51 = [5, 6, 7]
+    intestazione("5.1  Le tre regole di inserimento sul bin packing")
+    # Gli stessi contenitori del modello della sezione 3.4 (capacita' 7) con due
+    # oggetti in piu'. L'istanza di la' serve a scrivere il modello e va tenuta
+    # piccola; qui ne serve una appena piu' grande, perche' su quella le tre regole
+    # rispondono tutte e tre "tre contenitori" e non si distinguono.
+    w51, C51 = [4, 4, 5, 3, 2, 3], 7
+    k51 = len(w51)                      # un contenitore per oggetto: il limite banale
+    t51, a51 = matrice(w51, k51), [C51] * k51     # un oggetto pesa uguale in ogni contenitore
 
 
-    def modello_assegnamento(t, c, a):
-        n, k = len(t), len(a)
-        m = nuovo_modello("assegnamento")
+    def modello_bpp(w, c, k):
+        n = len(w)
+        m = nuovo_modello("bin_packing")
         x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
-        m.setObjective(gp.quicksum(c[j][mm] * x[j, mm] for j in R(n) for mm in R(k)), GRB.MINIMIZE)
-        m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="assegna")
-        m.addConstrs((gp.quicksum(t[j][mm] * x[j, mm] for j in R(n)) <= a[mm] for mm in R(k)),
-                     name="disponibilita")
-        return m, x
+        y = m.addVars(k, vtype=GRB.BINARY, name="y")
+        m.setObjective(y.sum(), GRB.MINIMIZE)
+        m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="oggetto")
+        m.addConstrs((gp.quicksum(w[j] * x[j, b] for j in R(n)) <= c * y[b] for b in R(k)),
+                     name="capacita")
+        return m, x, y
 
 
-    m51, x51 = modello_assegnamento(t51, c51, a51)
+    def riempimenti(e, w):
+        """I contenitori usati, con dentro i pesi: [4+3] [4+3] [5+2]."""
+        dentro = {}
+        for (j, b) in sorted(e.x):
+            dentro.setdefault(b, []).append(w[j])
+        return " ".join("[" + "+".join(str(v) for v in pesi) + "]" for _, pesi in sorted(dentro.items()))
+
+
+    m51, x51, y51 = modello_bpp(w51, C51, k51)
     z51 = risolvi(m51)
     for nome, e in [("next-fit", next_fit(t51, a51)),
-                    ("first-fit", first_fit(t51, a51)),
-                    ("best-fit (costo minimo)", best_fit(t51, a51, lambda j, mm, ra: c51[j][mm], "costo"))]:
-        valore = sum(c51[j][mm] for (j, mm) in e.x)
-        sol = {f"x[{j},{mm}]": 1 for (j, mm) in e.x}
+                    ("first-fit", first_fit(t51, a51, solo_aperte=True)),
+                    ("best-fit (riempimento)",
+                     best_fit(t51, a51, lambda j, b, ra: ra[b] - w51[j], "residuo", solo_aperte=True))]:
+        usati = sorted({b for (_, b) in e.x})
+        sol = {f"x[{j},{b}]": 1 for (j, b) in e.x} | {f"y[{b}]": 1 for b in usati}
         assert ammissibile(m51, sol), nome           # vincoli, bound E interezza
-        confronta(f"5.1 {nome}", "min", valore, z51)
-    print("  Traccia del best-fit (il testo che compare nella dispensa):")
-    best_fit(t51, a51, lambda j, mm, ra: c51[j][mm], "costo").traccia.stampa()
+        confronta(f"5.1 {nome}", "min", len(usati), z51, riempimenti(e, w51))
+    lb51 = -(-sum(w51) // C51)
+    print(f"  Bound elementare: il peso totale e' {sum(w51)} e un contenitore ne porta {C51}, "
+          f"quindi servono almeno ceil({sum(w51)}/{C51}) = {lb51} contenitori.")
+    print(f"  Il best-fit arriva a {lb51}: il bound e il valore si toccano, e l'ottimo e' dimostrato")
+    print("  senza il solver. Il next-fit ne usa due di piu', e nessun bound lo smentisce.")
+    assert z51 == lb51
 
     # ---------- 2. LPT: BILANCIAMENTO SU MACCHINE IDENTICHE ----------
     intestazione("5.2  LPT: il makespan su macchine identiche")
@@ -513,6 +554,19 @@ il notebook è
     intestazione("5.8  Un fallimento dell'euristica costruttiva non dimostra l'inammissibilita'")
     t57 = matrice([3, 3, 2], 2)
     a57 = [5, 3]
+
+
+    def modello_assegnamento(t, c, a):
+        n, k = len(t), len(a)
+        m = nuovo_modello("assegnamento")
+        x = m.addVars(n, k, vtype=GRB.BINARY, name="x")
+        m.setObjective(gp.quicksum(c[j][mm] * x[j, mm] for j in R(n) for mm in R(k)), GRB.MINIMIZE)
+        m.addConstrs((x.sum(j, "*") == 1 for j in R(n)), name="assegna")
+        m.addConstrs((gp.quicksum(t[j][mm] * x[j, mm] for j in R(n)) <= a[mm] for mm in R(k)),
+                     name="disponibilita")
+        return m, x
+
+
     e57 = next_fit(t57, a57)
     e57.traccia.stampa()
     print(f"  next-fit: ok = {e57.ok}")
@@ -541,6 +595,373 @@ il notebook è
     ax.set_xlim(0, max(gap) * 1.25 + 1)
     salva_figura(fig, "cap05_gap")
     print("Fine.")
+    ```
+
+??? example "Mostra lo script completo — `python/euristiche.py` (362 righe)"
+
+    ```python
+    """Euristiche costruttive del corso: trascrizione riga per riga dei pseudocodici.
+
+    Le tre famiglie ispirate al bin packing — next-fit, first-fit, best-fit — per i
+    problemi «lavori su macchine con disponibilità»: ogni funzione restituisce un
+    `Esito` con la soluzione, le macchine usate e la traccia dell'esecuzione
+    passo-passo (lo stesso testo che compare nella dispensa).
+
+    Convenzioni: indici 0-based nel codice, 1-based nei messaggi; `t[j][m]` è il
+    tempo del lavoro j sulla macchina m (per tempi indipendenti dalla macchina si
+    passa la matrice con righe costanti), `a[m]` la disponibilità della macchina m.
+    """
+    from dataclasses import dataclass, field
+
+    INF = float("inf")
+
+
+    class Traccia(list):
+        """Elenco dei passi dell'euristica, uno per lavoro."""
+
+        def passo(self, testo: str) -> None:
+            self.append(testo)
+
+        def stampa(self) -> None:
+            for i, r in enumerate(self, 1):
+                print(f"  Passo {i}. {r}")
+
+
+    @dataclass
+    class Esito:
+        x: dict                      # {(j, m): 1} lavoro j assegnato alla macchina m
+        y: list                      # y[m] = 1 se la macchina m è usata
+        traccia: Traccia = field(default_factory=Traccia)
+        ok: bool = True              # False = "nessuna soluzione ammissibile trovata"
+        saltati: list = field(default_factory=list)   # lavori non eseguiti (se ammesso)
+        # campi usati dalle euristiche del capitolo 5 (lasciati a None quando non servono)
+        carichi: list = None         # carico finale di ogni macchina (LPT)
+        makespan: float = None       # massimo dei carichi (LPT)
+        valore: float = None         # valore della soluzione costruita
+        residuo: float = None        # capacita' residua (zaino)
+        lanci: dict = None           # {periodo: quantita' prodotta} (lot sizing)
+        tour: list = None            # sequenza dei nodi visitati (TSP)
+
+        def assegnazione(self, j: int):
+            """Macchina (0-based) a cui è assegnato il lavoro j, oppure None."""
+            for (jj, m), v in self.x.items():
+                if jj == j and v == 1:
+                    return m
+            return None
+
+
+    def _ra_testo(ra) -> str:
+        return ", ".join(f"ra[{m + 1}] = {r:g}" for m, r in enumerate(ra))
+
+
+    def next_fit(t, a, salta: bool = False) -> Esito:
+        """Next-fit: si carica una macchina alla volta.
+
+        Il lavoro j va sulla macchina corrente se ci sta; altrimenti si passa alla
+        macchina successiva (se il lavoro ci sta) oppure l'algoritmo fallisce — o,
+        con `salta=True`, il lavoro viene saltato (problemi di selezione).
+        """
+        n, k = len(t), len(a)
+        e = Esito(x={}, y=[0] * k)
+        cm, ra = 0, a[0]
+        for j in range(n):
+            if t[j][cm] > ra:
+                if cm < k - 1 and t[j][cm + 1] <= a[cm + 1]:
+                    e.traccia.passo(
+                        f"Lavoro {j + 1}: t[{j + 1}][{cm + 1}] = {t[j][cm]:g} > ra = {ra:g}, la macchina "
+                        f"{cm + 1} non basta; si passa alla macchina {cm + 2} (ra = {a[cm + 1]:g}), "
+                        f"dove t[{j + 1}][{cm + 2}] = {t[j][cm + 1]:g} ci sta: x[{j + 1}][{cm + 2}] = 1, "
+                        f"ra = {a[cm + 1]:g} - {t[j][cm + 1]:g} = {a[cm + 1] - t[j][cm + 1]:g}.")
+                    cm, ra = cm + 1, a[cm + 1]
+                elif salta:
+                    e.traccia.passo(
+                        f"Lavoro {j + 1}: t[{j + 1}][{cm + 1}] = {t[j][cm]:g} > ra = {ra:g} e non c'è "
+                        f"un'altra macchina su cui passare: il lavoro viene saltato.")
+                    e.saltati.append(j)
+                    continue
+                else:
+                    e.traccia.passo(
+                        f"Lavoro {j + 1}: t[{j + 1}][{cm + 1}] = {t[j][cm]:g} > ra = {ra:g} e non c'è "
+                        f"un'altra macchina su cui passare: nessuna soluzione ammissibile trovata.")
+                    e.ok = False
+                    return e
+            else:
+                e.traccia.passo(
+                    f"Lavoro {j + 1}: macchina corrente {cm + 1}, ra = {ra:g}; t[{j + 1}][{cm + 1}] = "
+                    f"{t[j][cm]:g} <= {ra:g}, quindi x[{j + 1}][{cm + 1}] = 1 e ra = {ra:g} - {t[j][cm]:g} "
+                    f"= {ra - t[j][cm]:g}.")
+            e.x[(j, cm)] = 1
+            e.y[cm] = 1
+            ra -= t[j][cm]
+        return e
+
+
+    def first_fit(t, a, salta: bool = False, solo_aperte: bool = False) -> Esito:
+        """First-fit: il lavoro va sulla prima macchina con disponibilità residua sufficiente.
+
+        Con `solo_aperte=True` si scandiscono prima le macchine già aperte (in ordine di
+        indice) e, se nessuna basta, si apre la successiva.
+        """
+        n, k = len(t), len(a)
+        e = Esito(x={}, y=[0] * k)
+        ra = list(a)
+        aperte = 0
+        for j in range(n):
+            sm = None
+            limite = aperte if solo_aperte else k
+            for m in range(limite):
+                if t[j][m] <= ra[m]:
+                    sm = m
+                    break
+            if sm is None and solo_aperte and aperte < k and t[j][aperte] <= a[aperte]:
+                sm = aperte
+                aperte += 1
+                apre = f" (si apre la macchina {sm + 1})"
+            else:
+                apre = ""
+            if sm is None:
+                if salta:
+                    e.traccia.passo(f"Lavoro {j + 1}: nessuna macchina ha disponibilità sufficiente "
+                                    f"({_ra_testo(ra)}); il lavoro viene saltato.")
+                    e.saltati.append(j)
+                    continue
+                e.traccia.passo(f"Lavoro {j + 1}: nessuna macchina ha disponibilità sufficiente "
+                                f"({_ra_testo(ra)}): nessuna soluzione ammissibile trovata.")
+                e.ok = False
+                return e
+            scartate = [f"t[{j + 1}][{m + 1}] = {t[j][m]:g} > ra[{m + 1}] = {ra[m]:g}"
+                        for m in range(sm) if t[j][m] > ra[m]]
+            motivo = ("; ".join(scartate) + "; " if scartate else "")
+            e.traccia.passo(
+                f"Lavoro {j + 1}: disponibilità residue {_ra_testo(ra)}. {motivo}la macchina {sm + 1} "
+                f"è la prima con disponibilità sufficiente (t[{j + 1}][{sm + 1}] = {t[j][sm]:g} <= "
+                f"{ra[sm]:g}){apre}: x[{j + 1}][{sm + 1}] = 1, ra[{sm + 1}] = {ra[sm]:g} - {t[j][sm]:g} "
+                f"= {ra[sm] - t[j][sm]:g}.")
+            e.x[(j, sm)] = 1
+            e.y[sm] = 1
+            ra[sm] -= t[j][sm]
+            if not solo_aperte:
+                aperte = max(aperte, sm + 1)
+        return e
+
+
+    def best_fit(t, a, criterio, nome_criterio: str, salta: bool = False,
+                 solo_aperte: bool = False) -> Esito:
+        """Best-fit: fra le macchine con disponibilità sufficiente si sceglie quella che
+        minimizza `criterio(j, m, ra)`.
+
+        Criteri usati nel corso: il costo c[j][m] (costo minimo), il tempo t[j][m]
+        (tempo minimo), la disponibilità residua ra[m] (macchina più piena) e la
+        disponibilità dopo l'assegnazione ra[m] - t[j][m] (incastro più stretto).
+        """
+        n, k = len(t), len(a)
+        e = Esito(x={}, y=[0] * k)
+        ra = list(a)
+        aperte = 0
+        for j in range(n):
+            limite = aperte if solo_aperte else k
+            candidate = [(criterio(j, m, ra), m) for m in range(limite) if t[j][m] <= ra[m]]
+            apre = ""
+            if candidate:
+                val, sm = min(candidate)
+                dettagli = "; ".join(f"macchina {m + 1}: {nome_criterio} = {v:g}" for v, m in
+                                     sorted(candidate, key=lambda c: c[1]))
+                motivo = f"macchine ammissibili — {dettagli}; il minimo è la macchina {sm + 1}"
+            elif solo_aperte and aperte < k and t[j][aperte] <= a[aperte]:
+                sm = aperte
+                aperte += 1
+                motivo = f"nessuna macchina aperta basta, si apre la macchina {sm + 1}"
+            else:
+                if salta:
+                    e.traccia.passo(f"Lavoro {j + 1}: nessuna macchina ha disponibilità sufficiente "
+                                    f"({_ra_testo(ra)}); il lavoro viene saltato.")
+                    e.saltati.append(j)
+                    continue
+                e.traccia.passo(f"Lavoro {j + 1}: nessuna macchina ha disponibilità sufficiente "
+                                f"({_ra_testo(ra)}): nessuna soluzione ammissibile trovata.")
+                e.ok = False
+                return e
+            e.traccia.passo(
+                f"Lavoro {j + 1}: disponibilità residue {_ra_testo(ra)}; {motivo}: "
+                f"x[{j + 1}][{sm + 1}] = 1, ra[{sm + 1}] = {ra[sm]:g} - {t[j][sm]:g} = {ra[sm] - t[j][sm]:g}.")
+            e.x[(j, sm)] = 1
+            e.y[sm] = 1
+            ra[sm] -= t[j][sm]
+            if not solo_aperte:
+                aperte = max(aperte, sm + 1)
+        return e
+
+
+    def matrice(vettore, k: int):
+        """Tempi indipendenti dalla macchina: il vettore t_j diventa una matrice n x k."""
+        return [[v] * k for v in vettore]
+
+
+    # ============================================================
+    # Estensioni del capitolo 5: le famiglie richieste dalle sei famiglie di problemi.
+    # Tutte restituiscono un Esito (o una struttura analoga) con la traccia dei passi.
+    # ============================================================
+
+    def lpt(t, k: int) -> Esito:
+        """LPT (longest processing time): bilanciamento su k macchine identiche.
+
+        I lavori si ordinano per tempo decrescente e ciascuno va sulla macchina
+        con carico corrente minimo. E' l'euristica classica per il makespan; qui
+        la macchina non ha capacita', quindi non fallisce mai.
+        """
+        n = len(t)
+        e = Esito(x={}, y=[0] * k)
+        carico = [0.0] * k
+        for j in sorted(range(n), key=lambda j: -t[j]):
+            m = min(range(k), key=lambda m: (carico[m], m))
+            e.traccia.passo(
+                f"Lavoro {j + 1} (tempo {t[j]:g}, il piu' lungo fra quelli rimasti): carichi "
+                + ", ".join(f"L[{i + 1}] = {carico[i]:g}" for i in range(k))
+                + f"; il minimo e' la macchina {m + 1}, quindi x[{j + 1}][{m + 1}] = 1 e "
+                  f"L[{m + 1}] = {carico[m]:g} + {t[j]:g} = {carico[m] + t[j]:g}.")
+            e.x[(j, m)] = 1
+            e.y[m] = 1
+            carico[m] += t[j]
+        e.carichi = carico
+        e.makespan = max(carico)
+        return e
+
+
+    def euristica_copertura(costo, insiemi) -> Esito:
+        """Euristica costruttiva di copertura: a ogni passo l'elemento col miglior costo per zona nuova.
+
+        `costo[j]` e' il costo dell'elemento j, `insiemi[i]` la lista degli elementi
+        che coprono la zona i. Restituisce l'insieme scelto e la traccia.
+        """
+        n, m = len(costo), len(insiemi)
+        e = Esito(x={}, y=[0] * n)
+        scoperte = set(range(m))
+        passo = 0
+        while scoperte:
+            passo += 1
+            candidati = []
+            for j in range(n):
+                nuove = {i for i in scoperte if j in insiemi[i]}
+                if nuove and not e.y[j]:
+                    candidati.append((costo[j] / len(nuove), j, len(nuove)))
+            if not candidati:
+                e.traccia.passo("Nessun elemento copre zone ancora scoperte: "
+                                "nessuna soluzione ammissibile trovata.")
+                e.ok = False
+                return e
+            rapporto, j, quante = min(candidati)
+            dettagli = "; ".join(f"elemento {jj + 1}: {costo[jj]:g}/{q} = {r:g}"
+                                 for r, jj, q in sorted(candidati, key=lambda c: c[1]))
+            e.traccia.passo(
+                f"Zone ancora scoperte {sorted(i + 1 for i in scoperte)}; rapporti "
+                f"costo/zone nuove --- {dettagli}; il minimo e' l'elemento {j + 1}: "
+                f"si sceglie, e copre {quante} zona nuova." if quante == 1 else
+                f"Zone ancora scoperte {sorted(i + 1 for i in scoperte)}; rapporti "
+                f"costo/zone nuove --- {dettagli}; il minimo e' l'elemento {j + 1}: "
+                f"si sceglie, e copre {quante} zone nuove.")
+            e.y[j] = 1
+            e.x[(j, 0)] = 1
+            scoperte -= {i for i in scoperte if j in insiemi[i]}
+        e.valore = sum(costo[j] for j in range(n) if e.y[j])
+        return e
+
+
+    def euristica_zaino(p, w, C) -> Esito:
+        """Euristica costruttiva per rapporto valore/peso: da' un LOWER bound in un problema di massimo."""
+        n = len(p)
+        e = Esito(x={}, y=[0] * n)
+        residuo = C
+        for j in sorted(range(n), key=lambda j: (-p[j] / w[j], j)):
+            if w[j] <= residuo:
+                e.traccia.passo(f"Oggetto {j + 1}: rapporto p/w = {p[j] / w[j]:g}, peso {w[j]:g} "
+                                f"<= capacita' residua {residuo:g}: si prende, residuo "
+                                f"{residuo:g} - {w[j]:g} = {residuo - w[j]:g}.")
+                e.x[(j, 0)] = 1
+                e.y[j] = 1
+                residuo -= w[j]
+            else:
+                e.traccia.passo(f"Oggetto {j + 1}: peso {w[j]:g} > capacita' residua "
+                                f"{residuo:g}: si scarta.")
+        e.valore = sum(p[j] for j in range(n) if e.y[j])
+        e.residuo = residuo
+        return e
+
+
+    def euristica_lotti(domanda, setup, magazzino) -> Esito:
+        """Copertura di periodi a costo unitario minimo (least unit cost) per il lot sizing.
+
+        A ogni lancio di produzione si copre il numero di periodi consecutivi che
+        minimizza il costo medio per unita' prodotta; poi si riparte dal primo
+        periodo scoperto. NON e' l'algoritmo di Wagner-Whitin: quello e' un metodo
+        esatto di programmazione dinamica per il modello di lot sizing senza
+        capacita', e su questi dati puo' dare un valore migliore. Questa e' una
+        euristica, e il suo valore e' solo un bound.
+        """
+        T = len(domanda)
+        e = Esito(x={}, y=[0] * T)
+        lanci = {}
+        t = 0
+        while t < T:
+            while t < T and domanda[t] == 0:
+                t += 1
+            if t >= T:
+                break
+            migliore, quanti = None, 1
+            for k in range(1, T - t + 1):
+                quantita = sum(domanda[t:t + k])
+                if quantita == 0:
+                    continue
+                costo = setup + sum(magazzino * (s - t) * domanda[s] for s in range(t, t + k))
+                unitario = costo / quantita
+                if migliore is None or unitario < migliore - 1e-12:
+                    migliore, quanti = unitario, k
+            quantita = sum(domanda[t:t + quanti])
+            e.traccia.passo(
+                f"Periodo {t + 1}: si lancia una produzione che copre "
+                f"{'il solo periodo ' + str(t + 1) if quanti == 1 else str(quanti) + ' periodi (' + str(t + 1) + '-' + str(t + quanti) + ')'}"
+                f", quantita' {quantita:g}, costo unitario {migliore:.4g} "
+                f"(il minimo fra le coperture possibili).")
+            lanci[t] = quantita
+            e.y[t] = 1
+            t += quanti
+        e.lanci = lanci
+        e.valore = sum(setup for t in lanci) + sum(
+            magazzino * max(0, sum(lanci[s] for s in lanci if s <= t) - sum(domanda[:t + 1]))
+            for t in range(T))
+        return e
+
+
+    def vicino_piu_vicino(d, partenza: int = 0) -> Esito:
+        """Nearest neighbour per il TSP: dal nodo corrente si va sempre al piu' vicino
+        fra quelli non ancora visitati, e alla fine si torna alla partenza.
+
+        `d` e' la matrice delle distanze, simmetrica, con zeri sulla diagonale.
+        E' un'euristica costruttiva: costruisce una sola soluzione, un nodo per
+        volta, senza mai tornare indietro. Il tour che produce dipende dal nodo di
+        partenza.
+        """
+        n = len(d)
+        e = Esito(x={}, y=[0] * n)
+        visitati = [partenza]
+        e.y[partenza] = 1
+        costo = 0
+        while len(visitati) < n:
+            corrente = visitati[-1]
+            candidati = [j for j in range(n) if j not in visitati]
+            prossimo = min(candidati, key=lambda j: (d[corrente][j], j))
+            altri = ", ".join(f"{j + 1}: {d[corrente][j]:g}" for j in sorted(candidati))
+            e.traccia.passo(f"Dal nodo {corrente + 1} le distanze non visitate sono {altri}; "
+                            f"la minima e' {d[corrente][prossimo]:g}, si va al nodo {prossimo + 1}.")
+            costo += d[corrente][prossimo]
+            visitati.append(prossimo)
+            e.y[prossimo] = 1
+        ritorno = d[visitati[-1]][partenza]
+        e.traccia.passo(f"Visitati tutti i nodi: si torna dal {visitati[-1] + 1} al "
+                        f"{partenza + 1}, che costa {ritorno:g}.")
+        costo += ritorno
+        e.tour = visitati + [partenza]
+        e.valore = costo
+        return e
     ```
 
 <!-- script-incorporato: fine -->

@@ -62,14 +62,14 @@ assert uguale(pr.loc[9].z_milp, 17) and uguale(pr.loc[10].z_milp, 17)   # il sal
 print("cap. 4: copertura, zaino, tagli di copertura, nodi del solver e prezzi marginali")
 
 eur = pd.read_csv(DATI / "cap05_euristiche.csv").set_index("euristica")
-attese5 = {"5.1 next-fit": (14, 11), "5.1 first-fit": (14, 11),
-           "5.1 best-fit (costo minimo)": (11, 11), "5.2 LPT (makespan)": (11, 9),
+attese5 = {"5.1 next-fit": (5, 3), "5.1 first-fit": (4, 3),
+           "5.1 best-fit (riempimento)": (3, 3), "5.2 LPT (makespan)": (11, 9),
            "5.3 euristica costruttiva di copertura": (10, 10), "5.4 euristica costruttiva per rapporto p/w": (16, 17),
-           "5.5 lot sizing (least unit cost)": (200, 170)}
+           "5.5 nearest neighbour (TSP)": (25, 18), "5.5 lot sizing (least unit cost)": (200, 170)}
 for k, (v, z) in attese5.items():
     assert uguale(eur.loc[k].valore_euristica, v), (k, eur.loc[k].valore_euristica, v)
     assert uguale(eur.loc[k].z_milp, z), (k, eur.loc[k].z_milp, z)
-print("cap. 5: le sei euristiche — valori e gap coincidono con i testi")
+print("cap. 5: le otto euristiche — valori e gap coincidono con i testi")
 
 st = pd.read_csv(DATI / "cap06_stati.csv").set_index("caso")
 assert int(st.loc["ottimo"].status) == 2 and int(st.loc["inammissibile"].status) == 3
