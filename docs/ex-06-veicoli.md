@@ -1,5 +1,7 @@
 # EX 6 — Veicoli con quantità minima
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-2.pdf)
+
 **Classe:** MILP · **Legami:** [lotto minimo](legami-03.md), [attivazione](legami-01.md) · **Script:** `python/ex06_veicoli.py`<br><br>
 **Difficoltà:** ★★☆☆☆ · **Tempo:** 30–45 min
 { .scheda }

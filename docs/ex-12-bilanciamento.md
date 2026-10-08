@@ -1,5 +1,7 @@
 # EX 12 — Bilanciamento fra due operai
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-3.pdf)
+
 **Classe:** MILP · **Legami:** [min-max](legami-06.md), [valore assoluto](legami-07.md) · **Script:** `python/ex12_bilanciamento.py`<br><br>
 **Difficoltà:** ★★★☆☆ · **Tempo:** 30–45 min
 { .scheda }

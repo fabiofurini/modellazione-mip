@@ -1,5 +1,7 @@
 # EX 4 — Hub-and-spoke
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-1.pdf)
+
 **Classe:** BIP · **Legami:** copertura · **Script:** `python/ex04_hub.py`<br><br>
 **Difficoltà:** ★☆☆☆☆ · **Tempo:** 20–30 min
 { .scheda }

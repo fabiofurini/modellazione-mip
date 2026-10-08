@@ -1,5 +1,7 @@
 # EX 1 — Il furgone da otto posti
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-1.pdf)
+
 **Classe:** BIP · **Legami:** [se-allora](legami-09.md), capacità · **Script:** `python/ex01_furgone.py`<br><br>
 **Difficoltà:** ★☆☆☆☆ · **Tempo:** 30–45 min
 { .scheda }

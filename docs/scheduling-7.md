@@ -1,5 +1,7 @@
 # Ritardo totale su una macchina: sequenziamento con big-M
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-09-scheduling-2.pdf)
+
 **Classe:** MILP · **Legami:** big-M e disgiunzioni, variabile di massimo · **Script:** `python/fam07_7_ritardo.py`<br>
 **Difficoltà:** ★★★★★ · **Tempo:** 45–60 min
 { .scheda }

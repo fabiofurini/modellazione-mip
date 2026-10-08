@@ -1,5 +1,7 @@
 # 6.1 Attivazione: forma aggregata e forma disaggregata
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-1-modellazione.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-06-legami.pdf)
+
 **Tecnica:** binarie con binarie · **Script:** `python/cap03_legami.py` · [Tutte le tecniche](legami.md)
 
 ## Il legame in parole

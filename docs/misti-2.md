@@ -1,5 +1,7 @@
 # Asta combinatoria
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-12-problemi-misti-1.pdf)
+
 **Classe:** BIP · **Legami:** set packing per righe · **Script:** `python/fam10_2_asta.py`<br>
 **Difficoltà:** ★☆☆☆☆ · **Tempo:** 20–30 min
 { .scheda }

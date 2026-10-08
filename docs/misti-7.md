@@ -1,5 +1,7 @@
 # Filiali fra due società
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-12-problemi-misti-3.pdf)
+
 **Classe:** BIP · **Legami:** valore assoluto, min-max · **Script:** `python/fam10_7_antitrust.py`<br>
 **Difficoltà:** ★★★☆☆ · **Tempo:** 45–60 min
 { .scheda }

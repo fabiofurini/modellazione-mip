@@ -1,5 +1,7 @@
 # Brani fra CD
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-12-problemi-misti-3.pdf)
+
 **Classe:** MILP · **Legami:** variabile di massimo e di minimo · **Script:** `python/fam10_8_cd.py`<br>
 **Difficoltà:** ★★★☆☆ · **Tempo:** 45–60 min
 { .scheda }

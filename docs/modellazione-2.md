@@ -1,5 +1,7 @@
 # 2. Rilassamenti, dualità e bound
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-1-modellazione.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-02-bound-duali.pdf)
+
 **Classe:** LP · MILP · **Script:** `python/cap04_bound.py`
 { .scheda }
 

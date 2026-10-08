@@ -1,5 +1,7 @@
 # Selezione di lavori con ricavo e macchine a costo fisso
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-09-scheduling-1.pdf)
+
 **Classe:** BIP · **Legami:** attivazione (aggregata), problema di massimo · **Script:** `python/fam07_3_selezione.py`<br>
 **Difficoltà:** ★★☆☆☆ · **Tempo:** 30–45 min
 { .scheda }

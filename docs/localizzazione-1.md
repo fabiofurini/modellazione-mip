@@ -1,5 +1,7 @@
 # Localizzazione capacitata
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-10-localizzazione.pdf)
+
 **Classe:** MILP · **Legami:** attivazione aggregata (anche vincolo di capacità) · **Script:** `python/fam08_1_capacitata.py`<br><br>
 **Difficoltà:** ★★★☆☆ · **Tempo:** 30–45 min
 { .scheda }

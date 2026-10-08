@@ -1,5 +1,7 @@
 # EX 5 — Fondi acquistabili a lotti
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-1.pdf)
+
 **Classe:** ILP · **Legami:** [conteggi interi](legami-04.md), vincolo di proporzione · **Script:** `python/ex05_fondi.py`<br><br>
 **Difficoltà:** ★☆☆☆☆ · **Tempo:** 30–45 min
 { .scheda }

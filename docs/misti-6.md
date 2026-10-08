@@ -1,5 +1,7 @@
 # Bambini fra campi estivi
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-12-problemi-misti-2.pdf)
+
 **Classe:** ILP · **Legami:** conteggi interi, vincoli di composizione · **Script:** `python/fam10_6_campi.py`<br>
 **Difficoltà:** ★★★☆☆ · **Tempo:** 30–45 min
 { .scheda }

@@ -1,5 +1,7 @@
 # 6. Legami fra variabili
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-1-modellazione.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-06-legami.pdf)
+
 **Classe:** tecniche di modellazione · **Script:** `python/cap03_legami.py`
 { .scheda }
 

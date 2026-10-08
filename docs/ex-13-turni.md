@@ -1,5 +1,7 @@
 # EX 13 — I turni del pronto soccorso
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-3.pdf)
+
 **Classe:** ILP · **Legami:** set covering, [conteggi interi](legami-04.md) · **Script:** `python/ex13_turni.py`<br><br>
 **Difficoltà:** ★★★☆☆ · **Tempo:** 30–45 min
 { .scheda }

@@ -1,5 +1,7 @@
 # p-mediana: al più $k$ sedi
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-10-localizzazione.pdf)
+
 **Classe:** BIP · **Legami:** attivazione disaggregata · **Script:** `python/fam08_2_pmediana.py`<br><br>
 **Difficoltà:** ★★☆☆☆ · **Tempo:** 30–45 min
 { .scheda }

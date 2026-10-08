@@ -1,5 +1,7 @@
 # Alberi di Natale e scatole di luci
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-12-problemi-misti-2.pdf)
+
 **Classe:** MILP · **Legami:** disponibilità fra due piani, conteggio con indicatore · **Script:** `python/fam10_4_luci.py`<br>
 **Difficoltà:** ★★★★☆ · **Tempo:** 45–60 min
 { .scheda }

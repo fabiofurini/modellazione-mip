@@ -1,5 +1,7 @@
 # Produzione e manodopera: due formulazioni equivalenti
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-11-produzione.pdf)
+
 **Classe:** MILP · **Legami:** conteggi interi, bilancio dell'organico · **Script:** `python/fam09_2_manodopera.py`<br>
 **Difficoltà:** ★★★★★ · **Tempo:** 45–60 min
 { .scheda }

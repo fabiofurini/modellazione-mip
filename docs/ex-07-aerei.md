@@ -1,5 +1,7 @@
 # EX 7 — Aerei su commessa con costo fisso
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-2.pdf)
+
 **Classe:** MILP · **Legami:** [costo fisso](legami-02.md), [attivazione](legami-01.md) · **Script:** `python/ex07_aerei.py`<br><br>
 **Difficoltà:** ★★☆☆☆ · **Tempo:** 30–45 min
 { .scheda }

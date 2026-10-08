@@ -1,5 +1,7 @@
 # Spedizioni in scatole
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-12-problemi-misti-2.pdf)
+
 **Classe:** MILP · **Legami:** capacità con arrotondamento per eccesso · **Script:** `python/fam10_5_spedizioni.py`<br>
 **Difficoltà:** ★★★★☆ · **Tempo:** 45–60 min
 { .scheda }

@@ -1,5 +1,7 @@
 # Classi con premio di completamento e riduzione «se e solo se»
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-09-scheduling-2.pdf)
+
 **Classe:** BIP · **Legami:** se e solo se (due), CNF · **Script:** `python/fam07_6_classipremio.py`<br>
 **Difficoltà:** ★★★★☆ · **Tempo:** 45–60 min
 { .scheda }

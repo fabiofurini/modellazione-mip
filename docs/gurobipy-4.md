@@ -1,5 +1,7 @@
 # 3.4 Tre modelli classici
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-1-modellazione.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-03-gurobi.pdf)
+
 **Classe:** implementazione · **Script:** `python/cap06_bpp.py`, `python/cap06_cmax.py`, `python/cap06_tsp.py`
 { .scheda }
 

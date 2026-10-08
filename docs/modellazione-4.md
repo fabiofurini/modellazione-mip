@@ -1,5 +1,7 @@
 # 4. Euristiche costruttive
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-1-modellazione.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-04-euristiche.pdf)
+
 **Classe:** algoritmi · **Script:** `python/cap05_euristiche.py`, `python/euristiche.py`
 { .scheda }
 

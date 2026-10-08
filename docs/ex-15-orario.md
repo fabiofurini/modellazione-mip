@@ -1,5 +1,7 @@
 # EX 15 — L'orario della scuola di musica
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-3.pdf)
+
 **Classe:** BIP · **Legami:** [se e solo se](legami-10.md), conteggi · **Script:** `python/ex15_orario.py`<br><br>
 **Difficoltà:** ★★★★☆ · **Tempo:** 45–60 min
 { .scheda }

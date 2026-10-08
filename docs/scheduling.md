@@ -1,5 +1,7 @@
 # Assegnamento e scheduling
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-09-scheduling-1.pdf)
+
 **Classe:** BIP / MILP · **Script:** uno script e un notebook per problema
 (`python/fam07_1_assegnamento.py` … `fam07_7_ritardo.py`).
 { .scheda }

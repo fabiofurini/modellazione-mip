@@ -1,5 +1,7 @@
 # Lotti con costo fisso di lancio
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-11-produzione.pdf)
+
 **Classe:** MILP · **Legami:** costo fisso (big-M letto dai dati) · **Script:** `python/fam09_1_lotti.py`<br>
 **Difficoltà:** ★★★★☆ · **Tempo:** 45–60 min
 { .scheda }

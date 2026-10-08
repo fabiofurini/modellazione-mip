@@ -1,5 +1,7 @@
 # Dieta con conteggio dei cibi e lotto minimo
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-12-problemi-misti-1.pdf)
+
 **Classe:** MILP · **Legami:** lotto minimo (semicontinua), contare i tipi · **Script:** `python/fam10_3_dieta.py`<br>
 **Difficoltà:** ★★★☆☆ · **Tempo:** 30–45 min
 { .scheda }

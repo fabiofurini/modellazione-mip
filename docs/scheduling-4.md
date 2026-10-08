@@ -1,5 +1,7 @@
 # Lavori in parallelo: il tempo di lavorazione come massimo
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-09-scheduling-1.pdf)
+
 **Classe:** MILP · **Legami:** variabile di massimo · **Script:** `python/fam07_4_parallelo.py`<br>
 **Difficoltà:** ★★★☆☆ · **Tempo:** 30–45 min
 { .scheda }

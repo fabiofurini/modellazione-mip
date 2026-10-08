@@ -1,5 +1,7 @@
 # EX 11 — Scarpe con soglia minima di produzione
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-3.pdf)
+
 **Classe:** MILP · **Legami:** [lotto minimo](legami-03.md), [attivazione](legami-01.md) · **Script:** `python/ex11_scarpe_soglia.py`<br><br>
 **Difficoltà:** ★★☆☆☆ · **Tempo:** 30–45 min
 { .scheda }

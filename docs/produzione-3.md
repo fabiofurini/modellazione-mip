@@ -1,5 +1,7 @@
 # Veicoli: lotto minimo e premio per la varietà
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-11-produzione.pdf)
+
 **Classe:** MILP · **Legami:** lotto minimo (semi-intera), contare i tipi, se e solo se · **Script:** `python/fam09_3_veicoli.py`<br>
 **Difficoltà:** ★★★★☆ · **Tempo:** 45–60 min
 { .scheda }

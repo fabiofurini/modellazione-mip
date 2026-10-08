@@ -1,5 +1,7 @@
 # EX 10 — Utensili di una macchina CNC
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-2.pdf)
+
 **Classe:** BIP · **Legami:** [attivazione disaggregata](legami-01.md) · **Script:** `python/ex10_utensili.py`<br><br>
 **Difficoltà:** ★★☆☆☆ · **Tempo:** 30–45 min
 { .scheda }

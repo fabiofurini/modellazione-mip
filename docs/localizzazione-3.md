@@ -1,5 +1,7 @@
 # Copertura del segnale con interferenza
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-10-localizzazione.pdf)
+
 **Classe:** BIP · **Legami:** se e solo se (soglia + interferenza) · **Script:** `python/fam08_3_copertura.py`<br><br>
 **Difficoltà:** ★★★★☆ · **Tempo:** 30–45 min
 { .scheda }

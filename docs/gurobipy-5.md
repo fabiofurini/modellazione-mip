@@ -1,5 +1,7 @@
 # 3.5 Il protocollo, e come si esegue
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-1-modellazione.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-03-gurobi.pdf)
+
 **Classe:** implementazione · **Script:** `python/cap06_gurobi.py`
 { .scheda }
 

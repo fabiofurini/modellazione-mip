@@ -1,5 +1,7 @@
 # 1. Che cos'è un modello MIP
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-1-modellazione.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-01-modelli-mip.pdf)
+
 **Classe:** LP · ILP · BIP · MILP · **Script:** `python/cap01_modelli.py`
 { .scheda }
 

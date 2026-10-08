@@ -1,5 +1,7 @@
 # EX 9 — Le regine sulla scacchiera
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-2.pdf)
+
 **Classe:** BIP · **Legami:** set packing, [alldiff](legami-12.md) · **Script:** `python/ex09_regine.py`<br><br>
 **Difficoltà:** ★★☆☆☆ · **Tempo:** 30–45 min
 { .scheda }

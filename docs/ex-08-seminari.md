@@ -1,5 +1,7 @@
 # EX 8 — Seminari
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-2.pdf)
+
 **Classe:** BIP · **Legami:** cardinalità esatta, non-adiacenza · **Script:** `python/ex08_seminari.py`<br><br>
 **Difficoltà:** ★★☆☆☆ · **Tempo:** 30–45 min
 { .scheda }

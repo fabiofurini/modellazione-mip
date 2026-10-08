@@ -1,5 +1,7 @@
 # EX 3 — Staffetta
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-1.pdf)
+
 **Classe:** BIP · **Legami:** nessuno (una sola famiglia di variabili) · **Script:** `python/ex03_staffetta.py`<br><br>
 **Difficoltà:** ★☆☆☆☆ · **Tempo:** 20–30 min
 { .scheda }

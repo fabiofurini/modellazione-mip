@@ -1,5 +1,7 @@
 # 3. Dal modello a Python/Gurobi
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-1-modellazione.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-03-gurobi.pdf)
+
 **Classe:** implementazione · **Script:** `python/cap06_gurobi.py`
 { .scheda }
 

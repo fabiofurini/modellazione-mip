@@ -1,5 +1,7 @@
 # EX 14 — Scarpe: produzione, scorte e assunzioni
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-2-numerici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-07-modelli-numerici-3.pdf)
+
 **Classe:** MILP · **Legami:** bilancio delle scorte, [conteggi interi](legami-04.md) · **Script:** `python/ex14_scarpe.py`<br><br>
 **Difficoltà:** ★★★★☆ · **Tempo:** 45–60 min
 { .scheda }

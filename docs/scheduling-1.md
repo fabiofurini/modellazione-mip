@@ -1,5 +1,7 @@
 # Assegnamento a costo minimo con disponibilità
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-09-scheduling-1.pdf)
+
 **Classe:** BIP · **Legami:** nessuno (una sola famiglia di variabili) · **Script:** `python/fam07_1_assegnamento.py`<br>
 **Difficoltà:** ★☆☆☆☆ · **Tempo:** 20–30 min
 { .scheda }

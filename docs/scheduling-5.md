@@ -1,5 +1,7 @@
 # Una macchina, classi di lavori con setup
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-09-scheduling-2.pdf)
+
 **Classe:** BIP · **Legami:** attivazione disaggregata, CNF · **Script:** `python/fam07_5_classisetup.py`<br>
 **Difficoltà:** ★★★☆☆ · **Tempo:** 30–45 min
 { .scheda }

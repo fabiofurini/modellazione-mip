@@ -10,6 +10,7 @@ ogni problema del corso: decisioni e variabili, un vincolo per ogni frase
 dell'enunciato, i legami fra le variabili, una soluzione ammissibile e una
 duale per i due bound, poi il solver.
 
+
 ## Venti problemi numerici
 
 Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciato, si riconoscono le decisioni, si scrive il MILP e lo si risolve.
@@ -222,6 +223,7 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     Cinque quadri sono larghi $60$, $45$, $80$, $50$ e $70$ centimetri. Due pareti
     sono lunghe $180$ centimetri ciascuna. Ogni quadro va appeso, e su una parete
     sola. Si vuole che lo spazio libero sulle due pareti sia il più possibile uguale.
+
 
 ## Venti problemi simbolici
 

@@ -1,5 +1,7 @@
 # Macchine con costo fisso di utilizzo
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-09-scheduling-1.pdf)
+
 **Classe:** BIP · **Legami:** attivazione (aggregata) · **Script:** `python/fam07_2_costofisso.py`<br>
 **Difficoltà:** ★★☆☆☆ · **Tempo:** 30–45 min
 { .scheda }

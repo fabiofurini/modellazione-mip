@@ -1,5 +1,7 @@
 # 5. Logica e variabili binarie
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-1-modellazione.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-05-logica-binarie.pdf)
+
 **Classe:** BIP · **Legami:** clausole e implicazioni · **Script:** `python/cap02_logica.py`
 { .scheda }
 

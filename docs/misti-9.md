@@ -1,5 +1,7 @@
 # Libri fra scaffali
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-12-problemi-misti-3.pdf)
+
 **Classe:** MILP · **Legami:** variabile di massimo (forma disaggregata) · **Script:** `python/fam10_9_scaffali.py`<br>
 **Difficoltà:** ★★★★☆ · **Tempo:** 45–60 min
 { .scheda }

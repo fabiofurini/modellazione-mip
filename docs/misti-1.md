@@ -1,5 +1,7 @@
 # Premi acquistabili con due modalità
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-12-problemi-misti-1.pdf)
+
 **Classe:** BIP · **Legami:** mutua esclusione (set packing), somma come indicatore · **Script:** `python/fam10_1_premi.py`<br>
 **Difficoltà:** ★★☆☆☆ · **Tempo:** 30–45 min
 { .scheda }

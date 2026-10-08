@@ -1,5 +1,7 @@
 # Localizzazione di hub con costo massimo
 
+[:material-file-pdf-box: Dispensa (PDF)](pdf/dispensa-3-simbolici.pdf) · [:material-presentation: Slide (PDF)](pdf/slide-10-localizzazione.pdf)
+
 **Classe:** MILP · **Legami:** attivazione aggregata, variabile di massimo · **Script:** `python/fam08_4_hub.py`<br><br>
 **Difficoltà:** ★★★★☆ · **Tempo:** 45–60 min
 { .scheda }
