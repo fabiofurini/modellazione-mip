@@ -6,8 +6,8 @@ due stanno negli script (`salva_modello`, `valuta`, `due_rilassamenti`); la
 tabella si genera qui dai CSV, cosi' i numeri sono quelli verificati e non si
 trascrivono a mano.
 
-Uso:  python3 strumenti/tabelle_varianti.py            # scrive le tabelle
-      python3 strumenti/tabelle_varianti.py --verifica # controlla che siano aggiornate
+Uso:  python3 python/genera_tabelle.py            # scrive le tabelle
+      python3 python/genera_tabelle.py --verifica # controlla che siano aggiornate
 """
 import sys
 from fractions import Fraction
