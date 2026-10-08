@@ -76,7 +76,8 @@ Le slide delle lezioni, una per capitolo delle dispense (PDF).
     ---
 
     - [Le famiglie di problemi](pdf/slide-08-famiglie.pdf)
-    - [Assegnamento e scheduling](pdf/slide-09-scheduling.pdf)
+    - [Assegnamento e scheduling: 7.1–7.4](pdf/slide-09-scheduling-1.pdf)
+    - [Assegnamento e scheduling: 7.5–7.7](pdf/slide-09-scheduling-2.pdf)
     - [Localizzazione e copertura](pdf/slide-10-localizzazione.pdf)
     - [Pianificazione della produzione](pdf/slide-11-produzione.pdf)
     - [Problemi misti: 10.1–10.3](pdf/slide-12-problemi-misti-1.pdf)

@@ -30,7 +30,8 @@ GRUPPI = [
     ]),
     (("Problemi con modello simbolico", "Problems with a symbolic model"), [
         ("slide-08-famiglie", "slides-08-problem-families", "Le famiglie di problemi", "The problem families"),
-        ("slide-09-scheduling", "slides-09-scheduling", "Assegnamento e scheduling", "Assignment and scheduling"),
+        ("slide-09-scheduling-1", "slides-09-scheduling-1", "Assegnamento e scheduling: 7.1–7.4", "Assignment and scheduling: 7.1–7.4"),
+        ("slide-09-scheduling-2", "slides-09-scheduling-2", "Assegnamento e scheduling: 7.5–7.7", "Assignment and scheduling: 7.5–7.7"),
         ("slide-10-localizzazione", "slides-10-location", "Localizzazione e copertura", "Location and coverage"),
         ("slide-11-produzione", "slides-11-production", "Pianificazione della produzione", "Production planning"),
         ("slide-12-problemi-misti-1", "slides-12-mixed-problems-1", "Problemi misti: 10.1–10.3", "Mixed problems: 10.1–10.3"),
