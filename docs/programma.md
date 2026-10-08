@@ -77,6 +77,6 @@ EX 15 [Orario della scuola di musica](ex-15-orario.md)
 
 **Il corso**
 
-- [Organizzazione del corso](organizzazione.md) — il percorso, l'esame, gli
-  errori da evitare
+- [Organizzazione del corso](organizzazione.md) — il percorso, il formato degli
+  esercizi, gli errori da evitare
 - [Notebook in Colab](notebook.md) — uno per problema, si aprono nel browser

@@ -79,7 +79,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
   può rilanciare, e un controllo automatico verifica che il testo e il codice
   dicano la stessa cosa.
 
-!!! tip "Il formato di ogni esercizio (e dell'esame)"
+!!! tip "Il formato di ogni esercizio"
     Modello → legami fra le variabili → istanza → euristica (upper bound) →
     duale del rilassamento LP (lower bound) → soluzione con il solver →
     domande di modellazione aggiuntive.
@@ -113,7 +113,7 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
     ---
 
-    Organizzazione, il formato dell'esame, le dispense in PDF, i notebook.
+    Organizzazione, il formato degli esercizi, le dispense in PDF, i notebook.
 
     [:octicons-arrow-right-24: Organizzazione](organizzazione.md)
 

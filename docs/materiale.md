@@ -59,6 +59,7 @@ Le slide delle lezioni, una per capitolo delle dispense (PDF).
     - [Che cos'è un modello MIP](pdf/slide-01-modelli-mip.pdf)
     - [Rilassamenti, dualità e bound](pdf/slide-02-bound-duali.pdf)
     - [Dal modello a Python/Gurobi](pdf/slide-03-gurobi.pdf)
+    - [Euristiche costruttive](pdf/slide-04-euristiche.pdf)
     - [Logica e variabili binarie](pdf/slide-05-logica-binarie.pdf)
     - [Legami fra variabili](pdf/slide-06-legami.pdf)
 
@@ -90,9 +91,8 @@ Le slide delle lezioni, una per capitolo delle dispense (PDF).
 
     ---
 
-    Come è fatto il corso, come è fatto ogni esercizio e come è fatto l'esame:
-    il percorso, i criteri di valutazione, le domande tipiche di discussione,
-    gli errori più comuni e la riproducibilità dei numeri.
+    Come è fatto il corso e come è fatto ogni esercizio: il percorso, gli
+    errori più comuni e la riproducibilità dei numeri.
 
     [:octicons-download-24: organizzazione-del-corso.pdf](pdf/organizzazione-del-corso.pdf)
 

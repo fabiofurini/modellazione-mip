@@ -13,9 +13,9 @@ al solver.
 | **Parte I** | Modellazione | riconoscere un legame fra variabili (attivazione, massimo, big-M, se e solo se…) e dimostrare che il modello lo impone davvero |
 | **Parte II** | I problemi | applicare i legami a tre famiglie di problemi reali e ai problemi misti, dal modello al codice Gurobi |
 
-## Il formato di ogni esercizio (e dell'esame)
+## Il formato di ogni esercizio
 
-Ogni problema del corso — e ogni domanda d'esame — segue lo stesso schema in
+Ogni problema del corso segue lo stesso schema in
 quattro quesiti:
 
 1. **Modello.** Scrivere il MILP: variabili (con il conteggio), obiettivo,
@@ -39,25 +39,6 @@ didattico è un altro: **saper costruire quei due numeri a mano** serve a capire
 da dove vengono, a giudicare se l'intervallo che il solver riporta è stretto
 perché il modello è buono o largo perché è formulato male, e a produrre un bound
 anche quando il solver non arriva a nulla di utile.
-
-## Criteri di valutazione
-
-| Dimensione | Peso |
-|---|---|
-| Correttezza del modello (variabili, obiettivo, vincoli) | 35% |
-| Dimostrazione del legame fra le variabili (nei due versi) | 25% |
-| Euristica costruttiva ed esecuzione corretta | 20% |
-| Duale del rilassamento e soluzione duale ammissibile | 20% |
-
-## Domande tipiche di discussione
-
-- Il vincolo di link è aggregato o disaggregato? Che differenza fa sul
-  rilassamento LP?
-- Il verso opposto dell'implicazione è imposto dal vincolo o segue
-  dall'ottimo? Come lo si dimostra?
-- Qual è il big-M più piccolo che si può giustificare dai dati?
-- L'euristica trova l'ottimo? Come si fa a saperlo senza il solver?
-- Il duale a mano è ottimo per il rilassamento, o solo ammissibile?
 
 ## Gli errori più comuni
 
