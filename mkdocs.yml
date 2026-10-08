@@ -63,6 +63,9 @@ extra:
     - icon: material/math-integral
       link: https://fabiofurini.github.io/analisi-matematica-1/
       name: Analisi Matematica 1
+    - icon: material/matrix
+      link: https://fabiofurini.github.io/algebra-lineare/
+      name: Algebra lineare
   alternate:
     - name: Italiano
       link: https://fabiofurini.github.io/modellazione-mip/
