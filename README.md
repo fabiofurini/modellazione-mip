@@ -1,9 +1,9 @@
 <h3 align="center">Materiale didattico di
-<a href="https://sites.google.com/view/fabiofurini/home-page">Fabio Furini</a></h3>
+<a href="https://fabiofurini.github.io/">Fabio Furini</a></h3>
 <p align="center">
   Professore associato di Ricerca Operativa ·
   <a href="https://www.diag.uniroma1.it/">DIAG</a>, Sapienza Università di Roma ·
-  <a href="https://sites.google.com/view/fabiofurini/home-page">sito personale</a>
+  <a href="https://fabiofurini.github.io/">sito personale</a>
 </p>
 
 # Modellazione MIP
@@ -15,7 +15,7 @@
 > Paris-Dauphine. *Habilitation à Diriger des Recherches* in Francia nel 2017 e
 > Abilitazione Scientifica Nazionale a professore ordinario in Ricerca Operativa
 > nel 2019. Nel 2020 ricercatore CNR presso l'IASI-CNR di Roma.
-> Sito personale: <https://sites.google.com/view/fabiofurini/home-page>
+> Sito personale: <https://fabiofurini.github.io/>
 
 Modelli di programmazione lineare intera per prendere decisioni ottime — come si
 costruisce un modello con variabili binarie e intere, come si *dimostra* che fa
@@ -61,4 +61,4 @@ The whole course is also available in English:
 
 ---
 
-Materiale didattico di **[Fabio Furini](https://sites.google.com/view/fabiofurini/home-page)** — [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma.
+Materiale didattico di **[Fabio Furini](https://fabiofurini.github.io/)** — [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma.

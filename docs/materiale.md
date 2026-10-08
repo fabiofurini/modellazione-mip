@@ -45,6 +45,43 @@ cuore del materiale. Quello che viene dopo e' di contorno.
 
 </div>
 
+<!-- slide:inizio -->
+## Le slide
+
+Le slide delle lezioni, una per capitolo delle dispense (PDF).
+
+<div class="grid cards" markdown>
+
+-   :material-presentation: **Modellazione**
+
+    ---
+
+    - [Che cos'è un modello MIP](pdf/slide-01-modelli-mip.pdf)
+    - [Rilassamenti, dualità e bound](pdf/slide-02-bound-duali.pdf)
+    - [Dal modello a Python/Gurobi](pdf/slide-03-gurobi.pdf)
+    - [Logica e variabili binarie](pdf/slide-05-logica-binarie.pdf)
+    - [Legami fra variabili](pdf/slide-06-legami.pdf)
+
+-   :material-presentation: **Problemi numerici**
+
+    ---
+
+    - [Modelli numerici: EX 1–5](pdf/slide-07-modelli-numerici-1.pdf)
+    - [Modelli numerici: EX 6–10](pdf/slide-07-modelli-numerici-2.pdf)
+    - [Modelli numerici: EX 11–15](pdf/slide-07-modelli-numerici-3.pdf)
+
+-   :material-presentation: **Problemi con modello simbolico**
+
+    ---
+
+    - [Le famiglie di problemi](pdf/slide-08-famiglie.pdf)
+    - [Localizzazione e copertura](pdf/slide-10-localizzazione.pdf)
+    - [Pianificazione della produzione](pdf/slide-11-produzione.pdf)
+
+</div>
+
+<!-- slide:fine -->
+
 ## Gli altri documenti
 
 <div class="grid cards" markdown>
@@ -70,17 +107,6 @@ cuore del materiale. Quello che viene dopo e' di contorno.
 
     [:octicons-download-24: esercizi.pdf](pdf/esercizi.pdf)
 
--   :material-presentation: **Le slide del corso**
-
-    ---
-
-    Centocinquanta slide: il metodo e i quattordici legami, il sandwich dei
-    bound, e poi **tutti i modelli e tutti i problemi** --- una slide per
-    ciascuno dei quindici modelli numerici, l'enunciato e il modello di ciascuno
-    dei ventitré problemi, e i quaranta problemi da modellare. I modelli sono
-    generati dalle stesse sorgenti delle dispense.
-
-    [:octicons-download-24: slide-mip.pdf](pdf/slide-mip.pdf)
 
 -   :material-language-python: **Il codice**
 

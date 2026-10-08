@@ -1,6 +1,6 @@
 # Modellazione MIP
 
-Materiale didattico ideato e sviluppato da **[Fabio Furini](https://sites.google.com/view/fabiofurini/home-page)**, professore
+Materiale didattico ideato e sviluppato da **[Fabio Furini](https://fabiofurini.github.io/)**, professore
 associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma.
 
 **Modelli di programmazione lineare intera per prendere decisioni ottime.**
@@ -140,5 +140,5 @@ il modulo di laboratorio, con gli stessi strumenti e lo stesso stile — e
 **[Analisi Matematica 1](https://fabiofurini.github.io/analisi-matematica-1/)** — le dispense di analisi,
 con i grafici interattivi.
 
-Materiale didattico di **[Fabio Furini](https://sites.google.com/view/fabiofurini/home-page)** —
+Materiale didattico di **[Fabio Furini](https://fabiofurini.github.io/)** —
 [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma.
