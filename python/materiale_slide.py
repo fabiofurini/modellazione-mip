@@ -33,7 +33,9 @@ GRUPPI = [
         ("slide-09-scheduling", "slides-09-scheduling", "Assegnamento e scheduling", "Assignment and scheduling"),
         ("slide-10-localizzazione", "slides-10-location", "Localizzazione e copertura", "Location and coverage"),
         ("slide-11-produzione", "slides-11-production", "Pianificazione della produzione", "Production planning"),
-        ("slide-12-problemi-misti", "slides-12-mixed-problems", "Problemi misti", "Mixed problems"),
+        ("slide-12-problemi-misti-1", "slides-12-mixed-problems-1", "Problemi misti: 10.1–10.3", "Mixed problems: 10.1–10.3"),
+        ("slide-12-problemi-misti-2", "slides-12-mixed-problems-2", "Problemi misti: 10.4–10.6", "Mixed problems: 10.4–10.6"),
+        ("slide-12-problemi-misti-3", "slides-12-mixed-problems-3", "Problemi misti: 10.7–10.9", "Mixed problems: 10.7–10.9"),
     ]),
 ]
 PAGINA = {"it": "materiale.md", "en": "downloads.md"}
