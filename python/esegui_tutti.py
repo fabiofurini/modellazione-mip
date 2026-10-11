@@ -1,7 +1,7 @@
 """Esegue in sequenza tutti gli script del corso.
 
-Rigenera: dati (dati/*.csv), dati per le figure pgfplots (dispensa/figure/dat/*.csv),
-anteprime matplotlib (dispensa/figure/*.pdf), immagini per il sito (docs/img/*.png),
+Rigenera: dati (dati/*.csv), dati per le figure pgfplots (volumes/lecture_notes/*/figure/dat/*.csv),
+anteprime matplotlib (volumes/lecture_notes/*/figure/*.pdf), immagini per il sito (docs/img/*.png),
 i notebook dei capitoli (notebooks/*.ipynb) e i blocchi di codice incorporati
 nelle pagine del sito (docs/*.md).
 

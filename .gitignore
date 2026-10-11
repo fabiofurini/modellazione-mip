@@ -17,15 +17,19 @@ site/
 # varie
 .DS_Store
 
-# materiale interno, non pubblicato
+# materiale interno, non pubblicato (struttura comune dei moduli, REGOLE_MODULI_TEMATICI §1):
+# volumes/ = dispense, esercizi, soluzioni e organizzazione (sorgenti LaTeX e PDF compilati)
 STILE_E_FORMATO.md
-dispensa_1/
-dispensa_2/
-dispensa_3/
+note/
+volumes/
+slides/
+build/
+*conflicted copy*
+# vecchi nomi delle cartelle private, prima di volumes/
+dispensa_*/
 organizzazione_del_corso/
 esercizi/
 soluzioni/
-slides/
 
 # i PDF pubblicati sul sito vanno invece versionati
 !docs/pdf/*.pdf

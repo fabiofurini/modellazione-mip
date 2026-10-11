@@ -15,8 +15,9 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parents[3]   # radice del modulo
 
 # le tre dispense sono indipendenti, una cartella per volume
-CARTELLE = {"it": [f"it/dispensa_{i}/capitoli" for i in (1, 2, 3)],
-            "en": [f"en/notes_{i}/capitoli" for i in (1, 2, 3)]}
+CARTELLE = {l: sorted(p.relative_to(BASE).as_posix()
+                      for p in BASE.glob(f"{l}/volumes/lecture_notes/*/capitoli"))
+            for l in ("it", "en")}
 
 # termine dell'indice -> espressione che lo riconosce nel testo.
 # L'ordine conta: i termini piu' lunghi vanno prima, cosi' «dualita' forte» non

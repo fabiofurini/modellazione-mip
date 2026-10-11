@@ -23,8 +23,8 @@ RADICE = Path(__file__).resolve().parents[3]   # radice del modulo
 
 # dispensa: i box `istanza`; sito: gli array dentro i blocchi $$...$$ delle
 # pagine che riportano il modello dell'istanza
-SORGENTI_TEX = ([RADICE / f"it/dispensa_{i}/capitoli" for i in (1, 2, 3)]
-                + [RADICE / f"en/notes_{i}/capitoli" for i in (1, 2, 3)])
+SORGENTI_TEX = (sorted((RADICE / "it/volumes/lecture_notes").glob("dispensa_*/capitoli"))
+                + sorted((RADICE / "en/volumes/lecture_notes").glob("lecture_notes_*/capitoli")))
 SORGENTI_MD = [RADICE / "it/docs", RADICE / "en/docs"]
 
 APRE_ARRAY = "\\begin{array}"

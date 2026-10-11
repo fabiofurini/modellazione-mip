@@ -23,7 +23,7 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
 DIR_DOCS = BASE / "docs"
-DISPENSE = sorted(BASE.glob("dispensa_*/capitoli"))
+DISPENSE = sorted(BASE.glob("volumes/lecture_notes/dispensa_*/capitoli"))
 
 APRE = re.compile(r"<!-- modello: ([0-9]+\.[0-9]+[A-Za-z]*(?:-duale)?) -->")
 FINE = "<!-- modello: fine -->"

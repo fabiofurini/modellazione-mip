@@ -29,8 +29,10 @@ import matplotlib.pyplot as plt
 
 BASE = Path(__file__).resolve().parent.parent
 # le tre dispense sono indipendenti: ognuna tiene le sue figure
-VOLUMI = {1: BASE / "dispensa_1" / "figure", 2: BASE / "dispensa_2" / "figure",
-          3: BASE / "dispensa_3" / "figure"}
+_DISPENSE = BASE / "volumes" / "lecture_notes"
+VOLUMI = {1: _DISPENSE / "dispensa_1_modellazione" / "figure",
+          2: _DISPENSE / "dispensa_2_numerici" / "figure",
+          3: _DISPENSE / "dispensa_3_simbolici" / "figure"}
 
 
 def dir_figure(nome: str) -> Path:
