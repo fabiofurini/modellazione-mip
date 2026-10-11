@@ -200,6 +200,8 @@ Tutte le istanze minime di queste quattordici pagine sono risolte da
 che salva la tavola riassuntiva in `dati/cap03_tecniche.csv`. Il notebook è
 [`notebooks/cap03_legami.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/cap03_legami.ipynb).
 
+:material-flask-outline: **Nel laboratorio interattivo:** [Formulazioni deboli e forti](laboratorio/formulazioni.md).
+
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
 ??? example "Mostra lo script completo — `python/cap03_legami.py` (496 righe)"

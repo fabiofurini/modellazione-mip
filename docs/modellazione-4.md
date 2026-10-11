@@ -318,6 +318,8 @@ gli esempi in
 il notebook è
 [`notebooks/cap05_euristiche.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/cap05_euristiche.ipynb).
 
+:material-flask-outline: **Nel laboratorio interattivo:** [Zaino: euristica per rapporto contro ottimo](laboratorio/zaino-greedy.md), [TSP: nearest neighbour contro giro ottimo](laboratorio/tsp-euristiche.md), [Bin packing e scheduling](laboratorio/bin-packing-scheduling.md).
+
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
 ??? example "Mostra lo script completo — `python/cap05_euristiche.py` (274 righe)"

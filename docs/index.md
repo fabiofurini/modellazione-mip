@@ -34,6 +34,15 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
     [:octicons-arrow-right-24: I notebook](notebook.md)
 
+-   :material-flask-outline:{ .lg .middle } **Voglio vedere le idee in movimento**
+
+    ---
+
+    Sette app interattive che girano nel browser: punti interi e rilassamento,
+    branch-and-bound, euristiche, big-M e formulazioni.
+
+    [:octicons-arrow-right-24: Il laboratorio](laboratorio/index.md)
+
 </div>
 
 [:octicons-download-24: Scarica il materiale del corso](materiale.md){ .md-button .md-button--primary }

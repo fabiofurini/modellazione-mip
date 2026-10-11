@@ -286,6 +286,8 @@ che usa il modulo
 Lo stesso codice è disponibile come notebook —
 [`notebooks/cap02_logica.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/cap02_logica.ipynb).
 
+:material-flask-outline: **Nel laboratorio interattivo:** [Big-M e rilassamento](laboratorio/big-m.md).
+
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
 ??? example "Mostra lo script completo — `python/cap02_logica.py` (223 righe)"

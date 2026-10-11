@@ -36,3 +36,6 @@ soluzioni/
 
 # mai sorgenti LaTeX su GitHub (decisione di Fabio, 2026-10-11)
 *.tex
+
+# strumento privato che genera il laboratorio interattivo (pagine docs/laboratorio/, copie in en/, mkdocs.yml)
+python/genera_laboratorio.py
