@@ -38,8 +38,8 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
     ---
 
-    Sette app interattive che girano nel browser: punti interi e rilassamento,
-    branch-and-bound, euristiche, big-M e formulazioni.
+    Sei app interattive che girano nel browser: punti interi e rilassamento,
+    euristiche, big-M e formulazioni.
 
     [:octicons-arrow-right-24: Il laboratorio](laboratorio/index.md)
 

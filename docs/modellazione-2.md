@@ -291,7 +291,7 @@ Lo script completo è
 il notebook è
 [`notebooks/cap04_bound.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/cap04_bound.ipynb).
 
-:material-flask-outline: **Nel laboratorio interattivo:** [Punti interi e rilassamento](laboratorio/punti-interi.md), [Branch-and-bound passo passo](laboratorio/branch-and-bound.md).
+:material-flask-outline: **Nel laboratorio interattivo:** [Punti interi e rilassamento](laboratorio/punti-interi.md).
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 

@@ -21,14 +21,6 @@ i problemi sono piccoli, così ogni passo si vede.
 
     [Apri l'app →](punti-interi.md)
 
--   :material-file-tree: **Branch-and-bound passo passo**
-
-    ---
-
-    Un problema in due variabili risolto con il branch-and-bound: a ogni passo un nodo, il suo rilassamento e i due rami \(x_j \le \lfloor \tilde x_j \rfloor\) e \(x_j \ge \lceil \tilde x_j \rceil\), con l'albero accanto al grafico.
-
-    [Apri l'app →](branch-and-bound.md)
-
 </div>
 
 ## 4. Euristiche costruttive
