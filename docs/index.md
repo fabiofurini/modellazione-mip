@@ -141,7 +141,8 @@ Dello stesso autore:
 - **[Analisi Matematica 1](https://fabiofurini.github.io/analisi-matematica-1/)** — le dispense di analisi, con i grafici interattivi;
 - **[Algebra lineare](https://fabiofurini.github.io/algebra-lineare/)** — il corso propedeutico, con il laboratorio di calcolo passo per passo;
 - **[Programmazione lineare](https://fabiofurini.github.io/programmazione-lineare/)** — problemi di programmazione lineare, simplesso, dualità e metodi avanzati, con il catalogo dei problemi;
-- **[Ottimizzazione convessa](https://fabiofurini.github.io/ottimizzazione-convessa/)** — insiemi e funzioni convesse, problemi di ottimizzazione, con grafici interattivi.
+- **[Ottimizzazione convessa](https://fabiofurini.github.io/ottimizzazione-convessa/)** — insiemi e funzioni convesse, problemi di ottimizzazione, con grafici interattivi;
+- **[Algoritmi](https://fabiofurini.github.io/algoritmi/)** — rappresentazione dei numeri, pseudocodice, linguaggi C++, Python e Java, ordinamento e ricerca, notazione asintotica, analisi e algoritmi ricorsivi, con grafici interattivi.
 
 Materiale didattico di **[Fabio Furini](https://fabiofurini.github.io/)** —
 [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma.
