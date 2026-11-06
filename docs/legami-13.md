@@ -41,12 +41,15 @@ $s^- + s^+ = |a'x - \beta|$ in ogni ottimo: la stessa cosa della
 [tecnica 6.7](legami-07.md), scritta con un'uguaglianza invece che con due
 disuguaglianze.
 
-!!! warning "Con penalità nulla le deviazioni perdono significato"
-    Se $\pi^- = 0$, l'argomento di scambio non è più stretto e una soluzione
-    ottima può avere entrambe le deviazioni positive: la lettura «$s^-$ è la
-    sotto-copertura» non è più garantita. Vale la stessa regola di tutto il
-    capitolo: la forza della conclusione dipende dal segno del coefficiente
-    nell'obiettivo.
+!!! warning "Con penalità nulla la deviazione non costa niente"
+    L'argomento di scambio richiede solo $\pi^- + \pi^+ > 0$. Con $\pi^- = 0$ e
+    $\pi^+ > 0$ ogni ottimo ha ancora almeno una deviazione nulla, ma restare sotto
+    $\beta$ non costa niente: il vincolo soft non spinge più $a'x$ verso
+    l'obiettivo. Solo se $\pi^- + \pi^+ \le 0$ una soluzione ottima può avere
+    entrambe le deviazioni positive (con somma negativa il modello è addirittura
+    illimitato), e la lettura «$s^-$ è la sotto-copertura» si perde. Vale la stessa
+    regola di tutto il capitolo: la forza della conclusione dipende dal segno dei
+    coefficienti nell'obiettivo.
 
 ## L'esempio
 
