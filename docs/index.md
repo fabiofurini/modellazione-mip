@@ -43,9 +43,20 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
     [:octicons-arrow-right-24: Il laboratorio](laboratorio/index.md)
 
+-   :material-clipboard-check-outline:{ .lg .middle } **Autovalutazione**
+
+    ---
+
+    *Facsimile d'esame*
+
+    Un facsimile nuovo a ogni avvio: 13 domande, 33 punti, con la soluzione e il link alle dispense.
+
+    [:octicons-arrow-right-24: Mettiti alla prova](autovalutazione.md)
+
 </div>
 
 [:octicons-download-24: Scarica il materiale del corso](materiale.md){ .md-button .md-button--primary }
+[:material-clipboard-check-outline: Mettiti alla prova](autovalutazione.md){ .md-button }
 
 ## Che cosa si impara a fare
 
