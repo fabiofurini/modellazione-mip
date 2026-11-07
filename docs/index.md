@@ -28,9 +28,9 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 <!-- collana-app -->
 ## Provalo subito
 
-Le euristiche per il commesso viaggiatore: confronta i giri trovati con il bound e guarda il gap.
+Bin packing e scheduling: Next Fit, First Fit, Best Fit e First Fit Decreasing riempiono i contenitori, List scheduling e LPT assegnano i lavori alle macchine, passo passo, con il bound accanto alla soluzione e l'ottimo alla fine.
 
-<div class="gi" data-grafico="tsp"></div>
+<div class="gi" data-grafico="bpp-lpt"></div>
 
 [:material-gesture-tap: Altre app nel laboratorio](laboratorio/index.md){ .md-button }
 <!-- /collana-app -->
