@@ -115,6 +115,14 @@ Formulazioni deboli e forti: due modelli con gli stessi punti interi, sovrappost
 
     [:octicons-arrow-right-24: I notebook](notebook.md)
 
+-   :material-format-list-numbered: **Indice completo**
+
+    ---
+
+    Tutti i capitoli con le loro sezioni in una pagina, e come è fatto ogni capitolo.
+
+    [:octicons-arrow-right-24: L'indice](programma.md)
+
 </div>
 <!-- /collana-da-non-perdere -->
 
