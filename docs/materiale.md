@@ -151,3 +151,10 @@ riga `Restricted license - for non-production use only`: è normale.
    rete di ateneo o la VPN);
 4. la licenza finisce in `~/gurobi.lic` e da quel momento non ci sono limiti di
    dimensione.
+
+<!-- banca-domande -->
+## Banca delle domande del quiz
+
+Tutte le domande dell'autovalutazione, divise per parte e capitolo, con la risposta corretta e la spiegazione; per le domande generate, che cambiano i numeri a ogni avvio, alcuni esempi.
+
+[:material-format-list-checks: Banca delle domande](quiz/elenco_domande.html){ .md-button }
