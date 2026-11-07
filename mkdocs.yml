@@ -84,6 +84,7 @@ extra:
       lang: en
 
 extra_css:
+  - stylesheets/collana.css
   - stylesheets/extra.css
   # laboratorio interattivo (genera_laboratorio.py)
   - https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraph.css
@@ -205,8 +206,8 @@ nav:
       - Problemi da modellare: da-modellare.md
   - Quiz: autovalutazione.md
   - Laboratorio: laboratorio/index.md
-  - Programma del corso: programma.md
-  - Materiale scaricabile: materiale.md
+  - Materiale: materiale.md
   - Il corso:
       - Come si lavora con il corso: organizzazione.md
       - Notebook in Colab: notebook.md
+  - Programma del corso: programma.md
