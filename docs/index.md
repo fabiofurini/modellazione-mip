@@ -28,9 +28,9 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 <!-- collana-app -->
 ## Provalo subito
 
-Bin packing e scheduling: Next Fit, First Fit, Best Fit e First Fit Decreasing riempiono i contenitori, List scheduling e LPT assegnano i lavori alle macchine, passo passo, con il bound accanto alla soluzione e l'ottimo alla fine.
+Formulazioni deboli e forti: due modelli con gli stessi punti interi, sovrapposti. Guarda quanto ciascuno si avvicina all'involucro convesso e che cosa cambia nel bound del rilassamento.
 
-<div class="gi" data-grafico="bpp-lpt"></div>
+<div class="gi" data-grafico="formulazioni"></div>
 
 [:material-gesture-tap: Altre app nel laboratorio](laboratorio/index.md){ .md-button }
 <!-- /collana-app -->
