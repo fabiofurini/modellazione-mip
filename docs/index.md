@@ -17,6 +17,8 @@ associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma
 
 **Modelli di programmazione lineare intera per prendere decisioni ottime.**
 
+Prerequisiti: [Programmazione lineare intera](https://fabiofurini.github.io/programmazione-lineare-intera/).
+
 [Comincia :material-arrow-right:](modellazione.md){ .md-button .md-button--primary }
 [:material-pencil: Esercizi](problemi.md){ .md-button }
 [:material-gesture-tap: Laboratorio](laboratorio/index.md){ .md-button }
