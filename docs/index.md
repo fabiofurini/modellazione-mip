@@ -30,9 +30,9 @@ Prerequisiti: [Programmazione lineare intera](https://fabiofurini.github.io/prog
 <!-- collana-app -->
 ## Provalo subito
 
-Formulazioni deboli e forti: due modelli con gli stessi punti interi, sovrapposti. Guarda quanto ciascuno si avvicina all'involucro convesso e che cosa cambia nel bound del rilassamento.
+Un vincolo condizionale scritto con il big-M e una variabile binaria: muovi M e guarda come cresce il rilassamento continuo quando M supera il minimo, e come l'insieme ammissibile perde pezzi quando M è troppo piccolo.
 
-<div class="gi" data-grafico="formulazioni"></div>
+<div class="gi" data-grafico="big-m"></div>
 
 [:material-gesture-tap: Altre app nel laboratorio](laboratorio/index.md){ .md-button }
 <!-- /collana-app -->
