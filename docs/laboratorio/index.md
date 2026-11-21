@@ -9,6 +9,20 @@ Le idee del corso da toccare con mano: rilassamenti, bound, euristiche e formula
 Scegli un'app: si apre a tutta pagina. Tutto gira nel browser, senza Gurobi;
 i problemi sono piccoli, così ogni passo si vede.
 
+## Modelli risolti all'ottimo
+
+<div class="grid cards" markdown>
+
+-   :material-check-decagram: **Tre modelli risolti all'ottimo**
+
+    ---
+
+    Localizzazione capacitata, lotti con costo di lancio e selezione di progetti con vincoli logici, risolti all'ottimo a ogni cambio dei dati: la soluzione disegnata, le binarie a 1, il rilassamento continuo e il gap.
+
+    [Apri l'app →](modelli-ottimi.md)
+
+</div>
+
 ## 2. Rilassamenti, dualità e bound
 
 <div class="grid cards" markdown>

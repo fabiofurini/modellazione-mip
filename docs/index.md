@@ -30,9 +30,9 @@ Prerequisiti: [Programmazione lineare intera](https://fabiofurini.github.io/prog
 <!-- collana-app -->
 ## Provalo subito
 
-Un vincolo condizionale scritto con il big-M e una variabile binaria: muovi M e guarda come cresce il rilassamento continuo quando M supera il minimo, e come l'insieme ammissibile perde pezzi quando M è troppo piccolo.
+Tre modelli del corso risolti all'ottimo nel browser: localizzazione capacitata, lotti con costo di lancio e progetti con vincoli logici. Scegli il modello in alto a destra, cambia i dati con i cursori e guarda la soluzione ottima, le binarie a 1, il rilassamento continuo e il gap.
 
-<div class="gi" data-grafico="big-m"></div>
+<div class="gi" data-grafico="modelli-ottimi"></div>
 
 [:material-gesture-tap: Altre app nel laboratorio](laboratorio/index.md){ .md-button }
 <!-- /collana-app -->

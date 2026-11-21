@@ -286,7 +286,7 @@ che usa il modulo
 Lo stesso codice è disponibile come notebook —
 [`notebooks/cap02_logica.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/cap02_logica.ipynb).
 
-:material-flask-outline: **Nel laboratorio interattivo:** [Big-M e rilassamento](laboratorio/big-m.md).
+:material-flask-outline: **Nel laboratorio interattivo:** [Big-M e rilassamento](laboratorio/big-m.md), [Tre modelli risolti all'ottimo](laboratorio/modelli-ottimi.md).
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 

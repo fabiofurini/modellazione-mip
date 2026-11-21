@@ -39,3 +39,4 @@ soluzioni/
 
 # strumento privato che genera il laboratorio interattivo (pagine docs/laboratorio/, copie in en/, mkdocs.yml)
 python/genera_laboratorio.py
+python/prove_laboratorio/
