@@ -56,7 +56,8 @@ The whole course is also available in English:
 
 ## Della stessa collana
 
-- [Laboratorio di Ricerca Operativa](https://fabiofurini.github.io/laboratorio-ricerca-operativa/)
+- [Modellazione PL](https://fabiofurini.github.io/modellazione-pl/)
+- [Modellazione PNL](https://fabiofurini.github.io/modellazione-pnl/)
 - [Analisi Matematica 1](https://fabiofurini.github.io/analisi-matematica-1/)
 - [Algebra lineare](https://fabiofurini.github.io/algebra-lineare/)
 - [Programmazione lineare](https://fabiofurini.github.io/programmazione-lineare/)
