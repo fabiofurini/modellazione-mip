@@ -6,6 +6,26 @@
 (`python/fam07_1_assegnamento.py` … `fam07_7_ritardo.py`).
 { .scheda }
 
+!!! nota "Prerequisiti"
+
+    - Da questo modulo, [Capitolo 6 «Legami fra variabili»](https://fabiofurini.github.io/modellazione-mip/legami/): attivazione, variabile di massimo, *se e solo se*, big-M e precedenze.
+
+    - Da questo modulo, [Capitolo 2 «Rilassamenti, dualità e bound»](https://fabiofurini.github.io/modellazione-mip/modellazione-2/): il protocollo dei bound e il duale del rilassamento LP.
+
+    - Dal modulo *Problemi di ottimizzazione combinatoria*, la pagina [«Scheduling su macchine parallele identiche ($P\|C_{\max}$)»](https://fabiofurini.github.io/ottimizzazione-combinatoria/catalogo/scheduling-on-identical-parallel-machines/): il problema di scheduling $P\|C_{\max}$ e la regola LPT.
+
+!!! chiave "Obiettivi"
+
+    Alla fine di questo capitolo sarai in grado di:
+
+    - scrivere dal suo enunciato il modello simbolico di un problema di assegnamento o di scheduling;
+
+    - dimostrare i legami fra variabili di macchina, di classe e di assegnamento;
+
+    - modellare il sequenziamento su una macchina con precedenze binarie e un big-M calcolato dai dati;
+
+    - chiudere il sandwich dei bound con un'euristica costruttiva e una soluzione duale costruita a mano.
+
 Sette problemi con lo stesso scheletro: dei **lavori** vanno assegnati a delle
 **macchine** con disponibilità limitata. Cambia, di problema in problema, che
 cosa si paga e che cosa si decide: il costo dell'assegnamento, il costo fisso di
@@ -111,3 +131,15 @@ ritardo rispetto alle scadenze quando i lavori si susseguono su una sola macchin
     [:octicons-arrow-right-24: MILP · big-M](scheduling-7.md)
 
 </div>
+
+## In sintesi
+
+!!! chiave "In sintesi"
+
+    - I sette problemi hanno lo stesso scheletro: lavori assegnati a macchine con disponibilità limitata.
+
+    - Cambia che cosa si paga e che cosa si decide: costo di assegnamento, costo fisso, ricavo, tempo in parallelo, setup, premio, ritardo.
+
+    - I legami che tornano: attivazione, variabile di massimo, *se e solo se* e big-M con le disgiunzioni.
+
+    - Per ogni problema: modello, dimostrazione dei legami, istanza, euristica, soluzione duale a mano e confronto con il solver.

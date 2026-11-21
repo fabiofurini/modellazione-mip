@@ -4,6 +4,26 @@
 (`python/fam10_1_premi.py` … `fam10_9_scaffali.py`).
 { .scheda }
 
+!!! nota "Prerequisiti"
+
+    - Da questo modulo, [Capitolo 5 «Logica e variabili binarie»](https://fabiofurini.github.io/modellazione-mip/modellazione-5/): i vincoli logici fra variabili binarie.
+
+    - Da questo modulo, [Capitolo 6 «Legami fra variabili»](https://fabiofurini.github.io/modellazione-mip/legami/): lotto minimo, variabile di massimo, min-max e max-min.
+
+    - Da questo modulo, [Capitolo 9 «Pianificazione della produzione»](https://fabiofurini.github.io/modellazione-mip/produzione/): il protocollo dei bound applicato a una famiglia di problemi.
+
+!!! chiave "Obiettivi"
+
+    Alla fine di questo capitolo sarai in grado di:
+
+    - riconoscere quali pezzi di modellazione combina un problema senza una struttura nota;
+
+    - modellare selezione con modi alternativi, copertura con confezioni e suddivisione con bilanciamento;
+
+    - spiegare perché il rilassamento LP di un problema di suddivisione è debole;
+
+    - trovare un bound duale con un argomento combinatorio: parità, numero di contenitori, dominanza.
+
 Le tre famiglie precedenti hanno una struttura riconoscibile: si assegna, si
 localizza, si pianifica. I nove problemi di questo capitolo non ce l'hanno, e
 non gliene va imposta una: ciascuno mette insieme pezzi diversi, e il lavoro di
@@ -121,3 +141,15 @@ pareggiando tutto.
     [:octicons-arrow-right-24: MILP · variabile di massimo](misti-9.md)
 
 </div>
+
+## In sintesi
+
+!!! chiave "In sintesi"
+
+    - I nove problemi non hanno una struttura comune: il lavoro di modellazione è riconoscere quali pezzi mettono insieme.
+
+    - Selezione con modi alternativi, conteggi con lotto minimo, copertura con contenitori, suddivisione e bilanciamento.
+
+    - In quattro problemi il rilassamento LP è debole, in due vale esattamente zero: una soluzione frazionaria divide ogni oggetto a metà.
+
+    - Il bound duale utile viene allora dall'interezza, con argomenti combinatori che il duale del rilassamento non vede.

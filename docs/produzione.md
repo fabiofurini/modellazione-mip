@@ -4,6 +4,26 @@
 (`python/fam09_1_lotti.py` … `fam09_3_veicoli.py`).
 { .scheda }
 
+!!! nota "Prerequisiti"
+
+    - Da questo modulo, [Capitolo 6 «Legami fra variabili»](https://fabiofurini.github.io/modellazione-mip/legami/): costo fisso, lotto minimo, conteggi interi e conteggio dei tipi.
+
+    - Da questo modulo, [Capitolo 4 «Euristiche costruttive»](https://fabiofurini.github.io/modellazione-mip/modellazione-4/): l'euristica del minimo costo unitario per il lot sizing.
+
+    - Dal modulo *Problemi di ottimizzazione combinatoria*, la pagina [«Problema del lot sizing non capacitato (ULS)»](https://fabiofurini.github.io/ottimizzazione-combinatoria/catalogo/uncapacitated-lot-sizing-problem/): il problema di lot sizing a un prodotto.
+
+!!! chiave "Obiettivi"
+
+    Alla fine di questo capitolo sarai in grado di:
+
+    - scrivere i bilanci delle scorte e della forza lavoro come vincoli di uguaglianza;
+
+    - legare quantità e binarie con un costo fisso e un big-M letto dai dati;
+
+    - modellare un lotto minimo e un premio per la varietà;
+
+    - scrivere il duale del rilassamento con variabili libere per i bilanci.
+
 Tre problemi in cui si decide **quanto** produrre, non soltanto *se* fare
 qualcosa. Le variabili di quantità sono continue o intere, e sopra di esse si
 appoggiano delle binarie che accendono, limitano o premiano: il lancio della
@@ -79,3 +99,15 @@ modo sistematico.
     [:octicons-arrow-right-24: MILP · lotto minimo](produzione-3.md)
 
 </div>
+
+## In sintesi
+
+!!! chiave "In sintesi"
+
+    - Qui si decide quanto produrre: quantità continue o intere, con binarie che accendono, limitano o premiano.
+
+    - Il tratto comune è il bilancio $x_t + s_{t-1} - s_t = d_t$; i suoi duali sono variabili libere.
+
+    - Il costo fisso usa $x_t \le M_t\, y_t$ con $M_t$ pari alla domanda residua, non un numero a caso.
+
+    - Il lotto minimo rende una quantità nulla oppure almeno $q_j$; il premio per la varietà usa il conteggio dei tipi attivi.

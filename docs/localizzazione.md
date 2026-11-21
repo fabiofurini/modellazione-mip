@@ -4,6 +4,24 @@
 (`python/fam08_1_capacitata.py` … `fam08_4_hub.py`).
 { .scheda }
 
+!!! nota "Prerequisiti"
+
+    - Da questo modulo, [Capitolo 6 «Legami fra variabili»](https://fabiofurini.github.io/modellazione-mip/legami/): attivazione aggregata e disaggregata, variabile di massimo, *se e solo se*.
+
+    - Da questo modulo, [Capitolo 7 «Assegnamento e scheduling»](https://fabiofurini.github.io/modellazione-mip/scheduling/): i problemi 7.4 e 7.5, di cui qui si riusano i legami.
+
+!!! chiave "Obiettivi"
+
+    Alla fine di questo capitolo sarai in grado di:
+
+    - modellare l'apertura di una struttura e le variabili che ne dipendono;
+
+    - scegliere fra attivazione aggregata e disaggregata e motivare la scelta;
+
+    - aggiungere un budget sul numero di sedi aperte;
+
+    - costruire a mano il bound primale e il bound duale di un problema di localizzazione.
+
 Quattro problemi in cui si decide **dove** aprire una struttura — una sede,
 un hub — e come questo vincola le variabili che dipendono da quella
 decisione: dove spedire la merce, quali clienti servire, quali clienti
@@ -79,3 +97,15 @@ che ne dipendono e il modo in cui il budget sulle aperture entra nel modello.
     [:octicons-arrow-right-24: MILP · attivazione, massimo](localizzazione-4.md)
 
 </div>
+
+## In sintesi
+
+!!! chiave "In sintesi"
+
+    - Nei quattro problemi si decide dove aprire una struttura e come questo vincola spedizioni, clienti serviti, copertura e connessioni.
+
+    - L'attivazione aggregata fa da legame e da capacità insieme; quella disaggregata dà un rilassamento più forte.
+
+    - Il *se e solo se* del problema di copertura ha un verso imposto dai vincoli e uno dall'obiettivo.
+
+    - Il budget sulle aperture entra nel modello come vincolo di cardinalità sulle variabili delle sedi.

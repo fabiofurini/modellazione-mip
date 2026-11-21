@@ -5,6 +5,28 @@
 **Classe:** LP · MILP · **Script:** `python/cap04_bound.py`
 { .scheda }
 
+!!! nota "Prerequisiti"
+
+    - Da questo modulo, [Capitolo 1 «Che cos'è un modello MIP»](https://fabiofurini.github.io/modellazione-mip/modellazione-1/): il rilassamento LP, i due tipi di bound e il gap.
+
+    - Dal modulo *Programmazione lineare*, [Capitolo 9 «Teoria della dualità»](https://fabiofurini.github.io/programmazione-lineare/dualita/09-dualita/): la costruzione del duale di un problema di programmazione lineare, la dualità debole e forte.
+
+    - Dal modulo *Programmazione lineare intera*, [Capitolo 2 «Bound primali e duali»](https://fabiofurini.github.io/programmazione-lineare-intera/modelli-e-bound/lp-relaxation/): i bound primali e duali di un problema di programmazione lineare intera.
+
+!!! chiave "Obiettivi"
+
+    Alla fine di questo capitolo sarai in grado di:
+
+    - scrivere il duale del rilassamento LP di un modello con la tabella di conversione primale/duale;
+
+    - costruire a mano una soluzione duale ammissibile e usarne il valore come bound di $\zmilp$;
+
+    - distinguere una disuguaglianza valida da un vincolo che conserva solo l'ottimalità;
+
+    - confrontare due formulazioni con la forza dei loro rilassamenti LP;
+
+    - leggere `ObjVal`, `ObjBound` e `MIPGap` senza scambiare i duali dell'LP per prezzi marginali del MILP.
+
 Questo capitolo insegna a produrre, **a mano**, un numero che sta certamente da
 una parte dell'ottimo intero. Serve a tre cose: capire quanto vale un modello,
 quanto vale un'euristica, e come leggere i numeri che un solver riporta quando
@@ -283,6 +305,20 @@ $\mathit{UB} \cdot \mathit{LB} \cdot z(\mathit{LP}) \cdot z(\mathit{LP}^+) \cdot
 
 Ogni numero della tabella esiste in un CSV prodotto dallo script del problema, e
 un `assert` in `verifica_numeri.py` lo confronta con il valore citato nel testo.
+
+## In sintesi
+
+!!! chiave "In sintesi"
+
+    - Per la dualità debole, il valore di ogni soluzione ammissibile del duale del rilassamento LP è un bound di $\zmilp$, dal lato opposto a quello dell'euristica.
+
+    - Una soluzione duale si costruisce a mano con una ricetta dichiarata, se ne controlla l'ammissibilità e la si valuta: il solver non serve.
+
+    - In un problema di minimo il bound duale è un lower bound, in uno di massimo un upper bound: i ruoli di $\lb$ e $\ub$ si scambiano.
+
+    - Disuguaglianze valide e formulazioni più forti alzano il bound duale; più forte non vuol dire sempre più veloce.
+
+    - Il protocollo dei bound: soluzione ammissibile, duale del rilassamento, soluzione duale a mano, rilassamenti, ottimo e tabella con il gap.
 
 ## Codice
 

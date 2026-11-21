@@ -7,6 +7,24 @@
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap05_euristiche.ipynb)
 
+!!! nota "Prerequisiti"
+
+    - Da questo modulo, [Capitolo 2 «Rilassamenti, dualità e bound»](https://fabiofurini.github.io/modellazione-mip/modellazione-2/): il bound duale, il bound dall'altro lato con cui confrontare un'euristica.
+
+    - Da questo modulo, [Capitolo 3 «Dal modello a Python/Gurobi»](https://fabiofurini.github.io/modellazione-mip/modellazione-3/): i modelli di bin packing, makespan e TSP.
+
+!!! chiave "Obiettivi"
+
+    Alla fine di questo capitolo sarai in grado di:
+
+    - descrivere un'euristica costruttiva con i suoi tre ingredienti e dire da quale lato il suo valore è un bound;
+
+    - eseguire a mano next-fit, first-fit, best-fit, LPT, le regole del covering, del rapporto e del nearest neighbour;
+
+    - calcolare il gap certificato di una soluzione euristica con un bound duale;
+
+    - riconoscere quando un'euristica si blocca e perché allora non dà alcun bound.
+
 Un'euristica costruttiva costruisce **una** soluzione in fretta, aggiungendo un
 elemento per volta e senza mai tornare indietro. Non dimostra niente sulla sua
 qualità, e non garantisce nemmeno di arrivare a una soluzione ammissibile: può
@@ -308,6 +326,20 @@ $9$: per arrivarci serve una mossa di **scambio** fra due macchine.
     distinguono soltanto *dopo*. È per questo che il corso chiede sempre due
     bound: un'euristica da sola dice quanto costa una soluzione che si può
     realizzare, non quanto si sta perdendo.
+
+## In sintesi
+
+!!! chiave "In sintesi"
+
+    - Un'euristica costruttiva aggiunge un elemento alla volta e non torna mai indietro: è veloce, ma non dimostra nulla sulla qualità.
+
+    - Il suo valore è un upper bound in un problema di minimo e un lower bound in uno di massimo; il lato dipende dall'obiettivo, non dall'euristica.
+
+    - Quanto la soluzione dista dall'ottimo lo dice solo un bound dall'altro lato: il gap certificato ha al denominatore la soluzione che si ha in mano.
+
+    - Un'euristica può non trovare una soluzione ammissibile, e allora non dà alcun bound: *non trovata* non vuol dire *non esiste*.
+
+    - La ricerca locale può migliorare la soluzione, ma un ottimo locale resta solo un bound primale.
 
 ## Codice
 

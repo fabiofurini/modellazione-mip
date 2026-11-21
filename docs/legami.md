@@ -7,6 +7,28 @@
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap03_legami.ipynb)
 
+!!! nota "Prerequisiti"
+
+    - Da questo modulo, [Capitolo 5 «Logica e variabili binarie»](https://fabiofurini.github.io/modellazione-mip/modellazione-5/): i vincoli lineari delle implicazioni fra variabili binarie e le loro dimostrazioni.
+
+    - Da questo modulo, [Capitolo 2 «Rilassamenti, dualità e bound»](https://fabiofurini.github.io/modellazione-mip/modellazione-2/): il confronto fra formulazioni attraverso i loro rilassamenti LP.
+
+    - Dal modulo *Programmazione lineare intera*, [Capitolo 3 «Formulazioni ideali»](https://fabiofurini.github.io/programmazione-lineare-intera/formulazioni/ideal-formulations/): le formulazioni più forti e l'involucro convesso dei punti interi.
+
+!!! chiave "Obiettivi"
+
+    Alla fine di questo capitolo sarai in grado di:
+
+    - legare variabili binarie, intere e continue con le quattordici tecniche del capitolo;
+
+    - dimostrare quale verso di un legame è imposto dai vincoli e quale segue dall'ottimalità;
+
+    - scegliere dai dati il big-M valido più piccolo;
+
+    - confrontare forma aggregata e disaggregata con la forza del rilassamento;
+
+    - usare la mappa delle tecniche per modellare un legame nuovo.
+
 Il [capitolo 5](modellazione-5.md) collega variabili **tutte binarie**. Qui si
 collegano famiglie **diverse**: binarie con continue, binarie con intere,
 continue fra loro. Sono quattordici tecniche, e sono il vero contenuto della
@@ -192,6 +214,20 @@ scrive»); la terza ricorda che cosa va dichiarato ogni volta che la si usa.
        $z(\mathit{LP}^+)$ con $z(\mathit{MILP})$ su un'istanza piccola e, quando
        ci sono due formulazioni, confrontandole fra loro — dopo averle
        dimostrate equivalenti sui punti interi.
+
+## In sintesi
+
+!!! chiave "In sintesi"
+
+    - Ogni tecnica si presenta in cinque passi: il legame in parole, i vincoli, la dimostrazione, la forza del rilassamento e la riga `gurobipy`.
+
+    - Una proprietà imposta dai vincoli vale in ogni soluzione ammissibile; una di ottimalità si dimostra con un argomento di scambio.
+
+    - *In ogni ottimo* richiede un coefficiente strettamente positivo; con uno solo non negativo si conclude *esiste un ottimo*.
+
+    - Il big-M si calcola dai dati: troppo piccolo taglia soluzioni ammissibili, troppo grande indebolisce il rilassamento.
+
+    - L'attivazione disaggregata dà un rilassamento più forte di quella aggregata, al prezzo di più vincoli.
 
 ## Codice
 

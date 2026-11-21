@@ -5,6 +5,26 @@
 **Classe:** LP · ILP · BIP · MILP · **Script:** `python/cap01_modelli.py`
 { .scheda }
 
+!!! nota "Prerequisiti"
+
+    - Dal modulo *Programmazione lineare intera*, [Capitolo 1 «La programmazione lineare intera»](https://fabiofurini.github.io/programmazione-lineare-intera/modelli-e-bound/ilp/): i problemi di programmazione lineare intera, i loro punti interi ammissibili e il rilassamento continuo.
+
+    - Dal modulo *Programmazione lineare*, [Capitolo 4 «Problemi di programmazione lineare»](https://fabiofurini.github.io/programmazione-lineare/problemi-pl/04-problemi-pl/): la forma di un problema di programmazione lineare: funzione obiettivo, vincoli lineari e domini delle variabili.
+
+!!! chiave "Obiettivi"
+
+    Alla fine di questo capitolo sarai in grado di:
+
+    - scrivere un modello con dati, variabili, funzione obiettivo, vincoli e domini;
+
+    - distinguere le classi LP, ILP, BIP e MILP dai domini delle variabili;
+
+    - spiegare con un esempio perché arrotondare l'ottimo dell'LP non risolve un ILP;
+
+    - dire da quale lato di $\zmilp$ stanno una soluzione ammissibile e un rilassamento, e calcolare il gap;
+
+    - riconoscere i vincoli di set partitioning, set packing e set covering.
+
 ## Dati, variabili, obiettivo, vincoli
 
 Un modello di *programmazione matematica* traduce una decisione in quattro
@@ -240,20 +260,19 @@ Il divario fra i due è quello che il solver riporta come `MIPGap`, ed è anche
 l'unica cosa che si può affermare con sicurezza quando l'ottimo non si
 raggiunge.
 
-## Quello che questo capitolo ha messo in mano
+## In sintesi
 
-Un modello MIP si scrive sempre con gli stessi cinque oggetti: i **dati**, che
-sono noti e non si decidono; le **variabili**, una per decisione, con il loro
-dominio; la **funzione obiettivo**, che dice che cosa si massimizza o si
-minimizza; i **vincoli**, uno per ogni frase dell'enunciato; e il **dominio**
-delle variabili, che è un vincolo anche lui, il più facile da dimenticare.
+!!! chiave "In sintesi"
 
-Su un modello scritto si distinguono poi una **soluzione ammissibile**, che
-rispetta tutti i vincoli, e la **soluzione ottima**, che fra quelle ammissibili
-ha il valore migliore. Rilassare l'interezza dà il **rilassamento lineare**, un
-problema più facile il cui ottimo è un **bound**: pessimistico se viene da una
-soluzione ammissibile, ottimistico se viene da un rilassamento. La distanza fra
-i due è il **gap**.
+    - Un modello MIP ha sempre cinque oggetti: dati, variabili, funzione obiettivo, vincoli e dominio delle variabili, che è anch'esso un vincolo.
+
+    - I domini decidono la classe: LP (continue), ILP (intere), BIP (binarie), MILP (miste).
+
+    - Arrotondare l'ottimo del rilassamento LP può dare una soluzione non ammissibile o scadente: l'interezza va trattata nel modello.
+
+    - Una soluzione ammissibile dà un bound pessimistico, un rilassamento un bound ottimistico; il gap misura la distanza fra i due.
+
+    - Partitioning ($=1$), packing ($\le 1$) e covering ($\ge 1$) sono i tre pattern che tornano in quasi ogni modello.
 
 ## Codice
 

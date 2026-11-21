@@ -4,6 +4,26 @@
 `python/ex01_furgone.py` … `python/ex15_orario.py`
 { .scheda }
 
+!!! nota "Prerequisiti"
+
+    - Da questo modulo, [Capitolo 2 «Rilassamenti, dualità e bound»](https://fabiofurini.github.io/modellazione-mip/modellazione-2/): il duale del rilassamento LP e la soluzione duale costruita a mano.
+
+    - Da questo modulo, [Capitolo 4 «Euristiche costruttive»](https://fabiofurini.github.io/modellazione-mip/modellazione-4/): le euristiche costruttive e il bound primale.
+
+    - Da questo modulo, [Capitolo 6 «Legami fra variabili»](https://fabiofurini.github.io/modellazione-mip/legami/): i legami fra variabili (attivazione, lotto minimo, conteggi interi, min-max).
+
+!!! chiave "Obiettivi"
+
+    Alla fine di questo capitolo sarai in grado di:
+
+    - scrivere le variabili e il modello di un'istanza a dati espliciti, primale e duale;
+
+    - costruire a mano una soluzione ammissibile e una soluzione duale, e chiudere il sandwich $\lb \le \zmilp \le \ub$;
+
+    - riconoscere in ogni enunciato la tecnica di cui il modello ha bisogno;
+
+    - confrontare i bound costruiti a mano con l'ottimo dato dal solver.
+
 I quindici modelli numerici del corso, da EX 1 a EX 15. Dati espliciti, poche
 variabili, una tecnica per modello: sono i più facili, e vengono prima delle
 famiglie di problemi e dei problemi misti.
@@ -36,3 +56,15 @@ Ogni modello ha la sua pagina, il suo script e il suo notebook.
 | [EX 13 — I turni del pronto soccorso](ex-13-turni.md) | copertura dei fabbisogni giornalieri con turni settimanali | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex13_turni.ipynb) |
 | [EX 14 — Scarpe: produzione, scorte e assunzioni](ex-14-scarpe.md) | bilancio delle scorte e organico su tre mesi | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex14_scarpe.ipynb) |
 | [EX 15 — L'orario della scuola di musica](ex-15-orario.md) | conflitti, non-adiacenza e preferenze da evitare | [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/ex15_orario.ipynb) |
+
+## In sintesi
+
+!!! chiave "In sintesi"
+
+    - Ogni modello numerico ha cinque parti: enunciato, variabili, modello dell'istanza, bound primale e bound duale.
+
+    - Una tecnica per modello, in ordine di difficoltà: selezione, assegnamento, copertura, lotti, quantità minime, bilanciamento, turni.
+
+    - Il bound primale viene da un'euristica costruttiva, il bound duale da una soluzione ammissibile del duale del rilassamento.
+
+    - L'ottimo del solver sta sempre dentro il sandwich: quando non ci sta, c'è un errore nel modello o in un bound.

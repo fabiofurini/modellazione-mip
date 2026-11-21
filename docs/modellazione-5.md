@@ -7,6 +7,26 @@
 
 [![Apri in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fabiofurini/modellazione-mip/blob/main/notebooks/cap02_logica.ipynb)
 
+!!! nota "Prerequisiti"
+
+    - Dal modulo *Analisi matematica 1*, il capitolo [«Basi di logica e tecniche di dimostrazione»](https://fabiofurini.github.io/analisi-matematica-1/logica/01-logica/): proposizioni, connettivi logici e loro tavole di verità.
+
+    - Da questo modulo, [Capitolo 1 «Che cos'è un modello MIP»](https://fabiofurini.github.io/modellazione-mip/modellazione-1/): le variabili binarie e i pattern di set covering, packing e partitioning.
+
+!!! chiave "Obiettivi"
+
+    Alla fine di questo capitolo sarai in grado di:
+
+    - portare una condizione logica fra decisioni binarie in forma normale congiuntiva;
+
+    - tradurre ogni clausola in una disuguaglianza lineare e dimostrare che la traduzione è esatta;
+
+    - scrivere implicazioni, la loro contronominale e il *se e solo se*, e dire quando un'implicazione si può spezzare;
+
+    - scrivere vincoli di cardinalità: al più uno, almeno uno, esattamente uno;
+
+    - aggiungere vincoli logici a un modello di ottimizzazione e risolverlo in `gurobipy`.
+
 Una variabile binaria è una risposta «sì/no». Questo capitolo traduce in
 **vincoli lineari** le condizioni logiche fra quelle risposte, e — soprattutto —
 mostra come *dimostrare* che la traduzione è esatta.
@@ -261,20 +281,19 @@ for i, formula in enumerate(implicazioni, 1):          # una clausola, un vincol
 m.optimize()
 ```
 
-## Quello che questo capitolo ha messo in mano
+## In sintesi
 
-Una condizione logica fra decisioni «sì/no» si scrive sempre allo stesso modo:
-una binaria per ogni fatto elementare, la condizione portata in forma normale
-congiuntiva — una congiunzione di OR — e ogni clausola diventa una
-disuguaglianza. L'AND non costa nulla, perché i vincoli sono già in AND fra
-loro; l'OR diventa una somma $\ge 1$; il NOT diventa $1 - x$; l'implicazione
-$x \Rightarrow y$ diventa $x \le y$; il «se e solo se» chiede entrambe le
-disuguaglianze.
+!!! chiave "In sintesi"
 
-Tre forme ricorrono così spesso da avere un nome: il **set covering**
-($\sum_{j \in S} x_j \ge 1$, almeno uno), il **set packing** ($\le 1$, al più
-uno) e il **set partitioning** ($= 1$, esattamente uno). Riconoscerle in un
-enunciato è metà del lavoro di modellazione.
+    - Una variabile binaria per fatto elementare; la condizione si porta in CNF e ogni clausola diventa una disuguaglianza lineare.
+
+    - L'AND non costa nulla, l'OR diventa una somma $\ge 1$, il NOT diventa $1-x$, l'implicazione $x \Rightarrow y$ diventa $x \le y$.
+
+    - Il *se e solo se* chiede tutte e due le disuguaglianze; un'implicazione non è un'equivalenza.
+
+    - Set covering ($\ge 1$), set packing ($\le 1$) e set partitioning ($=1$) sono le tre forme da riconoscere in un enunciato.
+
+    - Una traduzione si controlla, non ci si fida: ogni combinazione di valori deve soddisfare i vincoli esattamente quando soddisfa la condizione.
 
 ## Codice
 
