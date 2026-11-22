@@ -10,7 +10,7 @@
 
     - Da questo modulo, [Capitolo 4 «Euristiche costruttive»](https://fabiofurini.github.io/modellazione-mip/modellazione-4/): l'euristica del minimo costo unitario per il lot sizing.
 
-    - Dal modulo *Problemi di ottimizzazione combinatoria*, la pagina [«Problema del lot sizing non capacitato (ULS)»](https://fabiofurini.github.io/ottimizzazione-combinatoria/catalogo/uncapacitated-lot-sizing-problem/): il problema di lot sizing a un prodotto.
+    - Dal modulo *Problemi di ottimizzazione combinatoria*, la pagina [«Problema del lot sizing non capacitato (ULS)»](https://fabiofurini.github.io/ottimizzazione-combinatoria/problemi-di-ottimizzazione-combinatoria/lot-sizing/varianti/#box-7-defULS): il problema di lot sizing a un prodotto.
 
 !!! chiave "Obiettivi"
 

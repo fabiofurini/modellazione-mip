@@ -12,7 +12,7 @@
 
     - Da questo modulo, [Capitolo 2 «Rilassamenti, dualità e bound»](https://fabiofurini.github.io/modellazione-mip/modellazione-2/): il protocollo dei bound e il duale del rilassamento LP.
 
-    - Dal modulo *Problemi di ottimizzazione combinatoria*, la pagina [«Scheduling su macchine parallele identiche ($P\|C_{\max}$)»](https://fabiofurini.github.io/ottimizzazione-combinatoria/catalogo/scheduling-on-identical-parallel-machines/): il problema di scheduling $P\|C_{\max}$ e la regola LPT.
+    - Dal modulo *Problemi di ottimizzazione combinatoria*, la pagina [«Scheduling su macchine parallele identiche ($P\|C_{\max}$)»](https://fabiofurini.github.io/ottimizzazione-combinatoria/problemi-di-ottimizzazione-combinatoria/pcmax/scheduling-su-macchine-parallele-identiche/#box-1-defPCmax): il problema di scheduling $P\|C_{\max}$ e la regola LPT.
 
 !!! chiave "Obiettivi"
 
