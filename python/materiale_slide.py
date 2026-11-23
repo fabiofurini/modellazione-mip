@@ -1,4 +1,4 @@
-"""Slide dei capitoli: copia i PDF sul sito e scrive la sezione «Le slide»
+"""Slide dei capitoli: copia i PDF sul sito e scrive la sezione «Slide»
 della pagina del materiale (it: docs/materiale.md, en: docs/downloads.md).
 
 Le slide stanno in slides/<nome>/<nome>.tex (it/slides e en/slides), una
@@ -41,7 +41,7 @@ GRUPPI = [
 ]
 PAGINA = {"it": "materiale.md", "en": "downloads.md"}
 TESTO = {
-    "it": ("## Le slide", "Le slide delle lezioni, una per capitolo delle dispense (PDF)."),
+    "it": ("## Slide", "Le slide delle lezioni, una per capitolo delle dispense (PDF)."),
     "en": ("## Slides", "The lecture slides, one deck per chapter of the notes (PDF)."),
 }
 
@@ -50,7 +50,7 @@ def sezione(lingua):
     k = 0 if lingua == "it" else 1
     repo = RADICE / lingua
     titolo, intro = TESTO[lingua]
-    righe = ["<!-- slide:inizio -->", titolo, "", intro, "", '<div class="grid cards" markdown>', ""]
+    righe = ["<!-- slide:inizio -->", titolo, "", intro, ""]
     n = 0
     for nome_gruppo, decks in GRUPPI:
         voci = []
@@ -59,11 +59,11 @@ def sezione(lingua):
             pdf = repo / "slides" / nome / f"{nome}.pdf"
             if pdf.exists():
                 shutil.copy(pdf, repo / "docs" / "pdf" / f"{nome}.pdf")
-                voci.append(f"    - [{tit}](pdf/{nome}.pdf)")
+                voci.append(f"- :material-presentation: [{tit}](pdf/{nome}.pdf)")   # i mazzi non seguono i capitoli
                 n += 1
         if voci:
-            righe += [f"-   :material-presentation: **{nome_gruppo[k]}**", "", "    ---", ""] + voci + [""]
-    righe += ["</div>", "", "<!-- slide:fine -->"]
+            righe += [f"### {nome_gruppo[k]}", ""] + voci + [""]
+    righe += ["<!-- slide:fine -->"]
     return "\n".join(righe), n
 
 

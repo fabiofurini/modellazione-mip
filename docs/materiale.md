@@ -6,7 +6,7 @@ Testi, figure e dati sono sotto licenza
 Python sotto licenza
 [MIT](https://github.com/fabiofurini/modellazione-mip/blob/main/LICENSE-CODE).
 
-## Le tre dispense
+## Dispense
 
 Se vuoi il corso intero da leggere offline, parti da questi tre PDF: sono il
 cuore del materiale. Quello che viene dopo e' di contorno.
@@ -45,61 +45,9 @@ cuore del materiale. Quello che viene dopo e' di contorno.
 
 </div>
 
-<!-- slide:inizio -->
-## Le slide
-
-Le slide delle lezioni, una per capitolo delle dispense (PDF).
+## Esercizi
 
 <div class="grid cards" markdown>
-
--   :material-presentation: **Modellazione**
-
-    ---
-
-    - [Che cos'è un modello MIP](pdf/slide-01-modelli-mip.pdf)
-    - [Rilassamenti, dualità e bound](pdf/slide-02-bound-duali.pdf)
-    - [Dal modello a Python/Gurobi](pdf/slide-03-gurobi.pdf)
-    - [Euristiche costruttive](pdf/slide-04-euristiche.pdf)
-    - [Logica e variabili binarie](pdf/slide-05-logica-binarie.pdf)
-    - [Legami fra variabili](pdf/slide-06-legami.pdf)
-
--   :material-presentation: **Problemi numerici**
-
-    ---
-
-    - [Modelli numerici: EX 1–5](pdf/slide-07-modelli-numerici-1.pdf)
-    - [Modelli numerici: EX 6–10](pdf/slide-07-modelli-numerici-2.pdf)
-    - [Modelli numerici: EX 11–15](pdf/slide-07-modelli-numerici-3.pdf)
-
--   :material-presentation: **Problemi con modello simbolico**
-
-    ---
-
-    - [Le famiglie di problemi](pdf/slide-08-famiglie.pdf)
-    - [Assegnamento e scheduling: 7.1–7.4](pdf/slide-09-scheduling-1.pdf)
-    - [Assegnamento e scheduling: 7.5–7.7](pdf/slide-09-scheduling-2.pdf)
-    - [Localizzazione e copertura](pdf/slide-10-localizzazione.pdf)
-    - [Pianificazione della produzione](pdf/slide-11-produzione.pdf)
-    - [Problemi misti: 10.1–10.3](pdf/slide-12-problemi-misti-1.pdf)
-    - [Problemi misti: 10.4–10.6](pdf/slide-12-problemi-misti-2.pdf)
-    - [Problemi misti: 10.7–10.9](pdf/slide-12-problemi-misti-3.pdf)
-
-</div>
-
-<!-- slide:fine -->
-
-## Gli altri documenti
-
-<div class="grid cards" markdown>
-
--   :material-school-outline: **Come si lavora con il corso**
-
-    ---
-
-    Come è fatto il corso e come è fatto ogni esercizio: il percorso, gli
-    errori più comuni e la riproducibilità dei numeri.
-
-    [:octicons-download-24: organizzazione-del-corso.pdf](pdf/organizzazione-del-corso.pdf)
 
 -   :material-help-circle-outline: **Problemi da modellare**
 
@@ -112,6 +60,53 @@ Le slide delle lezioni, una per capitolo delle dispense (PDF).
 
     [:octicons-download-24: esercizi.pdf](pdf/esercizi.pdf)
 
+</div>
+
+<!-- slide:inizio -->
+## Slide
+
+Le slide delle lezioni, una per capitolo delle dispense (PDF).
+
+### Modellazione
+
+- :material-presentation: [Che cos'è un modello MIP](pdf/slide-01-modelli-mip.pdf)
+- :material-presentation: [Rilassamenti, dualità e bound](pdf/slide-02-bound-duali.pdf)
+- :material-presentation: [Dal modello a Python/Gurobi](pdf/slide-03-gurobi.pdf)
+- :material-presentation: [Euristiche costruttive](pdf/slide-04-euristiche.pdf)
+- :material-presentation: [Logica e variabili binarie](pdf/slide-05-logica-binarie.pdf)
+- :material-presentation: [Legami fra variabili](pdf/slide-06-legami.pdf)
+
+### Problemi numerici
+
+- :material-presentation: [Modelli numerici: EX 1–5](pdf/slide-07-modelli-numerici-1.pdf)
+- :material-presentation: [Modelli numerici: EX 6–10](pdf/slide-07-modelli-numerici-2.pdf)
+- :material-presentation: [Modelli numerici: EX 11–15](pdf/slide-07-modelli-numerici-3.pdf)
+
+### Problemi con modello simbolico
+
+- :material-presentation: [Le famiglie di problemi](pdf/slide-08-famiglie.pdf)
+- :material-presentation: [Assegnamento e scheduling: 7.1–7.4](pdf/slide-09-scheduling-1.pdf)
+- :material-presentation: [Assegnamento e scheduling: 7.5–7.7](pdf/slide-09-scheduling-2.pdf)
+- :material-presentation: [Localizzazione e copertura](pdf/slide-10-localizzazione.pdf)
+- :material-presentation: [Pianificazione della produzione](pdf/slide-11-produzione.pdf)
+- :material-presentation: [Problemi misti: 10.1–10.3](pdf/slide-12-problemi-misti-1.pdf)
+- :material-presentation: [Problemi misti: 10.4–10.6](pdf/slide-12-problemi-misti-2.pdf)
+- :material-presentation: [Problemi misti: 10.7–10.9](pdf/slide-12-problemi-misti-3.pdf)
+
+<!-- slide:fine -->
+
+## Altri documenti
+
+<div class="grid cards" markdown>
+
+-   :material-school-outline: **Come si lavora con il corso**
+
+    ---
+
+    Come è fatto il corso e come è fatto ogni esercizio: il percorso, gli
+    errori più comuni e la riproducibilità dei numeri.
+
+    [:octicons-download-24: organizzazione-del-corso.pdf](pdf/organizzazione-del-corso.pdf)
 
 -   :material-language-python: **Il codice**
 
@@ -153,7 +148,7 @@ riga `Restricted license - for non-production use only`: è normale.
    dimensione.
 
 <!-- banca-domande -->
-## Banca delle domande del quiz
+## Banca delle domande
 
 Tutte le domande dell'autovalutazione, divise per parte e capitolo, con la risposta corretta e la spiegazione; per le domande generate, che cambiano i numeri a ogni avvio, alcuni esempi.
 
