@@ -15,7 +15,10 @@ hide:
 Materiale didattico ideato e sviluppato da **[Fabio Furini](https://fabiofurini.github.io/)**, professore
 associato al [DIAG](https://www.diag.uniroma1.it/), Sapienza Università di Roma.
 
-**Modelli di programmazione lineare intera per prendere decisioni ottime.**
+Il corso presenta la modellazione con la programmazione lineare intera: che cos'è un modello MIP,
+rilassamenti, dualità e bound, l'implementazione in Python/Gurobi, le euristiche costruttive, la logica
+con le variabili binarie e i legami fra variabili, e i modelli di problemi di assegnamento, scheduling,
+localizzazione, copertura e pianificazione della produzione.
 
 Prerequisiti: [Programmazione lineare intera](https://fabiofurini.github.io/programmazione-lineare-intera/).
 
