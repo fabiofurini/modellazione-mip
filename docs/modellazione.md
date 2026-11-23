@@ -19,7 +19,7 @@ rilassamento e del suo duale; il solver, con i modelli classici scritti in
 Python; le euristiche costruttive, che danno il bound dall'altro lato; la logica
 delle variabili binarie; e i quattordici legami fra variabili, che sono il cuore
 della modellazione e arrivano quando tutti gli strumenti per giudicarli sono già
-in mano.
+in mano. Chiudono la parte quindici modelli numerici svolti, uno per tecnica.
 
 Ogni capitolo ha uno **script** che produce tutti i numeri citati e un
 **notebook** che si apre in Colab. Nessun valore compare in queste pagine se non
@@ -87,5 +87,15 @@ esce da un'esecuzione riproducibile.
     funzioni a tratti. Più la mappa consultabile.
 
     [:octicons-arrow-right-24: Le quattordici tecniche](legami.md)
+
+-   :material-numeric: **Quindici modelli numerici**
+
+    ---
+
+    Gli esempi più facili, con dati espliciti e poche variabili: uno per
+    tecnica, da EX 1 a EX 15, con i due bound costruiti a mano e l'ottimo del
+    solver.
+
+    [:octicons-arrow-right-24: I quindici modelli](numerici.md)
 
 </div>

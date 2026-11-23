@@ -23,7 +23,7 @@ localizzazione, copertura e pianificazione della produzione.
 Prerequisiti: [Programmazione lineare intera](https://fabiofurini.github.io/programmazione-lineare-intera/).
 
 [Comincia :material-arrow-right:](modellazione.md){ .md-button .md-button--primary }
-[:material-pencil: Esercizi](problemi.md){ .md-button }
+[:material-pencil: Esercizi](da-modellare.md){ .md-button }
 [:material-gesture-tap: Laboratorio](laboratorio/index.md){ .md-button }
 [:material-clipboard-check-outline: Quiz](autovalutazione.md){ .md-button }
 [:material-download: Materiale](materiale.md){ .md-button }
@@ -50,20 +50,45 @@ Tre modelli del corso risolti all'ottimo nel browser: localizzazione capacitata,
 
     Che cos'è un MIP, logica e variabili binarie, i legami fra variabili
     (attivazione, lotto minimo, big-M, massimi, se e solo se…), i bound dal
-    basso e dall'alto, il solver.
+    basso e dall'alto, il solver, e quindici modelli numerici svolti.
 
     [:octicons-arrow-right-24: I sei capitoli](modellazione.md)
 
--   :material-puzzle: **I problemi**
+-   :material-timer-sand: **Assegnamento e scheduling**
 
     ---
 
-    Tre famiglie — assegnamento e scheduling, localizzazione e copertura,
-    pianificazione della produzione — più un capitolo di problemi misti, per i
-    problemi che una famiglia non ce l'hanno. Esercizi risolti e domande
-    aggiuntive.
+    Lavori su macchine con disponibilità: costi fissi, selezione, lavori in
+    parallelo, setup, premi «se e solo se», sequenziamento con big-M.
 
-    [:octicons-arrow-right-24: I problemi](problemi.md)
+    [:octicons-arrow-right-24: I sette problemi](scheduling.md)
+
+-   :material-map-marker-radius: **Localizzazione e copertura**
+
+    ---
+
+    Dove aprire sedi e hub: attivazione aggregata e disaggregata, «se e solo
+    se», variabile di massimo.
+
+    [:octicons-arrow-right-24: I quattro problemi](localizzazione.md)
+
+-   :material-factory: **Pianificazione della produzione**
+
+    ---
+
+    Quanto produrre, non soltanto se: scorte, costo fisso di lancio, organico e
+    assunzioni, lotto minimo.
+
+    [:octicons-arrow-right-24: I tre problemi](produzione.md)
+
+-   :material-shape-outline: **Problemi misti**
+
+    ---
+
+    I problemi senza famiglia: modalità alternative, contenitori, divisione e
+    bilanciamento, bound duali con argomenti combinatori.
+
+    [:octicons-arrow-right-24: I nove problemi](misti.md)
 
 -   :material-school: **Il corso**
 
@@ -86,7 +111,7 @@ Tre modelli del corso risolti all'ottimo nel browser: localizzazione capacitata,
 
     Esercizi di modellazione per ogni capitolo, di livello d'esame, sui casi del corso.
 
-    [:octicons-arrow-right-24: Gli esercizi](problemi.md)
+    [:octicons-arrow-right-24: Gli esercizi](da-modellare.md)
 
 -   :material-clipboard-check-outline: **Quiz di autovalutazione**
 

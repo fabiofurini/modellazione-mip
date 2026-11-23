@@ -2,7 +2,8 @@
 
 L'elenco completo di quello che il corso contiene, capitolo per capitolo e
 problema per problema. Per orientarsi conviene partire dalle pagine
-[Modellazione](modellazione.md) e [I problemi](problemi.md); questa pagina serve
+[Modellazione](modellazione.md) e dalle pagine delle quattro parti di problemi,
+a partire da [Assegnamento e scheduling](scheduling.md); questa pagina serve
 a chi vuole vedere tutto in una volta.
 
 **[Modellazione](modellazione.md)**
@@ -19,8 +20,6 @@ a chi vuole vedere tutto in una volta.
    traduzione, cinque esercizi
 6. [Legami fra variabili](legami.md) — le quattordici tecniche, una per
    sottopagina, con la [mappa](legami.md)
-
-**[I problemi](problemi.md)**
 
 *[Quindici modelli numerici](numerici.md)* — da EX 1 a EX 15, ciascuno con la sua pagina
 
@@ -40,7 +39,7 @@ EX 13 [Turni del pronto soccorso](ex-13-turni.md) ·
 EX 14 [Scarpe, produzione e assunzioni](ex-14-scarpe.md) ·
 EX 15 [Orario della scuola di musica](ex-15-orario.md)
 
-*[Assegnamento e scheduling](scheduling.md)*
+**[Assegnamento e scheduling](scheduling.md)**
 
 7.1 [Assegnamento a costo minimo](scheduling-1.md) ·
 7.2 [Macchine con costo fisso](scheduling-2.md) ·
@@ -50,20 +49,20 @@ EX 15 [Orario della scuola di musica](ex-15-orario.md)
 7.6 [Classi con premio](scheduling-6.md) ·
 7.7 [Ritardo totale](scheduling-7.md)
 
-*[Localizzazione e copertura](localizzazione.md)*
+**[Localizzazione e copertura](localizzazione.md)**
 
 8.1 [Localizzazione capacitata](localizzazione-1.md) ·
 8.2 [p-mediana](localizzazione-2.md) ·
 8.3 [Copertura con interferenza](localizzazione-3.md) ·
 8.4 [Hub con costo massimo](localizzazione-4.md)
 
-*[Pianificazione della produzione](produzione.md)*
+**[Pianificazione della produzione](produzione.md)**
 
 9.1 [Lotti con costo fisso](produzione-1.md) ·
 9.2 [Produzione e manodopera](produzione-2.md) ·
 9.3 [Veicoli con lotto minimo](produzione-3.md)
 
-*[Problemi misti](misti.md)*
+**[Problemi misti](misti.md)**
 
 10.1 [Premi con due modalità](misti-1.md) ·
 10.2 [Asta combinatoria](misti-2.md) ·
@@ -74,6 +73,9 @@ EX 15 [Orario della scuola di musica](ex-15-orario.md)
 10.7 [Filiali fra due società](misti-7.md) ·
 10.8 [Brani fra CD](misti-8.md) ·
 10.9 [Libri fra scaffali](misti-9.md)
+
+**[Esercizi](da-modellare.md)** — quaranta problemi da modellare,
+venti numerici e venti simbolici
 
 **Il corso**
 

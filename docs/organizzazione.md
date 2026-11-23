@@ -73,7 +73,16 @@ al solver.
 | | Contenuto | Obiettivi di apprendimento |
 |---|---|---|
 | **Parte I** | Modellazione | riconoscere un legame fra variabili (attivazione, massimo, big-M, se e solo se…) e dimostrare che il modello lo impone davvero |
-| **Parte II** | I problemi | applicare i legami a tre famiglie di problemi reali e ai problemi misti, dal modello al codice Gurobi |
+| **Parte II** | I problemi: [assegnamento e scheduling](scheduling.md), [localizzazione e copertura](localizzazione.md), [pianificazione della produzione](produzione.md), [problemi misti](misti.md) | applicare i legami a tre famiglie di problemi reali e ai problemi misti, dal modello al codice Gurobi |
+
+!!! note "Le stelle della difficoltà"
+    Ogni problema porta una difficoltà da ★☆☆☆☆ a ★★★★★. Misura quanto è
+    difficile **costruire il modello**: quante famiglie di variabili servono,
+    quali legami vanno riconosciuti, se c'è una struttura temporale, un big-M,
+    una disgiunzione, un min-max, degli scaglioni, un «se e solo se». Non misura
+    la dimensione dell'istanza, il tempo del solver né la lunghezza della pagina:
+    un problema con un modello elementare resta a una stella anche se il suo
+    duale è laborioso.
 
 ## Il formato di ogni esercizio
 

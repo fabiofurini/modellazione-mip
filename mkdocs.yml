@@ -45,6 +45,9 @@ theme:
 
 plugins:
   - search
+  - redirects:
+      redirect_maps:
+        problemi.md: scheduling.md
 
 extra:
   social:
@@ -176,8 +179,6 @@ nav:
           - 6.12 Alldiff ed espansione: legami-12.md
           - 6.13 Vincoli violabili: legami-13.md
           - 6.14 Funzioni a tratti: legami-14.md
-  - I problemi:
-      - problemi.md
       - Modelli numerici:
           - numerici.md
           - EX 1 Il furgone da otto posti: ex-01-furgone.md
@@ -195,38 +196,38 @@ nav:
           - EX 13 Turni del pronto soccorso: ex-13-turni.md
           - EX 14 Scarpe, produzione e assunzioni: ex-14-scarpe.md
           - EX 15 Orario della scuola di musica: ex-15-orario.md
-      - Assegnamento e scheduling:
-          - scheduling.md
-          - 7.1 Assegnamento a costo minimo: scheduling-1.md
-          - 7.2 Macchine con costo fisso: scheduling-2.md
-          - 7.3 Selezione di lavori: scheduling-3.md
-          - 7.4 Lavori in parallelo: scheduling-4.md
-          - 7.5 Classi con setup: scheduling-5.md
-          - 7.6 Classi con premio: scheduling-6.md
-          - 7.7 Ritardo totale: scheduling-7.md
-      - Localizzazione e copertura:
-          - localizzazione.md
-          - 8.1 Localizzazione capacitata: localizzazione-1.md
-          - 8.2 p-mediana: localizzazione-2.md
-          - 8.3 Copertura con interferenza: localizzazione-3.md
-          - 8.4 Hub con costo massimo: localizzazione-4.md
-      - Pianificazione della produzione:
-          - produzione.md
-          - 9.1 Lotti con costo fisso: produzione-1.md
-          - 9.2 Produzione e manodopera: produzione-2.md
-          - 9.3 Veicoli con lotto minimo: produzione-3.md
-      - Problemi misti:
-          - misti.md
-          - 10.1 Premi con due modalità: misti-1.md
-          - 10.2 Asta combinatoria: misti-2.md
-          - 10.3 Dieta con lotto minimo: misti-3.md
-          - 10.4 Alberi e scatole di luci: misti-4.md
-          - 10.5 Spedizioni in scatole: misti-5.md
-          - 10.6 Bambini fra campi estivi: misti-6.md
-          - 10.7 Filiali fra due società: misti-7.md
-          - 10.8 Brani fra CD: misti-8.md
-          - 10.9 Libri fra scaffali: misti-9.md
-      - Problemi da modellare: da-modellare.md
+  - Assegnamento e scheduling:
+      - scheduling.md
+      - 7.1 Assegnamento a costo minimo: scheduling-1.md
+      - 7.2 Macchine con costo fisso: scheduling-2.md
+      - 7.3 Selezione di lavori: scheduling-3.md
+      - 7.4 Lavori in parallelo: scheduling-4.md
+      - 7.5 Classi con setup: scheduling-5.md
+      - 7.6 Classi con premio: scheduling-6.md
+      - 7.7 Ritardo totale: scheduling-7.md
+  - Localizzazione e copertura:
+      - localizzazione.md
+      - 8.1 Localizzazione capacitata: localizzazione-1.md
+      - 8.2 p-mediana: localizzazione-2.md
+      - 8.3 Copertura con interferenza: localizzazione-3.md
+      - 8.4 Hub con costo massimo: localizzazione-4.md
+  - Produzione:
+      - produzione.md
+      - 9.1 Lotti con costo fisso: produzione-1.md
+      - 9.2 Produzione e manodopera: produzione-2.md
+      - 9.3 Veicoli con lotto minimo: produzione-3.md
+  - Problemi misti:
+      - misti.md
+      - 10.1 Premi con due modalità: misti-1.md
+      - 10.2 Asta combinatoria: misti-2.md
+      - 10.3 Dieta con lotto minimo: misti-3.md
+      - 10.4 Alberi e scatole di luci: misti-4.md
+      - 10.5 Spedizioni in scatole: misti-5.md
+      - 10.6 Bambini fra campi estivi: misti-6.md
+      - 10.7 Filiali fra due società: misti-7.md
+      - 10.8 Brani fra CD: misti-8.md
+      - 10.9 Libri fra scaffali: misti-9.md
+  - Esercizi: da-modellare.md
   - Quiz: autovalutazione.md
   - Laboratorio: laboratorio/index.md
   - Materiale: materiale.md
