@@ -33,7 +33,7 @@ Prerequisiti: [Programmazione lineare intera](https://fabiofurini.github.io/prog
 <!-- collana-app -->
 ## Provalo subito
 
-Un comune sceglie quali progetti finanziare con un fondo regionale e uno europeo, ciascuno con il suo budget. Il modello è risolto all'ottimo nel browser: cambia il budget di un fondo e il costo di un progetto con i cursori e l'ottimo ricalcola i progetti finanziati, il beneficio, il rilassamento continuo e il gap.
+L'app risolve all'ottimo nel browser un modello di programmazione lineare intera: i dati, il modello simbolico, il modello numerico dell'istanza, la soluzione ottima con la sua figura, il rilassamento continuo e il gap. Con i cursori si cambiano i dati e la soluzione si ricalcola.
 
 <div class="gi" data-grafico="mip-progetti-fondi"></div>
 

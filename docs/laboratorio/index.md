@@ -17,7 +17,7 @@ i problemi sono piccoli, così ogni passo si vede.
 
     ---
 
-    Un comune sceglie quali progetti finanziare con un fondo regionale e uno europeo. Il modello è risolto all'ottimo nel browser: il problema, i dati, il modello simbolico e quello numerico, i progetti finanziati da ogni fondo, il rilassamento continuo e il gap.
+    L'app risolve all'ottimo nel browser un modello di programmazione lineare intera: i dati, il modello simbolico, il modello numerico dell'istanza, la soluzione ottima con la sua figura, il rilassamento continuo e il gap.
 
     [Apri l'app →](progetti-fondi.md)
 

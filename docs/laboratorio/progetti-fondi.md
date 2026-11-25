@@ -9,6 +9,6 @@ title: "Progetti e fondi"
 
 # Progetti e fondi
 
-Un comune sceglie quali progetti finanziare con un fondo regionale e uno europeo. Il modello è risolto all'ottimo nel browser: il problema, i dati, il modello simbolico e quello numerico, i progetti finanziati da ogni fondo, il rilassamento continuo e il gap. Muovi il budget del fondo regionale e il costo dell'illuminazione LED: cambiano i progetti finanziati.
+L'app risolve all'ottimo nel browser un modello di programmazione lineare intera: i dati, il modello simbolico, il modello numerico dell'istanza, la soluzione ottima con la sua figura, il rilassamento continuo e il gap. Con i cursori si cambiano i dati e la soluzione si ricalcola.
 
 <div class="gi gi-app-intera" data-grafico="mip-progetti-fondi"></div>
