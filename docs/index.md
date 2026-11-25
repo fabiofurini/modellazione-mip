@@ -33,9 +33,9 @@ Prerequisiti: [Programmazione lineare intera](https://fabiofurini.github.io/prog
 <!-- collana-app -->
 ## Provalo subito
 
-Il modello dei lotti con costo fisso di setup, risolto all'ottimo nel browser: cambia il costo di setup, il costo di giacenza e la domanda dell'ultimo giorno con i cursori e l'ottimo ricalcola i giorni con un setup, il costo e il rilassamento continuo.
+Lo zaino multiplo con cinque oggetti e due zaini, risolto all'ottimo nel browser: cambia la capacità di uno zaino e il peso di un oggetto con i cursori e l'ottimo ricalcola gli oggetti caricati, il valore, il rilassamento continuo e il gap.
 
-<div class="gi" data-grafico="mip-lotti"></div>
+<div class="gi" data-grafico="mip-zaino-multiplo"></div>
 
 [:material-gesture-tap: Altre app nel laboratorio](laboratorio/index.md){ .md-button }
 <!-- /collana-app -->

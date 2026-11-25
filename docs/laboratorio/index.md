@@ -13,6 +13,14 @@ i problemi sono piccoli, così ogni passo si vede.
 
 <div class="grid cards" markdown>
 
+-   :material-bag-personal-outline: **Zaino multiplo**
+
+    ---
+
+    Lo zaino multiplo con cinque oggetti e due zaini, risolto all'ottimo nel browser: il problema, i dati, il modello simbolico e quello numerico, gli oggetti in ogni zaino, il rilassamento continuo e il gap.
+
+    [Apri l'app →](zaino-multiplo.md)
+
 -   :material-check-decagram: **Tre modelli risolti all'ottimo**
 
     ---

@@ -285,6 +285,8 @@ Lo stesso codice è disponibile come notebook —
 [capitolo 3](modellazione-3.md), e da quel capitolo in poi ogni pagina ha il suo
 badge Colab in cima.
 
+:material-flask-outline: **Nel laboratorio interattivo:** [Zaino multiplo](laboratorio/zaino-multiplo.md).
+
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
 ??? example "Mostra lo script completo — `python/cap01_modelli.py` (119 righe)"
