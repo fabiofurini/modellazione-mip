@@ -9,6 +9,6 @@ title: "Lotti con costo fisso di setup"
 
 # Lotti con costo fisso di setup
 
-Il modello dei lotti con costo fisso di setup (problema 9.1), risolto all'ottimo nel browser: il problema, i dati, il modello simbolico e quello numerico, il piano ottimo con il suo costo, il rilassamento continuo e il gap. Muovi il costo di setup, il costo di giacenza e la domanda del giorno 5: cambiano i giorni con un setup.
+L'app risolve all'ottimo nel browser un modello di programmazione lineare intera mista: i dati, il modello simbolico, il modello numerico dell'istanza, la soluzione ottima con la sua figura, il rilassamento continuo e il gap. Con i cursori si cambiano i dati e la soluzione si ricalcola.
 
 <div class="gi gi-app-intera" data-grafico="mip-lotti"></div>

@@ -21,21 +21,29 @@ i problemi sono piccoli, così ogni passo si vede.
 
     [Apri l'app →](progetti-fondi.md)
 
--   :material-check-decagram: **Tre modelli risolti all'ottimo**
-
-    ---
-
-    Localizzazione capacitata, lotti con costo di setup e selezione di progetti con vincoli logici, risolti all'ottimo a ogni cambio dei dati: la soluzione disegnata, le binarie a 1, il rilassamento continuo e il gap.
-
-    [Apri l'app →](modelli-ottimi.md)
-
 -   :material-factory: **Lotti con costo fisso di setup**
 
     ---
 
-    Il modello dei lotti con costo fisso di setup (problema 9.1), risolto all'ottimo nel browser: il problema, i dati, il modello simbolico e quello numerico, il piano ottimo con il suo costo, il rilassamento continuo e il gap.
+    L'app risolve all'ottimo nel browser un modello di programmazione lineare intera mista: i dati, il modello simbolico, il modello numerico dell'istanza, la soluzione ottima con la sua figura, il rilassamento continuo e il gap.
 
     [Apri l'app →](lotti-costo-fisso.md)
+
+-   :material-warehouse: **Localizzazione capacitata**
+
+    ---
+
+    L'app risolve all'ottimo nel browser un modello di programmazione lineare intera mista: i dati, il modello simbolico, il modello numerico dell'istanza, la soluzione ottima con la sua figura, il rilassamento continuo e il gap.
+
+    [Apri l'app →](localizzazione-capacitata.md)
+
+-   :material-sitemap-outline: **Progetti con vincoli logici**
+
+    ---
+
+    L'app risolve all'ottimo nel browser un modello di programmazione lineare intera: i dati, il modello simbolico, il modello numerico dell'istanza, la soluzione ottima con la sua figura, il rilassamento continuo e il gap.
+
+    [Apri l'app →](progetti-vincoli-logici.md)
 
 </div>
 

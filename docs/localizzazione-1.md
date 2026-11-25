@@ -261,7 +261,7 @@ Script completo —
 [`notebooks/fam08_1_capacitata.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam08_1_capacitata.ipynb)
 — che si apre in Colab dal badge in cima alla pagina.
 
-:material-flask-outline: **Nel laboratorio interattivo:** [Tre modelli risolti all'ottimo](laboratorio/modelli-ottimi.md).
+:material-flask-outline: **Nel laboratorio interattivo:** [Localizzazione capacitata](laboratorio/localizzazione-capacitata.md).
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
