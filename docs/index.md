@@ -33,7 +33,7 @@ Prerequisiti: [Programmazione lineare intera](https://fabiofurini.github.io/prog
 <!-- collana-app -->
 ## Provalo subito
 
-Il modello dei lotti con costo fisso di lancio, risolto all'ottimo nel browser: cambia il costo di lancio, il costo di giacenza e la domanda dell'ultimo giorno con i cursori e l'ottimo ricalcola i giorni con un lancio, il costo e il rilassamento continuo.
+Il modello dei lotti con costo fisso di setup, risolto all'ottimo nel browser: cambia il costo di setup, il costo di giacenza e la domanda dell'ultimo giorno con i cursori e l'ottimo ricalcola i giorni con un setup, il costo e il rilassamento continuo.
 
 <div class="gi" data-grafico="mip-lotti"></div>
 
@@ -76,7 +76,7 @@ Il modello dei lotti con costo fisso di lancio, risolto all'ottimo nel browser: 
 
     ---
 
-    Quanto produrre, non soltanto se: scorte, costo fisso di lancio, organico e
+    Quanto produrre, non soltanto se: scorte, costo fisso di setup, organico e
     assunzioni, lotto minimo.
 
     [:octicons-arrow-right-24: I tre problemi](produzione.md)

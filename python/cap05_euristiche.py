@@ -186,15 +186,15 @@ for t in R(T55):
 z55 = risolvi(m55)
 sol55 = {}
 for t in R(T55):
-    sol55[f"q[{t}]"] = e55.lanci.get(t, 0)
-    sol55[f"y[{t}]"] = 1 if t in e55.lanci else 0
+    sol55[f"q[{t}]"] = e55.periodi_setup.get(t, 0)
+    sol55[f"y[{t}]"] = 1 if t in e55.periodi_setup else 0
 scorta = 0
 for t in R(T55):
     scorta += sol55[f"q[{t}]"] - d55[t]
     sol55[f"I[{t}]"] = scorta
 assert ammissibile(m55, sol55)
 confronta("5.5 lot sizing (least unit cost)", "min", e55.valore, z55,
-          f"lanci nei periodi {[t + 1 for t in sorted(e55.lanci)]}")
+          f"setup nei periodi {[t + 1 for t in sorted(e55.periodi_setup)]}")
 print("  Wagner-Whitin risolve *all'ottimo* questo stesso modello con la programmazione")
 print(f"  dinamica: il suo valore e' {frazione(z55)}, non quello dell'euristica.")
 

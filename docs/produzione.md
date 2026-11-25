@@ -26,7 +26,7 @@
 
 Tre problemi in cui si decide **quanto** produrre, non soltanto *se* fare
 qualcosa. Le variabili di quantità sono continue o intere, e sopra di esse si
-appoggiano delle binarie che accendono, limitano o premiano: il lancio della
+appoggiano delle binarie che accendono, limitano o premiano: il setup della
 produzione con il suo costo fisso (9.1), l'organico con le assunzioni (9.2), il
 lotto minimo per tipo con un premio per la varietà (9.3).
 
@@ -55,7 +55,7 @@ modo sistematico.
 | $n$ | $\in \mathbb{Z}_{\ge 1}$ | numero di periodi, $t \in \{1, 2, \dots, n\}$ |
 | $d_t$ | $\in \mathbb{Q}_{\ge 0}$ | domanda del periodo $t$ |
 | $p_t$ | $\in \mathbb{Q}_{>0}$ | costo unitario di produzione nel periodo $t$ |
-| $q_t$ | $\in \mathbb{Q}_{\ge 0}$ | costo fisso di lancio nel periodo $t$ |
+| $q_t$ | $\in \mathbb{Q}_{\ge 0}$ | costo fisso di setup nel periodo $t$ |
 | $h_t$ | $\in \mathbb{Q}_{\ge 0}$ | costo di magazzino a fine periodo $t$ |
 | $M_t$ | $\in \mathbb{Q}_{>0}$ | massima produzione utile: $\sum_{\tau \ge t} d_\tau + r_n$ |
 | $m_0$ | $\in \mathbb{Z}_{\ge 0}$ | operai in servizio all'inizio |
@@ -70,11 +70,11 @@ modo sistematico.
 
 <div class="grid cards" markdown>
 
--   **9.1 Lotti con costo fisso di lancio**
+-   **9.1 Lotti con costo fisso di setup**
 
     ---
 
-    Bilancio delle scorte e lancio della produzione con big-M letto dai dati.
+    Bilancio delle scorte e setup della produzione con big-M letto dai dati.
     Due euristiche a confronto: lot-for-lot e least unit cost.
 
     [:octicons-arrow-right-24: MILP · costo fisso](produzione-1.md)

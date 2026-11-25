@@ -170,7 +170,7 @@ Dati scritti per esteso, come nei quindici modelli numerici: si legge l'enunciat
     **Difficoltà:** ★★★★☆
 
     Una linea produce un articolo per tre mesi. Le domande sono $100$, $140$ e $80$
-    pezzi. Produrre un pezzo costa $5$ euro; lanciare la produzione in un mese costa
+    pezzi. Produrre un pezzo costa $5$ euro; attivare la produzione in un mese costa
     $300$ euro, indipendentemente dalla quantità; tenere un pezzo in magazzino a
     fine mese costa $1$ euro. La linea produce al più $200$ pezzi al mese. Si parte e
     si finisce con magazzino vuoto. Si vuole il costo minimo.

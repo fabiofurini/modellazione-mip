@@ -37,7 +37,7 @@ class Esito:
     makespan: float = None       # massimo dei carichi (LPT)
     valore: float = None         # valore della soluzione costruita
     residuo: float = None        # capacita' residua (zaino)
-    lanci: dict = None           # {periodo: quantita' prodotta} (lot sizing)
+    setup: dict = None           # {periodo: quantita' prodotta} (lot sizing)
     tour: list = None            # sequenza dei nodi visitati (TSP)
 
     def assegnazione(self, j: int):
@@ -288,7 +288,7 @@ def euristica_zaino(p, w, C) -> Esito:
 def euristica_lotti(domanda, setup, magazzino) -> Esito:
     """Copertura di periodi a costo unitario minimo (least unit cost) per il lot sizing.
 
-    A ogni lancio di produzione si copre il numero di periodi consecutivi che
+    A ogni setup di produzione si copre il numero di periodi consecutivi che
     minimizza il costo medio per unita' prodotta; poi si riparte dal primo
     periodo scoperto. NON e' l'algoritmo di Wagner-Whitin: quello e' un metodo
     esatto di programmazione dinamica per il modello di lot sizing senza
@@ -297,7 +297,7 @@ def euristica_lotti(domanda, setup, magazzino) -> Esito:
     """
     T = len(domanda)
     e = Esito(x={}, y=[0] * T)
-    lanci = {}
+    periodi_setup = {}
     t = 0
     while t < T:
         while t < T and domanda[t] == 0:
@@ -315,16 +315,16 @@ def euristica_lotti(domanda, setup, magazzino) -> Esito:
                 migliore, quanti = unitario, k
         quantita = sum(domanda[t:t + quanti])
         e.traccia.passo(
-            f"Periodo {t + 1}: si lancia una produzione che copre "
+            f"Periodo {t + 1}: si attiva una produzione che copre "
             f"{'il solo periodo ' + str(t + 1) if quanti == 1 else str(quanti) + ' periodi (' + str(t + 1) + '-' + str(t + quanti) + ')'}"
             f", quantita' {quantita:g}, costo unitario {migliore:.4g} "
             f"(il minimo fra le coperture possibili).")
-        lanci[t] = quantita
+        periodi_setup[t] = quantita
         e.y[t] = 1
         t += quanti
-    e.lanci = lanci
-    e.valore = sum(setup for t in lanci) + sum(
-        magazzino * max(0, sum(lanci[s] for s in lanci if s <= t) - sum(domanda[:t + 1]))
+    e.periodi_setup = setup
+    e.valore = sum(setup for t in periodi_setup) + sum(
+        magazzino * max(0, sum(periodi_setup[s] for s in periodi_setup if s <= t) - sum(domanda[:t + 1]))
         for t in range(T))
     return e
 

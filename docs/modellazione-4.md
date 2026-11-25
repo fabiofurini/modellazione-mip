@@ -268,7 +268,7 @@ LeastUnitCost(d, f, h):
     tempo polinomiale. La procedura qui sopra è un'euristica, e il suo valore è
     solo un bound. Chiamarla «euristica costruttiva di Wagner–Whitin» confonde due cose diverse.
 
-Su $d = (20, 10, 30, 40, 10)$, lancio $f = 50$, magazzino $h = 1$: dal periodo 1
+Su $d = (20, 10, 30, 40, 10)$, setup $f = 50$, magazzino $h = 1$: dal periodo 1
 conviene coprire 2 periodi (costo unitario $2$); dal periodo 3 altri 2 (costo
 unitario $\approx 1{,}286$); dal periodo 5 solo quello (costo unitario $5$).
 Costo $\mathit{UB} = 200$ contro $z(\mathit{MILP}) = 170$, gap $17{,}6\%$ — che
@@ -545,15 +545,15 @@ il notebook è
     z55 = risolvi(m55)
     sol55 = {}
     for t in R(T55):
-        sol55[f"q[{t}]"] = e55.lanci.get(t, 0)
-        sol55[f"y[{t}]"] = 1 if t in e55.lanci else 0
+        sol55[f"q[{t}]"] = e55.periodi_setup.get(t, 0)
+        sol55[f"y[{t}]"] = 1 if t in e55.periodi_setup else 0
     scorta = 0
     for t in R(T55):
         scorta += sol55[f"q[{t}]"] - d55[t]
         sol55[f"I[{t}]"] = scorta
     assert ammissibile(m55, sol55)
     confronta("5.5 lot sizing (least unit cost)", "min", e55.valore, z55,
-              f"lanci nei periodi {[t + 1 for t in sorted(e55.lanci)]}")
+              f"setup nei periodi {[t + 1 for t in sorted(e55.periodi_setup)]}")
     print("  Wagner-Whitin risolve *all'ottimo* questo stesso modello con la programmazione")
     print(f"  dinamica: il suo valore e' {frazione(z55)}, non quello dell'euristica.")
 
@@ -675,7 +675,7 @@ il notebook è
         makespan: float = None       # massimo dei carichi (LPT)
         valore: float = None         # valore della soluzione costruita
         residuo: float = None        # capacita' residua (zaino)
-        lanci: dict = None           # {periodo: quantita' prodotta} (lot sizing)
+        setup: dict = None           # {periodo: quantita' prodotta} (lot sizing)
         tour: list = None            # sequenza dei nodi visitati (TSP)
 
         def assegnazione(self, j: int):
@@ -926,7 +926,7 @@ il notebook è
     def euristica_lotti(domanda, setup, magazzino) -> Esito:
         """Copertura di periodi a costo unitario minimo (least unit cost) per il lot sizing.
 
-        A ogni lancio di produzione si copre il numero di periodi consecutivi che
+        A ogni setup di produzione si copre il numero di periodi consecutivi che
         minimizza il costo medio per unita' prodotta; poi si riparte dal primo
         periodo scoperto. NON e' l'algoritmo di Wagner-Whitin: quello e' un metodo
         esatto di programmazione dinamica per il modello di lot sizing senza
@@ -935,7 +935,7 @@ il notebook è
         """
         T = len(domanda)
         e = Esito(x={}, y=[0] * T)
-        lanci = {}
+        periodi_setup = {}
         t = 0
         while t < T:
             while t < T and domanda[t] == 0:
@@ -953,16 +953,16 @@ il notebook è
                     migliore, quanti = unitario, k
             quantita = sum(domanda[t:t + quanti])
             e.traccia.passo(
-                f"Periodo {t + 1}: si lancia una produzione che copre "
+                f"Periodo {t + 1}: si attiva una produzione che copre "
                 f"{'il solo periodo ' + str(t + 1) if quanti == 1 else str(quanti) + ' periodi (' + str(t + 1) + '-' + str(t + quanti) + ')'}"
                 f", quantita' {quantita:g}, costo unitario {migliore:.4g} "
                 f"(il minimo fra le coperture possibili).")
-            lanci[t] = quantita
+            periodi_setup[t] = quantita
             e.y[t] = 1
             t += quanti
-        e.lanci = lanci
-        e.valore = sum(setup for t in lanci) + sum(
-            magazzino * max(0, sum(lanci[s] for s in lanci if s <= t) - sum(domanda[:t + 1]))
+        e.periodi_setup = setup
+        e.valore = sum(setup for t in periodi_setup) + sum(
+            magazzino * max(0, sum(periodi_setup[s] for s in periodi_setup if s <= t) - sum(domanda[:t + 1]))
             for t in range(T))
         return e
 

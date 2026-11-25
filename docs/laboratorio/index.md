@@ -17,15 +17,15 @@ i problemi sono piccoli, così ogni passo si vede.
 
     ---
 
-    Localizzazione capacitata, lotti con costo di lancio e selezione di progetti con vincoli logici, risolti all'ottimo a ogni cambio dei dati: la soluzione disegnata, le binarie a 1, il rilassamento continuo e il gap.
+    Localizzazione capacitata, lotti con costo di setup e selezione di progetti con vincoli logici, risolti all'ottimo a ogni cambio dei dati: la soluzione disegnata, le binarie a 1, il rilassamento continuo e il gap.
 
     [Apri l'app →](modelli-ottimi.md)
 
--   :material-factory: **Lotti con costo fisso di lancio**
+-   :material-factory: **Lotti con costo fisso di setup**
 
     ---
 
-    Il modello dei lotti con costo fisso di lancio (problema 9.1), risolto all'ottimo nel browser: il problema, i dati, il modello simbolico e quello numerico, il piano ottimo con il suo costo, il rilassamento continuo e il gap.
+    Il modello dei lotti con costo fisso di setup (problema 9.1), risolto all'ottimo nel browser: il problema, i dati, il modello simbolico e quello numerico, il piano ottimo con il suo costo, il rilassamento continuo e il gap.
 
     [Apri l'app →](lotti-costo-fisso.md)
 

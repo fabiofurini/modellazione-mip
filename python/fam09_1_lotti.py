@@ -1,4 +1,4 @@
-"""Problema 9.1 -- Produzione e lotti con costo fisso di lancio.
+"""Problema 9.1 -- Produzione e lotti con costo fisso di setup.
 
 Bilancio delle scorte, attivazione della produzione con big-M e magazzino. Il
 legame e' quello del costo fisso (sezione 6.2) con il coefficiente ricavato dai
@@ -17,10 +17,10 @@ from esteso import salva_modello
 R = range
 
 # ---------- 1. MODELLO E ISTANZA ----------
-intestazione("9.1 Produzione e lotti: bilancio delle scorte, lancio con costo fisso")
+intestazione("9.1 Produzione e lotti: bilancio delle scorte, setup con costo fisso")
 d1 = [20, 10, 30, 40, 10]          # domanda dei cinque giorni
 p1 = [2, 3, 2, 3, 2]               # costo unitario di produzione
-q1 = [50, 50, 50, 50, 50]          # costo fisso di lancio
+q1 = [50, 50, 50, 50, 50]          # costo fisso di setup
 h1 = [1, 1, 1, 1]                  # costo di magazzino a fine giorno (t = 1..n-1)
 r0, rn = 0, 0                      # scorta iniziale e finale richiesta
 n1 = len(d1)
@@ -36,14 +36,14 @@ def modello_1(d, p, q, h, r0, rn):
     m = nuovo_modello("lotti")
     x = m.addVars(n, name="x")                       # quantita' prodotta
     s = m.addVars(n - 1, name="s")                   # scorta a fine giorno t
-    y = m.addVars(n, vtype=GRB.BINARY, name="y")     # lancio della produzione
+    y = m.addVars(n, vtype=GRB.BINARY, name="y")     # setup della produzione
     m.setObjective(gp.quicksum(p[t] * x[t] for t in R(n))
                    + gp.quicksum(q[t] * y[t] for t in R(n))
                    + gp.quicksum(h[t] * s[t] for t in R(n - 1)), GRB.MINIMIZE)
     m.addConstr(x[0] - s[0] == d[0] - r0, name="bilancio[0]")
     m.addConstrs((x[t] + s[t - 1] - s[t] == d[t] for t in R(1, n - 1)), name="bilancio")
     m.addConstr(x[n - 1] + s[n - 2] == d[n - 1] + rn, name=f"bilancio[{n - 1}]")
-    m.addConstrs((-x[t] + M[t] * y[t] >= 0 for t in R(n)), name="lancio")
+    m.addConstrs((-x[t] + M[t] * y[t] >= 0 for t in R(n)), name="setup")
     return m, x, s, y
 
 
@@ -73,17 +73,17 @@ zlp1, zlp1r, pi1 = rilassamenti(m1)
 # ---------- 3. IL DUALE DEL RILASSAMENTO (LOWER BOUND) ----------
 dl1 = duale_1(d1, p1, q1, h1, r0, rn)
 salva_modello(dl1, "fam09_1_duale")
-# ricetta: pi = 0 (i lanci si regalano) e mu_t = costo minimo per avere una unita' al giorno t
+# ricetta: pi = 0 (i setup si regalano) e mu_t = costo minimo per avere una unita' al giorno t
 mu = []
 for t in R(n1):
     mu.append(p1[t] if t == 0 else min(mu[t - 1] + h1[t - 1], p1[t]))
 mano = {f"mu[{t}]": mu[t] for t in R(n1)}
 lb1, viol = valuta(dl1, mano)
 assert viol <= 1e-9, viol
-print("  Duale a mano: pi = 0 (i lanci non si pagano) e mu_t = il costo unitario piu' basso")
+print("  Duale a mano: pi = 0 (i setup non si pagano) e mu_t = il costo unitario piu' basso")
 print("  per avere una unita' disponibile il giorno t, cioe' min(mu_{t-1} + h_{t-1}, p_t):")
 print("    mu = " + ", ".join(frazione(v) for v in mu))
-print(f"  ->  lb = {frazione(lb1)}: e' il costo di produzione se i lanci fossero gratis.")
+print(f"  ->  lb = {frazione(lb1)}: e' il costo di produzione se i setup fossero gratis.")
 dualita_forte(dl1, zlp1)
 
 # ---------- 4. EURISTICA COSTRUTTIVA (UPPER BOUND) ----------
@@ -92,28 +92,28 @@ lot_per_lot = sum(p1[t] * d1[t] for t in R(n1)) + sum(q1)
 sol_llf = {f"x[{t}]": d1[t] for t in R(n1)} | {f"y[{t}]": 1 for t in R(n1)} \
     | {f"s[{t}]": 0 for t in R(n1 - 1)}
 assert ammissibile(m1, sol_llf)
-print(f"  (a) lot-for-lot: si lancia ogni giorno, costo "
-      f"{sum(p1[t] * d1[t] for t in R(n1))} di produzione + {sum(q1)} di lanci = {lot_per_lot}")
+print(f"  (a) lot-for-lot: si fa un setup ogni giorno, costo "
+      f"{sum(p1[t] * d1[t] for t in R(n1))} di produzione + {sum(q1)} di setup = {lot_per_lot}")
 # (b) least unit cost: si copre il numero di giorni che minimizza il costo medio per unita'
 e = euristica_lotti(d1, q1[0], h1[0])
 e.traccia.stampa()
-sol_luc = {f"x[{t}]": e.lanci.get(t, 0) for t in R(n1)} \
-    | {f"y[{t}]": 1 if t in e.lanci else 0 for t in R(n1)}
+sol_luc = {f"x[{t}]": e.periodi_setup.get(t, 0) for t in R(n1)} \
+    | {f"y[{t}]": 1 if t in e.periodi_setup else 0 for t in R(n1)}
 scorta = 0
 for t in R(n1 - 1):
     scorta += sol_luc[f"x[{t}]"] - d1[t]
     sol_luc[f"s[{t}]"] = scorta
 assert ammissibile(m1, sol_luc)
-luc = sum(p1[t] * sol_luc[f"x[{t}]"] for t in R(n1)) + sum(q1[t] for t in e.lanci) \
+luc = sum(p1[t] * sol_luc[f"x[{t}]"] for t in R(n1)) + sum(q1[t] for t in e.periodi_setup) \
     + sum(h1[t] * sol_luc[f"s[{t}]"] for t in R(n1 - 1))
-print(f"  (b) least unit cost: lanci nei giorni {[t + 1 for t in sorted(e.lanci)]}, costo {luc}")
+print(f"  (b) least unit cost: setup nei giorni {[t + 1 for t in sorted(e.periodi_setup)]}, costo {luc}")
 ub1 = min(lot_per_lot, luc)
 print(f"  La migliore delle due: ub = {frazione(ub1)}")
 
 # ---------- 5. OTTIMO DEL MILP ----------
 z1 = risolvi(m1)
 lanci_ott = [t + 1 for t in R(n1) if y1[t].X > 0.5]
-print(f"  Soluzione ottima: lanci nei giorni {lanci_ott}; quantita' "
+print(f"  Soluzione ottima: setup nei giorni {lanci_ott}; quantita' "
       + ", ".join(frazione(x1[t].X) for t in R(n1))
       + "; scorte " + ", ".join(frazione(s1[t].X) for t in R(n1 - 1)))
 riga = registra_bound("1 lotti con setup", ub1, lb1, zlp1, zlp1r, z1)
@@ -248,7 +248,7 @@ ax.plot(giorni, d1, "o--", color=ROSSO, label="domanda $d_t$")
 ax.plot(giorni[:-1], [s1[t].X for t in R(n1 - 1)], "s-", color=ARANCIO,
         label="scorta a fine giorno $s_t$")
 for t in lanci_ott:
-    ax.annotate("lancio", (t, x1[t - 1].X), textcoords="offset points", xytext=(0, 6),
+    ax.annotate("setup", (t, x1[t - 1].X), textcoords="offset points", xytext=(0, 6),
                 ha="center", fontsize=8, color=BLU)
 ax.set_xticks(giorni)
 ax.set_xlabel("giorno")
