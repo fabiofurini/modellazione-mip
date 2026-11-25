@@ -5,7 +5,7 @@ hide:
 
 # Laboratorio interattivo
 
-Le idee del corso da toccare con mano: rilassamenti, bound, euristiche e formulazioni.
+Le app mostrano rilassamenti, bound, euristiche e formulazioni del corso.
 Scegli un'app: si apre a tutta pagina. Tutto gira nel browser, senza Gurobi;
 i problemi sono piccoli, così ogni passo si vede.
 
