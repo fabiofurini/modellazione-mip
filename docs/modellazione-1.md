@@ -285,7 +285,7 @@ Lo stesso codice è disponibile come notebook —
 [capitolo 3](modellazione-3.md), e da quel capitolo in poi ogni pagina ha il suo
 badge Colab in cima.
 
-:material-flask-outline: **Nel laboratorio interattivo:** [Cinque progetti, due fondi](laboratorio/progetti-fondi.md).
+:material-flask-outline: **Nel laboratorio interattivo:** [Progetti e fondi](laboratorio/progetti-fondi.md).
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
