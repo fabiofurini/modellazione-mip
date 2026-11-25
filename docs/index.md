@@ -33,9 +33,9 @@ Prerequisiti: [Programmazione lineare intera](https://fabiofurini.github.io/prog
 <!-- collana-app -->
 ## Provalo subito
 
-Tre modelli del corso risolti all'ottimo nel browser: localizzazione capacitata, lotti con costo di lancio e progetti con vincoli logici. Scegli il modello in alto a destra, cambia i dati con i cursori e guarda la soluzione ottima, le binarie a 1, il rilassamento continuo e il gap.
+I punti interi dentro il poliedro, l'ottimo del rilassamento continuo e l'ottimo intero: muovi i vincoli e la funzione obiettivo con i cursori e guarda quanto è largo il divario fra i due.
 
-<div class="gi" data-grafico="modelli-ottimi"></div>
+<div class="gi" data-grafico="punti-interi"></div>
 
 [:material-gesture-tap: Altre app nel laboratorio](laboratorio/index.md){ .md-button }
 <!-- /collana-app -->
