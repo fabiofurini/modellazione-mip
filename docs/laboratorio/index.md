@@ -13,13 +13,13 @@ i problemi sono piccoli, così ogni passo si vede.
 
 <div class="grid cards" markdown>
 
--   :material-bag-personal-outline: **Zaino multiplo**
+-   :material-city-variant-outline: **Cinque progetti, due fondi**
 
     ---
 
-    Lo zaino multiplo con cinque oggetti e due zaini, risolto all'ottimo nel browser: il problema, i dati, il modello simbolico e quello numerico, gli oggetti in ogni zaino, il rilassamento continuo e il gap.
+    Un comune sceglie quali progetti finanziare con un fondo regionale e uno europeo. Il modello è risolto all'ottimo nel browser: il problema, i dati, il modello simbolico e quello numerico, i progetti finanziati da ogni fondo, il rilassamento continuo e il gap.
 
-    [Apri l'app →](zaino-multiplo.md)
+    [Apri l'app →](progetti-fondi.md)
 
 -   :material-check-decagram: **Tre modelli risolti all'ottimo**
 

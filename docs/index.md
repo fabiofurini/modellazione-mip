@@ -33,9 +33,9 @@ Prerequisiti: [Programmazione lineare intera](https://fabiofurini.github.io/prog
 <!-- collana-app -->
 ## Provalo subito
 
-Lo zaino multiplo con cinque oggetti e due zaini, risolto all'ottimo nel browser: cambia la capacità di uno zaino e il peso di un oggetto con i cursori e l'ottimo ricalcola gli oggetti caricati, il valore, il rilassamento continuo e il gap.
+Un comune sceglie quali progetti finanziare con un fondo regionale e uno europeo, ciascuno con il suo budget. Il modello è risolto all'ottimo nel browser: cambia il budget di un fondo e il costo di un progetto con i cursori e l'ottimo ricalcola i progetti finanziati, il beneficio, il rilassamento continuo e il gap.
 
-<div class="gi" data-grafico="mip-zaino-multiplo"></div>
+<div class="gi" data-grafico="mip-progetti-fondi"></div>
 
 [:material-gesture-tap: Altre app nel laboratorio](laboratorio/index.md){ .md-button }
 <!-- /collana-app -->
