@@ -33,9 +33,9 @@ Prerequisiti: [Programmazione lineare intera](https://fabiofurini.github.io/prog
 <!-- collana-app -->
 ## Provalo subito
 
-I punti interi dentro il poliedro, l'ottimo del rilassamento continuo e l'ottimo intero: muovi i vincoli e la funzione obiettivo con i cursori e guarda quanto è largo il divario fra i due.
+Il modello dei lotti con costo fisso di lancio, risolto all'ottimo nel browser: cambia il costo di lancio, il costo di giacenza e la domanda dell'ultimo giorno con i cursori e l'ottimo ricalcola i giorni con un lancio, il costo e il rilassamento continuo.
 
-<div class="gi" data-grafico="punti-interi"></div>
+<div class="gi" data-grafico="mip-lotti"></div>
 
 [:material-gesture-tap: Altre app nel laboratorio](laboratorio/index.md){ .md-button }
 <!-- /collana-app -->

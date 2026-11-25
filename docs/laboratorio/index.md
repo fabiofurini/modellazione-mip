@@ -21,6 +21,14 @@ i problemi sono piccoli, così ogni passo si vede.
 
     [Apri l'app →](modelli-ottimi.md)
 
+-   :material-factory: **Lotti con costo fisso di lancio**
+
+    ---
+
+    Il modello dei lotti con costo fisso di lancio (problema 9.1), risolto all'ottimo nel browser: il problema, i dati, il modello simbolico e quello numerico, il piano ottimo con il suo costo, il rilassamento continuo e il gap.
+
+    [Apri l'app →](lotti-costo-fisso.md)
+
 </div>
 
 ## 2. Rilassamenti, dualità e bound

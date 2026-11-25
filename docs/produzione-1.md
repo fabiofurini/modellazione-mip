@@ -298,7 +298,7 @@ Notebook —
 [`notebooks/fam09_1_lotti.ipynb`](https://github.com/fabiofurini/modellazione-mip/blob/main/notebooks/fam09_1_lotti.ipynb)
 — che si apre in Colab dal badge in cima alla pagina.
 
-:material-flask-outline: **Nel laboratorio interattivo:** [Tre modelli risolti all'ottimo](laboratorio/modelli-ottimi.md).
+:material-flask-outline: **Nel laboratorio interattivo:** [Tre modelli risolti all'ottimo](laboratorio/modelli-ottimi.md), [Lotti con costo fisso di lancio](laboratorio/lotti-costo-fisso.md).
 
 <!-- script-incorporato: inizio (rigenerato da python/incorpora_codice.py) -->
 
