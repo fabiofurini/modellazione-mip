@@ -35,7 +35,7 @@ Prerequisiti: [Programmazione lineare intera](https://fabiofurini.github.io/prog
 
 L'app risolve all'ottimo nel browser un modello di programmazione lineare intera: i dati, il modello simbolico, il modello numerico dell'istanza, la soluzione ottima con la sua figura, il rilassamento continuo e il gap. Con i cursori si cambiano i dati e la soluzione si ricalcola.
 
-<div class="gi" data-grafico="mip-progetti-fondi"></div>
+<div class="gi" data-grafico="mip-progetti-fondi" data-vetrina="compatta"></div>
 
 [:material-gesture-tap: Altre app nel laboratorio](laboratorio/index.md){ .md-button }
 <!-- /collana-app -->
