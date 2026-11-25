@@ -37,7 +37,7 @@ class Esito:
     makespan: float = None       # massimo dei carichi (LPT)
     valore: float = None         # valore della soluzione costruita
     residuo: float = None        # capacita' residua (zaino)
-    setup: dict = None           # {periodo: quantita' prodotta} (lot sizing)
+    periodi_setup: dict = None   # {periodo: quantita' prodotta} (lot sizing)
     tour: list = None            # sequenza dei nodi visitati (TSP)
 
     def assegnazione(self, j: int):
@@ -322,7 +322,7 @@ def euristica_lotti(domanda, setup, magazzino) -> Esito:
         periodi_setup[t] = quantita
         e.y[t] = 1
         t += quanti
-    e.periodi_setup = setup
+    e.periodi_setup = periodi_setup
     e.valore = sum(setup for t in periodi_setup) + sum(
         magazzino * max(0, sum(periodi_setup[s] for s in periodi_setup if s <= t) - sum(domanda[:t + 1]))
         for t in range(T))
