@@ -127,7 +127,7 @@ regola, con due ordini diversi, dà due risultati.
   $6 \to$ CD2, $5 \to$ CD1, $4 \to$ CD2, $3 \to$ CD1. Durate finali $18$ e
   $17$: differenza $1$.
 
-Si tiene la migliore: $z(\mathit{MILP}) \le \mathit{UB} = 1$.
+Si tiene la migliore: $z(\text{MILP}) \le \mathit{UB} = 1$.
 
 ## Rilassamento LP e duale: di nuovo zero
 
@@ -215,7 +215,7 @@ numero dispari non possono essere uguali, e la loro differenza $|q_1 - q_2|$ ha
 la stessa parità di $q$, cioè è dispari. Una differenza dispari e non negativa
 vale almeno $1$:
 
-$$z(\mathit{MILP}) \ge \mathit{LB} = 1 .$$
+$$z(\text{MILP}) \ge \mathit{LB} = 1 .$$
 
 L'euristica LPT raggiunge esattamente $1$: i due bound coincidono, e la
 soluzione euristica è ottima. Lo si sa *prima* di chiamare il solver, ed è il
@@ -229,7 +229,7 @@ lavoro che il rilassamento LP non riesce a fare.
 | CD 1 | 1, 2, 3 | 18 |
 | CD 2 | 4, 5, 6 | 17 |
 
-| $LB$ (parità) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap dell'euristica |
+| $LB$ (parità) | $z(\text{LP})$ | $z(\text{LP}^+)$ | $z(\text{MILP})$ | $UB$ (euristica) | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 1 | 0 | 0 | 1 | 1 | $0\%$ |
 
@@ -286,9 +286,9 @@ l'ottimo: il divario certificato resta aperto di una unità.
 |---|---:|---|
 | $\mathit{UB}$ | $2$ | soluzione euristica |
 | $\mathit{LB}$ | $1$ | parita' delle durate sui tre CD |
-| $z(\mathit{LP})$ | $0$ | rilassamento senza i bound |
-| $z(\mathit{LP}^+)$ | $0$ | rilassamento con i bound |
-| $z(\mathit{MILP})$ | $2$ | ottimo del MILP |
+| $z(\text{LP})$ | $0$ | rilassamento senza i bound |
+| $z(\text{LP}^+)$ | $0$ | rilassamento con i bound |
+| $z(\text{MILP})$ | $2$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

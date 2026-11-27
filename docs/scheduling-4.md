@@ -139,7 +139,7 @@ Next-fit sulle cardinalità: si riempie la macchina 1 fino a $p_1$ lavori, poi l
   $y[2] = 10$.
 - **Passo 3.** Lavoro 3 sulla macchina 2: $y[2] = \max(10, 13) = 13$.
 
-$\bar y = (6, 13, 0)$, valore $19$: $z(\mathit{MILP}) \le 19$.
+$\bar y = (6, 13, 0)$, valore $19$: $z(\text{MILP}) \le 19$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -197,14 +197,14 @@ nell'obiettivo primale limita la somma dei $\lambda_{jm}$.
 
 **Una soluzione duale a mano.** $\bar\lambda_{jm} = 1/3$, $\bar\pi_m = 0$,
 $\bar\mu_j = \min_m t_{jm}/3$: $1, \tfrac{2}{3}, \tfrac{10}{3}$, valore $5$:
-$5 \le z(\mathit{MILP}) \le 19$.
+$5 \le z(\text{MILP}) \le 19$.
 
-**Quello che dice il solver.** $z(\mathit{LP}) = 520/49 = 10{,}61$. Ottimo
+**Quello che dice il solver.** $z(\text{LP}) = 520/49 = 10{,}61$. Ottimo
 intero $15$: il lavoro 1 sulla macchina 2, i lavori 2 e 3 sulla macchina 3,
 $\tilde y = (0, 5, 10)$. La ripartizione uniforme dei $\lambda$ è la prima che
 viene in mente, non la migliore.
 
-| $UB$ | $LB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{MILP})$ | gap euristica |
+| $UB$ | $LB$ (duale a mano) | $z(\text{LP})$ | $z(\text{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|
 | 19 | 5 | $520/49$ | 15 | $26{,}7\%$ |
 
@@ -259,9 +259,9 @@ dei tempi di quel lavoro. La ricetta risulta *ottima* per il rilassamento.
 |---|---:|---|
 | $\mathit{UB}$ | $13$ | soluzione euristica |
 | $\mathit{LB}$ | $\frac{260}{59}$ | certificato duale costruito a mano |
-| $z(\mathit{LP})$ | $\frac{260}{59}$ | rilassamento senza i bound |
-| $z(\mathit{LP}^+)$ | $\frac{260}{59}$ | rilassamento con i bound |
-| $z(\mathit{MILP})$ | $10$ | ottimo del MILP |
+| $z(\text{LP})$ | $\frac{260}{59}$ | rilassamento senza i bound |
+| $z(\text{LP}^+)$ | $\frac{260}{59}$ | rilassamento con i bound |
+| $z(\text{MILP})$ | $10$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

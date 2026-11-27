@@ -149,7 +149,7 @@ il costo pieno di un'unità.
 - periodo 5: copre solo sé stesso, quantità $10$, costo medio $5$.
 
 Si fa il setup nei giorni $1, 3, 5$, per un costo di $420$. Tenendo la migliore delle
-due, $z(\mathit{MILP}) \le \mathit{UB} = 420$.
+due, $z(\text{MILP}) \le \mathit{UB} = 420$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -218,7 +218,7 @@ $$\mathit{LB} = 2{\cdot}20 + 3{\cdot}10 + 2{\cdot}30 + 3{\cdot}40 + 2{\cdot}10 =
 È il costo di produzione se i setup fossero gratuiti: valido, e volutamente
 ottimista.
 
-**Quello che dice il solver.** $z(\mathit{LP}) = z(\mathit{LP}^+) = 3890/11
+**Quello che dice il solver.** $z(\text{LP}) = z(\text{LP}^+) = 3890/11
 \approx 353{,}6$: il rilassamento i setup li paga in frazione
 ($\pi_t = q_t/M_t$ è ammissibile). L'ottimo intero fa il setup nei giorni 1 e 3.
 
@@ -228,7 +228,7 @@ ottimista.
 | produzione $x_t$ | 30 | 0 | 80 | 0 | 0 |
 | scorta $s_t$ | 10 | 0 | 50 | 10 | — |
 
-| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap dell'euristica |
+| $UB$ | $LB$ (duale) | $z(\text{LP})$ | $z(\text{LP}^+)$ | $z(\text{MILP})$ | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 420 | 270 | $3890/11$ | $3890/11$ | 390 | $7{,}7\%$ |
 
@@ -240,7 +240,7 @@ ottimista.
   **Wagner–Whitin**. La least unit cost *non* è quell'algoritmo: è una regola
   miope che guarda un setup per volta, e infatti si ferma a $420$ contro $390$.
 - La disuguaglianza valida $x_t \le M_t$ non aggiunge nulla: $M_t$ è già la
-  massima produzione utile, e infatti $z(\mathit{LP}) = z(\mathit{LP}^+)$.
+  massima produzione utile, e infatti $z(\text{LP}) = z(\text{LP}^+)$.
 - Una formulazione alternativa con variabili $x_{t\tau}$ («prodotte in $t$,
   vendute in $\tau$») ha rilassamento **intero** ma $O(n^2)$ variabili: il tipico
   scambio fra dimensione del modello e qualità del rilassamento.
@@ -283,9 +283,9 @@ tiene in magazzino.
 |---|---:|---|
 | $\mathit{UB}$ | $520$ | soluzione euristica |
 | $\mathit{LB}$ | $270$ | certificato duale costruito a mano |
-| $z(\mathit{LP})$ | $\frac{305365}{792}$ | rilassamento senza i bound |
-| $z(\mathit{LP}^+)$ | $\frac{305365}{792}$ | rilassamento con i bound |
-| $z(\mathit{MILP})$ | $470$ | ottimo del MILP |
+| $z(\text{LP})$ | $\frac{305365}{792}$ | rilassamento senza i bound |
+| $z(\text{LP}^+)$ | $\frac{305365}{792}$ | rilassamento con i bound |
+| $z(\text{MILP})$ | $470$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

@@ -151,7 +151,7 @@ del prodotto 2: dopo la prima spedizione allo stabilimento 1 ne restano $3$,
 allo stabilimento 2 ce ne sono $7$, quindi si spedisce da lì. Le tratte sono
 due, con $7$ e $4$ unità: una scatola ciascuna.
 
-$$z(\mathit{MILP}) \le \mathit{UB} = 2 .$$
+$$z(\text{MILP}) \le \mathit{UB} = 2 .$$
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -221,7 +221,7 @@ $\alpha_{pc} \le 1/w$: si prende $\bar\alpha_{pc} = 1/w$. Il valore è
 $$\mathit{LB} = \frac{1}{w} \sum_{p}\sum_{c} d_{pc} = \frac{11}{10} .$$
 
 Ogni unità ordinata occupa $1/w$ di scatola: è il bound «volumetrico», e
-coincide con $z(\mathit{LP})$.
+coincide con $z(\text{LP})$.
 
 ## Un bound intero più forte
 
@@ -236,7 +236,7 @@ quelle degli altri clienti.
 | 2 | 4 | 1 |
 | **totale** | **11** | **2** |
 
-$$z(\mathit{MILP}) \ge \mathit{LB} = 2 ,$$
+$$z(\text{MILP}) \ge \mathit{LB} = 2 ,$$
 
 quasi il doppio del bound volumetrico $11/10$.
 
@@ -246,7 +246,7 @@ Lo stabilimento 2 serve entrambi i clienti: al cliente 1 con una scatola
 contenente $5$ unità del prodotto 1 e $2$ del 2, al cliente 2 con una scatola
 contenente $4$ unità del prodotto 2.
 
-| $LB$ (combinatorio) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | $UB$ (euristica) | gap dell'euristica |
+| $LB$ (combinatorio) | $z(\text{LP})$ | $z(\text{LP}^+)$ | $z(\text{MILP})$ | $UB$ (euristica) | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 2 | $11/10$ | $11/10$ | 2 | 2 | $0\%$ |
 
@@ -300,9 +300,9 @@ sandwich si chiude, e l'ottimo passa da $2$ a $3$.
 |---|---:|---|
 | $\mathit{UB}$ | $3$ | soluzione euristica |
 | $\mathit{LB}$ | $3$ | conteggio delle scatole per cliente |
-| $z(\mathit{LP})$ | $\frac{11}{4}$ | rilassamento senza i bound |
-| $z(\mathit{LP}^+)$ | $\frac{11}{4}$ | rilassamento con i bound |
-| $z(\mathit{MILP})$ | $3$ | ottimo del MILP |
+| $z(\text{LP})$ | $\frac{11}{4}$ | rilassamento senza i bound |
+| $z(\text{LP}^+)$ | $\frac{11}{4}$ | rilassamento con i bound |
+| $z(\text{MILP})$ | $3$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

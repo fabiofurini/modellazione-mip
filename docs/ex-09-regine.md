@@ -127,7 +127,7 @@ $$\mathit{UB} = 4.$$
 
 ## Ottimo e confronto
 
-| $\mathit{LB}$ | $\mathit{UB}$ | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ |
+| $\mathit{LB}$ | $\mathit{UB}$ | $z(\text{LP})$ | $z(\text{LP}^+)$ | $z(\text{MILP})$ |
 |---:|---:|---:|---:|---:|
 | 3 | 4 | 4 | 4 | 4 |
 

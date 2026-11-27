@@ -115,7 +115,7 @@ $$\mathit{UB} = 2.$$
 ## Il bound inferiore
 
 Tutti i costi $c_{dti}$ valgono $0$ oppure $1$, quindi l'obiettivo è una somma di
-termini non negativi e $z(\mathit{MILP}) \ge 0$ **senza bisogno di alcun duale**.
+termini non negativi e $z(\text{MILP}) \ge 0$ **senza bisogno di alcun duale**.
 Il duale del rilassamento conferma che non si può fare di meglio: una variabile
 per famiglia di vincoli del primale — $\alpha_i$ libera sulle ore di ciascuno
 strumento, $\beta_{dt} \le 0$ sulle caselle, $\gamma_d \ge 0$ sulla varietà,
@@ -159,8 +159,8 @@ del legame, non possono superare il costo della casella; le ultime quattro sono
 le $y_{di}$, dove accendere l'indicatore costa la varietà e viene rimborsato dal
 legame.
 
-$$\mathit{LB} = 0, \qquad z(\mathit{LP}) = 0, \qquad z(\mathit{LP}^+) = 2,
-\qquad z(\mathit{MILP}) = 2.$$
+$$\mathit{LB} = 0, \qquad z(\text{LP}) = 0, \qquad z(\text{LP}^+) = 2,
+\qquad z(\text{MILP}) = 2.$$
 
 L'orario costruito a mano era già ottimo, ma il bound duale non lo dimostra: fra
 $0$ e $2$ resta un divario che solo il branch and bound chiude. Il rilassamento
@@ -169,9 +169,9 @@ rafforzato, che aggiunge $x \le 1$ e $y \le 1$, arriva invece a $2$ e chiude.
 !!! warning "Un conteggio che non è un bound sul rilassamento"
     Contando si dice di più: ogni giorno ospita entrambi gli strumenti, e in
     ciascun giorno uno dei due docenti non vorrebbe esserci; le violazioni sono
-    quindi almeno due, e $z(\mathit{MILP}) \ge 2$. Quel conteggio però usa
+    quindi almeno due, e $z(\text{MILP}) \ge 2$. Quel conteggio però usa
     l'interezza delle variabili: sul rilassamento non vale, e infatti
-    $z(\mathit{LP}) = 0$. Non si può metterlo al posto di $\mathit{LB}$ nella
+    $z(\text{LP}) = 0$. Non si può metterlo al posto di $\mathit{LB}$ nella
     catena dei bound, dove ogni termine deve valere anche per l'LP.
 
 !!! tip "Due varianti"

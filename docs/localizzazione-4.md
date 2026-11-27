@@ -134,7 +134,7 @@ Un **next-fit** (bin packing): un hub alla volta, fino a $k$ terminali —
 la stessa euristica generica dello scheduling, riusata da
 `euristiche.py`. Terminale 1 e 2 sull'hub 1 (pieno), terminale 3 sull'hub
 2. Costi massimi: $z_1=\max(5,5)=5$, $z_2=4$. Valore $5+6+5+4=20$:
-$z(\mathit{MILP}) \le \mathit{UB} = 20$.
+$z(\text{MILP}) \le \mathit{UB} = 20$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -199,7 +199,7 @@ $$
 $$
 
 di valore $3\cdot5/2=15/2$. Per la dualità debole, $\mathit{LB}=15/2 \le
-z(\mathit{LP}) \le z(\mathit{MILP}) \le \mathit{UB}=20$.
+z(\text{LP}) \le z(\text{MILP}) \le \mathit{UB}=20$.
 
 !!! warning "Un tranello frequente"
     Il vincolo su $\alpha_i$ vale per ogni hub $j$: fissare
@@ -207,12 +207,12 @@ z(\mathit{LP}) \le z(\mathit{MILP}) \le \mathit{UB}=20$.
     liberare $\alpha_i$ da quel vincolo. $\alpha_i$ resta limitato dal
     minimo su tutti gli hub, non da uno solo.
 
-**Quello che dice il solver.** $z(\mathit{LP})=25/2$,
-$z(\mathit{LP}^+)=1015/78\approx13{,}0$. $z(\mathit{MILP})=19$, con gli hub
+**Quello che dice il solver.** $z(\text{LP})=25/2$,
+$z(\text{LP}^+)=1015/78\approx13{,}0$. $z(\text{MILP})=19$, con gli hub
 1 e 3 attivati (non 1 e 2): il terminale 1 da solo sull'hub 3 (il più
 economico per lui), i terminali 2 e 3 sull'hub 1. Gap euristica $5{,}3\%$.
 
-| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap dell'euristica |
+| $UB$ | $LB$ (duale) | $z(\text{LP})$ | $z(\text{LP}^+)$ | $z(\text{MILP})$ | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 20 | $15/2$ | $25/2$ | $1015/78$ | 19 | $5{,}3\%$ |
 
@@ -222,7 +222,7 @@ economico per lui), i terminali 2 e 3 sull'hub 1. Gap euristica $5{,}3\%$.
 
 - $x_{ij} \le y_j$ (disaggregato) è implicato dal vincolo aggregato di
   attivazione **sui punti interi**, non nel rilassamento: aggiungerlo non cambia
-  $z(\mathit{MILP})$ e alza $z(\mathit{LP}^+)$ da $1015/78$ a $79/6$
+  $z(\text{MILP})$ e alza $z(\text{LP}^+)$ da $1015/78$ a $79/6$
   (domanda 8.4.1).
 - Con $M_j=\max_i c_{ij}$, $z_j \le M_j y_j$ non è una disuguaglianza
   valida (il modello ammette $z_j>0$ con $y_j=0$), ma è un **vincolo che
@@ -263,9 +263,9 @@ certificato, invece di lasciarlo fermo.
 |---|---:|---|
 | $\mathit{UB}$ | $20$ | soluzione euristica |
 | $\mathit{LB}$ | $\frac{21}{2}$ | certificato duale costruito a mano |
-| $z(\mathit{LP})$ | $\frac{25}{2}$ | rilassamento senza i bound |
-| $z(\mathit{LP}^+)$ | $\frac{79}{6}$ | rilassamento con i bound |
-| $z(\mathit{MILP})$ | $19$ | ottimo del MILP |
+| $z(\text{LP})$ | $\frac{25}{2}$ | rilassamento senza i bound |
+| $z(\text{LP}^+)$ | $\frac{79}{6}$ | rilassamento con i bound |
+| $z(\text{MILP})$ | $19$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

@@ -35,7 +35,7 @@ equazioni e disequazioni che rendono realizzabile una soluzione).
 
 !!! note "Notazione dei valori ottimi"
     $X$ è l'**insieme ammissibile** (i punti che soddisfano tutti i vincoli,
-    domini compresi); $z(\mathit{MILP})$, $z(\mathit{LP})$, $z(\mathit{D})$ sono
+    domini compresi); $z(\text{MILP})$, $z(\text{LP})$, $z(\mathit{D})$ sono
     i valori ottimi del MILP, del suo rilassamento e del duale del rilassamento.
     Le soluzioni **ammissibili** si segnano con la barra ($\bar x$), quelle
     **ottime** con la tilde ($\tilde x$). I bound si chiamano $\mathit{LB}$ e
@@ -43,10 +43,10 @@ equazioni e disequazioni che rendono realizzabile una soluzione).
     quale soluzione arrivano si scrive $\mathit{LB}(\bar x)$, $\mathit{UB}(\bar x)$
     per una soluzione ammissibile del modello e $\mathit{LB}(\bar\pi)$,
     $\mathit{UB}(\bar\pi)$ per una soluzione ammissibile del duale. Si usa sempre
-    $z(\mathit{MILP})$ e mai $z^\star$: quale modello si ottimizza deve essere
+    $z(\text{MILP})$ e mai $z^\star$: quale modello si ottimizza deve essere
     esplicito.
 
-**Classi di modelli.** LP dritto è la *classe* di problemi, $\mathit{LP}$ in
+**Classi di modelli.** LP dritto è la *classe* di problemi, $\text{LP}$ in
 corsivo è *un* problema di quella classe; lo stesso per ILP, BIP e MILP. Un
 modello ha $n$ variabili, con $j \in \{1, 2, \dots, n\}$, e $m$ vincoli, con
 $i \in \{1, 2, \dots, m\}$; i dati sono i costi $c_j$, i coefficienti $a_{ij}$ e
@@ -147,7 +147,7 @@ $$
 $$
 
 Il rilassamento LP sostituisce $x_1, x_2 \in \{0,1\}$ con $0 \le x_1, x_2 \le 1$
-e vale $z(\mathit{LP}^+) = 3/2$. Quel valore è raggiunto da **infinite**
+e vale $z(\text{LP}^+) = 3/2$. Quel valore è raggiunto da **infinite**
 soluzioni ottime — tutti i punti del segmento $x_1 + x_2 = 3/2$ dentro il
 quadrato — fra cui $(3/4, 3/4)$, $(1, 1/2)$ e $(1/2, 1)$. Quale il solver
 restituisca dipende dall'algoritmo: sulla nostra installazione Gurobi dà
@@ -159,7 +159,7 @@ $(3/4, 3/4)$: per eccesso si ottiene $(1,1)$, che viola il vincolo
 Da questo punto **nessuno** dei due versi trova l'ottimo. Da $(1, 1/2)$: per
 eccesso si ottiene ancora $(1,1)$, non ammissibile; per difetto si ottiene
 $(1, 0)$, ammissibile di valore $1$ — che è proprio l'ottimo intero,
-$z(\mathit{MILP}) = 1$. Non c'è un verso «giusto».
+$z(\text{MILP}) = 1$. Non c'è un verso «giusto».
 
 ![Il rilassamento e i punti interi](img/cap01_rilassamento.png)
 
@@ -171,13 +171,13 @@ ammissibile vale più di $1$.
 ## I due rilassamenti, e da che parte stanno
 
 !!! note "Due versioni da non confondere"
-    - **rilassamento senza i bound** $z(\mathit{LP})$: $x \in \{0,1\}$ diventa il solo
+    - **rilassamento senza i bound** $z(\text{LP})$: $x \in \{0,1\}$ diventa il solo
       $x \ge 0$. È quello di cui negli esercizi si scrive il duale a mano.
-    - **rilassamento con i bound** $z(\mathit{LP}^+)$:
+    - **rilassamento con i bound** $z(\text{LP}^+)$:
       $x \in \{0,1\}$ diventa $0 \le x \le 1$. È `relax()` di Gurobi, il primo
       rilassamento che il solver risolve.
 
-    In un massimo $z(\mathit{LP}) \ge z(\mathit{LP}^+) \ge z(\mathit{MILP})$; in
+    In un massimo $z(\text{LP}) \ge z(\text{LP}^+) \ge z(\text{MILP})$; in
     un minimo i versi si rovesciano. I due coincidono quando gli altri vincoli
     implicano già $x \le 1$ — per esempio con un vincolo di assegnamento
     $\sum_m x_{jm} = 1$.
@@ -191,7 +191,7 @@ entrambi i casi è un bound **ottimistico**.
 !!! warning "Da quale lato arriva ciascun bound"
     Il duale del rilassamento **non** dà un bound «dall'altro lato». Per dualità
     debole, in un minimo ogni soluzione duale ammissibile vale al più
-    $z(\mathit{LP})$, quindi al più $z(\mathit{MILP})$: sta dalla *stessa* parte
+    $z(\text{LP})$, quindi al più $z(\text{MILP})$: sta dalla *stessa* parte
     del rilassamento. Il bound dall'altro lato — quello *pessimistico* — viene
     solo da una soluzione ammissibile del MILP, cioè da un'euristica o dal
     solver. Sia $(\bar x_1, \bar x_2, \dots, \bar x_n)$ una soluzione ammissibile
@@ -201,19 +201,19 @@ entrambi i casi è un bound **ottimistico**.
     problema di **minimo** la prima dà $\mathit{UB}(\bar x)$ e la seconda
     $\mathit{LB}(\bar\pi)$:
 
-    $$\mathit{LB}(\bar\pi) \le z(\mathit{D}(\mathit{LP})) = z(\mathit{LP}) \le z(\mathit{LP}^+) \le z(\mathit{MILP}) \le \mathit{UB}(\bar x)$$
+    $$\mathit{LB}(\bar\pi) \le z(\mathit{D}(\text{LP})) = z(\text{LP}) \le z(\text{LP}^+) \le z(\text{MILP}) \le \mathit{UB}(\bar x)$$
 
     in un problema di **massimo** i ruoli si scambiano, la prima dà
     $\mathit{LB}(\bar x)$ e la seconda $\mathit{UB}(\bar\pi)$:
 
-    $$\mathit{LB}(\bar x) \le z(\mathit{MILP}) \le z(\mathit{LP}^+) \le z(\mathit{LP}) = z(\mathit{D}(\mathit{LP})) \le \mathit{UB}(\bar\pi)$$
+    $$\mathit{LB}(\bar x) \le z(\text{MILP}) \le z(\text{LP}^+) \le z(\text{LP}) = z(\mathit{D}(\text{LP})) \le \mathit{UB}(\bar\pi)$$
 
 ## Tre «gap» da non confondere
 
 1. **Gap dell'euristica.** Se $\bar x$ è la soluzione costruita dall'euristica,
    il suo valore $\sum_{j=1}^{n} c_j\, \bar x_j$ è il bound $\mathit{UB}(\bar x)$
    in un minimo (e $\mathit{LB}(\bar x)$ in un massimo), e il gap è
-   $\bigl|\mathit{UB}(\bar x) - z(\mathit{MILP})\bigr| / |z(\mathit{MILP})|$
+   $\bigl|\mathit{UB}(\bar x) - z(\text{MILP})\bigr| / |z(\text{MILP})|$
    quando l'ottimo è noto — è quello riportato nelle tabelle degli esercizi.
    Quando l'ottimo non è noto lo si calcola rispetto a un bound duale, che ne
    prende il posto.

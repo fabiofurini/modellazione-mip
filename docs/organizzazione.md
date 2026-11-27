@@ -65,7 +65,7 @@ nella pagina del [materiale scaricabile](materiale.md#rigenerare-tutto).
 Il percorso è in due parti: prima si imparano gli strumenti di modellazione,
 poi li si applica a problemi completi. Il filo che le tiene insieme è uno solo —
 un modello non si limita a scriverlo: se ne racchiude l'ottimo fra due numeri,
-$\mathit{LB} \le z(\mathit{MILP}) \le \mathit{UB}$, prima ancora di affidarlo
+$\mathit{LB} \le z(\text{MILP}) \le \mathit{UB}$, prima ancora di affidarlo
 al solver.
 
 ## Percorso in due parti
@@ -101,7 +101,7 @@ quattro quesiti:
    per l'istanza, e costruire a mano una soluzione duale ammissibile per
    ottenere il bound dal lato opposto.
 
-Il `lb ≤ z(\mathit{MILP}) ≤ ub` che ne risulta è il filo conduttore del corso: un
+Il `lb ≤ z(\text{MILP}) ≤ ub` che ne risulta è il filo conduttore del corso: un
 modello non si limita a scriverlo: se ne racchiude l'ottimo fra due numeri prima di
 affidarlo al solver. Un solver interrotto a metà, del resto, un certificato lo
 fornisce eccome — l'incumbent `ObjVal` e il bound `ObjBound` racchiudono

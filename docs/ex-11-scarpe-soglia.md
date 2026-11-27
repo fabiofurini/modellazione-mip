@@ -115,7 +115,7 @@ Il bound migliore è quello della pelle: $\mathit{UB} = 24\,000$.
 
 ## Ottimo e confronto
 
-| $\mathit{LB}$ | $\mathit{UB}$ | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ |
+| $\mathit{LB}$ | $\mathit{UB}$ | $z(\text{LP})$ | $z(\text{LP}^+)$ | $z(\text{MILP})$ |
 |---:|---:|---:|---:|---:|
 | 24 000 | 24 000 | 24 000 | 24 000 | 24 000 |
 
@@ -128,7 +128,7 @@ duale coincide con una soluzione ammissibile, **il problema è finito**.
 !!! tip "Due variazioni che cambiano il quadro"
     Raddoppiando le soglie, quella dei mocassini diventa $400$ paia mentre la
     pelle ne consente al massimo $200$: nessun tipo raggiunge più la propria
-    soglia e la produzione si ferma del tutto, $z(\mathit{MILP}) = 0$.
+    soglia e la produzione si ferma del tutto, $z(\text{MILP}) = 0$.
 
     Portando la pelle a $200\,000$ grammi si producono $333$ mocassini per
     $39\,960$ euro, e i big-M vanno **ricalcolati**: diventano $(235, 333, 285)$.

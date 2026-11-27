@@ -18,11 +18,11 @@ L'ordine di lettura non si cambia: `Status`, poi `SolCount`, poi `ObjVal` e
 
 | `Status` | valore | `SolCount` | Che cosa si può dire |
 |---|---:|---:|---|
-| `OPTIMAL` | 2 | $\ge 1$ | $z(\mathit{MILP}) = $ `ObjVal`, dimostrato |
+| `OPTIMAL` | 2 | $\ge 1$ | $z(\text{MILP}) = $ `ObjVal`, dimostrato |
 | `INFEASIBLE` | 3 | 0 | il modello non ha soluzioni ammissibili |
 | `UNBOUNDED` | 5 | 0 | manca un vincolo, o un bound su una variabile |
 | `TIME_LIMIT` | 9 | 0 | niente: né una soluzione né, in generale, un bound utile |
-| `TIME_LIMIT` | 9 | $\ge 1$ | `ObjBound` $\le z(\mathit{MILP}) \le$ `ObjVal` |
+| `TIME_LIMIT` | 9 | $\ge 1$ | `ObjBound` $\le z(\text{MILP}) \le$ `ObjVal` |
 | `SOLUTION_LIMIT` | 10 | $\ge 1$ | come sopra |
 
 !!! example "I quattro casi sull'istanza di assegnamento"

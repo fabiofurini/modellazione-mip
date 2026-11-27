@@ -142,7 +142,7 @@ Ordine dato $1 \to 2 \to 3$:
 - **Passo 2.** $\kappa_2 = 9$, $\tau_2 = 5$.
 - **Passo 3.** $\kappa_3 = 15$, $\tau_3 = 5$.
 
-Valore $12$: $z(\mathit{MILP}) \le 12$.
+Valore $12$: $z(\text{MILP}) \le 12$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -204,14 +204,14 @@ $$
 e allora $\alpha = 0$; restano $\delta_j \le \gamma_j \le 1$ e ogni lavoro
 contribuisce al più $t_j - d_j$, positivo solo se in ritardo anche eseguito per
 primo: solo il lavoro 1. $\bar\gamma_1 = \bar\delta_1 = 1$, valore $-3 + 5 = 2$:
-$2 \le z(\mathit{MILP}) \le 12$.
+$2 \le z(\text{MILP}) \le 12$.
 
-**Quello che dice il solver.** $z(\mathit{LP}) = 2$: il rilassamento di un
+**Quello che dice il solver.** $z(\text{LP}) = 2$: il rilassamento di un
 modello big-M è debolissimo ($s_{ji} = 1/2$ rilascia le precedenze). Ottimo
 intero $11$, sequenza $2 \to 1 \to 3$: $\tilde\kappa = (9, 4, 15)$,
 $\tilde\tau = (6, 0, 5)$.
 
-| $UB$ | $LB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{MILP})$ | gap euristica |
+| $UB$ | $LB$ (duale a mano) | $z(\text{LP})$ | $z(\text{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|
 | 12 | 2 | 2 | 11 | $9{,}1\%$ |
 
@@ -262,9 +262,9 @@ lavorazione. L'euristica è la stessa regola EDD, che adesso aspetta il rilascio
 |---|---:|---|
 | $\mathit{UB}$ | $12$ | soluzione euristica |
 | $\mathit{LB}$ | $2$ | certificato duale costruito a mano |
-| $z(\mathit{LP})$ | $4$ | rilassamento senza i bound |
-| $z(\mathit{LP}^+)$ | $4$ | rilassamento con i bound |
-| $z(\mathit{MILP})$ | $12$ | ottimo del MILP |
+| $z(\text{LP})$ | $4$ | rilassamento senza i bound |
+| $z(\text{LP}^+)$ | $4$ | rilassamento con i bound |
+| $z(\text{MILP})$ | $12$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

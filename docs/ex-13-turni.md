@@ -139,14 +139,14 @@ stessa mezza giornata che compare nel primale.
 
 ## Ottimo e confronto
 
-| $\mathit{UB}$ | $\mathit{LB}$ | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ |
+| $\mathit{UB}$ | $\mathit{LB}$ | $z(\text{LP})$ | $z(\text{LP}^+)$ | $z(\text{MILP})$ |
 |---:|---:|---:|---:|---:|
 | 8 410 | 6 300 | $115970/17$ | $115970/17$ | 7 060 |
 
 Il piano ottimo assume $5$ addetti sullo schema 1, $4$ sul 3, $1$ sul 4, $2$ sul
 5 e $3$ sul 7, per un costo di $7060$. La copertura è satura mercoledì, sabato e
 domenica, e sovrabbondante negli altri giorni. Il gap dell'euristica è del
-$19{,}1\%$; la differenza $z(\mathit{MILP}) - z(\mathit{LP}) \approx 238$ è il
+$19{,}1\%$; la differenza $z(\text{MILP}) - z(\text{LP}) \approx 238$ è il
 prezzo dell'interezza, cioè del fatto che le persone si assumono una a una.
 
 !!! tip "Il giorno a mezzo servizio conviene?"

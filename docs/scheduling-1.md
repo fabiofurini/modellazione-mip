@@ -165,7 +165,7 @@ Esecuzione sull'istanza (output dello script):
   e $ra[1] = 5 - 4 = 1$.
 
 Soluzione $\bar x_{13} = \bar x_{22} = \bar x_{31} = 1$, valore $2 + 4 + 5 = 11$:
-$\mathit{UB} = 11$, cioè $z(\mathit{MILP}) \le 11$. Next-fit e first-fit trovano
+$\mathit{UB} = 11$, cioè $z(\text{MILP}) \le 11$. Next-fit e first-fit trovano
 entrambe $x_{11} = x_{21} = x_{32} = 1$, di valore $14$.
 
 ## Rilassamento LP e duale: il bound duale
@@ -226,22 +226,22 @@ $$
 con valore $10$. Per la dualità debole
 
 $$
-10 ~\le~ z(\mathit{LP}) ~\le~ z(\mathit{MILP}) ~\le~ 11.
+10 ~\le~ z(\text{LP}) ~\le~ z(\text{MILP}) ~\le~ 11.
 $$
 
 La ricetta ha un significato: «ogni lavoro costa almeno il suo costo minimo» è
 un lower bound che chiunque scriverebbe; il duale lo formalizza e dice come
 migliorarlo, con $\pi_m < 0$ dove la disponibilità è stretta.
 
-**Quello che dice il solver.** $z(\mathit{LP}) = 53/5 = 10{,}6$ (uguale
+**Quello che dice il solver.** $z(\text{LP}) = 53/5 = 10{,}6$ (uguale
 all'ottimo del duale: dualità forte), con duali $\tilde\mu = (2,\ 4{,}8,\ 5)$ e
 $\tilde\pi = (0,\ -0{,}2,\ 0)$: la macchina 2 è la risorsa stretta. L'ottimo
-intero è $z(\mathit{MILP}) = 11$ con $\tilde x_{13} = \tilde x_{22} = \tilde x_{31} = 1$:
+intero è $z(\text{MILP}) = 11$ con $\tilde x_{13} = \tilde x_{22} = \tilde x_{31} = 1$:
 il best-fit aveva trovato l'ottimo, ma solo il solver lo certifica — il bound
 duale si fermava a $10$ (e poiché i costi sono interi, $\lceil 53/5 \rceil = 11$
 chiude il gap).
 
-| $UB$ (best-fit) | $LB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{MILP})$ | gap euristica |
+| $UB$ (best-fit) | $LB$ (duale a mano) | $z(\text{LP})$ | $z(\text{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|
 | 11 | 10 | $53/5$ | 11 | $0{,}0\%$ |
 
@@ -251,7 +251,7 @@ chiude il gap).
 
 - $x_{jm} \le 1$ ($n\,k$ disuguaglianze) sono valide ma implicate dai vincoli
   di assegnamento: non rafforzano il rilassamento (infatti
-  $z(\mathit{LP}) = z(\mathit{LP}^+)$).
+  $z(\text{LP}) = z(\text{LP}^+)$).
 - Se un lavoro $j$ non sta su una macchina $m$ ($t_{jm} > a_m$), $x_{jm}$ si
   può fissare a zero prima di risolvere: il modello è più piccolo e il
   rilassamento non peggiora.
@@ -296,9 +296,9 @@ solver.
 |---|---:|---|
 | $\mathit{UB}$ | $12$ | soluzione euristica |
 | $\mathit{LB}$ | $12$ | certificato duale costruito a mano |
-| $z(\mathit{LP})$ | $12$ | rilassamento senza i bound |
-| $z(\mathit{LP}^+)$ | $12$ | rilassamento con i bound |
-| $z(\mathit{MILP})$ | $12$ | ottimo del MILP |
+| $z(\text{LP})$ | $12$ | rilassamento senza i bound |
+| $z(\text{LP}^+)$ | $12$ | rilassamento con i bound |
+| $z(\text{MILP})$ | $12$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

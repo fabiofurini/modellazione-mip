@@ -126,7 +126,7 @@ $\mathit{LB} = 3$.
     servono almeno tre hub. Il duale ha formalizzato un argomento che si può
     raccontare senza scriverlo: è il senso della ricetta costruttiva.
 
-| $UB$ (euristica costruttiva) | $LB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{MILP})$ | gap euristica |
+| $UB$ (euristica costruttiva) | $LB$ (duale a mano) | $z(\text{LP})$ | $z(\text{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|
 | 3 | 3 | 3 | 3 | $0{,}0\%$ |
 

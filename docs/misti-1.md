@@ -142,7 +142,7 @@ Sull'istanza l'ordine per preferenza è $3, 5, 1, 2, 4$.
   la b ($3 \le 3$): si prende con il contributo di $8$ euro; la preferenza
   arriva a $17 \ge 16$ e ci si ferma.
 
-Il contributo totale è $z(\mathit{MILP}) \le \mathit{UB} = 8$.
+Il contributo totale è $z(\text{MILP}) \le \mathit{UB} = 8$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -222,18 +222,18 @@ $\bar\sigma = (0,\ 0,\ 1,\ 0,\ 4)$, con valore
 $$\mathit{LB} = -(0+0+1+0+4) - 20 \cdot 2 + 16 \cdot 3 = 3 .$$
 
 Questa soluzione è **ottima** per il rilassamento senza i bound: infatti
-$z(\mathit{LP}) = z(\mathit{LP}^+) = 3$.
+$z(\text{LP}) = z(\text{LP}^+) = 3$.
 
 !!! warning "Un bound onesto può essere molto lontano"
-    Qui $\mathit{LB} = 3$, $\mathit{UB} = 8$ e $z(\mathit{MILP}) = 5$. Conviene
+    Qui $\mathit{LB} = 3$, $\mathit{UB} = 8$ e $z(\text{MILP}) = 5$. Conviene
     guardare le distanze, prima delle percentuali:
     $\mathit{UB} - \mathit{LB} = 5$ è quello che si sa senza risolvere, e
-    $z(\mathit{MILP}) - \mathit{LB} = 2$ è quanto il bound duale sbaglia
+    $z(\text{MILP}) - \mathit{LB} = 2$ è quanto il bound duale sbaglia
     davvero. In percentuale, il gap certificato nella convenzione del solver è
     $(\mathit{UB} - \mathit{LB}) / \mathit{UB} = 5/8 = 62{,}5\%$ --- è quello
     che Gurobi chiamerebbe `MIPGap` fermandosi qui --- mentre il gap
     dell'euristica nella tabella qui sotto è
-    $(\mathit{UB} - z(\mathit{MILP})) / z(\mathit{MILP}) = 3/5 = 60\%$: due
+    $(\mathit{UB} - z(\text{MILP})) / z(\text{MILP}) = 3/5 = 60\%$: due
     numeri vicini che misurano cose diverse, ed è il denominatore a dirlo. Non
     c'è nulla di sbagliato: il rilassamento LP può
     prendere «mezzo premio» a metà preferenza, e questa libertà vale molto. È il
@@ -251,7 +251,7 @@ Si prendono i premi $3$ e $5$ con i soli punti ($10 + 7 = 17$) e il premio $4$
 con il contributo ($2$ punti e $5$ euro): i punti usati sono $19$ su $20$, la
 preferenza è $7 + 6 + 3 = 16$, esattamente la soglia.
 
-| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap dell'euristica |
+| $UB$ | $LB$ (duale) | $z(\text{LP})$ | $z(\text{LP}^+)$ | $z(\text{MILP})$ | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 8 | 3 | 3 | 3 | 5 | $60{,}0\%$ |
 
@@ -265,7 +265,7 @@ costa solo $5$ euro di contributo.
 ## Considerazioni aggiuntive
 
 - Le disuguaglianze valide $x_i \le 1$ e $y_i \le 1$ sono implicate dai vincoli
-  di mutua esclusione: infatti $z(\mathit{LP}) = z(\mathit{LP}^+)$.
+  di mutua esclusione: infatti $z(\text{LP}) = z(\text{LP}^+)$.
 - Se per qualche premio fosse $c_i = 0$, la seconda modalità dominerebbe la
   prima (meno punti, stesso costo) e la variabile $x_i$ potrebbe essere
   eliminata. È un controllo sui dati che vale la pena fare.
@@ -311,9 +311,9 @@ la regola più onesta.
 |---|---:|---|
 | $\mathit{UB}$ | $13$ | soluzione euristica |
 | $\mathit{LB}$ | $6$ | certificato duale costruito a mano |
-| $z(\mathit{LP})$ | $\frac{25}{2}$ | rilassamento senza i bound |
-| $z(\mathit{LP}^+)$ | $\frac{25}{2}$ | rilassamento con i bound |
-| $z(\mathit{MILP})$ | $13$ | ottimo del MILP |
+| $z(\text{LP})$ | $\frac{25}{2}$ | rilassamento senza i bound |
+| $z(\text{LP}^+)$ | $\frac{25}{2}$ | rilassamento con i bound |
+| $z(\text{MILP})$ | $13$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

@@ -109,7 +109,7 @@ Il bound è debole proprio quando due stili hanno lo stesso specialista migliore
 — qui Paolo è il più veloce sia nel dorso sia nella farfalla, e infatti $93$ non
 è raggiungibile.
 
-| $UB$ (euristica costruttiva) | $LB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{MILP})$ | gap euristica |
+| $UB$ (euristica costruttiva) | $LB$ (duale a mano) | $z(\text{LP})$ | $z(\text{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|
 | 99 | 93 | 95 | 95 | $4{,}2\%$ |
 
@@ -121,7 +121,7 @@ Paolo ($28$); resta fuori Carlo.
 !!! note "Perché qui il rilassamento è esatto"
     La matrice del modello è quella del problema di assegnamento: **totalmente
     unimodulare**. Tutti i vertici del rilassamento sono interi, quindi
-    $z(\mathit{LP}) = z(\mathit{MILP})$ e l'interezza non costa nulla — lo
+    $z(\text{LP}) = z(\text{MILP})$ e l'interezza non costa nulla — lo
     stesso fenomeno dell'[alldiff](legami-12.md). Non è così, invece, appena si
     aggiunge un vincolo di capacità con coefficienti diversi da $0$ e $1$.
 

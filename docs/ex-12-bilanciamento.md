@@ -102,7 +102,7 @@ $q/2$».
     nuovo $9$. È la *stessa* soluzione scritta con l'altro segno; quello che non
     si può fare è dichiarare variabili $\ge 0$ e poi usarne una negativa.
 
-| $UB$ (LPT) | $LB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{MILP})$ | gap euristica |
+| $UB$ (LPT) | $LB$ (duale a mano) | $z(\text{LP})$ | $z(\text{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|
 | 9 | 9 | 9 | 9 | $0{,}0\%$ |
 

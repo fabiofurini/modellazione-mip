@@ -124,19 +124,19 @@ gruppo che lo paga meglio».
 ## Ottimo e confronto
 
 L'ottimo accetta i gruppi $2$ e $4$, riempiendo esattamente gli otto posti:
-$\tilde x = (0, 1, 0, 1)$ e $z(\mathit{MILP}) = 50 + 70 = 120$.
+$\tilde x = (0, 1, 0, 1)$ e $z(\text{MILP}) = 50 + 70 = 120$.
 
 | | valore | che cos'è |
 |---|---:|---|
 | $\mathit{LB}$ | 110 | soluzione euristica |
 | $\mathit{UB}$ | 160 | bound duale a mano |
-| $z(\mathit{LP})$ | 160 | rilassamento senza i bound |
-| $z(\mathit{LP}^+)$ | 140 | rilassamento con i bound |
-| $z(\mathit{MILP})$ | 120 | ottimo del MILP |
+| $z(\text{LP})$ | 160 | rilassamento senza i bound |
+| $z(\text{LP}^+)$ | 140 | rilassamento con i bound |
+| $z(\text{MILP})$ | 120 | ottimo del MILP |
 
 Il gap dell'euristica è $|110 - 120|/120 = 8{,}3\%$. Quello certificato dai due
 bound si conosce *prima* di risolvere, e proprio per questo non può avere
-$z(\mathit{MILP})$ al denominatore: in assoluto $\mathit{UB} - \mathit{LB} = 50$,
+$z(\text{MILP})$ al denominatore: in assoluto $\mathit{UB} - \mathit{LB} = 50$,
 in percentuale $|160 - 110|/160 = 31{,}3\%$ nella convenzione del solver. La soluzione duale costruita a mano è
 **ottima** per il rilassamento senza i bound: aggiungendo $x_j \le 1$ il
 rilassamento scende a $140$ e si avvicina all'ottimo.

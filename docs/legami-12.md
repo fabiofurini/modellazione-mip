@@ -41,7 +41,7 @@ corrispondenza fra $v$ e $(b_0, \dots, b_{p-1})$ è biunivoca.
 !!! note "L'alldiff ha rilassamento esatto, l'espansione no"
     La matrice del doppio partitioning è quella del problema di assegnamento: è
     **totalmente unimodulare**, quindi tutti i vertici del rilassamento sono
-    interi e $z(\mathit{LP}^+) = z(\mathit{MILP})$. Sull'istanza $3 \times 3$
+    interi e $z(\text{LP}^+) = z(\text{MILP})$. Sull'istanza $3 \times 3$
     dello script entrambi valgono $7$: l'interezza è gratis.
 
     L'espansione binaria, al contrario, non aggiunge forza: $\sum_k 2^k b_k$ con

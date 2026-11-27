@@ -152,7 +152,7 @@ appena uno dei tre vincoli si romperebbe.
 - **Campo 2** (capacità 8): la nazionalità 1 è esaurita, quindi qualunque
   bambino della nazionalità 2 violerebbe la maggioranza. Il campo resta vuoto.
 
-$$z(\mathit{MILP}) \ge \mathit{LB} = 15 .$$
+$$z(\text{MILP}) \ge \mathit{LB} = 15 .$$
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -233,7 +233,7 @@ $$\mathit{UB} = \sum_{j=1}^{r} d_j = 15 + 8 = 23 .$$
 
 Ogni bambino accettato occupa un posto, quindi non se ne possono accettare più
 di quanti sono i posti. Ed è anche **ottima**: sul rilassamento senza i bound
-$z(\mathit{LP}) = 23$.
+$z(\text{LP}) = 23$.
 
 ## Altri due argomenti combinatori
 
@@ -263,7 +263,7 @@ allarga il campo 1 e fa passare il comando alla nazionalità maggioritaria.
 
 Entrambi i campi sono pieni.
 
-| $LB$ (euristica) | $z(\mathit{MILP})$ | $z(\mathit{LP})$ | $UB$ (duale) | gap dell'euristica |
+| $LB$ (euristica) | $z(\text{MILP})$ | $z(\text{LP})$ | $UB$ (duale) | gap dell'euristica |
 |---:|---:|---:|---:|---:|
 | 15 | 23 | 23 | 23 | $34{,}8\%$ |
 
@@ -315,9 +315,9 @@ a $20$, l'ottimo è $24$.
 |---|---:|---|
 | $\mathit{UB}$ | $28$ | certificato duale costruito a mano |
 | $\mathit{LB}$ | $20$ | soluzione euristica |
-| $z(\mathit{LP})$ | $24$ | rilassamento senza i bound |
-| $z(\mathit{LP}^+)$ | $24$ | rilassamento con i bound |
-| $z(\mathit{MILP})$ | $24$ | ottimo del MILP |
+| $z(\text{LP})$ | $24$ | rilassamento senza i bound |
+| $z(\text{LP}^+)$ | $24$ | rilassamento con i bound |
+| $z(\text{MILP})$ | $24$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

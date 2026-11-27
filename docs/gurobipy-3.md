@@ -41,7 +41,7 @@ zlp = r.ObjVal
 duali = {c.ConstrName: c.Pi for c in r.getConstrs()}
 ```
 
-Su quell'istanza, $z(\mathit{LP}^+) = z(\mathit{LP}) = 53/5$ — i
+Su quell'istanza, $z(\text{LP}^+) = z(\text{LP}) = 53/5$ — i
 due rilassamenti coincidono perché i vincoli di assegnamento implicano già
 $x_{jm} \le 1$ — e i duali non nulli sono $\tilde\mu = (2,\ 4{,}8,\ 5)$ e
 $\tilde\pi_2 = -0{,}2$: la macchina 2 è la sola risorsa stretta.

@@ -124,7 +124,7 @@ Il bound migliore viene dalle ore: $\mathit{UB} = 280\,000/11$.
 
 ## Ottimo e confronto
 
-| $\mathit{LB}$ | $\mathit{UB}$ | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ |
+| $\mathit{LB}$ | $\mathit{UB}$ | $z(\text{LP})$ | $z(\text{LP}^+)$ | $z(\text{MILP})$ |
 |---:|---:|---:|---:|---:|
 | 25 200 | $280000/11$ | $280000/11$ | $229000/9$ | 25 250 |
 

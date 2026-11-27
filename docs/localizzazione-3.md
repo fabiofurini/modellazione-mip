@@ -126,7 +126,7 @@ Si aprono le prime $k$ sedi. Cliente 1: segnale $10\ge5$ ma 2 sedi forti
 ($>1$): **non coperto**. Cliente 2: segnale $5\ge5$, 1 sede forte:
 **coperto**. Cliente 3: segnale $7\ge5$, 1 sede forte: **coperto**. Clienti
 4 e 5: segnale insufficiente: **non coperti**. Valore $20+5=25$:
-$z(\mathit{MILP}) \ge \mathit{LB} = 25$.
+$z(\text{MILP}) \ge \mathit{LB} = 25$.
 
 ## Rilassamento LP e duale: il bound duale
 
@@ -182,15 +182,15 @@ $$
 
 di valore $m\sum_c\bar\lambda_c = 3\cdot75/2=225/2$. Per la dualità debole
 (problema di massimo: l'euristica dà il lower bound, il duale l'upper
-bound), $\mathit{LB}=25 \le z(\mathit{MILP}) \le z(\mathit{LP}) \le
+bound), $\mathit{LB}=25 \le z(\text{MILP}) \le z(\text{LP}) \le
 \mathit{UB}=225/2$.
 
-**Quello che dice il solver.** $z(\mathit{LP}) = 41925/646 \approx 64{,}9$,
-$z(\mathit{LP}^+) = 125/2 = 62{,}5$. $z(\mathit{MILP}) = 45$, con le sedi 1
+**Quello che dice il solver.** $z(\text{LP}) = 41925/646 \approx 64{,}9$,
+$z(\text{LP}^+) = 125/2 = 62{,}5$. $z(\text{MILP}) = 45$, con le sedi 1
 e 3 installate e i clienti 1, 2, 4 coperti (non 3 né 5): diverso da quanto
 trovato dall'euristica. Gap euristica $44{,}4\%$.
 
-| $LB$ | $UB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap dell'euristica |
+| $LB$ | $UB$ (duale) | $z(\text{LP})$ | $z(\text{LP}^+)$ | $z(\text{MILP})$ | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 25 | $225/2$ | $41925/646$ | $125/2$ | 45 | $44{,}4\%$ |
 
@@ -234,9 +234,9 @@ tiene la migliore fra quelle ammissibili.
 |---|---:|---|
 | $\mathit{UB}$ | $\frac{225}{2}$ | certificato duale costruito a mano |
 | $\mathit{LB}$ | $45$ | soluzione euristica |
-| $z(\mathit{LP})$ | $\frac{41925}{646}$ | rilassamento senza i bound |
-| $z(\mathit{LP}^+)$ | $\frac{125}{2}$ | rilassamento con i bound |
-| $z(\mathit{MILP})$ | $45$ | ottimo del MILP |
+| $z(\text{LP})$ | $\frac{41925}{646}$ | rilassamento senza i bound |
+| $z(\text{LP}^+)$ | $\frac{125}{2}$ | rilassamento con i bound |
+| $z(\text{MILP})$ | $45$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

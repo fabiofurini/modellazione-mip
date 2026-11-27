@@ -32,7 +32,7 @@ salva_dati(pd.DataFrame([riga]), "fam07_1_bound")         #     -> dati/fam07_1_
 ```
 
 Sull'istanza di assegnamento il protocollo produce $\mathit{LB} = 10$,
-$z(\mathit{LP}) = 53/5$, $z(\mathit{MILP}) = 11$, $\mathit{UB} = 11$, e la riga
+$z(\text{LP}) = 53/5$, $z(\text{MILP}) = 11$, $\mathit{UB} = 11$, e la riga
 finisce in `dati/fam07_1_bound.csv`. Da lì la leggono la dispensa, la pagina del
 sito e `verifica_numeri.py`: **un solo posto in cui il numero esiste**.
 

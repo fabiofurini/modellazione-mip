@@ -55,12 +55,12 @@ di servizio
 
 $$c = \begin{pmatrix} 2 & 5 \\ 4 & 1 \\ 3 & 3\end{pmatrix}.$$
 
-| Formulazione | vincoli di link | $z(\mathit{LP}^+)$ |
+| Formulazione | vincoli di link | $z(\text{LP}^+)$ |
 |---|---:|---:|
 | aggregata | $m = 2$ | $38/3 \approx 12{,}67$ |
 | disaggregata | $n\,m = 6$ | $15$ |
 
-L'ottimo intero è $z(\mathit{MILP}) = 15$: la forma disaggregata lo raggiunge
+L'ottimo intero è $z(\text{MILP}) = 15$: la forma disaggregata lo raggiunge
 già nel rilassamento, quella aggregata si ferma a $38/3$. Più righe,
 rilassamento più stretto: è il compromesso tipico di questa tecnica.
 

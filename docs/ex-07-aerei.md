@@ -115,7 +115,7 @@ superare il costo di attrezzaggio.
 
 ## Ottimo e confronto
 
-| $\mathit{LB}$ | $\mathit{UB}$ | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ |
+| $\mathit{LB}$ | $\mathit{UB}$ | $z(\text{LP})$ | $z(\text{LP}^+)$ | $z(\text{MILP})$ |
 |---:|---:|---:|---:|---:|
 | 4 | 5 | 5 | 5 | 5 |
 
@@ -124,7 +124,7 @@ cliente 3; due al cliente 2 e uno al terzo; tre al cliente 1 e due al terzo.
 Tutti e tre usano esattamente le $1000$ ore.
 
 !!! tip "Quando il certificato chiude il problema da solo"
-    Qui il bound duale è esatto: $\mathit{UB} = z(\mathit{MILP}) = 5$. Il
+    Qui il bound duale è esatto: $\mathit{UB} = z(\text{MILP}) = 5$. Il
     certificato costruito a mano dimostra l'ottimalità senza che il solver debba
     fare nulla. Senza costi di attrezzaggio l'ottimo salirebbe a $9$; con $1400$
     ore disponibili a $7$.

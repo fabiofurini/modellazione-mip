@@ -118,7 +118,7 @@ $$
 
 Si aprono le prime $k$ sedi; ogni cliente va alla sede aperta più vicina.
 Aperte le sedi 1 e 2: cliente 1 → sede 2 (dist. 3), cliente 2 → sede 1
-(dist. 6), cliente 3 → sede 2 (dist. 9). Valore $3+6+9=18$: $z(\mathit{MILP})
+(dist. 6), cliente 3 → sede 2 (dist. 9). Valore $3+6+9=18$: $z(\text{MILP})
 \le \mathit{UB} = 18$.
 
 ## Rilassamento LP e duale: il bound duale
@@ -178,14 +178,14 @@ $$
 \bar\mu_1 = 3,\quad \bar\mu_2 = 6,\quad \bar\mu_3 = 4,
 $$
 
-di valore $13$. Per la dualità debole, $\mathit{LB}=13 \le z(\mathit{LP})
-\le z(\mathit{MILP}) \le \mathit{UB}=18$.
+di valore $13$. Per la dualità debole, $\mathit{LB}=13 \le z(\text{LP})
+\le z(\text{MILP}) \le \mathit{UB}=18$.
 
-**Quello che dice il solver.** $z(\mathit{LP}) = z(\mathit{LP}^+) = 15$: il
-rilassamento è già intero su questa istanza. $z(\mathit{MILP}) = 15$, con le
+**Quello che dice il solver.** $z(\text{LP}) = z(\text{LP}^+) = 15$: il
+rilassamento è già intero su questa istanza. $z(\text{MILP}) = 15$, con le
 sedi 1 e 3 aperte (non 1 e 2 come nell'euristica): gap euristica $20{,}0\%$.
 
-| $UB$ | $LB$ (duale) | $z(\mathit{LP})$ | $z(\mathit{LP}^+)$ | $z(\mathit{MILP})$ | gap dell'euristica |
+| $UB$ | $LB$ (duale) | $z(\text{LP})$ | $z(\text{LP}^+)$ | $z(\text{MILP})$ | gap dell'euristica |
 |---:|---:|---:|---:|---:|---:|
 | 18 | 13 | 15 | 15 | 15 | $20{,}0\%$ |
 
@@ -236,9 +236,9 @@ ridondante; diventa vincolante solo se aprire costa.
 |---|---:|---|
 | $\mathit{UB}$ | $18$ | soluzione euristica |
 | $\mathit{LB}$ | $13$ | certificato duale costruito a mano |
-| $z(\mathit{LP})$ | $15$ | rilassamento senza i bound |
-| $z(\mathit{LP}^+)$ | $15$ | rilassamento con i bound |
-| $z(\mathit{MILP})$ | $15$ | ottimo del MILP |
+| $z(\text{LP})$ | $15$ | rilassamento senza i bound |
+| $z(\text{LP}^+)$ | $15$ | rilassamento con i bound |
+| $z(\text{MILP})$ | $15$ | ottimo del MILP |
 
 <!-- tabella-variante: fine -->
 

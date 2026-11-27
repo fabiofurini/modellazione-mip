@@ -47,8 +47,8 @@ soluzione che esiste davvero; quando fallisce, bound primale non ce n'è.
 
 !!! danger "Il verso del bound dipende dall'obiettivo, non dall'euristica"
     In un problema di **minimo** il valore di una soluzione ammissibile è un
-    *upper* bound: $z(\mathit{MILP}) \le \mathit{UB}$. In un **massimo** è un
-    *lower* bound: $\mathit{LB} \le z(\mathit{MILP})$. Chiamare $UB$ il
+    *upper* bound: $z(\text{MILP}) \le \mathit{UB}$. In un **massimo** è un
+    *lower* bound: $\mathit{LB} \le z(\text{MILP})$. Chiamare $UB$ il
     risultato di un'euristica costruttiva su un massimo è l'errore di segno più comune del
     corso.
 
@@ -82,7 +82,7 @@ capacità $C = 7$: gli stessi contenitori del
 a scrivere il modello e sta piccola apposta — ma proprio per questo le tre
 regole vi rispondono tutte e tre «tre contenitori», e non si distinguono.
 
-| Euristica | come riempie | $UB$ | $z(\mathit{MILP})$ | gap dell'euristica |
+| Euristica | come riempie | $UB$ | $z(\text{MILP})$ | gap dell'euristica |
 |---|---|---:|---:|---:|
 | next-fit | `[4] [4] [5] [3+2] [3]` | 5 | 3 | $66{,}7\%$ |
 | first-fit | `[4+3] [4+2] [5] [3]` | 4 | 3 | $33{,}3\%$ |
@@ -144,7 +144,7 @@ impossibili da sistemare.
 
     **Il bound elementare.** Il makespan è almeno
     $\max(\max_j t_j,\ \sum_j t_j / k) = \max(5, 9) = 9$. L'ottimo è proprio
-    $z(\mathit{MILP}) = 9$ — si raggiunge con $\{5,4\}$, $\{5,4\}$,
+    $z(\text{MILP}) = 9$ — si raggiunge con $\{5,4\}$, $\{5,4\}$,
     $\{3,3,3\}$ — e l'LPT sbaglia del $22{,}2\%$.
 
 !!! tip "Due bound gratis, da confrontare"
@@ -191,7 +191,7 @@ EuristicaZaino(p, w, C):
 
 Su $p = (10,7,6,4)$, $w = (5,4,3,3)$, $C = 9$: rapporti $2$, $7/4$, $2$, $4/3$;
 si prendono gli oggetti 1 e 3 (peso $8$), valore $16$. Poiché il problema è di
-**massimo**, $\mathit{LB} = 16 \le z(\mathit{MILP}) = 17$, gap $5{,}9\%$:
+**massimo**, $\mathit{LB} = 16 \le z(\text{MILP}) = 17$, gap $5{,}9\%$:
 l'ottimo prende gli oggetti 1 e 2 riempiendo lo zaino esattamente. L'euristica costruttiva
 sbaglia perché l'oggetto 3 lascia un residuo inutilizzabile.
 
@@ -242,7 +242,7 @@ perché a ogni passo guarda solo le distanze dalla città corrente.
     il 38,9 % sopra l'ottimo.
 
     Due cose da portare via. L'euristica dà *una* soluzione ammissibile, quindi un
-    bound superiore — qui $z(\mathit{MILP}) \le 25$ — e nient'altro; che 18 sia
+    bound superiore — qui $z(\text{MILP}) \le 25$ — e nient'altro; che 18 sia
     l'ottimo lo sappiamo per enumerazione. E far girare la stessa regola da tutte
     le partenze, tenendo il giro migliore, costa $n$ volte tanto e dà un bound
     migliore: è la forma più semplice di *multi-start*, e resta un bound da un
@@ -271,7 +271,7 @@ LeastUnitCost(d, f, h):
 Su $d = (20, 10, 30, 40, 10)$, setup $f = 50$, magazzino $h = 1$: dal periodo 1
 conviene coprire 2 periodi (costo unitario $2$); dal periodo 3 altri 2 (costo
 unitario $\approx 1{,}286$); dal periodo 5 solo quello (costo unitario $5$).
-Costo $\mathit{UB} = 200$ contro $z(\mathit{MILP}) = 170$, gap $17{,}6\%$ — che
+Costo $\mathit{UB} = 200$ contro $z(\text{MILP}) = 170$, gap $17{,}6\%$ — che
 è anche il valore che darebbe Wagner–Whitin, essendo esatto su questo modello.
 
 ## Ricerca locale, e che cosa non dà
@@ -307,7 +307,7 @@ $9$: per arrivarci serve una mossa di **scambio** fra due macchine.
 
 ## Il quadro delle euristiche
 
-| Euristica | Verso | valore | $z(\mathit{MILP})$ | gap dell'euristica |
+| Euristica | Verso | valore | $z(\text{MILP})$ | gap dell'euristica |
 |---|---|---:|---:|---:|
 | next-fit (bin packing) | min ($UB$) | 5 | 3 | $66{,}7\%$ |
 | first-fit (bin packing) | min ($UB$) | 4 | 3 | $33{,}3\%$ |

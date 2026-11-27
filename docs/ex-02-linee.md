@@ -104,14 +104,14 @@ $\bar\alpha_j = \min_i c_{ij} = (1, 2, 3, 1)$: ammissibile per costruzione,
 $\mathit{LB} = 7$. Significato: «ogni linea costa almeno l'offerta più bassa che
 ha ricevuto».
 
-| $UB$ (euristica costruttiva) | $LB$ (duale a mano) | $z(\mathit{LP})$ | $z(\mathit{MILP})$ | gap euristica |
+| $UB$ (euristica costruttiva) | $LB$ (duale a mano) | $z(\text{LP})$ | $z(\text{MILP})$ | gap euristica |
 |---:|---:|---:|---:|---:|
 | 13 | 7 | 9 | 9 | $44{,}4\%$ |
 
 ![Soluzione ottima](img/ex02_ottimo.png)
 
 !!! tip "Rilassamento esatto, ricetta duale no"
-    $z(\mathit{LP}) = z(\mathit{MILP}) = 9$, ma il bound costruito a mano si
+    $z(\text{LP}) = z(\text{MILP}) = 9$, ma il bound costruito a mano si
     ferma a $7$ e l'euristica sbaglia del $44\%$. Che il rilassamento sia esatto
     non dice nulla su quanto sia buona una particolare soluzione duale: sono due
     cose diverse.
